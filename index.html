@@ -6,7 +6,7 @@
     <title>Amitis - تمرین تشخیص روند</title>
     <style>
         /* ================================================================
-           Amirkazem Coding - v45
+           Amirkazem Coding - v46
            ================================================================ */
         * {
             margin: 0;
@@ -1046,14 +1046,14 @@
                 Powered by <span class="highlight">Amirkazem</span> Coding
             </span>
             <span class="dot-sep">•</span>
-            <span class="version">v45</span>
+            <span class="version">v46</span>
         </div>
 
     </div>
 
     <script>
         // ================================================================
-        // Amirkazem Coding - v45 (اصلاح کامل ترندلاین)
+        // Amirkazem Coding - v46 (رفع مشکل ثبت نقطه اول در موقعیت کراس‌هیر)
         // ================================================================
 
         // ===== تابع اسپویلر =====
@@ -1101,6 +1101,8 @@
                     svg.dataset.drawing = 'false';
                     svg.dataset.isFirstTap = 'true';
                     svg.dataset.tapCount = '0';
+                    svg.dataset.crosshairX = '';
+                    svg.dataset.crosshairY = '';
                     const tempLine = svg.querySelector('.temp-line');
                     if (tempLine) tempLine.remove();
                     const crosshair = svg.querySelector('.trend-crosshair');
@@ -1116,6 +1118,8 @@
                     s.dataset.drawing = 'false';
                     s.dataset.isFirstTap = 'true';
                     s.dataset.tapCount = '0';
+                    s.dataset.crosshairX = '';
+                    s.dataset.crosshairY = '';
                     const tl = s.querySelector('.temp-line');
                     if (tl) tl.remove();
                     const ch = s.querySelector('.trend-crosshair');
@@ -1129,6 +1133,8 @@
                 svg.dataset.drawing = 'true';
                 svg.dataset.isFirstTap = 'true';
                 svg.dataset.tapCount = '0';
+                svg.dataset.crosshairX = '';
+                svg.dataset.crosshairY = '';
                 svg.dataset.startX = '';
                 svg.dataset.startY = '';
                 svg.dataset.tempX = '';
@@ -1180,7 +1186,7 @@
         });
 
         // ================================================================
-        // هسته اصلی ترندلاین - v45
+        // هسته اصلی ترندلاین - v46
         // ================================================================
         document.querySelectorAll('.svg-wrap svg').forEach(svg => {
 
@@ -1233,6 +1239,10 @@
                 circle.setAttribute('cy', y);
                 dot.setAttribute('cx', x);
                 dot.setAttribute('cy', y);
+                
+                // ذخیره موقعیت کراس‌هیر در dataset
+                svg.dataset.crosshairX = x;
+                svg.dataset.crosshairY = y;
             }
 
             function hideCrosshair() {
@@ -1322,7 +1332,7 @@
                     return;
                 }
 
-                // در تپ‌های بعدی، فقط کراس‌هیر رو به‌روز می‌کنیم
+                // در تپ‌های بعدی، کراس‌هیر رو به‌روز می‌کنیم
                 updateCrosshair(x, y);
                 svg.dataset.tempX = x;
                 svg.dataset.tempY = y;
@@ -1336,7 +1346,6 @@
                 if (e.cancelable) e.preventDefault();
 
                 const { x, y } = getCoords(e);
-                const isFirstTap = svg.dataset.isFirstTap === 'true';
                 const tapCount = parseInt(svg.dataset.tapCount) || 0;
 
                 // تشخیص حرکت
@@ -1389,11 +1398,58 @@
 
                 // ===== اگر تپ بوده =====
                 if (!isDragging && !hasMoved) {
-                    const x = parseFloat(svg.dataset.tempX) || 0;
-                    const y = parseFloat(svg.dataset.tempY) || 0;
-                    if (x === 0 && y === 0) return;
+                    // از موقعیت کراس‌هیر استفاده کن، نه از موقعیت تپ!
+                    const x = parseFloat(svg.dataset.crosshairX) || 0;
+                    const y = parseFloat(svg.dataset.crosshairY) || 0;
+                    
+                    if (x === 0 && y === 0) {
+                        // اگر کراس‌هیر موقعیت نداشت، از tempX استفاده کن
+                        const tempX = parseFloat(svg.dataset.tempX) || 0;
+                        const tempY = parseFloat(svg.dataset.tempY) || 0;
+                        if (tempX === 0 && tempY === 0) return;
+                        // ثبت نقطه با موقعیت temp
+                        if (tapCount === 0) {
+                            svg.dataset.startX = tempX;
+                            svg.dataset.startY = tempY;
+                            svg.dataset.tapCount = '1';
+                            createStartPoint(tempX, tempY);
+                            createTempLine(tempX, tempY, tempX, tempY);
+                            updateCrosshair(tempX, tempY);
+                            return;
+                        }
+                        if (tapCount === 1) {
+                            const startX = parseFloat(svg.dataset.startX);
+                            const startY = parseFloat(svg.dataset.startY);
+                            if (startX === 0 || startY === 0) return;
+                            removeTempLine();
+                            hideCrosshair();
+                            removeStartPoint();
+                            const ns = 'http://www.w3.org/2000/svg';
+                            const finalLine = document.createElementNS(ns, 'line');
+                            finalLine.setAttribute('x1', startX);
+                            finalLine.setAttribute('y1', startY);
+                            finalLine.setAttribute('x2', tempX);
+                            finalLine.setAttribute('y2', tempY);
+                            finalLine.setAttribute('stroke', '#ff9b00');
+                            finalLine.setAttribute('stroke-width', '1.5');
+                            finalLine.setAttribute('opacity', '0.9');
+                            svg.appendChild(finalLine);
+                            const targetId = svg.id;
+                            saveLine(targetId, finalLine);
+                            svg.dataset.tapCount = '0';
+                            svg.dataset.isFirstTap = 'true';
+                            svg.dataset.startX = '';
+                            svg.dataset.startY = '';
+                            svg.dataset.tempX = '';
+                            svg.dataset.tempY = '';
+                            svg.dataset.crosshairX = '';
+                            svg.dataset.crosshairY = '';
+                            return;
+                        }
+                        return;
+                    }
 
-                    // ===== ثبت نقطه اول (تپ دوم) - دایره نارنجی =====
+                    // ===== ثبت نقطه اول (تپ دوم) - دایره نارنجی در موقعیت کراس‌هیر =====
                     if (tapCount === 0) {
                         svg.dataset.startX = x;
                         svg.dataset.startY = y;
@@ -1405,7 +1461,7 @@
                         return;
                     }
 
-                    // ===== ثبت نقطه دوم و رسم خط (تپ سوم) =====
+                    // ===== ثبت نقطه دوم و رسم خط (تپ سوم) در موقعیت کراس‌هیر =====
                     if (tapCount === 1) {
                         const startX = parseFloat(svg.dataset.startX);
                         const startY = parseFloat(svg.dataset.startY);
@@ -1416,7 +1472,7 @@
                         hideCrosshair();
                         removeStartPoint();
 
-                        // رسم خط نهایی
+                        // رسم خط نهایی از نقطه اول تا موقعیت کراس‌هیر
                         const ns = 'http://www.w3.org/2000/svg';
                         const finalLine = document.createElementNS(ns, 'line');
                         finalLine.setAttribute('x1', startX);
@@ -1438,6 +1494,8 @@
                         svg.dataset.startY = '';
                         svg.dataset.tempX = '';
                         svg.dataset.tempY = '';
+                        svg.dataset.crosshairX = '';
+                        svg.dataset.crosshairY = '';
                     }
                 }
 
@@ -1468,7 +1526,6 @@
             svg.addEventListener('mouseup', handlePointerUp);
             svg.addEventListener('mouseleave', function(e) {
                 if (!svg.dataset.drawing) return;
-                // کراس‌هیر رو مخفی نکن، چون کاربر ممکنه دوباره وارد بشه
                 isDragging = false;
                 hasMoved = false;
             });
@@ -1541,6 +1598,8 @@
                     svg.dataset.startY = '';
                     svg.dataset.tempX = '';
                     svg.dataset.tempY = '';
+                    svg.dataset.crosshairX = '';
+                    svg.dataset.crosshairY = '';
                     removeTempLine();
                     removeStartPoint();
                     hideCrosshair();
@@ -1595,6 +1654,8 @@
                     svg.dataset.startY = '';
                     svg.dataset.tempX = '';
                     svg.dataset.tempY = '';
+                    svg.dataset.crosshairX = '';
+                    svg.dataset.crosshairY = '';
                     removeTempLine();
                     removeStartPoint();
                     hideCrosshair();

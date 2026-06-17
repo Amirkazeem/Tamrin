@@ -6,7 +6,7 @@
     <title>Amitis - تمرین تشخیص روند</title>
     <style>
         /* ================================================================
-           Amirkazem Coding - v36
+           Amirkazem Coding - v37
            طراحی و توسعه: Amirkazem
            ================================================================ */
 
@@ -396,14 +396,18 @@
             color: #888;
         }
 
+        /* ================================================================
+           FOOTER - Amirkazem Coding - v37
+           ================================================================ */
         .global-footer {
-            margin-top: 30px;
-            padding-top: 14px;
-            border-top: 1px solid #161616;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #222;
             display: flex;
-            justify-content: center;
-            gap: 20px;
-            color: #555;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 16px;
+            color: #444;
             font-size: 11px;
             font-weight: 300;
             letter-spacing: 0.5px;
@@ -411,11 +415,27 @@
         }
         .global-footer .brand-name {
             color: #888;
-            font-weight: 400;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+        .global-footer .brand-name .highlight {
+            color: #ccc;
+            font-weight: 600;
         }
         .global-footer .version {
+            color: #555;
+            font-size: 12px;
+            font-weight: 600;
+            background: #1a1a1a;
+            padding: 2px 12px;
+            border-radius: 12px;
+            border: 1px solid #2a2a2a;
+            letter-spacing: 0.5px;
+        }
+        .global-footer .dot-sep {
             color: #333;
-            font-size: 10px;
+            font-size: 8px;
         }
 
         .dot {
@@ -473,7 +493,14 @@
             }
             .global-footer {
                 font-size: 10px;
-                gap: 12px;
+                gap: 10px;
+                justify-content: center;
+            }
+            .global-footer .brand-name {
+                font-size: 11px;
+            }
+            .global-footer .version {
+                font-size: 10px;
             }
         }
         @media (max-width: 768px) {
@@ -1029,21 +1056,22 @@
         </div>
 
         <!-- ================================================================
-             FOOTER - Amirkazem Coding
+             FOOTER - Amirkazem Coding - v37
              ================================================================ -->
         <div class="global-footer">
-            <span><span class="dot white"></span> کندل صعودی</span>
-            <span><span class="dot red"></span> کندل نزولی (#890913)</span>
-            <span class="brand-name">⚡ Amirkazem Coding</span>
-            <span class="version">v36</span>
+            <span class="brand-name">
+                Powered by <span class="highlight">Amirkazem</span> Coding
+            </span>
+            <span class="dot-sep">•</span>
+            <span class="version">v37</span>
         </div>
 
     </div>
 
     <script>
         // ================================================================
-        // Amirkazem Coding - v36
-        // ترندلاین به سبک TradingView - با پشتیبانی کامل از تاچ
+        // Amirkazem Coding - v37
+        // ترندلاین به سبک TradingView - پشتیبانی کامل از تاچ
         // ================================================================
 
         // ===== تابع اسپویلر =====
@@ -1088,6 +1116,7 @@
                     svg.style.cursor = 'default';
                     svg.dataset.drawing = 'false';
                     svg.dataset.step = '0';
+                    svg.dataset.tapCount = '0';
                     const tempLine = svg.querySelector('.temp-line');
                     if (tempLine) tempLine.remove();
                     const crosshair = svg.querySelector('.trend-crosshair');
@@ -1102,6 +1131,7 @@
                     s.style.cursor = 'default';
                     s.dataset.drawing = 'false';
                     s.dataset.step = '0';
+                    s.dataset.tapCount = '0';
                     const tl = s.querySelector('.temp-line');
                     if (tl) tl.remove();
                     const ch = s.querySelector('.trend-crosshair');
@@ -1114,6 +1144,7 @@
                 svg.style.cursor = 'crosshair';
                 svg.dataset.drawing = 'true';
                 svg.dataset.step = '0';
+                svg.dataset.tapCount = '0';
                 svg.dataset.startX = '';
                 svg.dataset.startY = '';
                 svg.dataset.tempX = '';
@@ -1164,15 +1195,16 @@
             });
         });
 
-        // ===== رویدادهای ماوس و تاچ =====
+        // ===== رویدادهای لمسی و ماوس =====
         document.querySelectorAll('.svg-wrap svg').forEach(svg => {
 
             let tempLine = null;
             let startPointCircle = null;
             let crosshairVisible = false;
-            let isPointerDown = false;
-            let pointerStartX = 0,
-                pointerStartY = 0;
+            let isDragging = false;
+            let dragStartX = 0,
+                dragStartY = 0;
+            let hasMoved = false;
 
             function getCoords(e) {
                 const rect = svg.getBoundingClientRect();
@@ -1273,18 +1305,18 @@
                 }
             }
 
-            // ===== رویداد شروع (ماوس و تاچ) =====
+            // ===== شروع لمس/کلیک =====
             function handlePointerDown(e) {
                 if (svg.dataset.drawing !== 'true') return;
-
-                // جلوگیری از اسکرول صفحه در گوشی
                 if (e.cancelable) e.preventDefault();
 
                 const { x, y } = getCoords(e);
                 const step = parseInt(svg.dataset.step) || 0;
+                const tapCount = parseInt(svg.dataset.tapCount) || 0;
 
+                // اگر در مرحله 0 هستیم = تپ اول
                 if (step === 0) {
-                    // ===== تپ اول: کراس‌هیر ظاهر بشه =====
+                    // فقط کراس‌هیر رو نشون بده
                     updateCrosshair(x, y);
                     svg.dataset.step = '1';
                     svg.dataset.tempX = x;
@@ -1292,8 +1324,8 @@
                     return;
                 }
 
+                // اگر در مرحله 1 هستیم = تپ دوم (نقطه اول)
                 if (step === 1) {
-                    // ===== تپ دوم: نقطه اول در محل کراس‌هیر ثبت بشه =====
                     const startX = parseFloat(svg.dataset.tempX) || x;
                     const startY = parseFloat(svg.dataset.tempY) || y;
                     svg.dataset.startX = startX;
@@ -1306,8 +1338,8 @@
                     return;
                 }
 
+                // اگر در مرحله 2 هستیم = تپ سوم (نقطه دوم)
                 if (step === 2) {
-                    // ===== تپ سوم: نقطه دوم در محل کراس‌هیر ثبت بشه =====
                     const startX = parseFloat(svg.dataset.startX);
                     const startY = parseFloat(svg.dataset.startY);
                     const endX = parseFloat(svg.dataset.tempX) || x;
@@ -1339,17 +1371,15 @@
                 }
             }
 
-            // ===== رویداد حرکت (ماوس و تاچ) =====
+            // ===== حرکت انگشت/ماوس =====
             function handlePointerMove(e) {
                 if (svg.dataset.drawing !== 'true') return;
-
-                // جلوگیری از اسکرول صفحه در گوشی
                 if (e.cancelable) e.preventDefault();
 
                 const { x, y } = getCoords(e);
                 const step = parseInt(svg.dataset.step) || 0;
 
-                // در همه مراحل کراس‌هیر رو حرکت بده
+                // همیشه کراس‌هیر رو حرکت بده
                 if (step === 0) {
                     if (crosshairVisible) {
                         updateCrosshair(x, y);
@@ -1376,7 +1406,7 @@
                 }
             }
 
-            // ===== رویداد پایان (ماوس و تاچ) =====
+            // ===== پایان لمس/کلیک =====
             function handlePointerUp(e) {
                 // کاری نمیکنیم
             }

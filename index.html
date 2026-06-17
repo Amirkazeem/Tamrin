@@ -6,9 +6,8 @@
     <title>Amitis - تمرین تشخیص روند</title>
     <style>
         /* ================================================================
-           Amirkazem Coding - v42
+           Amirkazem Coding - v43
            ================================================================ */
-
         * {
             margin: 0;
             padding: 0;
@@ -1047,15 +1046,15 @@
                 Powered by <span class="highlight">Amirkazem</span> Coding
             </span>
             <span class="dot-sep">•</span>
-            <span class="version">v42</span>
+            <span class="version">v43</span>
         </div>
 
     </div>
 
     <script>
         // ================================================================
-        // Amirkazem Coding - v42
-        // ترندلاین - شمارش تپ‌ها با tapCount
+        // Amirkazem Coding - v43
+        // ترندلاین - اولین تپ فقط کراس‌هیر (ساده و نهایی)
         // ================================================================
 
         // ===== تابع اسپویلر =====
@@ -1099,7 +1098,7 @@
                     this.classList.remove('active');
                     svg.style.cursor = 'default';
                     svg.dataset.drawing = 'false';
-                    svg.dataset.tapCount = '0';
+                    svg.dataset.isFirstTap = 'true';
                     const tempLine = svg.querySelector('.temp-line');
                     if (tempLine) tempLine.remove();
                     const crosshair = svg.querySelector('.trend-crosshair');
@@ -1113,7 +1112,7 @@
                 document.querySelectorAll('svg').forEach(s => {
                     s.style.cursor = 'default';
                     s.dataset.drawing = 'false';
-                    s.dataset.tapCount = '0';
+                    s.dataset.isFirstTap = 'true';
                     const tl = s.querySelector('.temp-line');
                     if (tl) tl.remove();
                     const ch = s.querySelector('.trend-crosshair');
@@ -1125,7 +1124,7 @@
                 this.classList.add('active');
                 svg.style.cursor = 'crosshair';
                 svg.dataset.drawing = 'true';
-                svg.dataset.tapCount = '0'; // تعداد تپ‌های انجام شده
+                svg.dataset.isFirstTap = 'true';
                 svg.dataset.startX = '';
                 svg.dataset.startY = '';
                 svg.dataset.tempX = '';
@@ -1300,7 +1299,7 @@
                 if (e.cancelable) e.preventDefault();
 
                 const { x, y } = getCoords(e);
-                const tapCount = parseInt(svg.dataset.tapCount) || 0;
+                const isFirstTap = svg.dataset.isFirstTap === 'true';
 
                 // ذخیره موقعیت شروع برای تشخیص تپ/کشیدن
                 pointerStartX = x;
@@ -1309,25 +1308,30 @@
                 isDragging = false;
                 hasMoved = false;
 
-                // ===== بر اساس تعداد تپ‌ها عمل کن =====
-                if (tapCount === 0) {
-                    // ===== تپ اول: فقط کراس‌هیر =====
+                // ===== اگر اولین تپ هست، فقط کراس‌هیر رو نشون بده =====
+                if (isFirstTap) {
                     updateCrosshair(x, y);
-                    svg.dataset.tapCount = '1';
+                    svg.dataset.isFirstTap = 'false';
                     svg.dataset.tempX = x;
                     svg.dataset.tempY = y;
                     return;
                 }
 
+                // ===== اگر اولین تپ نبود، طبق معمول ادامه بده =====
+                const tapCount = parseInt(svg.dataset.tapCount) || 0;
+
+                if (tapCount === 0) {
+                    // هنوز نقطه‌ای ثبت نشده (برای خط بعدی)
+                    return;
+                }
+
                 if (tapCount === 1) {
-                    // ===== تپ دوم: نقطه اول در محل کراس‌هیر =====
-                    // اینجا فقط موقعیت رو ذخیره میکنیم، ثبت در handlePointerUp انجام میشه
+                    // تپ دوم - نقطه اول (در handlePointerUp انجام میشه)
                     return;
                 }
 
                 if (tapCount === 2) {
-                    // ===== تپ سوم: نقطه دوم در محل کراس‌هیر =====
-                    // اینجا فقط موقعیت رو ذخیره میکنیم، ثبت در handlePointerUp انجام میشه
+                    // تپ سوم - نقطه دوم (در handlePointerUp انجام میشه)
                     return;
                 }
             }
@@ -1340,6 +1344,7 @@
                 if (e.cancelable) e.preventDefault();
 
                 const { x, y } = getCoords(e);
+                const isFirstTap = svg.dataset.isFirstTap === 'true';
                 const tapCount = parseInt(svg.dataset.tapCount) || 0;
 
                 // محاسبه میزان حرکت
@@ -1353,6 +1358,13 @@
                 }
 
                 // ===== همیشه کراس‌هیر رو به‌روز کن =====
+                if (isFirstTap) {
+                    updateCrosshair(x, y);
+                    svg.dataset.tempX = x;
+                    svg.dataset.tempY = y;
+                    return;
+                }
+
                 if (tapCount === 0) {
                     if (crosshairVisible) {
                         updateCrosshair(x, y);
@@ -1385,6 +1397,13 @@
             function handlePointerUp(e) {
                 if (svg.dataset.drawing !== 'true') return;
 
+                const isFirstTap = svg.dataset.isFirstTap === 'true';
+
+                // ===== اگر اولین تپ هست، هیچ کاری نکن =====
+                if (isFirstTap) {
+                    return;
+                }
+
                 const tapCount = parseInt(svg.dataset.tapCount) || 0;
 
                 // ===== اگر کشیدن بوده، فقط کراس‌هیر رو نگه دار =====
@@ -1393,7 +1412,7 @@
                     return;
                 }
 
-                // ===== تپ اول: قبلاً در handlePointerDown انجام شده =====
+                // ===== اگر هیچ نقطه‌ای ثبت نشده =====
                 if (tapCount === 0) {
                     return;
                 }
@@ -1447,7 +1466,9 @@
                         const targetId = svg.id;
                         saveLine(targetId, finalLine);
 
+                        // ریست کامل
                         svg.dataset.tapCount = '0';
+                        svg.dataset.isFirstTap = 'true';
                         svg.dataset.startX = '';
                         svg.dataset.startY = '';
                         svg.dataset.tempX = '';
@@ -1542,6 +1563,7 @@
                 }
 
                 if (svg.dataset.drawing === 'true') {
+                    svg.dataset.isFirstTap = 'true';
                     svg.dataset.tapCount = '0';
                     svg.dataset.startX = '';
                     svg.dataset.startY = '';
@@ -1595,6 +1617,7 @@
                 h.redo = [];
 
                 if (svg.dataset.drawing === 'true') {
+                    svg.dataset.isFirstTap = 'true';
                     svg.dataset.tapCount = '0';
                     svg.dataset.startX = '';
                     svg.dataset.startY = '';

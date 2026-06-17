@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>Amitis - تمرین تشخیص روند</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html,
+        body {
+            min-height: 100vh;
+            background: #0a0a0a;
+            font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
+            direction: rtl;
+            overflow-y: auto;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+        body::-webkit-scrollbar {
+            width: 5px;
+        }
+        body::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+        body::-webkit-scrollbar-thumb {
+            background: #2a2a2a;
+            border-radius: 10px;
+        }
+        body::-webkit-scrollbar-thumb:hover {
+            background: #3a3a3a;
+        }
+
+        .glass-main {
+            width: 100%;
+            max-width: 820px;
+            margin: 0 auto;
+            background: #111111;
+            padding: 24px 14px 40px;
+            border-left: 1px solid #1a1a1a;
+            border-right: 1px solid #1a1a1a;
+            min-height: 100vh;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px 20px;
+            margin-bottom: 55px;
+            gap: 10px;
+            position: relative;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1), background 0.3s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .header:hover {
+            border-color: #ffffff !important;
+            border-width: 1px !important;
+            box-shadow: 0 8px 50px rgba(0, 0, 0, 0.4), 0 0 60px rgba(255, 255, 255, 0.04) !important;
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.04) !important;
+        }
+
+        .header .deco-left,
+        .header .deco-right {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .header .deco-line {
+            width: 25px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #555555);
+            border-radius: 2px;
+        }
+        .header .deco-line-right {
+            background: linear-gradient(90deg, #555555, transparent);
+        }
+        .header .deco-line-thick {
+            width: 10px;
+            height: 2px;
+            background: #444444;
+            border-radius: 2px;
+        }
+        .header .deco-dot {
+            width: 4px;
+            height: 4px;
+            background: #555555;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .header .deco-dot-outline {
+            width: 5px;
+            height: 5px;
+            border: 1px solid #444444;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .header .deco-diamond {
+            width: 5px;
+            height: 5px;
+            background: #555555;
+            transform: rotate(45deg);
+            display: inline-block;
+        }
+        .header .deco-dash {
+            width: 16px;
+            height: 0;
+            border-top: 1px dashed #3a3a3a;
+            display: inline-block;
+        }
+        .header .deco-circle {
+            width: 6px;
+            height: 6px;
+            border: 1px solid #444444;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .header .brand {
+            font-size: 24px;
+            font-weight: 700;
+            color: #555555;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            padding: 0 6px;
+        }
+        .header .brand strong {
+            color: #dddddd;
+            font-weight: 600;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.03);
+        }
+
+        @media (max-width: 480px) {
+            .glass-main {
+                padding: 14px 8px 24px;
+            }
+            .header {
+                padding: 12px 14px;
+                margin-bottom: 40px;
+                border-radius: 16px;
+            }
+            .header .deco-line {
+                width: 12px;
+            }
+            .header .deco-dash {
+                width: 10px;
+            }
+            .header .deco-line-thick {
+                width: 6px;
+            }
+            .header .brand {
+                font-size: 18px;
+                letter-spacing: 3px;
+            }
+            .header .deco-dot-outline {
+                width: 4px;
+                height: 4px;
+            }
+            .header .deco-circle {
+                width: 5px;
+                height: 5px;
+            }
+            .header .deco-diamond {
+                width: 4px;
+                height: 4px;
+            }
+        }
+        @media (max-width: 768px) {
+            .header {
+                margin-bottom: 45px;
+            }
+        }
+
+        .item {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+        }
+        .item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .exercise-separator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 70px 0 80px;
+            margin: 0 10px;
+        }
+        .exercise-separator .star {
+            color: #555555;
+            font-size: 32px;
+            padding: 0 20px;
+            transition: all 0.3s ease;
+        }
+        .exercise-separator .star:hover {
+            color: #888888;
+            transform: scale(1.1);
+        }
+        .exercise-separator .line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #333333, #555555, #333333, transparent);
+            border-radius: 2px;
+        }
+
+        /* ===== کارت‌ها - بدون blur در حالت عادی و هاور ===== */
+        .chart-box {
+            background: #141414;
+            border-radius: 16px;
+            padding: 10px 10px 8px;
+            border: 1px solid #2a2a2a;
+            position: relative;
+            transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1), background 0.3s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        .chart-box:hover {
+            border-color: #ffffff !important;
+            border-width: 1px !important;
+            box-shadow: 0 16px 60px rgba(0, 0, 0, 0.7), 0 0 80px rgba(255, 255, 255, 0.04), inset 0 0 40px rgba(255, 255, 255, 0.02) !important;
+            transform: translateY(-8px) scale(1.005);
+            background: #1e1e1e !important;
+        }
+
+        .chart-box.answer-box {
+            margin-top: 100px;
+            background: #161616;
+            border-color: #323232;
+            border-width: 1px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1), background 0.3s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .chart-box.answer-box:hover {
+            border-color: #ffffff !important;
+            border-width: 1px !important;
+            box-shadow: 0 16px 60px rgba(0, 0, 0, 0.7), 0 0 80px rgba(255, 255, 255, 0.045), inset 0 0 40px rgba(255, 255, 255, 0.025) !important;
+            transform: translateY(-8px) scale(1.005);
+            background: #202020 !important;
+        }
+
+        .label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        .label .title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #aaa;
+        }
+        .label .title .num {
+            color: #333;
+            font-weight: 400;
+        }
+        .label .badge {
+            font-size: 9px;
+            color: #333;
+            background: #1a1a1a;
+            padding: 2px 12px;
+            border-radius: 30px;
+            border: 1px solid #222;
+        }
+        .label .badge.green {
+            color: #555;
+            border-color: #2a2a2a;
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 6px;
+            flex-wrap: wrap;
+        }
+        .toolbar button {
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            color: #666;
+            padding: 3px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            position: relative;
+            z-index: 2;
+        }
+        .toolbar button:hover {
+            background: #2a2a2a;
+            border-color: #444;
+            color: #aaa;
+        }
+        .toolbar button.active {
+            background: #2a2a2a;
+            border-color: #ffffff;
+            color: #ffffff;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+        }
+
+        /* ===== دکمه اسپویلر ===== */
+        .spoiler-btn {
+            background: transparent;
+            border: 1px solid #ffffff;
+            color: #ffffff;
+            padding: 5px 16px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            margin-top: 4px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            letter-spacing: 0.5px;
+        }
+        .spoiler-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: #aaaaaa;
+            color: #ffffff;
+        }
+        .spoiler-btn.active {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: #ffffff;
+            color: #ffffff;
+        }
+
+        .spoiler-content {
+            display: none;
+            margin-top: 8px;
+            animation: fadeIn 0.4s ease;
+        }
+        .spoiler-content.show {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .svg-wrap {
+            background: #0a0a0a;
+            border-radius: 12px;
+            padding: 4px;
+            border: 1px solid #161616;
+            overflow: hidden;
+            position: relative;
+            touch-action: none;
+        }
+        .svg-wrap svg {
+            display: block;
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            background: #0a0a0a;
+            touch-action: none;
+            pointer-events: all;
+        }
+
+        .footer-text {
+            margin-top: 5px;
+            font-size: 11px;
+            color: #333;
+            text-align: center;
+        }
+        .footer-text strong {
+            color: #666;
+            font-weight: 400;
+        }
+        .answer-box .footer-text strong {
+            color: #888;
+        }
+
+        .global-footer {
+            margin-top: 30px;
+            padding-top: 14px;
+            border-top: 1px solid #161616;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            color: #222;
+            font-size: 10px;
+        }
+        .global-footer span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .dot {
+            display: inline-block;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+        }
+        .dot.white {
+            background: #fff;
+            border: 1px solid #333;
+        }
+        .dot.red {
+            background: #890913;
+            border: 1px solid #333;
+        }
+
+        @media (max-width: 480px) {
+            .glass-main {
+                padding: 12px 6px 20px;
+            }
+            .header {
+                padding: 10px 10px;
+                margin-bottom: 30px;
+                border-radius: 14px;
+            }
+            .header .brand {
+                font-size: 16px;
+                letter-spacing: 2px;
+            }
+            .chart-box {
+                padding: 6px 4px 4px;
+                border-radius: 12px;
+            }
+            .chart-box.answer-box {
+                margin-top: 50px;
+            }
+            .item {
+                margin-bottom: 16px;
+                padding-bottom: 12px;
+            }
+            .exercise-separator {
+                padding: 45px 0 55px;
+            }
+            .exercise-separator .star {
+                font-size: 24px;
+            }
+            .toolbar button {
+                padding: 2px 8px;
+                font-size: 9px;
+            }
+            .spoiler-btn {
+                padding: 4px 12px;
+                font-size: 10px;
+            }
+        }
+        @media (max-width: 768px) {
+            .chart-box.answer-box {
+                margin-top: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="glass-main">
+
+        <!-- ===== HEADER ===== -->
+        <div class="header">
+            <div class="deco-left">
+                <span class="deco-dot-outline"></span>
+                <span class="deco-line"></span>
+                <span class="deco-dot"></span>
+                <span class="deco-dash"></span>
+                <span class="deco-dot-outline"></span>
+                <span class="deco-line-thick"></span>
+                <span class="deco-circle"></span>
+                <span class="deco-dot"></span>
+                <span class="deco-dash"></span>
+                <span class="deco-diamond"></span>
+                <span class="deco-dot-outline"></span>
+            </div>
+            <span class="brand"><strong>Amitis</strong></span>
+            <div class="deco-right">
+                <span class="deco-dot-outline"></span>
+                <span class="deco-diamond"></span>
+                <span class="deco-dash"></span>
+                <span class="deco-dot"></span>
+                <span class="deco-circle"></span>
+                <span class="deco-line-thick"></span>
+                <span class="deco-dot-outline"></span>
+                <span class="deco-dash"></span>
+                <span class="deco-dot"></span>
+                <span class="deco-line"></span>
+                <span class="deco-dot-outline"></span>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- تمرین ۱: سوال ۱ + جواب ۱ -->
+        <!-- ============================================================ -->
+        <div class="item">
+
+            <div class="chart-box">
+                <div class="label">
+                    <span class="title"><span class="num">●</span> سوال ۱</span>
+                    <span class="badge">بدون خط</span>
+                </div>
+                <div class="toolbar">
+                    <button class="trend-btn" data-target="s1">✏️ ترند لاین</button>
+                    <button class="clear-btn" data-target="s1">🗑 پاک کردن</button>
+                    <button class="redo-btn" data-target="s1">→</button>
+                    <button class="undo-btn" data-target="s1">←</button>
+                </div>
+                <div class="svg-wrap">
+                    <svg id="s1" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" style="pointer-events:all;">
+                        <rect width="400" height="200" fill="#0a0a0a" rx="8" />
+                        <line x1="28" y1="168" x2="380" y2="168" stroke="#151515" stroke-width="0.4" />
+                        <line x1="28" y1="134" x2="380" y2="134" stroke="#151515" stroke-width="0.4" />
+                        <line x1="28" y1="100" x2="380" y2="100" stroke="#151515" stroke-width="0.4" />
+                        <line x1="28" y1="66" x2="380" y2="66" stroke="#151515" stroke-width="0.4" />
+                        <line x1="28" y1="32" x2="380" y2="32" stroke="#151515" stroke-width="0.4" />
+                        <text x="370" y="172" fill="#222" font-size="8" text-anchor="end">0</text>
+                        <text x="370" y="138" fill="#222" font-size="8" text-anchor="end">20</text>
+                        <text x="370" y="104" fill="#222" font-size="8" text-anchor="end">40</text>
+                        <text x="370" y="70" fill="#222" font-size="8" text-anchor="end">60</text>
+                        <text x="370" y="36" fill="#222" font-size="8" text-anchor="end">80</text>
+
+                        <rect x="30" y="140" width="6" height="14" fill="#890913" rx="1" />
+                        <line x1="33" y1="128" x2="33" y2="140" stroke="#890913" stroke-width="1" />
+                        <line x1="33" y1="154" x2="33" y2="158" stroke="#890913" stroke-width="1" />
+                        <rect x="44" y="132" width="6" height="16" fill="#fff" rx="1" />
+                        <line x1="47" y1="118" x2="47" y2="132" stroke="#fff" stroke-width="1" />
+                        <line x1="47" y1="148" x2="47" y2="152" stroke="#fff" stroke-width="1" />
+                        <rect x="58" y="125" width="6" height="18" fill="#890913" rx="1" />
+                        <line x1="61" y1="110" x2="61" y2="125" stroke="#890913" stroke-width="1" />
+                        <line x1="61" y1="143" x2="61" y2="148" stroke="#890913" stroke-width="1" />
+                        <rect x="72" y="118" width="6" height="14" fill="#fff" rx="1" />
+                        <line x1="75" y1="106" x2="75" y2="118" stroke="#fff" stroke-width="1" />
+                        <line x1="75" y1="132" x2="75" y2="136" stroke="#fff" stroke-width="1" />
+                        <rect x="86" y="112" width="6" height="16" fill="#890913" rx="1" />
+                        <line x1="89" y1="98" x2="89" y2="112" stroke="#890913" stroke-width="1" />
+                        <line x1="89" y1="128" x2="89" y2="132" stroke="#890913" stroke-width="1" />
+                        <rect x="100" y="105" width="6" height="20" fill="#fff" rx="1" />
+                        <line x1="103" y1="90" x2="103" y2="105" stroke="#fff" stroke-width="1" />
+                        <line x1="103" y1="125" x2="103" y2="130" stroke="#fff" stroke-width="1" />
+                        <rect x="114" y="98" width="6" height="14" fill="#890913" rx="1" />
+                        <line x1="117" y1="86" x2="117" y2="98" stroke="#890913" stroke-width="1" />
+                        <line x1="117" y1="112" x2="117" y2="116" stroke="#890913" stroke-width="1" />
+                        <rect x="128" y="92" width="6" height="16" fill="#fff" rx="1" />
+                        <line x1="131" y1="78" x2="131" y2="92" stroke="#fff" stroke-width="1" />
+                        <line x1="131" y1="108" x2="131" y2="112" stroke="#fff" stroke-width="1" />
+                        <rect x="142" y="85" width="6" height="18" fill="#890913" rx="1" />
+                        <line x1="145" y1="70" x2="145" y2="85" stroke="#890913" stroke-width="1" />
+                        <line x1="145" y1="103" x2="145" y2="108" stroke="#890913" stroke-width="1" />
+                        <rect x="156" y="78" width="6" height="14" fill="#fff" rx="1" />
+                        <line x1="159" y1="66" x2="159" y2="78" stroke="#fff" stroke-width="1" />
+                        <line x1="159" y1="92" x2="159" y2="96" stroke="#fff" stroke-width="1" />
+                        <rect x="170" y="72" width="6" height="16" fill="#890913" rx="1" />
+                        <line x1="173" y1="58" x2="173" y2="72" stroke="#890913" stroke-width="1" />
+                        <line x1="173" y1="88" x2="173" y2="92" stroke="#890913" stroke-width="1" />
+                        <rect x="184" y="65" width="6" height="20" fill="#fff" rx="1" />
+                        <line x1="187" y1="50" x2="187" y2="65" stroke="#fff" stroke-width="1" />
+                        <line x1="187" y1="85" x2="187" y2="90" stroke="#fff" stroke-width="1" />
+                        <rect x="198" y="58" width="6" height="14" fill="#890913" rx="1" />
+                        <line x1="201" y1="46" x2="201" y2="58" stroke="#890913" stroke-width="1" />
+                        <line x1="201" y1="72" x2="201" y2="76" stroke="#890913" stroke-width="1" />
+                        <rect x="212" y="52" width="6" height="16" fill="#fff" rx="1" />
+                        <line x1="215" y1="38" x2="215" y2="52" stroke="#fff" stroke-width="1" />
+                        <line x1="215" y1="68" x2="215" y2="72" stroke="#fff" stroke-width="1" />
+                        <rect x="226" y="45" width="6" height="18" fill="#890913" rx="1" />
+                        <line x1="229" y1="30" x2="229" y2="45" stroke="#890913" stroke-width="1" />
+                        <line x1="229" y1="63" x2="229" y2="68" stroke="#890913" stroke-width="1" />
+                        <rect x="240" y="38" width="6" height="14" fill="#fff" rx="1" />
+                        <line x1="243" y1="26" x2="243" y2="38" stroke="#fff" stroke-width="1" />
+                        <line x1="243" y1="52" x2="243" y2="56" stroke="#fff" stroke-width="1" />
+                    </svg>
+                </div>
+                <div class="footer-text">روند را تشخیص دهید</div>
+            </div>
+
+            <!-- ===== جواب با اسپویلر ===== -->
+            <div class="chart-box answer-box">
+                <div class="label">
+                    <span class="title"><span class="num">●</span> جواب ۱</span>
+                    <span class="badge green" style="display:none;">روند صعودی</span>
+                </div>
+
+                <button class="spoiler-btn" onclick="toggleSpoiler(this)">نمایش جواب</button>
+
+                <div class="spoiler-content">
+                    <div class="svg-wrap">
+                        <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="400" height="200" fill="#0a0a0a" rx="8" />
+                            <line x1="28" y1="168" x2="380" y2="168" stroke="#151515" stroke-width="0.4" />
+                            <line x1="28" y1="134" x2="380" y2="134" stroke="#151515" stroke-width="0.4" />
+                            <line x1="28" y1="100" x2="380" y2="100" stroke="#151515" stroke-width="0.4" />
+                            <line x1="28" y1="66" x2="380" y2="66" stroke="#151515" stroke-width="0.4" />
+                            <line x1="28" y1="32" x2="380" y2="32" stroke="#151515" stroke-width="0.4" />
+                            <text x="370" y="172" fill="#222" font-size="8" text-anchor="end">0</text>
+                            <text x="370" y="138" fill="#222" font-size="8" text-anchor="end">20</text>
+                            <text x="370" y="104" fill="#222" font-size="8" text-anchor="end">40</text>
+                            <text x="370" y="70" fill="#222" font-size="8" text-anchor="end">60</text>
+                            <text x="370" y="36" fill="#222" font-size="8" text-anchor="end">80</text>
+
+                            <rect x="30" y="140" width="6" height="14" fill="#890913" rx="1" />
+                            <line x1="33" y1="128" x2="33" y2="140" stroke="#890913" stroke-width="1" />
+                            <line x1="33" y1="154" x2="33" y2="158" stroke="#890913" stroke-width="1" />
+                            <rect x="44" y="132" width="6" height="16" fill="#fff" rx="1" />
+                            <line x1="47" y1="118" x2="47" y2="132" stroke="#fff" stroke-width="1" />
+                            <line x1="47" y1="148" x2="47" y2="152" stroke="#fff" stroke-width="1" />
+                            <rect x="58" y="125" width="6" height="18" fill="#890913" rx="1" />
+                            <line x1="61" y1="110" x2="61" y2="125" stroke="#890913" stroke-width="1" />
+                            <line x1="61" y1="143" x2="61" y2="148" stroke="#890913" stroke-width="1" />
+                            <rect x="72" y="118" width="6" height="14" fill="#fff" rx="1" />
+                            <line x1="75" y1="106" x2="75" y2="118" stroke="#fff" stroke-width="1" />
+                            <line x1="75" y1="132" x2="75" y2="136" stroke="#fff" stroke-width="1" />
+                            <rect x="86" y="112" width="6" height="16" fill="#890913" rx="1" />
+                            <line x1="89" y1="98" x2="89" y2="112" stroke="#890913" stroke-width="1" />
+                            <line x1="89" y1="128" x2="89" y2="132" stroke="#890913" stroke-width="1" />
+                            <rect x="100" y="105" width="6" height="20" fill="#fff" rx="1" />
+                            <line x1="103" y1="90" x2="103" y2="105" stroke="#fff" stroke-width="1" />
+                            <line x1="103" y1="125" x2="103" y2="130" stroke="#fff" stroke-width="1" />
+                            <rect x="114" y="98" width="6" height="14" fill="#890913" rx="1" />
+                            <line x1="117" y1="86" x2="117" y2="98" stroke="#890913" stroke-width="1" />
+                            <line x1="117" y1="112" x2="117" y2="116" stroke="#890913" stroke-width="1" />
+                            <rect x="128" y="92" width="6" height="16" fill="#fff" rx="1" />
+                            <line x1="131" y1="78" x2="131" y2="92" stroke="#fff" stroke-width="1" />
+                            <line x1="131" y1="108" x2="131" y2="112" stroke="#fff" stroke-width="1" />
+                            <rect x="142" y="85" width="6" height="18" fill="#890913" rx="1" />
+                            <line x1="145" y1="70" x2="145" y2="85" stroke="#890913" stroke-width="1" />
+                            <line x1="145" y1="103" x2="145" y2="108" stroke="#890913" stroke-width="1" />
+                            <rect x="156" y="78" width="6" height="14" fill="#fff" rx="1" />
+                            <line x1="159" y1="66" x2="159" y2="78" stroke="#fff" stroke-width="1" />
+                            <line x1="159" y1="92" x2="159" y2="96" stroke="#fff" stroke-width="1" />
+                            <rect x="170" y="72" width="6" height="16" fill="#890913" rx="1" />
+                            <line x1="173" y1="58" x2="173" y2="72" stroke="#890913" stroke-width="1" />
+                            <line x1="173" y1="88" x2="173" y2="92" stroke="#890913" stroke-width="1" />
+                            <rect x="184" y="65" width="6" height="20" fill="#fff" rx="1" />
+                            <line x1="187" y1="50" x2="187" y2="65" stroke="#fff" stroke-width="1" />
+                            <line x1="187" y1="85" x2="187" y2="90" stroke="#fff" stroke-width="1" />
+                            <rect x="198" y="58" width="6" height="14" fill="#890913" rx="1" />
+                            <line x1="201" y1="46" x2="201" y2="58" stroke="#890913" stroke-width="1" />
+                            <line x1="201" y1="72" x2="201" y2="76" stroke="#890913" stroke-width="1" />
+                            <rect x="212" y="52" width="6" height="16" fill="#fff" rx="1" />
+                            <line x1="215" y1="38" x2="215" y2="52" stroke="#fff" stroke-width="1" />
+                            <line x1="215" y1="68" x2="215" y2="72" stroke="#fff" stroke-width="1" />
+                            <rect x="226" y="45" width="6" height="18" fill="#890913" rx="1" />
+                            <line x1="229" y1="30" x2="229" y2="45" stroke="#890913" stroke-width="1" />
+                            <line x1="229" y1="63" x2="229" y2="68" stroke="#890913" stroke-width="1" />
+                            <rect x="240" y="38" width="6" height="14" fill="#fff" rx="1" />
+                            <line x1="243" y1="26" x2="243" y2="38" stroke="#fff" stroke-width="1" />
+                            <line x1="243" y1="52" x2="243" y2="56" stroke="#fff" stroke-width="1" />
+
+                            <!-- خط ترندلاین نارنجی #ff9b00 -->
+                            <line x1="33" y1="158" x2="243" y2="56" stroke="#ff9b00" stroke-width="2" opacity="0.7" />
+                        </svg>
+                    </div>
+                    <div class="footer-text"><strong>پاسخ:</strong> کف‌های بالاتر → روند صعودی</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ===== جداکننده تمرین‌ها ===== -->
+        <div class="exercise-separator">
+            <div class="line"></div>
+            <span class="star">✦</span>
+            <div class="line"></div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- تمرین ۲: سوال ۲ + جواب ۲ -->
+        <!-- ============================================================ -->
+        <div class="item">
+
+            <div class="chart-box">
+                <div class="label">
+                    <span class="title"><span class="num">●</span> سوال ۲</span>
+                    <span class="badge">بدون خط</span>
+                </div>
+                <div class="toolbar">
+                    <button class="trend-btn" data-target="s2">✏️ ترند لاین</button>
+                    <button class="clear-btn" data-target="s2">🗑 پاک کردن</button>
+                    <button class="redo-btn" data-target="s2">→</button>
+                    <button class="undo-btn" data-target="s2">←</button>
+                </div>
+                <div class="svg-wrap">
+                    <svg id="s2" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" style="pointer-events:all;">
+                        <rect width="400" height="200" fill="#0a0a0a" rx="8" />
+                        <line x1="28" y1="168" x2="380" y2="168" stroke="#151515" stroke-width="0.4" />
+                        <line x1="28" y1="134" x2="380" y2="134" stroke="#151515" stroke-width="0.4" />
+                        <line x1="28" y1="100" x2="380" y2="100" stroke="#151515" stroke-width="0.4" />
+                        <line x1="28" y1="66" x2="380" y2="66" stroke="#151515" stroke-width="0.4" />
+                        <line x1="28" y1="32" x2="380" y2="32" stroke="#151515" stroke-width="0.4" />
+                        <text x="370" y="172" fill="#222" font-size="8" text-anchor="end">0</text>
+                        <text x="370" y="138" fill="#222" font-size="8" text-anchor="end">20</text>
+                        <text x="370" y="104" fill="#222" font-size="8" text-anchor="end">40</text>
+                        <text x="370" y="70" fill="#222" font-size="8" text-anchor="end">60</text>
+                        <text x="370" y="36" fill="#222" font-size="8" text-anchor="end">80</text>
+
+                        <rect x="30" y="32" width="6" height="14" fill="#890913" rx="1" />
+                        <line x1="33" y1="22" x2="33" y2="32" stroke="#890913" stroke-width="1" />
+                        <line x1="33" y1="46" x2="33" y2="50" stroke="#890913" stroke-width="1" />
+                        <rect x="44" y="40" width="6" height="16" fill="#fff" rx="1" />
+                        <line x1="47" y1="28" x2="47" y2="40" stroke="#fff" stroke-width="1" />
+                        <line x1="47" y1="56" x2="47" y2="60" stroke="#fff" stroke-width="1" />
+                        <rect x="58" y="48" width="6" height="18" fill="#890913" rx="1" />
+                        <line x1="61" y1="35" x2="61" y2="48" stroke="#890913" stroke-width="1" />
+                        <line x1="61" y1="66" x2="61" y2="70" stroke="#890913" stroke-width="1" />
+                        <rect x="72" y="56" width="6" height="14" fill="#fff" rx="1" />
+                        <line x1="75" y1="45" x2="75" y2="56" stroke="#fff" stroke-width="1" />
+                        <line x1="75" y1="70" x2="75" y2="74" stroke="#fff" stroke-width="1" />
+                        <rect x="86" y="64" width="6" height="16" fill="#890913" rx="1" />
+                        <line x1="89" y1="52" x2="89" y2="64" stroke="#890913" stroke-width="1" />
+                        <line x1="89" y1="80" x2="89" y2="84" stroke="#890913" stroke-width="1" />
+                        <rect x="100" y="72" width="6" height="20" fill="#fff" rx="1" />
+                        <line x1="103" y1="60" x2="103" y2="72" stroke="#fff" stroke-width="1" />
+                        <line x1="103" y1="92" x2="103" y2="96" stroke="#fff" stroke-width="1" />
+                        <rect x="114" y="80" width="6" height="14" fill="#890913" rx="1" />
+                        <line x1="117" y1="70" x2="117" y2="80" stroke="#890913" stroke-width="1" />
+                        <line x1="117" y1="94" x2="117" y2="98" stroke="#890913" stroke-width="1" />
+                        <rect x="128" y="88" width="6" height="16" fill="#fff" rx="1" />
+                        <line x1="131" y1="76" x2="131" y2="88" stroke="#fff" stroke-width="1" />
+                        <line x1="131" y1="104" x2="131" y2="108" stroke="#fff" stroke-width="1" />
+                        <rect x="142" y="96" width="6" height="18" fill="#890913" rx="1" />
+                        <line x1="145" y1="83" x2="145" y2="96" stroke="#890913" stroke-width="1" />
+                        <line x1="145" y1="114" x2="145" y2="118" stroke="#890913" stroke-width="1" />
+                        <rect x="156" y="104" width="6" height="14" fill="#fff" rx="1" />
+                        <line x1="159" y1="93" x2="159" y2="104" stroke="#fff" stroke-width="1" />
+                        <line x1="159" y1="118" x2="159" y2="122" stroke="#fff" stroke-width="1" />
+                        <rect x="170" y="112" width="6" height="16" fill="#890913" rx="1" />
+                        <line x1="173" y1="100" x2="173" y2="112" stroke="#890913" stroke-width="1" />
+                        <line x1="173" y1="128" x2="173" y2="132" stroke="#890913" stroke-width="1" />
+                        <rect x="184" y="120" width="6" height="20" fill="#fff" rx="1" />
+                        <line x1="187" y1="108" x2="187" y2="120" stroke="#fff" stroke-width="1" />
+                        <line x1="187" y1="140" x2="187" y2="144" stroke="#fff" stroke-width="1" />
+                        <rect x="198" y="128" width="6" height="14" fill="#890913" rx="1" />
+                        <line x1="201" y1="118" x2="201" y2="128" stroke="#890913" stroke-width="1" />
+                        <line x1="201" y1="142" x2="201" y2="146" stroke="#890913" stroke-width="1" />
+                        <rect x="212" y="136" width="6" height="16" fill="#fff" rx="1" />
+                        <line x1="215" y1="124" x2="215" y2="136" stroke="#fff" stroke-width="1" />
+                        <line x1="215" y1="152" x2="215" y2="156" stroke="#fff" stroke-width="1" />
+                        <rect x="226" y="144" width="6" height="18" fill="#890913" rx="1" />
+                        <line x1="229" y1="131" x2="229" y2="144" stroke="#890913" stroke-width="1" />
+                        <line x1="229" y1="162" x2="229" y2="166" stroke="#890913" stroke-width="1" />
+                        <rect x="240" y="152" width="6" height="14" fill="#fff" rx="1" />
+                        <line x1="243" y1="141" x2="243" y2="152" stroke="#fff" stroke-width="1" />
+                        <line x1="243" y1="166" x2="243" y2="170" stroke="#fff" stroke-width="1" />
+                    </svg>
+                </div>
+                <div class="footer-text">روند را تشخیص دهید</div>
+            </div>
+
+            <!-- ===== جواب با اسپویلر ===== -->
+            <div class="chart-box answer-box">
+                <div class="label">
+                    <span class="title"><span class="num">●</span> جواب ۲</span>
+                    <span class="badge green" style="display:none;">روند نزولی</span>
+                </div>
+
+                <button class="spoiler-btn" onclick="toggleSpoiler(this)">نمایش جواب</button>
+
+                <div class="spoiler-content">
+                    <div class="svg-wrap">
+                        <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="400" height="200" fill="#0a0a0a" rx="8" />
+                            <line x1="28" y1="168" x2="380" y2="168" stroke="#151515" stroke-width="0.4" />
+                            <line x1="28" y1="134" x2="380" y2="134" stroke="#151515" stroke-width="0.4" />
+                            <line x1="28" y1="100" x2="380" y2="100" stroke="#151515" stroke-width="0.4" />
+                            <line x1="28" y1="66" x2="380" y2="66" stroke="#151515" stroke-width="0.4" />
+                            <line x1="28" y1="32" x2="380" y2="32" stroke="#151515" stroke-width="0.4" />
+                            <text x="370" y="172" fill="#222" font-size="8" text-anchor="end">0</text>
+                            <text x="370" y="138" fill="#222" font-size="8" text-anchor="end">20</text>
+                            <text x="370" y="104" fill="#222" font-size="8" text-anchor="end">40</text>
+                            <text x="370" y="70" fill="#222" font-size="8" text-anchor="end">60</text>
+                            <text x="370" y="36" fill="#222" font-size="8" text-anchor="end">80</text>
+
+                            <rect x="30" y="32" width="6" height="14" fill="#890913" rx="1" />
+                            <line x1="33" y1="22" x2="33" y2="32" stroke="#890913" stroke-width="1" />
+                            <line x1="33" y1="46" x2="33" y2="50" stroke="#890913" stroke-width="1" />
+                            <rect x="44" y="40" width="6" height="16" fill="#fff" rx="1" />
+                            <line x1="47" y1="28" x2="47" y2="40" stroke="#fff" stroke-width="1" />
+                            <line x1="47" y1="56" x2="47" y2="60" stroke="#fff" stroke-width="1" />
+                            <rect x="58" y="48" width="6" height="18" fill="#890913" rx="1" />
+                            <line x1="61" y1="35" x2="61" y2="48" stroke="#890913" stroke-width="1" />
+                            <line x1="61" y1="66" x2="61" y2="70" stroke="#890913" stroke-width="1" />
+                            <rect x="72" y="56" width="6" height="14" fill="#fff" rx="1" />
+                            <line x1="75" y1="45" x2="75" y2="56" stroke="#fff" stroke-width="1" />
+                            <line x1="75" y1="70" x2="75" y2="74" stroke="#fff" stroke-width="1" />
+                            <rect x="86" y="64" width="6" height="16" fill="#890913" rx="1" />
+                            <line x1="89" y1="52" x2="89" y2="64" stroke="#890913" stroke-width="1" />
+                            <line x1="89" y1="80" x2="89" y2="84" stroke="#890913" stroke-width="1" />
+                            <rect x="100" y="72" width="6" height="20" fill="#fff" rx="1" />
+                            <line x1="103" y1="60" x2="103" y2="72" stroke="#fff" stroke-width="1" />
+                            <line x1="103" y1="92" x2="103" y2="96" stroke="#fff" stroke-width="1" />
+                            <rect x="114" y="80" width="6" height="14" fill="#890913" rx="1" />
+                            <line x1="117" y1="70" x2="117" y2="80" stroke="#890913" stroke-width="1" />
+                            <line x1="117" y1="94" x2="117" y2="98" stroke="#890913" stroke-width="1" />
+                            <rect x="128" y="88" width="6" height="16" fill="#fff" rx="1" />
+                            <line x1="131" y1="76" x2="131" y2="88" stroke="#fff" stroke-width="1" />
+                            <line x1="131" y1="104" x2="131" y2="108" stroke="#fff" stroke-width="1" />
+                            <rect x="142" y="96" width="6" height="18" fill="#890913" rx="1" />
+                            <line x1="145" y1="83" x2="145" y2="96" stroke="#890913" stroke-width="1" />
+                            <line x1="145" y1="114" x2="145" y2="118" stroke="#890913" stroke-width="1" />
+                            <rect x="156" y="104" width="6" height="14" fill="#fff" rx="1" />
+                            <line x1="159" y1="93" x2="159" y2="104" stroke="#fff" stroke-width="1" />
+                            <line x1="159" y1="118" x2="159" y2="122" stroke="#fff" stroke-width="1" />
+                            <rect x="170" y="112" width="6" height="16" fill="#890913" rx="1" />
+                            <line x1="173" y1="100" x2="173" y2="112" stroke="#890913" stroke-width="1" />
+                            <line x1="173" y1="128" x2="173" y2="132" stroke="#890913" stroke-width="1" />
+                            <rect x="184" y="120" width="6" height="20" fill="#fff" rx="1" />
+                            <line x1="187" y1="108" x2="187" y2="120" stroke="#fff" stroke-width="1" />
+                            <line x1="187" y1="140" x2="187" y2="144" stroke="#fff" stroke-width="1" />
+                            <rect x="198" y="128" width="6" height="14" fill="#890913" rx="1" />
+                            <line x1="201" y1="118" x2="201" y2="128" stroke="#890913" stroke-width="1" />
+                            <line x1="201" y1="142" x2="201" y2="146" stroke="#890913" stroke-width="1" />
+                            <rect x="212" y="136" width="6" height="16" fill="#fff" rx="1" />
+                            <line x1="215" y1="124" x2="215" y2="136" stroke="#fff" stroke-width="1" />
+                            <line x1="215" y1="152" x2="215" y2="156" stroke="#fff" stroke-width="1" />
+                            <rect x="226" y="144" width="6" height="18" fill="#890913" rx="1" />
+                            <line x1="229" y1="131" x2="229" y2="144" stroke="#890913" stroke-width="1" />
+                            <line x1="229" y1="162" x2="229" y2="166" stroke="#890913" stroke-width="1" />
+                            <rect x="240" y="152" width="6" height="14" fill="#fff" rx="1" />
+                            <line x1="243" y1="141" x2="243" y2="152" stroke="#fff" stroke-width="1" />
+                            <line x1="243" y1="166" x2="243" y2="170" stroke="#fff" stroke-width="1" />
+
+                            <!-- خط ترندلاین نارنجی #ff9b00 -->
+                            <line x1="33" y1="22" x2="243" y2="141" stroke="#ff9b00" stroke-width="2" opacity="0.7" />
+                        </svg>
+                    </div>
+                    <div class="footer-text"><strong>پاسخ:</strong> سقف‌های پایین‌تر → روند نزولی</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ===== جداکننده تمرین‌ها ===== -->
+        <div class="exercise-separator">
+            <div class="line"></div>
+            <span class="star">✦</span>
+            <div class="line"></div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- تمرین ۳: سوال ۳ + جواب ۳ -->
+        <!-- ============================================================ -->
+        <div class="item">
+
+            <div class="chart-box">
+                <div class="label">
+                    <span class="title"><span class="num">●</span> سوال ۳</span>
+                    <span class="badge">بدون خط</span>
+                </div>
+                <div class="toolbar">
+                    <button class="trend-btn" data-target="s3">✏️ ترند لاین</button>
+                    <button class="clear-btn" data-target="s3">🗑 پاک کردن</button>
+                    <button class="redo-btn" data-target="s3">→</button>
+                    <button class="undo-btn" data-target="s3">←</button>
+                </div>
+                <div class="svg-wrap">
+                    <svg id="s3" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" style="pointer-events:all;">
+                        <rect width="400" height="200" fill="#0a0a0a" rx="8" />
+                        <line x1="28" y1="168" x2="380" y2="168" stroke="#151515" stroke-width="0.4" />
+                        <line x1="28" y1="134" x2="380" y2="134" stroke="#151515" stroke-width="0.4" />
+                        <line x1="28" y1="100" x2="380" y2="100" stroke="#151515" stroke-width="0.4" />
+                        <line x1="28" y1="66" x2="380" y2="66" stroke="#151515" stroke-width="0.4" />
+                        <line x1="28" y1="32" x2="380" y2="32" stroke="#151515" stroke-width="0.4" />
+                        <text x="370" y="172" fill="#222" font-size="8" text-anchor="end">0</text>
+                        <text x="370" y="138" fill="#222" font-size="8" text-anchor="end">15</text>
+                        <text x="370" y="104" fill="#222" font-size="8" text-anchor="end">30</text>
+                        <text x="370" y="70" fill="#222" font-size="8" text-anchor="end">45</text>
+                        <text x="370" y="36" fill="#222" font-size="8" text-anchor="end">60</text>
+
+                        <rect x="30" y="88" width="6" height="10" fill="#890913" rx="1" />
+                        <line x1="33" y1="80" x2="33" y2="88" stroke="#890913" stroke-width="1" />
+                        <line x1="33" y1="98" x2="33" y2="102" stroke="#890913" stroke-width="1" />
+                        <rect x="44" y="80" width="6" height="14" fill="#fff" rx="1" />
+                        <line x1="47" y1="70" x2="47" y2="80" stroke="#fff" stroke-width="1" />
+                        <line x1="47" y1="94" x2="47" y2="98" stroke="#fff" stroke-width="1" />
+                        <rect x="58" y="92" width="6" height="10" fill="#890913" rx="1" />
+                        <line x1="61" y1="84" x2="61" y2="92" stroke="#890913" stroke-width="1" />
+                        <line x1="61" y1="102" x2="61" y2="106" stroke="#890913" stroke-width="1" />
+                        <rect x="72" y="72" width="6" height="16" fill="#fff" rx="1" />
+                        <line x1="75" y1="62" x2="75" y2="72" stroke="#fff" stroke-width="1" />
+                        <line x1="75" y1="88" x2="75" y2="92" stroke="#fff" stroke-width="1" />
+                        <rect x="86" y="96" width="6" height="10" fill="#890913" rx="1" />
+                        <line x1="89" y1="88" x2="89" y2="96" stroke="#890913" stroke-width="1" />
+                        <line x1="89" y1="106" x2="89" y2="110" stroke="#890913" stroke-width="1" />
+                        <rect x="100" y="84" width="6" height="14" fill="#fff" rx="1" />
+                        <line x1="103" y1="74" x2="103" y2="84" stroke="#fff" stroke-width="1" />
+                        <line x1="103" y1="98" x2="103" y2="102" stroke="#fff" stroke-width="1" />
+                        <rect x="114" y="76" width="6" height="16" fill="#890913" rx="1" />
+                        <line x1="117" y1="66" x2="117" y2="76" stroke="#890913" stroke-width="1" />
+                        <line x1="117" y1="92" x2="117" y2="96" stroke="#890913" stroke-width="1" />
+                        <rect x="128" y="94" width="6" height="10" fill="#fff" rx="1" />
+                        <line x1="131" y1="86" x2="131" y2="94" stroke="#fff" stroke-width="1" />
+                        <line x1="131" y1="104" x2="131" y2="108" stroke="#fff" stroke-width="1" />
+                        <rect x="142" y="82" width="6" height="14" fill="#890913" rx="1" />
+                        <line x1="145" y1="72" x2="145" y2="82" stroke="#890913" stroke-width="1" />
+                        <line x1="145" y1="96" x2="145" y2="100" stroke="#890913" stroke-width="1" />
+                        <rect x="156" y="90" width="6" height="12" fill="#fff" rx="1" />
+                        <line x1="159" y1="80" x2="159" y2="90" stroke="#fff" stroke-width="1" />
+                        <line x1="159" y1="102" x2="159" y2="106" stroke="#fff" stroke-width="1" />
+                        <rect x="170" y="74" width="6" height="16" fill="#890913" rx="1" />
+                        <line x1="173" y1="64" x2="173" y2="74" stroke="#890913" stroke-width="1" />
+                        <line x1="173" y1="90" x2="173" y2="94" stroke="#890913" stroke-width="1" />
+                        <rect x="184" y="98" width="6" height="12" fill="#fff" rx="1" />
+                        <line x1="187" y1="88" x2="187" y2="98" stroke="#fff" stroke-width="1" />
+                        <line x1="187" y1="110" x2="187" y2="114" stroke="#fff" stroke-width="1" />
+                        <rect x="198" y="80" width="6" height="14" fill="#890913" rx="1" />
+                        <line x1="201" y1="70" x2="201" y2="80" stroke="#890913" stroke-width="1" />
+                        <line x1="201" y1="94" x2="201" y2="98" stroke="#890913" stroke-width="1" />
+                        <rect x="212" y="92" width="6" height="10" fill="#fff" rx="1" />
+                        <line x1="215" y1="84" x2="215" y2="92" stroke="#fff" stroke-width="1" />
+                        <line x1="215" y1="102" x2="215" y2="106" stroke="#fff" stroke-width="1" />
+                        <rect x="226" y="78" width="6" height="16" fill="#890913" rx="1" />
+                        <line x1="229" y1="68" x2="229" y2="78" stroke="#890913" stroke-width="1" />
+                        <line x1="229" y1="94" x2="229" y2="98" stroke="#890913" stroke-width="1" />
+                        <rect x="240" y="88" width="6" height="12" fill="#fff" rx="1" />
+                        <line x1="243" y1="78" x2="243" y2="88" stroke="#fff" stroke-width="1" />
+                        <line x1="243" y1="100" x2="243" y2="104" stroke="#fff" stroke-width="1" />
+                    </svg>
+                </div>
+                <div class="footer-text">روند را تشخیص دهید</div>
+            </div>
+
+            <!-- ===== جواب با اسپویلر ===== -->
+            <div class="chart-box answer-box">
+                <div class="label">
+                    <span class="title"><span class="num">●</span> جواب ۳</span>
+                    <span class="badge green" style="display:none;">روند رنج</span>
+                </div>
+
+                <button class="spoiler-btn" onclick="toggleSpoiler(this)">نمایش جواب</button>
+
+                <div class="spoiler-content">
+                    <div class="svg-wrap">
+                        <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="400" height="200" fill="#0a0a0a" rx="8" />
+                            <line x1="28" y1="168" x2="380" y2="168" stroke="#151515" stroke-width="0.4" />
+                            <line x1="28" y1="134" x2="380" y2="134" stroke="#151515" stroke-width="0.4" />
+                            <line x1="28" y1="100" x2="380" y2="100" stroke="#151515" stroke-width="0.4" />
+                            <line x1="28" y1="66" x2="380" y2="66" stroke="#151515" stroke-width="0.4" />
+                            <line x1="28" y1="32" x2="380" y2="32" stroke="#151515" stroke-width="0.4" />
+                            <text x="370" y="172" fill="#222" font-size="8" text-anchor="end">0</text>
+                            <text x="370" y="138" fill="#222" font-size="8" text-anchor="end">15</text>
+                            <text x="370" y="104" fill="#222" font-size="8" text-anchor="end">30</text>
+                            <text x="370" y="70" fill="#222" font-size="8" text-anchor="end">45</text>
+                            <text x="370" y="36" fill="#222" font-size="8" text-anchor="end">60</text>
+
+                            <rect x="30" y="88" width="6" height="10" fill="#890913" rx="1" />
+                            <line x1="33" y1="80" x2="33" y2="88" stroke="#890913" stroke-width="1" />
+                            <line x1="33" y1="98" x2="33" y2="102" stroke="#890913" stroke-width="1" />
+                            <rect x="44" y="80" width="6" height="14" fill="#fff" rx="1" />
+                            <line x1="47" y1="70" x2="47" y2="80" stroke="#fff" stroke-width="1" />
+                            <line x1="47" y1="94" x2="47" y2="98" stroke="#fff" stroke-width="1" />
+                            <rect x="58" y="92" width="6" height="10" fill="#890913" rx="1" />
+                            <line x1="61" y1="84" x2="61" y2="92" stroke="#890913" stroke-width="1" />
+                            <line x1="61" y1="102" x2="61" y2="106" stroke="#890913" stroke-width="1" />
+                            <rect x="72" y="72" width="6" height="16" fill="#fff" rx="1" />
+                            <line x1="75" y1="62" x2="75" y2="72" stroke="#fff" stroke-width="1" />
+                            <line x1="75" y1="88" x2="75" y2="92" stroke="#fff" stroke-width="1" />
+                            <rect x="86" y="96" width="6" height="10" fill="#890913" rx="1" />
+                            <line x1="89" y1="88" x2="89" y2="96" stroke="#890913" stroke-width="1" />
+                            <line x1="89" y1="106" x2="89" y2="110" stroke="#890913" stroke-width="1" />
+                            <rect x="100" y="84" width="6" height="14" fill="#fff" rx="1" />
+                            <line x1="103" y1="74" x2="103" y2="84" stroke="#fff" stroke-width="1" />
+                            <line x1="103" y1="98" x2="103" y2="102" stroke="#fff" stroke-width="1" />
+                            <rect x="114" y="76" width="6" height="16" fill="#890913" rx="1" />
+                            <line x1="117" y1="66" x2="117" y2="76" stroke="#890913" stroke-width="1" />
+                            <line x1="117" y1="92" x2="117" y2="96" stroke="#890913" stroke-width="1" />
+                            <rect x="128" y="94" width="6" height="10" fill="#fff" rx="1" />
+                            <line x1="131" y1="86" x2="131" y2="94" stroke="#fff" stroke-width="1" />
+                            <line x1="131" y1="104" x2="131" y2="108" stroke="#fff" stroke-width="1" />
+                            <rect x="142" y="82" width="6" height="14" fill="#890913" rx="1" />
+                            <line x1="145" y1="72" x2="145" y2="82" stroke="#890913" stroke-width="1" />
+                            <line x1="145" y1="96" x2="145" y2="100" stroke="#890913" stroke-width="1" />
+                            <rect x="156" y="90" width="6" height="12" fill="#fff" rx="1" />
+                            <line x1="159" y1="80" x2="159" y2="90" stroke="#fff" stroke-width="1" />
+                            <line x1="159" y1="102" x2="159" y2="106" stroke="#fff" stroke-width="1" />
+                            <rect x="170" y="74" width="6" height="16" fill="#890913" rx="1" />
+                            <line x1="173" y1="64" x2="173" y2="74" stroke="#890913" stroke-width="1" />
+                            <line x1="173" y1="90" x2="173" y2="94" stroke="#890913" stroke-width="1" />
+                            <rect x="184" y="98" width="6" height="12" fill="#fff" rx="1" />
+                            <line x1="187" y1="88" x2="187" y2="98" stroke="#fff" stroke-width="1" />
+                            <line x1="187" y1="110" x2="187" y2="114" stroke="#fff" stroke-width="1" />
+                            <rect x="198" y="80" width="6" height="14" fill="#890913" rx="1" />
+                            <line x1="201" y1="70" x2="201" y2="80" stroke="#890913" stroke-width="1" />
+                            <line x1="201" y1="94" x2="201" y2="98" stroke="#890913" stroke-width="1" />
+                            <rect x="212" y="92" width="6" height="10" fill="#fff" rx="1" />
+                            <line x1="215" y1="84" x2="215" y2="92" stroke="#fff" stroke-width="1" />
+                            <line x1="215" y1="102" x2="215" y2="106" stroke="#fff" stroke-width="1" />
+                            <rect x="226" y="78" width="6" height="16" fill="#890913" rx="1" />
+                            <line x1="229" y1="68" x2="229" y2="78" stroke="#890913" stroke-width="1" />
+                            <line x1="229" y1="94" x2="229" y2="98" stroke="#890913" stroke-width="1" />
+                            <rect x="240" y="88" width="6" height="12" fill="#fff" rx="1" />
+                            <line x1="243" y1="78" x2="243" y2="88" stroke="#fff" stroke-width="1" />
+                            <line x1="243" y1="100" x2="243" y2="104" stroke="#fff" stroke-width="1" />
+
+                            <!-- خطوط حمایت و مقاومت با رنگ نارنجی -->
+                            <line x1="28" y1="62" x2="260" y2="62" stroke="#ff9b00" stroke-width="1.5" opacity="0.25" stroke-dasharray="4,5" />
+                            <line x1="28" y1="106" x2="260" y2="106" stroke="#ff9b00" stroke-width="1.5" opacity="0.15" stroke-dasharray="4,5" />
+                        </svg>
+                    </div>
+                    <div class="footer-text"><strong>پاسخ:</strong> نوسان بین حمایت و مقاومت → روند رنج</div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="global-footer">
+            <span><span class="dot white"></span> کندل صعودی</span>
+            <span><span class="dot red"></span> کندل نزولی (#890913)</span>
+            <span>Amitis</span>
+        </div>
+
+    </div>
+
+    <script>
+        // ===== تابع اسپویلر =====
+        function toggleSpoiler(btn) {
+            const content = btn.nextElementSibling;
+            if (content.classList.contains('show')) {
+                content.classList.remove('show');
+                btn.textContent = 'نمایش جواب';
+                btn.classList.remove('active');
+            } else {
+                content.classList.add('show');
+                btn.textContent = 'بستن جواب';
+                btn.classList.add('active');
+            }
+        }
+
+        // ===== تاریخچه خطوط برای Undo/Redo =====
+        const history = {};
+
+        function getHistory(svgId) {
+            if (!history[svgId]) {
+                history[svgId] = { undo: [], redo: [] };
+            }
+            return history[svgId];
+        }
+
+        function saveLine(svgId, line) {
+            const h = getHistory(svgId);
+            h.undo.push(line);
+            h.redo = [];
+        }
+
+        // ===== ابزار ترند لاین =====
+        document.querySelectorAll('.trend-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const targetId = this.dataset.target;
+                const svg = document.getElementById(targetId);
+                if (!svg) return;
+
+                if (this.classList.contains('active')) {
+                    this.classList.remove('active');
+                    svg.style.cursor = 'default';
+                    svg.dataset.drawing = 'false';
+                    svg.dataset.firstPoint = '';
+                    const tempLine = svg.querySelector('.temp-line');
+                    if (tempLine) tempLine.remove();
+                    return;
+                }
+
+                document.querySelectorAll('.trend-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('svg').forEach(s => {
+                    s.style.cursor = 'default';
+                    s.dataset.drawing = 'false';
+                    s.dataset.firstPoint = '';
+                    const tl = s.querySelector('.temp-line');
+                    if (tl) tl.remove();
+                });
+
+                this.classList.add('active');
+                svg.style.cursor = 'crosshair';
+                svg.dataset.drawing = 'true';
+                svg.dataset.firstPoint = '';
+                svg.dataset.startX = '';
+                svg.dataset.startY = '';
+            });
+        });
+
+        // ===== دکمه بازگشت یک مرحله (Undo) =====
+        document.querySelectorAll('.undo-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const targetId = this.dataset.target;
+                const svg = document.getElementById(targetId);
+                if (!svg) return;
+                const h = getHistory(targetId);
+
+                if (h.undo.length === 0) return;
+
+                const lastLine = h.undo.pop();
+                const lines = svg.querySelectorAll('line');
+                let found = null;
+                for (const line of lines) {
+                    if (line === lastLine) {
+                        found = line;
+                        break;
+                    }
+                    if (line.getAttribute('x1') === lastLine.getAttribute('x1') &&
+                        line.getAttribute('y1') === lastLine.getAttribute('y1') &&
+                        line.getAttribute('x2') === lastLine.getAttribute('x2') &&
+                        line.getAttribute('y2') === lastLine.getAttribute('y2') &&
+                        line.getAttribute('stroke') === lastLine.getAttribute('stroke')) {
+                        found = line;
+                        break;
+                    }
+                }
+
+                if (found) {
+                    const clone = found.cloneNode(true);
+                    h.redo.push(clone);
+                    found.remove();
+                }
+            });
+        });
+
+        // ===== دکمه بازگردانی (Redo) =====
+        document.querySelectorAll('.redo-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const targetId = this.dataset.target;
+                const svg = document.getElementById(targetId);
+                if (!svg) return;
+                const h = getHistory(targetId);
+
+                if (h.redo.length === 0) return;
+
+                const line = h.redo.pop();
+                svg.appendChild(line);
+                h.undo.push(line);
+            });
+        });
+
+        // ===== دکمه پاک کردن همه خطوط =====
+        document.querySelectorAll('.clear-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const targetId = this.dataset.target;
+                const svg = document.getElementById(targetId);
+                if (!svg) return;
+                const h = getHistory(targetId);
+
+                const lines = svg.querySelectorAll('line:not(.temp-line)');
+                const userLines = [];
+                lines.forEach(line => {
+                    if (!line.id && !line.classList.contains('grid-line') && line.getAttribute('stroke') ===
+                        '#ff9b00') {
+                        userLines.push(line);
+                    }
+                });
+
+                userLines.forEach(line => {
+                    h.undo.push(line);
+                });
+
+                userLines.forEach(line => line.remove());
+                h.redo = [];
+
+                const trendBtn = document.querySelector(`.trend-btn[data-target="${targetId}"]`);
+                if (trendBtn) {
+                    trendBtn.classList.remove('active');
+                    svg.style.cursor = 'default';
+                    svg.dataset.drawing = 'false';
+                    svg.dataset.firstPoint = '';
+                }
+                const tempLine = svg.querySelector('.temp-line');
+                if (tempLine) tempLine.remove();
+            });
+        });
+
+        // ===== رویدادهای ماوس و تاچ =====
+        document.querySelectorAll('.svg-wrap svg').forEach(svg => {
+
+            svg.addEventListener('mousedown', function(e) {
+                if (this.dataset.drawing !== 'true') return;
+                const rect = this.getBoundingClientRect();
+                const scaleX = this.viewBox.baseVal.width / rect.width;
+                const scaleY = this.viewBox.baseVal.height / rect.height;
+                const x = (e.clientX - rect.left) * scaleX;
+                const y = (e.clientY - rect.top) * scaleY;
+
+                if (!this.dataset.firstPoint) {
+                    this.dataset.firstPoint = 'true';
+                    this.dataset.startX = x;
+                    this.dataset.startY = y;
+
+                    const ns = 'http://www.w3.org/2000/svg';
+                    const tempLine = document.createElementNS(ns, 'line');
+                    tempLine.setAttribute('x1', x);
+                    tempLine.setAttribute('y1', y);
+                    tempLine.setAttribute('x2', x);
+                    tempLine.setAttribute('y2', y);
+                    tempLine.setAttribute('stroke', '#ff9b00');
+                    tempLine.setAttribute('stroke-width', '1.5');
+                    tempLine.setAttribute('stroke-dasharray', '6,4');
+                    tempLine.setAttribute('opacity', '0.9');
+                    tempLine.classList.add('temp-line');
+                    this.appendChild(tempLine);
+                    return;
+                }
+
+                const startXVal = parseFloat(this.dataset.startX);
+                const startYVal = parseFloat(this.dataset.startY);
+                const tl = this.querySelector('.temp-line');
+                if (tl) tl.remove();
+
+                const ns = 'http://www.w3.org/2000/svg';
+                const finalLine = document.createElementNS(ns, 'line');
+                finalLine.setAttribute('x1', startXVal);
+                finalLine.setAttribute('y1', startYVal);
+                finalLine.setAttribute('x2', x);
+                finalLine.setAttribute('y2', y);
+                finalLine.setAttribute('stroke', '#ff9b00');
+                finalLine.setAttribute('stroke-width', '1.5');
+                finalLine.setAttribute('opacity', '0.9');
+                this.appendChild(finalLine);
+
+                const targetId = this.id;
+                saveLine(targetId, finalLine);
+
+                this.dataset.firstPoint = '';
+                this.dataset.startX = '';
+                this.dataset.startY = '';
+            });
+
+            svg.addEventListener('mousemove', function(e) {
+                if (this.dataset.drawing !== 'true') return;
+                if (!this.dataset.firstPoint) return;
+                const rect = this.getBoundingClientRect();
+                const scaleX = this.viewBox.baseVal.width / rect.width;
+                const scaleY = this.viewBox.baseVal.height / rect.height;
+                const x = (e.clientX - rect.left) * scaleX;
+                const y = (e.clientY - rect.top) * scaleY;
+
+                const tl = this.querySelector('.temp-line');
+                if (tl) {
+                    tl.setAttribute('x2', x);
+                    tl.setAttribute('y2', y);
+                }
+            });
+
+            svg.addEventListener('touchstart', function(e) {
+                if (this.dataset.drawing !== 'true') return;
+                e.preventDefault();
+                const touch = e.touches[0];
+                const rect = this.getBoundingClientRect();
+                const scaleX = this.viewBox.baseVal.width / rect.width;
+                const scaleY = this.viewBox.baseVal.height / rect.height;
+                const x = (touch.clientX - rect.left) * scaleX;
+                const y = (touch.clientY - rect.top) * scaleY;
+
+                if (!this.dataset.firstPoint) {
+                    this.dataset.firstPoint = 'true';
+                    this.dataset.startX = x;
+                    this.dataset.startY = y;
+
+                    const ns = 'http://www.w3.org/2000/svg';
+                    const tempLine = document.createElementNS(ns, 'line');
+                    tempLine.setAttribute('x1', x);
+                    tempLine.setAttribute('y1', y);
+                    tempLine.setAttribute('x2', x);
+                    tempLine.setAttribute('y2', y);
+                    tempLine.setAttribute('stroke', '#ff9b00');
+                    tempLine.setAttribute('stroke-width', '1.5');
+                    tempLine.setAttribute('stroke-dasharray', '6,4');
+                    tempLine.setAttribute('opacity', '0.9');
+                    tempLine.classList.add('temp-line');
+                    this.appendChild(tempLine);
+                    return;
+                }
+
+                const startXVal = parseFloat(this.dataset.startX);
+                const startYVal = parseFloat(this.dataset.startY);
+                const tl = this.querySelector('.temp-line');
+                if (tl) tl.remove();
+
+                const ns = 'http://www.w3.org/2000/svg';
+                const finalLine = document.createElementNS(ns, 'line');
+                finalLine.setAttribute('x1', startXVal);
+                finalLine.setAttribute('y1', startYVal);
+                finalLine.setAttribute('x2', x);
+                finalLine.setAttribute('y2', y);
+                finalLine.setAttribute('stroke', '#ff9b00');
+                finalLine.setAttribute('stroke-width', '1.5');
+                finalLine.setAttribute('opacity', '0.9');
+                this.appendChild(finalLine);
+
+                const targetId = this.id;
+                saveLine(targetId, finalLine);
+
+                this.dataset.firstPoint = '';
+                this.dataset.startX = '';
+                this.dataset.startY = '';
+            }, { passive: false });
+
+            svg.addEventListener('touchmove', function(e) {
+                if (this.dataset.drawing !== 'true') return;
+                if (!this.dataset.firstPoint) return;
+                e.preventDefault();
+                const touch = e.touches[0];
+                const rect = this.getBoundingClientRect();
+                const scaleX = this.viewBox.baseVal.width / rect.width;
+                const scaleY = this.viewBox.baseVal.height / rect.height;
+                const x = (touch.clientX - rect.left) * scaleX;
+                const y = (touch.clientY - rect.top) * scaleY;
+
+                const tl = this.querySelector('.temp-line');
+                if (tl) {
+                    tl.setAttribute('x2', x);
+                    tl.setAttribute('y2', y);
+                }
+            }, { passive: false });
+
+            svg.addEventListener('touchend', function(e) {});
+        });
+    </script>
+
+</body>
+</html>

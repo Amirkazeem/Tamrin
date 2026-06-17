@@ -6,8 +6,7 @@
     <title>Amitis - تمرین تشخیص روند</title>
     <style>
         /* ================================================================
-           Amirkazem Coding - v37
-           طراحی و توسعه: Amirkazem
+           Amirkazem Coding - v38
            ================================================================ */
 
         * {
@@ -397,7 +396,7 @@
         }
 
         /* ================================================================
-           FOOTER - Amirkazem Coding - v37
+           FOOTER
            ================================================================ */
         .global-footer {
             margin-top: 40px;
@@ -436,21 +435,6 @@
         .global-footer .dot-sep {
             color: #333;
             font-size: 8px;
-        }
-
-        .dot {
-            display: inline-block;
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-        }
-        .dot.white {
-            background: #fff;
-            border: 1px solid #333;
-        }
-        .dot.red {
-            background: #890913;
-            border: 1px solid #333;
         }
 
         @media (max-width: 480px) {
@@ -1056,22 +1040,22 @@
         </div>
 
         <!-- ================================================================
-             FOOTER - Amirkazem Coding - v37
+             FOOTER
              ================================================================ -->
         <div class="global-footer">
             <span class="brand-name">
                 Powered by <span class="highlight">Amirkazem</span> Coding
             </span>
             <span class="dot-sep">•</span>
-            <span class="version">v37</span>
+            <span class="version">v38</span>
         </div>
 
     </div>
 
     <script>
         // ================================================================
-        // Amirkazem Coding - v37
-        // ترندلاین به سبک TradingView - پشتیبانی کامل از تاچ
+        // Amirkazem Coding - v38
+        // ترندلاین با تشخیص دقیق تپ و کشیدن
         // ================================================================
 
         // ===== تابع اسپویلر =====
@@ -1195,16 +1179,23 @@
             });
         });
 
-        // ===== رویدادهای لمسی و ماوس =====
+        // ================================================================
+        // هسته اصلی ترندلاین - تشخیص تپ و کشیدن
+        // ================================================================
         document.querySelectorAll('.svg-wrap svg').forEach(svg => {
 
             let tempLine = null;
             let startPointCircle = null;
             let crosshairVisible = false;
+
+            // ===== متغیرهای تشخیص تپ =====
+            let pointerStartX = 0,
+                pointerStartY = 0;
+            let pointerStartTime = 0;
             let isDragging = false;
-            let dragStartX = 0,
-                dragStartY = 0;
             let hasMoved = false;
+            const DRAG_THRESHOLD = 8; // اگر حرکت بیشتر از 8px باشه، کشیدن محسوب میشه
+            const TAP_TIMEOUT = 300; // اگر کمتر از 300ms باشه، تپ محسوب میشه
 
             function getCoords(e) {
                 const rect = svg.getBoundingClientRect();
@@ -1305,18 +1296,25 @@
                 }
             }
 
-            // ===== شروع لمس/کلیک =====
+            // ============================================================
+            // شروع لمس/کلیک
+            // ============================================================
             function handlePointerDown(e) {
                 if (svg.dataset.drawing !== 'true') return;
                 if (e.cancelable) e.preventDefault();
 
                 const { x, y } = getCoords(e);
                 const step = parseInt(svg.dataset.step) || 0;
-                const tapCount = parseInt(svg.dataset.tapCount) || 0;
 
-                // اگر در مرحله 0 هستیم = تپ اول
+                // ذخیره موقعیت شروع برای تشخیص تپ/کشیدن
+                pointerStartX = x;
+                pointerStartY = y;
+                pointerStartTime = Date.now();
+                isDragging = false;
+                hasMoved = false;
+
+                // ===== مرحله 0: تپ اول - فقط کراس‌هیر =====
                 if (step === 0) {
-                    // فقط کراس‌هیر رو نشون بده
                     updateCrosshair(x, y);
                     svg.dataset.step = '1';
                     svg.dataset.tempX = x;
@@ -1324,26 +1322,120 @@
                     return;
                 }
 
-                // اگر در مرحله 1 هستیم = تپ دوم (نقطه اول)
+                // ===== مرحله 1: تپ دوم - نقطه اول =====
                 if (step === 1) {
-                    const startX = parseFloat(svg.dataset.tempX) || x;
-                    const startY = parseFloat(svg.dataset.tempY) || y;
-                    svg.dataset.startX = startX;
-                    svg.dataset.startY = startY;
-                    svg.dataset.step = '2';
+                    // اگر کاربر بدون حرکت تپ کرد، نقطه اول ثبت میشه
+                    // ولی اگر کشیدن شروع بشه، اینجا ثبت نمیشه و handleMove انجام میده
+                    // ما اینجا فقط برای تپ سریع هستیم
+                }
 
-                    createStartPoint(startX, startY);
-                    createTempLine(startX, startY, startX, startY);
-                    updateCrosshair(startX, startY);
+                // ===== مرحله 2: تپ سوم - نقطه دوم =====
+                if (step === 2) {
+                    // مشابه بالا
+                }
+            }
+
+            // ============================================================
+            // حرکت لمس/ماوس
+            // ============================================================
+            function handlePointerMove(e) {
+                if (svg.dataset.drawing !== 'true') return;
+                if (e.cancelable) e.preventDefault();
+
+                const { x, y } = getCoords(e);
+                const step = parseInt(svg.dataset.step) || 0;
+
+                // محاسبه میزان حرکت
+                const dx = x - pointerStartX;
+                const dy = y - pointerStartY;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+
+                if (dist > DRAG_THRESHOLD) {
+                    isDragging = true;
+                    hasMoved = true;
+                }
+
+                // ===== همیشه کراس‌هیر رو به‌روز کن =====
+                if (step === 0) {
+                    if (crosshairVisible) {
+                        updateCrosshair(x, y);
+                    }
                     return;
                 }
 
-                // اگر در مرحله 2 هستیم = تپ سوم (نقطه دوم)
+                if (step === 1) {
+                    // کراس‌هیر رو حرکت بده
+                    updateCrosshair(x, y);
+                    svg.dataset.tempX = x;
+                    svg.dataset.tempY = y;
+
+                    // اگر کاربر در حال کشیدن هست، خط موقت نشون بده
+                    if (isDragging) {
+                        // فعلاً خط موقت نشون نده، فقط کراس‌هیر
+                    }
+                    return;
+                }
+
                 if (step === 2) {
                     const startX = parseFloat(svg.dataset.startX);
                     const startY = parseFloat(svg.dataset.startY);
-                    const endX = parseFloat(svg.dataset.tempX) || x;
-                    const endY = parseFloat(svg.dataset.tempY) || y;
+                    if (startX && startY) {
+                        // خط موقت از نقطه اول به کراس‌هیر
+                        createTempLine(startX, startY, x, y);
+                        updateCrosshair(x, y);
+                        svg.dataset.tempX = x;
+                        svg.dataset.tempY = y;
+                    }
+                }
+            }
+
+            // ============================================================
+            // پایان لمس/کلیک (تشخیص تپ)
+            // ============================================================
+            function handlePointerUp(e) {
+                if (svg.dataset.drawing !== 'true') return;
+
+                const step = parseInt(svg.dataset.step) || 0;
+                const elapsed = Date.now() - pointerStartTime;
+
+                // ===== اگر کشیدن بوده، کاری نکن =====
+                if (isDragging) {
+                    isDragging = false;
+                    return;
+                }
+
+                // ===== اگر تپ بوده (حرکت کم و زمان کم) =====
+                // ===== مرحله 0: تپ اول - کراس‌هیر =====
+                if (step === 0) {
+                    // قبلاً در handlePointerDown انجام شده
+                    return;
+                }
+
+                // ===== مرحله 1: تپ دوم - نقطه اول =====
+                if (step === 1) {
+                    const x = parseFloat(svg.dataset.tempX) || 0;
+                    const y = parseFloat(svg.dataset.tempY) || 0;
+
+                    if (x === 0 && y === 0) return;
+
+                    svg.dataset.startX = x;
+                    svg.dataset.startY = y;
+                    svg.dataset.step = '2';
+
+                    createStartPoint(x, y);
+                    createTempLine(x, y, x, y);
+                    updateCrosshair(x, y);
+                    return;
+                }
+
+                // ===== مرحله 2: تپ سوم - نقطه دوم =====
+                if (step === 2) {
+                    const startX = parseFloat(svg.dataset.startX);
+                    const startY = parseFloat(svg.dataset.startY);
+                    const endX = parseFloat(svg.dataset.tempX) || 0;
+                    const endY = parseFloat(svg.dataset.tempY) || 0;
+
+                    if (startX === 0 || startY === 0 || endX === 0 || endY === 0) return;
 
                     removeTempLine();
                     hideCrosshair();
@@ -1371,64 +1463,43 @@
                 }
             }
 
-            // ===== حرکت انگشت/ماوس =====
-            function handlePointerMove(e) {
+            // ============================================================
+            // لغو (اگر انگشت از SVG خارج شد)
+            // ============================================================
+            function handlePointerCancel(e) {
                 if (svg.dataset.drawing !== 'true') return;
-                if (e.cancelable) e.preventDefault();
-
-                const { x, y } = getCoords(e);
-                const step = parseInt(svg.dataset.step) || 0;
-
-                // همیشه کراس‌هیر رو حرکت بده
-                if (step === 0) {
-                    if (crosshairVisible) {
-                        updateCrosshair(x, y);
-                    }
-                    return;
-                }
-
-                if (step === 1) {
-                    updateCrosshair(x, y);
-                    svg.dataset.tempX = x;
-                    svg.dataset.tempY = y;
-                    return;
-                }
-
-                if (step === 2) {
-                    const startX = parseFloat(svg.dataset.startX);
-                    const startY = parseFloat(svg.dataset.startY);
-                    if (startX && startY) {
-                        createTempLine(startX, startY, x, y);
-                        updateCrosshair(x, y);
-                        svg.dataset.tempX = x;
-                        svg.dataset.tempY = y;
-                    }
+                // فقط کراس‌هیر رو مخفی کن
+                if (parseInt(svg.dataset.step) === 0) {
+                    hideCrosshair();
                 }
             }
 
-            // ===== پایان لمس/کلیک =====
-            function handlePointerUp(e) {
-                // کاری نمیکنیم
-            }
+            // ============================================================
+            // ثبت رویدادها
+            // ============================================================
 
-            // ===== رویدادهای ماوس =====
+            // ماوس
             svg.addEventListener('mousedown', handlePointerDown);
             svg.addEventListener('mousemove', handlePointerMove);
             svg.addEventListener('mouseup', handlePointerUp);
             svg.addEventListener('mouseleave', function(e) {
                 if (!svg.dataset.drawing) return;
-                const step = parseInt(svg.dataset.step) || 0;
-                if (step === 0) {
+                if (parseInt(svg.dataset.step) === 0) {
                     hideCrosshair();
+                }
+                // اگر در حین کشیدن بود، لغو کن
+                if (isDragging) {
+                    isDragging = false;
                 }
             });
 
-            // ===== رویدادهای لمسی (گوشی) =====
+            // تاچ (گوشی)
             svg.addEventListener('touchstart', handlePointerDown, { passive: false });
             svg.addEventListener('touchmove', handlePointerMove, { passive: false });
             svg.addEventListener('touchend', handlePointerUp, { passive: false });
+            svg.addEventListener('touchcancel', handlePointerCancel, { passive: false });
 
-            // ===== ورود ماوس =====
+            // ورود ماوس (برای نمایش مجدد کراس‌هیر)
             svg.addEventListener('mouseenter', function(e) {
                 if (!svg.dataset.drawing) return;
                 const step = parseInt(svg.dataset.step) || 0;

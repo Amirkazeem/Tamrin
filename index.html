@@ -6,7 +6,7 @@
     <title>Amitis - تمرین تشخیص روند</title>
     <style>
         /* ================================================================
-           Amirkazem Coding - v34
+           Amirkazem Coding - v35
            طراحی و توسعه: Amirkazem
            ================================================================ */
 
@@ -1035,15 +1035,15 @@
             <span><span class="dot white"></span> کندل صعودی</span>
             <span><span class="dot red"></span> کندل نزولی (#890913)</span>
             <span class="brand-name">⚡ Amirkazem Coding</span>
-            <span class="version">v34</span>
+            <span class="version">v35</span>
         </div>
 
     </div>
 
     <script>
         // ================================================================
-        // Amirkazem Coding - v34
-        // ترندلاین به سبک TradingView (کراس‌هیر + ثبت در محل نشانگر)
+        // Amirkazem Coding - v35
+        // ترندلاین به سبک TradingView (کراس‌هیر با کشیدن انگشت)
         // ================================================================
 
         // ===== تابع اسپویلر =====
@@ -1076,14 +1076,13 @@
             h.redo = [];
         }
 
-        // ===== ابزار ترند لاین به سبک TradingView (کراس‌هیر + 3 تپ) =====
+        // ===== ابزار ترند لاین به سبک TradingView =====
         document.querySelectorAll('.trend-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 const targetId = this.dataset.target;
                 const svg = document.getElementById(targetId);
                 if (!svg) return;
 
-                // اگر قبلاً فعال بود، غیرفعال کن
                 if (this.classList.contains('active')) {
                     this.classList.remove('active');
                     svg.style.cursor = 'default';
@@ -1098,7 +1097,6 @@
                     return;
                 }
 
-                // غیرفعال کردن بقیه
                 document.querySelectorAll('.trend-btn').forEach(b => b.classList.remove('active'));
                 document.querySelectorAll('svg').forEach(s => {
                     s.style.cursor = 'default';
@@ -1112,7 +1110,6 @@
                     if (sp) sp.remove();
                 });
 
-                // فعال کردن این دکمه
                 this.classList.add('active');
                 svg.style.cursor = 'crosshair';
                 svg.dataset.drawing = 'true';
@@ -1122,7 +1119,6 @@
                 svg.dataset.tempX = '';
                 svg.dataset.tempY = '';
 
-                // ایجاد کراس‌هیر (در ابتدا مخفی)
                 const ns = 'http://www.w3.org/2000/svg';
                 const crosshair = document.createElementNS(ns, 'g');
                 crosshair.classList.add('trend-crosshair');
@@ -1168,12 +1164,13 @@
             });
         });
 
-        // ===== رویدادهای ماوس و تاچ برای ترندلاین =====
+        // ===== رویدادهای ماوس و تاچ =====
         document.querySelectorAll('.svg-wrap svg').forEach(svg => {
 
             let crosshairVisible = false;
             let tempLine = null;
             let startPointCircle = null;
+            let isDragging = false;
 
             function getCoords(e) {
                 const rect = svg.getBoundingClientRect();
@@ -1275,13 +1272,14 @@
                 }
             }
 
+            // ===== تپ (کلیک) روی نمودار =====
             function handleTap(e) {
                 if (svg.dataset.drawing !== 'true') return;
                 const { x, y } = getCoords(e);
                 const step = parseInt(svg.dataset.step) || 0;
 
                 if (step === 0) {
-                    // ===== تپ اول: کراس‌هیر ظاهر بشه در محل تپ =====
+                    // ===== تپ اول: کراس‌هیر ظاهر بشه =====
                     updateCrosshair(x, y);
                     svg.dataset.step = '1';
                     svg.dataset.tempX = x;
@@ -1291,23 +1289,15 @@
 
                 if (step === 1) {
                     // ===== تپ دوم: نقطه اول در محل کراس‌هیر ثبت بشه =====
-                    // از موقعیت فعلی کراس‌هیر استفاده کن
                     const startX = parseFloat(svg.dataset.tempX) || x;
                     const startY = parseFloat(svg.dataset.tempY) || y;
                     svg.dataset.startX = startX;
                     svg.dataset.startY = startY;
                     svg.dataset.step = '2';
 
-                    // نقطه اول رو به صورت دایره نشون بده
                     createStartPoint(startX, startY);
-
-                    // خط موقت از نقطه اول به محل فعلی کراس‌هیر
                     createTempLine(startX, startY, startX, startY);
-
-                    // کراس‌هیر رو در محل فعلی نگه دار
                     updateCrosshair(startX, startY);
-
-                    // کراس‌هیر رو قابل حرکت نگه دار
                     return;
                 }
 
@@ -1315,20 +1305,13 @@
                     // ===== تپ سوم: نقطه دوم در محل کراس‌هیر ثبت بشه =====
                     const startX = parseFloat(svg.dataset.startX);
                     const startY = parseFloat(svg.dataset.startY);
-                    // نقطه دوم = محل فعلی کراس‌هیر
                     const endX = parseFloat(svg.dataset.tempX) || x;
                     const endY = parseFloat(svg.dataset.tempY) || y;
 
-                    // حذف خط موقت
                     removeTempLine();
-
-                    // حذف کراس‌هیر
                     hideCrosshair();
-
-                    // حذف نقطه شروع
                     removeStartPoint();
 
-                    // ایجاد خط دائمی
                     const ns = 'http://www.w3.org/2000/svg';
                     const finalLine = document.createElementNS(ns, 'line');
                     finalLine.setAttribute('x1', startX);
@@ -1343,7 +1326,6 @@
                     const targetId = svg.id;
                     saveLine(targetId, finalLine);
 
-                    // ریست کردن به مرحله 0 (منتظر تپ جدید برای خط بعدی)
                     svg.dataset.step = '0';
                     svg.dataset.startX = '';
                     svg.dataset.startY = '';
@@ -1352,12 +1334,13 @@
                 }
             }
 
+            // ===== حرکت انگشت/ماوس (برای جابجایی کراس‌هیر) =====
             function handleMove(e) {
                 if (svg.dataset.drawing !== 'true') return;
                 const { x, y } = getCoords(e);
                 const step = parseInt(svg.dataset.step) || 0;
 
-                // همیشه کراس‌هیر رو به‌روز کن (اگر نمایش داده شده)
+                // در همه مراحل کراس‌هیر رو حرکت بده
                 if (step === 0) {
                     if (crosshairVisible) {
                         updateCrosshair(x, y);
@@ -1366,7 +1349,6 @@
                 }
 
                 if (step === 1) {
-                    // کراس‌هیر رو حرکت بده
                     updateCrosshair(x, y);
                     svg.dataset.tempX = x;
                     svg.dataset.tempY = y;
@@ -1377,9 +1359,7 @@
                     const startX = parseFloat(svg.dataset.startX);
                     const startY = parseFloat(svg.dataset.startY);
                     if (startX && startY) {
-                        // به‌روزرسانی خط موقت از نقطه اول به محل کراس‌هیر
                         createTempLine(startX, startY, x, y);
-                        // حرکت کراس‌هیر
                         updateCrosshair(x, y);
                         svg.dataset.tempX = x;
                         svg.dataset.tempY = y;

@@ -6,7 +6,7 @@
     <title>Amitis - تمرین تشخیص روند</title>
     <style>
         /* ================================================================
-           Amirkazem Coding - v35
+           Amirkazem Coding - v36
            طراحی و توسعه: Amirkazem
            ================================================================ */
 
@@ -1035,15 +1035,15 @@
             <span><span class="dot white"></span> کندل صعودی</span>
             <span><span class="dot red"></span> کندل نزولی (#890913)</span>
             <span class="brand-name">⚡ Amirkazem Coding</span>
-            <span class="version">v35</span>
+            <span class="version">v36</span>
         </div>
 
     </div>
 
     <script>
         // ================================================================
-        // Amirkazem Coding - v35
-        // ترندلاین به سبک TradingView (کراس‌هیر با کشیدن انگشت)
+        // Amirkazem Coding - v36
+        // ترندلاین به سبک TradingView - با پشتیبانی کامل از تاچ
         // ================================================================
 
         // ===== تابع اسپویلر =====
@@ -1076,7 +1076,7 @@
             h.redo = [];
         }
 
-        // ===== ابزار ترند لاین به سبک TradingView =====
+        // ===== ابزار ترند لاین =====
         document.querySelectorAll('.trend-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 const targetId = this.dataset.target;
@@ -1113,7 +1113,7 @@
                 this.classList.add('active');
                 svg.style.cursor = 'crosshair';
                 svg.dataset.drawing = 'true';
-                svg.dataset.step = '0'; // 0=منتظر تپ اول, 1=نقطه اول ثبت شده, 2=نقطه دوم ثبت شده
+                svg.dataset.step = '0';
                 svg.dataset.startX = '';
                 svg.dataset.startY = '';
                 svg.dataset.tempX = '';
@@ -1167,10 +1167,12 @@
         // ===== رویدادهای ماوس و تاچ =====
         document.querySelectorAll('.svg-wrap svg').forEach(svg => {
 
-            let crosshairVisible = false;
             let tempLine = null;
             let startPointCircle = null;
-            let isDragging = false;
+            let crosshairVisible = false;
+            let isPointerDown = false;
+            let pointerStartX = 0,
+                pointerStartY = 0;
 
             function getCoords(e) {
                 const rect = svg.getBoundingClientRect();
@@ -1181,7 +1183,6 @@
                 if (e.touches) {
                     clientX = e.touches[0].clientX;
                     clientY = e.touches[0].clientY;
-                    e.preventDefault();
                 } else {
                     clientX = e.clientX;
                     clientY = e.clientY;
@@ -1272,9 +1273,13 @@
                 }
             }
 
-            // ===== تپ (کلیک) روی نمودار =====
-            function handleTap(e) {
+            // ===== رویداد شروع (ماوس و تاچ) =====
+            function handlePointerDown(e) {
                 if (svg.dataset.drawing !== 'true') return;
+
+                // جلوگیری از اسکرول صفحه در گوشی
+                if (e.cancelable) e.preventDefault();
+
                 const { x, y } = getCoords(e);
                 const step = parseInt(svg.dataset.step) || 0;
 
@@ -1334,9 +1339,13 @@
                 }
             }
 
-            // ===== حرکت انگشت/ماوس (برای جابجایی کراس‌هیر) =====
-            function handleMove(e) {
+            // ===== رویداد حرکت (ماوس و تاچ) =====
+            function handlePointerMove(e) {
                 if (svg.dataset.drawing !== 'true') return;
+
+                // جلوگیری از اسکرول صفحه در گوشی
+                if (e.cancelable) e.preventDefault();
+
                 const { x, y } = getCoords(e);
                 const step = parseInt(svg.dataset.step) || 0;
 
@@ -1367,15 +1376,15 @@
                 }
             }
 
+            // ===== رویداد پایان (ماوس و تاچ) =====
+            function handlePointerUp(e) {
+                // کاری نمیکنیم
+            }
+
             // ===== رویدادهای ماوس =====
-            svg.addEventListener('mousedown', handleTap);
-            svg.addEventListener('mousemove', handleMove);
-
-            // ===== رویدادهای لمسی (گوشی) =====
-            svg.addEventListener('touchstart', handleTap, { passive: false });
-            svg.addEventListener('touchmove', handleMove, { passive: false });
-
-            // ===== خروج ماوس =====
+            svg.addEventListener('mousedown', handlePointerDown);
+            svg.addEventListener('mousemove', handlePointerMove);
+            svg.addEventListener('mouseup', handlePointerUp);
             svg.addEventListener('mouseleave', function(e) {
                 if (!svg.dataset.drawing) return;
                 const step = parseInt(svg.dataset.step) || 0;
@@ -1383,6 +1392,11 @@
                     hideCrosshair();
                 }
             });
+
+            // ===== رویدادهای لمسی (گوشی) =====
+            svg.addEventListener('touchstart', handlePointerDown, { passive: false });
+            svg.addEventListener('touchmove', handlePointerMove, { passive: false });
+            svg.addEventListener('touchend', handlePointerUp, { passive: false });
 
             // ===== ورود ماوس =====
             svg.addEventListener('mouseenter', function(e) {
@@ -1400,9 +1414,6 @@
                     );
                 }
             });
-
-            // ===== پایان لمس =====
-            svg.addEventListener('touchend', function(e) {}, { passive: true });
         });
 
         // ===== دکمه بازگشت یک مرحله (Undo) =====

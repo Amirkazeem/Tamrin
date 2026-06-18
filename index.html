@@ -273,7 +273,6 @@
             border-color: #2a2a2a;
         }
 
-        /* حذف footer-text از همه جای صفحه */
         .footer-text {
             display: none !important;
         }
@@ -335,7 +334,6 @@
             color: #aaa;
         }
 
-        /* ===== شمارنده تمرین - نازک و سفید ===== */
         .exercise-counter-inline {
             display: inline-flex;
             align-items: center;
@@ -366,7 +364,6 @@
             opacity: 0.8;
         }
 
-        /* ===== تعداد کل تمرین های حل شده - عدد نئون سفید ===== */
         .record-item-inline {
             display: inline-flex;
             align-items: center;
@@ -387,7 +384,6 @@
             font-size: 10px;
             letter-spacing: 0.2px;
         }
-        /* عدد نئون سفید */
         .record-item-inline .record-value-white {
             font-weight: 700;
             font-size: 14px;
@@ -410,7 +406,6 @@
             }
         }
 
-        /* ===== NEW RECORD نئونی طلایی ===== */
         .new-record-badge-inline {
             display: none;
             font-size: 11px;
@@ -550,7 +545,6 @@
             pointer-events: all;
         }
 
-        /* حذف زیرنویس جواب */
         .answer-box .footer-text {
             display: none !important;
         }
@@ -686,83 +680,55 @@
         </div>
 
         <!-- ============================================================ -->
-        <!-- تمرین ۱: صعودی -->
+        <!-- تمرین ۱: صعودی با کندل‌های ۱۰۶ تایی -->
         <!-- ============================================================ -->
-        <div class="item">
+        <div class="item" id="exercise1-container">
 
             <div class="chart-box">
                 <div class="label">
                     <span class="title"><span class="num">●</span> سوال ۱</span>
-                    <span class="badge">بدون خط</span>
+                    <span class="badge" id="badge1" style="display:none;">روند صعودی</span>
                 </div>
                 <div class="toolbar">
                     <button class="trend-btn" data-target="s1">✏️ ترند لاین</button>
                     <button class="clear-btn" data-target="s1">🗑 پاک کردن</button>
                     <button class="redo-btn" data-target="s1">→</button>
                     <button class="undo-btn" data-target="s1">←</button>
-                </div>
-                <div class="svg-wrap">
-                    <svg id="s1" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="400" height="200" fill="#0a0a0a" rx="8" />
-                        <line x1="28" y1="168" x2="380" y2="168" stroke="#151515" stroke-width="0.4" />
-                        <line x1="28" y1="134" x2="380" y2="134" stroke="#151515" stroke-width="0.4" />
-                        <line x1="28" y1="100" x2="380" y2="100" stroke="#151515" stroke-width="0.4" />
-                        <line x1="28" y1="66" x2="380" y2="66" stroke="#151515" stroke-width="0.4" />
-                        <line x1="28" y1="32" x2="380" y2="32" stroke="#151515" stroke-width="0.4" />
-                        <text x="370" y="172" fill="#222" font-size="8" text-anchor="end">0</text>
-                        <text x="370" y="138" fill="#222" font-size="8" text-anchor="end">20</text>
-                        <text x="370" y="104" fill="#222" font-size="8" text-anchor="end">40</text>
-                        <text x="370" y="70" fill="#222" font-size="8" text-anchor="end">60</text>
-                        <text x="370" y="36" fill="#222" font-size="8" text-anchor="end">80</text>
+                    <button class="new-exercise-btn" onclick="regenerateExercise1(true)">تمرین جدید</button>
 
-                        <rect x="30" y="140" width="6" height="14" fill="#890913" rx="1" />
-                        <line x1="33" y1="128" x2="33" y2="140" stroke="#890913" stroke-width="1" />
-                        <line x1="33" y1="154" x2="33" y2="158" stroke="#890913" stroke-width="1" />
-                        <rect x="44" y="132" width="6" height="16" fill="#fff" rx="1" />
-                        <line x1="47" y1="118" x2="47" y2="132" stroke="#fff" stroke-width="1" />
-                        <line x1="47" y1="148" x2="47" y2="152" stroke="#fff" stroke-width="1" />
-                        <rect x="58" y="125" width="6" height="18" fill="#890913" rx="1" />
-                        <line x1="61" y1="110" x2="61" y2="125" stroke="#890913" stroke-width="1" />
-                        <line x1="61" y1="143" x2="61" y2="148" stroke="#890913" stroke-width="1" />
-                        <rect x="72" y="118" width="6" height="14" fill="#fff" rx="1" />
-                        <line x1="75" y1="106" x2="75" y2="118" stroke="#fff" stroke-width="1" />
-                        <line x1="75" y1="132" x2="75" y2="136" stroke="#fff" stroke-width="1" />
-                        <rect x="86" y="112" width="6" height="16" fill="#890913" rx="1" />
-                        <line x1="89" y1="98" x2="89" y2="112" stroke="#890913" stroke-width="1" />
-                        <line x1="89" y1="128" x2="89" y2="132" stroke="#890913" stroke-width="1" />
-                        <rect x="100" y="105" width="6" height="20" fill="#fff" rx="1" />
-                        <line x1="103" y1="90" x2="103" y2="105" stroke="#fff" stroke-width="1" />
-                        <line x1="103" y1="125" x2="103" y2="130" stroke="#fff" stroke-width="1" />
-                        <rect x="114" y="98" width="6" height="14" fill="#890913" rx="1" />
-                        <line x1="117" y1="86" x2="117" y2="98" stroke="#890913" stroke-width="1" />
-                        <line x1="117" y1="112" x2="117" y2="116" stroke="#890913" stroke-width="1" />
-                        <rect x="128" y="92" width="6" height="16" fill="#fff" rx="1" />
-                        <line x1="131" y1="78" x2="131" y2="92" stroke="#fff" stroke-width="1" />
-                        <line x1="131" y1="108" x2="131" y2="112" stroke="#fff" stroke-width="1" />
-                        <rect x="142" y="85" width="6" height="18" fill="#890913" rx="1" />
-                        <line x1="145" y1="70" x2="145" y2="85" stroke="#890913" stroke-width="1" />
-                        <line x1="145" y1="103" x2="145" y2="108" stroke="#890913" stroke-width="1" />
-                        <rect x="156" y="78" width="6" height="14" fill="#fff" rx="1" />
-                        <line x1="159" y1="66" x2="159" y2="78" stroke="#fff" stroke-width="1" />
-                        <line x1="159" y1="92" x2="159" y2="96" stroke="#fff" stroke-width="1" />
-                        <rect x="170" y="72" width="6" height="16" fill="#890913" rx="1" />
-                        <line x1="173" y1="58" x2="173" y2="72" stroke="#890913" stroke-width="1" />
-                        <line x1="173" y1="88" x2="173" y2="92" stroke="#890913" stroke-width="1" />
-                        <rect x="184" y="65" width="6" height="20" fill="#fff" rx="1" />
-                        <line x1="187" y1="50" x2="187" y2="65" stroke="#fff" stroke-width="1" />
-                        <line x1="187" y1="85" x2="187" y2="90" stroke="#fff" stroke-width="1" />
-                        <rect x="198" y="58" width="6" height="14" fill="#890913" rx="1" />
-                        <line x1="201" y1="46" x2="201" y2="58" stroke="#890913" stroke-width="1" />
-                        <line x1="201" y1="72" x2="201" y2="76" stroke="#890913" stroke-width="1" />
-                        <rect x="212" y="52" width="6" height="16" fill="#fff" rx="1" />
-                        <line x1="215" y1="38" x2="215" y2="52" stroke="#fff" stroke-width="1" />
-                        <line x1="215" y1="68" x2="215" y2="72" stroke="#fff" stroke-width="1" />
-                        <rect x="226" y="45" width="6" height="18" fill="#890913" rx="1" />
-                        <line x1="229" y1="30" x2="229" y2="45" stroke="#890913" stroke-width="1" />
-                        <line x1="229" y1="63" x2="229" y2="68" stroke="#890913" stroke-width="1" />
-                        <rect x="240" y="38" width="6" height="14" fill="#fff" rx="1" />
-                        <line x1="243" y1="26" x2="243" y2="38" stroke="#fff" stroke-width="1" />
-                        <line x1="243" y1="52" x2="243" y2="56" stroke="#fff" stroke-width="1" />
+                    <span class="exercise-counter-inline">
+                        <span class="counter-label">تمرین شماره :</span>
+                        <span class="counter-number" id="exerciseCounter1">1</span>
+                    </span>
+
+                    <span class="toolbar-divider">|</span>
+
+                    <span class="record-item-inline">
+                        <span class="record-label">تعداد کل تمرین های حل شده :</span>
+                        <span class="record-value-white" id="bestRecordDisplay1">0</span>
+                    </span>
+
+                    <span class="new-record-badge-inline" id="newRecordBadge1">✦ NEW RECORD ✦</span>
+                </div>
+
+                <div class="svg-wrap">
+                    <svg id="s1" viewBox="0 0 1000 320" width="100%" height="320" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="1000" height="320" fill="#0a0a0a" rx="8" />
+                        <line x1="30" y1="280" x2="980" y2="280" stroke="#151515" stroke-width="0.4" />
+                        <line x1="30" y1="240" x2="980" y2="240" stroke="#151515" stroke-width="0.4" />
+                        <line x1="30" y1="200" x2="980" y2="200" stroke="#151515" stroke-width="0.4" />
+                        <line x1="30" y1="160" x2="980" y2="160" stroke="#151515" stroke-width="0.4" />
+                        <line x1="30" y1="120" x2="980" y2="120" stroke="#151515" stroke-width="0.4" />
+                        <line x1="30" y1="80" x2="980" y2="80" stroke="#151515" stroke-width="0.4" />
+                        <line x1="30" y1="40" x2="980" y2="40" stroke="#151515" stroke-width="0.4" />
+
+                        <text x="970" y="284" fill="#222" font-size="8" text-anchor="end">26</text>
+                        <text x="970" y="244" fill="#222" font-size="8" text-anchor="end">36</text>
+                        <text x="970" y="204" fill="#222" font-size="8" text-anchor="end">46</text>
+                        <text x="970" y="164" fill="#222" font-size="8" text-anchor="end">56</text>
+                        <text x="970" y="124" fill="#222" font-size="8" text-anchor="end">66</text>
+                        <text x="970" y="84" fill="#222" font-size="8" text-anchor="end">76</text>
+                        <text x="970" y="44" fill="#222" font-size="8" text-anchor="end">86</text>
                     </svg>
                 </div>
             </div>
@@ -770,74 +736,28 @@
             <div class="chart-box answer-box">
                 <div class="label">
                     <span class="title"><span class="num">●</span> جواب ۱</span>
-                    <span class="badge green" style="display:none;">روند صعودی</span>
+                    <span class="badge green" id="answerBadge1" style="display:none;">روند صعودی</span>
                 </div>
-                <button class="spoiler-btn" onclick="toggleSpoiler(this)">نمایش جواب</button>
-                <div class="spoiler-content">
+                <button class="spoiler-btn" id="spoilerBtn1" onclick="toggleSpoiler(this)">نمایش جواب</button>
+                <div class="spoiler-content" id="spoilerContent1">
                     <div class="svg-wrap">
-                        <svg viewBox="0 0 400 200">
-                            <rect width="400" height="200" fill="#0a0a0a" rx="8" />
-                            <line x1="28" y1="168" x2="380" y2="168" stroke="#151515" stroke-width="0.4" />
-                            <line x1="28" y1="134" x2="380" y2="134" stroke="#151515" stroke-width="0.4" />
-                            <line x1="28" y1="100" x2="380" y2="100" stroke="#151515" stroke-width="0.4" />
-                            <line x1="28" y1="66" x2="380" y2="66" stroke="#151515" stroke-width="0.4" />
-                            <line x1="28" y1="32" x2="380" y2="32" stroke="#151515" stroke-width="0.4" />
-                            <text x="370" y="172" fill="#222" font-size="8" text-anchor="end">0</text>
-                            <text x="370" y="138" fill="#222" font-size="8" text-anchor="end">20</text>
-                            <text x="370" y="104" fill="#222" font-size="8" text-anchor="end">40</text>
-                            <text x="370" y="70" fill="#222" font-size="8" text-anchor="end">60</text>
-                            <text x="370" y="36" fill="#222" font-size="8" text-anchor="end">80</text>
+                        <svg id="answerSvg1" viewBox="0 0 1000 320" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="1000" height="320" fill="#0a0a0a" rx="8" />
+                            <line x1="30" y1="280" x2="980" y2="280" stroke="#151515" stroke-width="0.4" />
+                            <line x1="30" y1="240" x2="980" y2="240" stroke="#151515" stroke-width="0.4" />
+                            <line x1="30" y1="200" x2="980" y2="200" stroke="#151515" stroke-width="0.4" />
+                            <line x1="30" y1="160" x2="980" y2="160" stroke="#151515" stroke-width="0.4" />
+                            <line x1="30" y1="120" x2="980" y2="120" stroke="#151515" stroke-width="0.4" />
+                            <line x1="30" y1="80" x2="980" y2="80" stroke="#151515" stroke-width="0.4" />
+                            <line x1="30" y1="40" x2="980" y2="40" stroke="#151515" stroke-width="0.4" />
 
-                            <rect x="30" y="140" width="6" height="14" fill="#890913" rx="1" />
-                            <line x1="33" y1="128" x2="33" y2="140" stroke="#890913" stroke-width="1" />
-                            <line x1="33" y1="154" x2="33" y2="158" stroke="#890913" stroke-width="1" />
-                            <rect x="44" y="132" width="6" height="16" fill="#fff" rx="1" />
-                            <line x1="47" y1="118" x2="47" y2="132" stroke="#fff" stroke-width="1" />
-                            <line x1="47" y1="148" x2="47" y2="152" stroke="#fff" stroke-width="1" />
-                            <rect x="58" y="125" width="6" height="18" fill="#890913" rx="1" />
-                            <line x1="61" y1="110" x2="61" y2="125" stroke="#890913" stroke-width="1" />
-                            <line x1="61" y1="143" x2="61" y2="148" stroke="#890913" stroke-width="1" />
-                            <rect x="72" y="118" width="6" height="14" fill="#fff" rx="1" />
-                            <line x1="75" y1="106" x2="75" y2="118" stroke="#fff" stroke-width="1" />
-                            <line x1="75" y1="132" x2="75" y2="136" stroke="#fff" stroke-width="1" />
-                            <rect x="86" y="112" width="6" height="16" fill="#890913" rx="1" />
-                            <line x1="89" y1="98" x2="89" y2="112" stroke="#890913" stroke-width="1" />
-                            <line x1="89" y1="128" x2="89" y2="132" stroke="#890913" stroke-width="1" />
-                            <rect x="100" y="105" width="6" height="20" fill="#fff" rx="1" />
-                            <line x1="103" y1="90" x2="103" y2="105" stroke="#fff" stroke-width="1" />
-                            <line x1="103" y1="125" x2="103" y2="130" stroke="#fff" stroke-width="1" />
-                            <rect x="114" y="98" width="6" height="14" fill="#890913" rx="1" />
-                            <line x1="117" y1="86" x2="117" y2="98" stroke="#890913" stroke-width="1" />
-                            <line x1="117" y1="112" x2="117" y2="116" stroke="#890913" stroke-width="1" />
-                            <rect x="128" y="92" width="6" height="16" fill="#fff" rx="1" />
-                            <line x1="131" y1="78" x2="131" y2="92" stroke="#fff" stroke-width="1" />
-                            <line x1="131" y1="108" x2="131" y2="112" stroke="#fff" stroke-width="1" />
-                            <rect x="142" y="85" width="6" height="18" fill="#890913" rx="1" />
-                            <line x1="145" y1="70" x2="145" y2="85" stroke="#890913" stroke-width="1" />
-                            <line x1="145" y1="103" x2="145" y2="108" stroke="#890913" stroke-width="1" />
-                            <rect x="156" y="78" width="6" height="14" fill="#fff" rx="1" />
-                            <line x1="159" y1="66" x2="159" y2="78" stroke="#fff" stroke-width="1" />
-                            <line x1="159" y1="92" x2="159" y2="96" stroke="#fff" stroke-width="1" />
-                            <rect x="170" y="72" width="6" height="16" fill="#890913" rx="1" />
-                            <line x1="173" y1="58" x2="173" y2="72" stroke="#890913" stroke-width="1" />
-                            <line x1="173" y1="88" x2="173" y2="92" stroke="#890913" stroke-width="1" />
-                            <rect x="184" y="65" width="6" height="20" fill="#fff" rx="1" />
-                            <line x1="187" y1="50" x2="187" y2="65" stroke="#fff" stroke-width="1" />
-                            <line x1="187" y1="85" x2="187" y2="90" stroke="#fff" stroke-width="1" />
-                            <rect x="198" y="58" width="6" height="14" fill="#890913" rx="1" />
-                            <line x1="201" y1="46" x2="201" y2="58" stroke="#890913" stroke-width="1" />
-                            <line x1="201" y1="72" x2="201" y2="76" stroke="#890913" stroke-width="1" />
-                            <rect x="212" y="52" width="6" height="16" fill="#fff" rx="1" />
-                            <line x1="215" y1="38" x2="215" y2="52" stroke="#fff" stroke-width="1" />
-                            <line x1="215" y1="68" x2="215" y2="72" stroke="#fff" stroke-width="1" />
-                            <rect x="226" y="45" width="6" height="18" fill="#890913" rx="1" />
-                            <line x1="229" y1="30" x2="229" y2="45" stroke="#890913" stroke-width="1" />
-                            <line x1="229" y1="63" x2="229" y2="68" stroke="#890913" stroke-width="1" />
-                            <rect x="240" y="38" width="6" height="14" fill="#fff" rx="1" />
-                            <line x1="243" y1="26" x2="243" y2="38" stroke="#fff" stroke-width="1" />
-                            <line x1="243" y1="52" x2="243" y2="56" stroke="#fff" stroke-width="1" />
-
-                            <line x1="33" y1="158" x2="243" y2="56" stroke="#ff9b00" stroke-width="2" opacity="0.7" />
+                            <text x="970" y="284" fill="#222" font-size="8" text-anchor="end">26</text>
+                            <text x="970" y="244" fill="#222" font-size="8" text-anchor="end">36</text>
+                            <text x="970" y="204" fill="#222" font-size="8" text-anchor="end">46</text>
+                            <text x="970" y="164" fill="#222" font-size="8" text-anchor="end">56</text>
+                            <text x="970" y="124" fill="#222" font-size="8" text-anchor="end">66</text>
+                            <text x="970" y="84" fill="#222" font-size="8" text-anchor="end">76</text>
+                            <text x="970" y="44" fill="#222" font-size="8" text-anchor="end">86</text>
                         </svg>
                     </div>
                 </div>
@@ -1003,7 +923,7 @@
                             <line x1="243" y1="141" x2="243" y2="152" stroke="#fff" stroke-width="1" />
                             <line x1="243" y1="166" x2="243" y2="170" stroke="#fff" stroke-width="1" />
 
-                            <line x1="33" y1="22" x2="243" y2="141" stroke="#ff9b00" stroke-width="2" opacity="0.7" />
+                            <line x1="33" y1="22" x2="243" y2="141" stroke="#ff9b00" stroke-width="3" opacity="0.8" />
                         </svg>
                     </div>
                 </div>
@@ -1034,7 +954,6 @@
                     <button class="undo-btn" data-target="s3">←</button>
                     <button class="new-exercise-btn" onclick="generateNewExercise3(true)">تمرین جدید</button>
 
-                    <!-- شمارنده تمرین -->
                     <span class="exercise-counter-inline">
                         <span class="counter-label">تمرین شماره :</span>
                         <span class="counter-number" id="exerciseCounter3">1</span>
@@ -1042,14 +961,12 @@
 
                     <span class="toolbar-divider">|</span>
 
-                    <!-- تعداد کل تمرین های حل شده -->
                     <span class="record-item-inline">
                         <span class="record-label">تعداد کل تمرین های حل شده :</span>
-                        <span class="record-value-white" id="bestRecordDisplay">0</span>
+                        <span class="record-value-white" id="bestRecordDisplay3">0</span>
                     </span>
 
-                    <!-- NEW RECORD نئونی -->
-                    <span class="new-record-badge-inline" id="newRecordBadge">✦ NEW RECORD ✦</span>
+                    <span class="new-record-badge-inline" id="newRecordBadge3">✦ NEW RECORD ✦</span>
                 </div>
 
                 <div class="svg-wrap">
@@ -1104,18 +1021,14 @@
                 Powered by <span class="highlight">Amirkazem</span> Coding
             </span>
             <span class="dot-sep">•</span>
-            <span class="version">v62</span>
+            <span class="version">v65</span>
         </div>
 
     </div>
 
     <script>
         // ================================================================
-        // Amirkazem Coding - v62 (Fixed)
-        // ================================================================
-
-        // ================================================================
-        // سیستم رکورد - localStorage
+        // Amirkazem Coding - v65 (Fixed - Trendlines are sloped and don't cross candles)
         // ================================================================
 
         const STORAGE_KEY = 'amitis_trend_record';
@@ -1129,54 +1042,57 @@
             localStorage.setItem(STORAGE_KEY, String(value));
         }
 
-        // ================================================================
-        // شمارنده تمرین ۳ - با رفرش از ۱ شروع میشه
-        // ================================================================
+        let exercise1Counter = 1;
         let exercise3Counter = 1;
         let bestRecord = getBestRecord();
 
-        function updateRecordDisplay() {
-            document.getElementById('bestRecordDisplay').textContent = bestRecord;
-
-            const badge = document.getElementById('newRecordBadge');
-            // فقط وقتی رکورد جدید ثبت میشه (وقتی عدد کنونی از رکورد بیشتر باشه)
-            if (exercise3Counter - 1 > bestRecord && exercise3Counter > 2) {
+        function updateRecordDisplay1() {
+            document.getElementById('bestRecordDisplay1').textContent = bestRecord;
+            const badge = document.getElementById('newRecordBadge1');
+            if (exercise1Counter - 1 > bestRecord && exercise1Counter > 2) {
                 badge.classList.add('show');
-                bestRecord = exercise3Counter - 1;
+                bestRecord = exercise1Counter - 1;
                 setBestRecord(bestRecord);
-                document.getElementById('bestRecordDisplay').textContent = bestRecord;
+                document.getElementById('bestRecordDisplay1').textContent = bestRecord;
+                document.getElementById('bestRecordDisplay3').textContent = bestRecord;
             } else {
                 badge.classList.remove('show');
             }
         }
 
+        function updateRecordDisplay3() {
+            document.getElementById('bestRecordDisplay3').textContent = bestRecord;
+            const badge = document.getElementById('newRecordBadge3');
+            if (exercise3Counter - 1 > bestRecord && exercise3Counter > 2) {
+                badge.classList.add('show');
+                bestRecord = exercise3Counter - 1;
+                setBestRecord(bestRecord);
+                document.getElementById('bestRecordDisplay1').textContent = bestRecord;
+                document.getElementById('bestRecordDisplay3').textContent = bestRecord;
+            } else {
+                badge.classList.remove('show');
+            }
+        }
+
+        function incrementExercise1Counter() {
+            exercise1Counter++;
+            document.getElementById('exerciseCounter1').textContent = exercise1Counter;
+            updateRecordDisplay1();
+        }
+
         function incrementExercise3Counter() {
             exercise3Counter++;
             document.getElementById('exerciseCounter3').textContent = exercise3Counter;
-            updateRecordDisplay();
+            updateRecordDisplay3();
         }
-
-        // ================================================================
-        // GENERATOR 106 CANDLES
-        // ================================================================
 
         const GLOBAL_MIN = 26;
         const GLOBAL_MAX = 86;
-        const WAVE_SIZE = 7;
+        const WAVE_SIZE = 4;
+        const TOTAL_WAVES = 8;
 
-        let CURRENT_RANGE_MIN = 29;
-        let CURRENT_RANGE_MAX = 64;
-
-        function generateRandomRange() {
-            const rangeHeight = 20 + Math.random() * 13;
-            const maxStart = GLOBAL_MAX - GLOBAL_MIN - rangeHeight;
-            const start = GLOBAL_MIN + Math.random() * maxStart;
-            CURRENT_RANGE_MIN = Math.round(start);
-            CURRENT_RANGE_MAX = Math.round(start + rangeHeight);
-            CURRENT_RANGE_MIN = Math.max(GLOBAL_MIN, Math.min(GLOBAL_MAX - rangeHeight, CURRENT_RANGE_MIN));
-            CURRENT_RANGE_MAX = CURRENT_RANGE_MIN + Math.round(rangeHeight);
-            CURRENT_RANGE_MAX = Math.min(GLOBAL_MAX, CURRENT_RANGE_MAX);
-        }
+        let currentExercise1Candles = [];
+        let currentExercise1WaveRanges = [];
 
         function getWickType() {
             const r = Math.random();
@@ -1231,9 +1147,455 @@
             return { candles, lastPrice: currentPrice };
         }
 
+        function generateUpwardTrendRangeCandles(startPrice) {
+            const candles = [];
+            let currentPrice = startPrice;
+            const rangeHeight = 18 + Math.random() * 10;
+            const maxStart = GLOBAL_MAX - GLOBAL_MIN - rangeHeight - 15;
+            const start = GLOBAL_MIN + 5 + Math.random() * maxStart;
+            let baseMin = Math.round(start);
+            let baseMax = Math.round(start + rangeHeight);
+            baseMin = Math.max(GLOBAL_MIN + 3, Math.min(GLOBAL_MAX - rangeHeight - 15, baseMin));
+            baseMax = baseMin + Math.round(rangeHeight);
+            const stepPerWave = 1.8 + Math.random() * 1.5;
+            const waveRanges = [];
+            for (let i = 0; i < TOTAL_WAVES; i++) {
+                const offset = i * stepPerWave;
+                const waveMin = Math.min(GLOBAL_MAX - rangeHeight - 1, baseMin + offset);
+                const waveMax = Math.min(GLOBAL_MAX - 1, waveMin + rangeHeight);
+                if (i > 0) {
+                    const prevRange = waveRanges[i - 1];
+                    if (waveMin <= prevRange.min) {
+                        const newMin = Math.min(GLOBAL_MAX - rangeHeight - 1, prevRange.min + stepPerWave * 0.8);
+                        const newMax = Math.min(GLOBAL_MAX - 1, newMin + rangeHeight);
+                        waveRanges.push({ min: newMin, max: newMax });
+                    } else {
+                        waveRanges.push({ min: waveMin, max: waveMax });
+                    }
+                } else {
+                    waveRanges.push({ min: waveMin, max: waveMax });
+                }
+            }
+
+            const resultWaveRanges = [];
+
+            const firstWave = waveRanges[0];
+            if (currentPrice < firstWave.min) {
+                const steps = Math.min(2, Math.ceil((firstWave.min - currentPrice) / 2));
+                for (let i = 0; i < steps; i++) {
+                    const progress = (i + 1) / (steps + 1);
+                    const targetPrice = currentPrice + (firstWave.min - currentPrice) * progress + 0.5;
+                    const close = Math.min(targetPrice, firstWave.min + 0.5);
+                    const candle = generateStandardCandle(currentPrice, close, GLOBAL_MIN, GLOBAL_MAX);
+                    candles.push(candle);
+                    currentPrice = candle.close;
+                }
+            } else if (currentPrice > firstWave.max) {
+                const steps = Math.min(2, Math.ceil((currentPrice - firstWave.max) / 2));
+                for (let i = 0; i < steps; i++) {
+                    const progress = (i + 1) / (steps + 1);
+                    const targetPrice = currentPrice - (currentPrice - firstWave.max) * progress - 0.5;
+                    const close = Math.max(targetPrice, firstWave.max - 0.5);
+                    const candle = generateStandardCandle(currentPrice, close, GLOBAL_MIN, GLOBAL_MAX);
+                    candles.push(candle);
+                    currentPrice = candle.close;
+                }
+            }
+
+            waveRanges.forEach((waveRange, waveIndex) => {
+                const waveMin = waveRange.min;
+                const waveMax = waveRange.max;
+                const isDown = waveIndex % 2 === 0;
+                const startPrice = isDown ? waveMax : waveMin;
+                const endPrice = isDown ? waveMin : waveMax;
+                const reverseCount = 2;
+                const reversePos = [];
+                while (reversePos.length < reverseCount) {
+                    const pos = Math.floor(Math.random() * WAVE_SIZE);
+                    if (!reversePos.includes(pos)) reversePos.push(pos);
+                }
+                reversePos.sort();
+
+                const waveStartIndex = candles.length;
+
+                for (let i = 0; i < WAVE_SIZE; i++) {
+                    const progress = (i + 1) / WAVE_SIZE;
+                    let targetPrice = startPrice + (endPrice - startPrice) * progress;
+                    const isReverse = reversePos.includes(i);
+                    let close;
+                    if (isReverse) {
+                        const offset = (Math.random() * 1.5 + 0.5) * (isDown ? 1 : -1);
+                        close = Math.round((targetPrice + offset) * 100) / 100;
+                    } else {
+                        const noise = (Math.random() - 0.5) * 0.8;
+                        close = Math.round((targetPrice + noise) * 100) / 100;
+                    }
+                    const margin = 0.3;
+                    close = Math.max(waveMin + margin, Math.min(waveMax - margin, close));
+                    const candle = generateStandardCandle(currentPrice, close, waveMin - 0.5, waveMax + 0.5);
+                    candles.push(candle);
+                    currentPrice = candle.close;
+                }
+
+                // پیدا کردن پایین‌ترین و بالاترین نقطه در این موج
+                let waveLow = Infinity;
+                let waveHigh = -Infinity;
+                for (let i = waveStartIndex; i < candles.length; i++) {
+                    if (candles[i].low < waveLow) waveLow = candles[i].low;
+                    if (candles[i].high > waveHigh) waveHigh = candles[i].high;
+                }
+
+                resultWaveRanges.push({
+                    startIndex: waveStartIndex,
+                    endIndex: candles.length - 1,
+                    min: waveLow,
+                    max: waveHigh,
+                    isDown: isDown
+                });
+            });
+
+            return { candles, lastPrice: currentPrice, waveRanges: resultWaveRanges };
+        }
+
+        function shuffleSections() {
+            const sections = [
+                { type: 'random', count: 37 },
+                { type: 'random', count: 33 },
+                { type: 'pump', count: 4 },
+                { type: 'range', count: 32 }
+            ];
+            for (let i = sections.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [sections[i], sections[j]] = [sections[j], sections[i]];
+            }
+            return sections;
+        }
+
+        function generateExercise1Candles() {
+            const shuffledSections = shuffleSections();
+            const allCandles = [];
+            let currentPrice = 40;
+            const pumpDirection = Math.random() < 0.5 ? 'up' : 'down';
+            let allWaveRanges = [];
+
+            shuffledSections.forEach(section => {
+                if (section.type === 'random') {
+                    for (let i = 0; i < section.count; i++) {
+                        const candle = generateRandomCandle(currentPrice, true);
+                        allCandles.push(candle);
+                        currentPrice = candle.close;
+                    }
+                } else if (section.type === 'pump') {
+                    const pumpResult = generatePumpCandles(currentPrice, pumpDirection);
+                    allCandles.push(...pumpResult.candles);
+                    currentPrice = pumpResult.lastPrice;
+                } else if (section.type === 'range') {
+                    const waveResult = generateUpwardTrendRangeCandles(currentPrice);
+                    const offset = allCandles.length;
+                    allCandles.push(...waveResult.candles);
+                    waveResult.waveRanges.forEach(wr => {
+                        allWaveRanges.push({
+                            startIndex: wr.startIndex + offset,
+                            endIndex: wr.endIndex + offset,
+                            min: wr.min,
+                            max: wr.max,
+                            isDown: wr.isDown
+                        });
+                    });
+                    currentPrice = waveResult.lastPrice;
+                }
+            });
+
+            currentExercise1WaveRanges = allWaveRanges;
+            return allCandles;
+        }
+
+        // ================================================================
+        // RENDER FUNCTION FOR EXERCISE 1
+        // ================================================================
+
+        function renderExercise1Candles(candles, svgId, showAnswerLine = false) {
+            const svg = document.getElementById(svgId);
+
+            const toRemove = [];
+            for (let i = 0; i < svg.children.length; i++) {
+                const child = svg.children[i];
+                const isGrid = child.tagName === 'line' && child.getAttribute('stroke') === '#151515';
+                const isLabel = child.tagName === 'text' && !child.id;
+                const isBg = child.tagName === 'rect' && child.getAttribute('fill') === '#0a0a0a';
+                const isAnswerLine = child.tagName === 'line' && child.getAttribute('stroke') === '#ff9b00' && child.getAttribute('stroke-width') === '3';
+                if (!isGrid && !isLabel && !isBg && !isAnswerLine) {
+                    toRemove.push(child);
+                }
+            }
+            if (showAnswerLine) {
+                const oldLines = svg.querySelectorAll('line');
+                oldLines.forEach(line => {
+                    if (line.getAttribute('stroke') === '#ff9b00' && line.getAttribute('stroke-width') === '3') {
+                        line.remove();
+                    }
+                });
+            }
+            toRemove.forEach(el => el.remove());
+
+            const ns = 'http://www.w3.org/2000/svg';
+            const padding = 30;
+            const chartWidth = 950;
+            const chartHeight = 250;
+            const baseY = 280;
+
+            const candleWidth = chartWidth / candles.length;
+            const bodyWidth = candleWidth * 0.6;
+
+            candles.forEach((candle, index) => {
+                const x = padding + (index * candleWidth) + (candleWidth - bodyWidth) / 2;
+                const high = Math.min(GLOBAL_MAX, Math.max(GLOBAL_MIN, candle.high));
+                const low = Math.min(GLOBAL_MAX, Math.max(GLOBAL_MIN, candle.low));
+                const open = Math.min(high, Math.max(low, candle.open));
+                const close = Math.min(high, Math.max(low, candle.close));
+                const yHigh = baseY - ((high - GLOBAL_MIN) / (GLOBAL_MAX - GLOBAL_MIN)) * chartHeight;
+                const yLow = baseY - ((low - GLOBAL_MIN) / (GLOBAL_MAX - GLOBAL_MIN)) * chartHeight;
+                const yOpen = baseY - ((open - GLOBAL_MIN) / (GLOBAL_MAX - GLOBAL_MIN)) * chartHeight;
+                const yClose = baseY - ((close - GLOBAL_MIN) / (GLOBAL_MAX - GLOBAL_MIN)) * chartHeight;
+                const isUp = close >= open;
+                const color = isUp ? '#ffffff' : '#890913';
+                const bodyY = Math.min(yOpen, yClose);
+                const bodyH = Math.max(1.5, Math.abs(yOpen - yClose));
+                const rect = document.createElementNS(ns, 'rect');
+                rect.setAttribute('x', x);
+                rect.setAttribute('y', bodyY);
+                rect.setAttribute('width', bodyWidth);
+                rect.setAttribute('height', bodyH);
+                rect.setAttribute('fill', color);
+                rect.setAttribute('rx', '0');
+                rect.setAttribute('opacity', '0.95');
+                svg.appendChild(rect);
+                if (yHigh < bodyY) {
+                    const lineTop = document.createElementNS(ns, 'line');
+                    lineTop.setAttribute('x1', x + bodyWidth / 2);
+                    lineTop.setAttribute('y1', yHigh);
+                    lineTop.setAttribute('x2', x + bodyWidth / 2);
+                    lineTop.setAttribute('y2', bodyY);
+                    lineTop.setAttribute('stroke', color);
+                    lineTop.setAttribute('stroke-width', Math.max(1, bodyWidth / 6));
+                    lineTop.setAttribute('opacity', '0.9');
+                    svg.appendChild(lineTop);
+                }
+                if (yLow > bodyY + bodyH) {
+                    const lineBottom = document.createElementNS(ns, 'line');
+                    lineBottom.setAttribute('x1', x + bodyWidth / 2);
+                    lineBottom.setAttribute('y1', bodyY + bodyH);
+                    lineBottom.setAttribute('x2', x + bodyWidth / 2);
+                    lineBottom.setAttribute('y2', yLow);
+                    lineBottom.setAttribute('stroke', color);
+                    lineBottom.setAttribute('stroke-width', Math.max(1, bodyWidth / 6));
+                    lineBottom.setAttribute('opacity', '0.9');
+                    svg.appendChild(lineBottom);
+                }
+            });
+
+            // ===== رسم دو ترندلاین اریب با استفاده از نقاط افراطی هر موج =====
+            if (showAnswerLine && candles.length > 0 && currentExercise1WaveRanges.length > 0) {
+                // جمع‌آوری نقاط پایین و بالا برای هر موج
+                const lowPoints = [];
+                const highPoints = [];
+
+                currentExercise1WaveRanges.forEach((wave, idx) => {
+                    // از هر موج یک نقطه پایین و یک نقطه بالا انتخاب می‌کنیم
+                    // برای دقت بیشتر، از پایین‌ترین و بالاترین نقطه هر موج استفاده می‌کنیم
+                    let waveLow = Infinity;
+                    let waveHigh = -Infinity;
+                    let lowIndex = wave.startIndex;
+                    let highIndex = wave.startIndex;
+
+                    for (let i = wave.startIndex; i <= wave.endIndex && i < candles.length; i++) {
+                        if (candles[i].low < waveLow) {
+                            waveLow = candles[i].low;
+                            lowIndex = i;
+                        }
+                        if (candles[i].high > waveHigh) {
+                            waveHigh = candles[i].high;
+                            highIndex = i;
+                        }
+                    }
+
+                    // اگر موج‌ها دوتایی هستند، از هر دو موج برای دقت بیشتر استفاده می‌کنیم
+                    // اما برای جلوگیری از نویز، فقط از موج‌های با فاصله مناسب استفاده می‌کنیم
+                    if (idx % 2 === 0 || idx === currentExercise1WaveRanges.length - 1) {
+                        lowPoints.push({ index: lowIndex, price: waveLow });
+                        highPoints.push({ index: highIndex, price: waveHigh });
+                    }
+                });
+
+                // اگر تعداد نقاط کافی نیست، از همه موج‌ها استفاده کن
+                if (lowPoints.length < 2) {
+                    lowPoints.length = 0;
+                    highPoints.length = 0;
+                    currentExercise1WaveRanges.forEach((wave) => {
+                        let waveLow = Infinity;
+                        let waveHigh = -Infinity;
+                        let lowIndex = wave.startIndex;
+                        let highIndex = wave.startIndex;
+                        for (let i = wave.startIndex; i <= wave.endIndex && i < candles.length; i++) {
+                            if (candles[i].low < waveLow) {
+                                waveLow = candles[i].low;
+                                lowIndex = i;
+                            }
+                            if (candles[i].high > waveHigh) {
+                                waveHigh = candles[i].high;
+                                highIndex = i;
+                            }
+                        }
+                        lowPoints.push({ index: lowIndex, price: waveLow });
+                        highPoints.push({ index: highIndex, price: waveHigh });
+                    });
+                }
+
+                if (lowPoints.length >= 2 && highPoints.length >= 2) {
+                    // محاسبه خط پایین (از پایین‌ترین نقاط)
+                    const firstLow = lowPoints[0];
+                    const lastLow = lowPoints[lowPoints.length - 1];
+
+                    // محاسبه خط بالا (از بالاترین نقاط)
+                    const firstHigh = highPoints[0];
+                    const lastHigh = highPoints[highPoints.length - 1];
+
+                    const firstX = padding + (firstLow.index * candleWidth) + (candleWidth - bodyWidth) / 2 + bodyWidth / 2;
+                    const lastX = padding + (lastLow.index * candleWidth) + (candleWidth - bodyWidth) / 2 + bodyWidth / 2;
+
+                    const yFirstLow = baseY - ((firstLow.price - GLOBAL_MIN) / (GLOBAL_MAX - GLOBAL_MIN)) * chartHeight;
+                    const yLastLow = baseY - ((lastLow.price - GLOBAL_MIN) / (GLOBAL_MAX - GLOBAL_MIN)) * chartHeight;
+                    const yFirstHigh = baseY - ((firstHigh.price - GLOBAL_MIN) / (GLOBAL_MAX - GLOBAL_MIN)) * chartHeight;
+                    const yLastHigh = baseY - ((lastHigh.price - GLOBAL_MIN) / (GLOBAL_MAX - GLOBAL_MIN)) * chartHeight;
+
+                    // خط پایین (اربیب)
+                    const lineBottom = document.createElementNS(ns, 'line');
+                    lineBottom.setAttribute('x1', firstX);
+                    lineBottom.setAttribute('y1', yFirstLow);
+                    lineBottom.setAttribute('x2', lastX);
+                    lineBottom.setAttribute('y2', yLastLow);
+                    lineBottom.setAttribute('stroke', '#ff9b00');
+                    lineBottom.setAttribute('stroke-width', '3');
+                    lineBottom.setAttribute('opacity', '0.8');
+                    svg.appendChild(lineBottom);
+
+                    // خط بالا (اربیب)
+                    const lineTop = document.createElementNS(ns, 'line');
+                    lineTop.setAttribute('x1', firstX);
+                    lineTop.setAttribute('y1', yFirstHigh);
+                    lineTop.setAttribute('x2', lastX);
+                    lineTop.setAttribute('y2', yLastHigh);
+                    lineTop.setAttribute('stroke', '#ff9b00');
+                    lineTop.setAttribute('stroke-width', '3');
+                    lineTop.setAttribute('opacity', '0.8');
+                    svg.appendChild(lineTop);
+                }
+            }
+        }
+
+        function regenerateExercise1(incrementCounter = true) {
+            const candles = generateExercise1Candles();
+            currentExercise1Candles = candles;
+            renderExercise1Candles(candles, 's1');
+            renderExercise1Candles(candles, 'answerSvg1', true);
+
+            const spoilerBtn = document.getElementById('spoilerBtn1');
+            const spoilerContent = document.getElementById('spoilerContent1');
+            if (spoilerContent.classList.contains('show')) {
+                spoilerContent.classList.remove('show');
+                spoilerBtn.textContent = 'نمایش جواب';
+                spoilerBtn.classList.remove('active');
+            }
+
+            document.getElementById('badge1').style.display = 'none';
+            document.getElementById('answerBadge1').style.display = 'none';
+
+            const mainSvg = document.getElementById('s1');
+            const lines = mainSvg.querySelectorAll('line');
+            lines.forEach(line => {
+                if (line.getAttribute('stroke') === '#ff9b00' && line.getAttribute('stroke-width') === '1.5') {
+                    line.remove();
+                }
+            });
+
+            if (history['s1']) {
+                history['s1'] = { undo: [], redo: [] };
+            }
+
+            if (incrementCounter) {
+                incrementExercise1Counter();
+            }
+        }
+
+        // ================================================================
+        // GENERATOR FOR EXERCISE 3
+        // ================================================================
+
+        const GLOBAL_MIN_3 = 26;
+        const GLOBAL_MAX_3 = 86;
+        const WAVE_SIZE_3 = 7;
+
+        let CURRENT_RANGE_MIN = 29;
+        let CURRENT_RANGE_MAX = 64;
         let RANGE_CANDLE_INDICES = [];
 
-        function generateWaveCandles(startPrice) {
+        function generateRandomRange() {
+            const rangeHeight = 20 + Math.random() * 13;
+            const maxStart = GLOBAL_MAX_3 - GLOBAL_MIN_3 - rangeHeight;
+            const start = GLOBAL_MIN_3 + Math.random() * maxStart;
+            CURRENT_RANGE_MIN = Math.round(start);
+            CURRENT_RANGE_MAX = Math.round(start + rangeHeight);
+            CURRENT_RANGE_MIN = Math.max(GLOBAL_MIN_3, Math.min(GLOBAL_MAX_3 - rangeHeight, CURRENT_RANGE_MIN));
+            CURRENT_RANGE_MAX = CURRENT_RANGE_MIN + Math.round(rangeHeight);
+            CURRENT_RANGE_MAX = Math.min(GLOBAL_MAX_3, CURRENT_RANGE_MAX);
+        }
+
+        function generateStandardCandle3(currentPrice, closePrice, minLimit, maxLimit) {
+            const open = Math.round(currentPrice * 100) / 100;
+            const close = Math.round(closePrice * 100) / 100;
+            const wickType = getWickType();
+            let high = Math.max(open, close);
+            let low = Math.min(open, close);
+            if (wickType === 1 || wickType === 3) {
+                high = Math.round((Math.max(open, close) + 1.5 + Math.random() * 2.5) * 100) / 100;
+            }
+            if (wickType === 2 || wickType === 3) {
+                low = Math.round((Math.min(open, close) - 1.5 - Math.random() * 2.5) * 100) / 100;
+            }
+            high = Math.min(maxLimit, Math.max(minLimit, high));
+            low = Math.max(minLimit, Math.min(maxLimit, low));
+            return { high, low, open, close };
+        }
+
+        function generateRandomCandle3(currentPrice, allowSpike = false) {
+            let move;
+            if (allowSpike && Math.random() < 0.12) {
+                move = (Math.random() > 0.5 ? 1 : -1) * (4 + Math.random() * 4);
+            } else {
+                move = (Math.random() - 0.5) * 6;
+            }
+            let close = Math.round((currentPrice + move) * 100) / 100;
+            close = Math.max(GLOBAL_MIN_3 + 0.5, Math.min(GLOBAL_MAX_3 - 0.5, close));
+            return generateStandardCandle3(currentPrice, close, GLOBAL_MIN_3, GLOBAL_MAX_3);
+        }
+
+        function generatePumpCandles3(currentPrice, direction) {
+            const candles = [];
+            const moves = direction === 'up' ? [6, 3, 7, 4] : [-6, -3, -7, -4];
+            for (let i = 0; i < 4; i++) {
+                let targetPrice = currentPrice + moves[i];
+                targetPrice = Math.max(GLOBAL_MIN_3 + 0.5, Math.min(GLOBAL_MAX_3 - 0.5, targetPrice));
+                const noise = (Math.random() - 0.5) * 1.5;
+                let close = Math.round((targetPrice + noise) * 100) / 100;
+                close = Math.max(GLOBAL_MIN_3 + 0.5, Math.min(GLOBAL_MAX_3 - 0.5, close));
+                const candle = generateStandardCandle3(currentPrice, close, GLOBAL_MIN_3, GLOBAL_MAX_3);
+                candles.push(candle);
+                currentPrice = candle.close;
+            }
+            return { candles, lastPrice: currentPrice };
+        }
+
+        function generateWaveCandles3(startPrice) {
             const candles = [];
             let currentPrice = startPrice;
             RANGE_CANDLE_INDICES = [];
@@ -1244,7 +1606,7 @@
                     const progress = (i + 1) / (steps + 1);
                     const targetPrice = currentPrice + (CURRENT_RANGE_MIN - currentPrice) * progress + 0.5;
                     const close = Math.min(targetPrice, CURRENT_RANGE_MIN + 0.5);
-                    const candle = generateStandardCandle(currentPrice, close, GLOBAL_MIN, GLOBAL_MAX);
+                    const candle = generateStandardCandle3(currentPrice, close, GLOBAL_MIN_3, GLOBAL_MAX_3);
                     candles.push(candle);
                     currentPrice = candle.close;
                 }
@@ -1254,18 +1616,18 @@
                     const progress = (i + 1) / (steps + 1);
                     const targetPrice = currentPrice - (currentPrice - CURRENT_RANGE_MAX) * progress - 0.5;
                     const close = Math.max(targetPrice, CURRENT_RANGE_MAX - 0.5);
-                    const candle = generateStandardCandle(currentPrice, close, GLOBAL_MIN, GLOBAL_MAX);
+                    const candle = generateStandardCandle3(currentPrice, close, GLOBAL_MIN_3, GLOBAL_MAX_3);
                     candles.push(candle);
                     currentPrice = candle.close;
                 }
             }
 
             if (currentPrice < CURRENT_RANGE_MIN) {
-                const candle = generateStandardCandle(currentPrice, CURRENT_RANGE_MIN + 0.5, GLOBAL_MIN, GLOBAL_MAX);
+                const candle = generateStandardCandle3(currentPrice, CURRENT_RANGE_MIN + 0.5, GLOBAL_MIN_3, GLOBAL_MAX_3);
                 candles.push(candle);
                 currentPrice = candle.close;
             } else if (currentPrice > CURRENT_RANGE_MAX) {
-                const candle = generateStandardCandle(currentPrice, CURRENT_RANGE_MAX - 0.5, GLOBAL_MIN, GLOBAL_MAX);
+                const candle = generateStandardCandle3(currentPrice, CURRENT_RANGE_MAX - 0.5, GLOBAL_MIN_3, GLOBAL_MAX_3);
                 candles.push(candle);
                 currentPrice = candle.close;
             }
@@ -1288,13 +1650,13 @@
                 const reverseCount = Math.random() < 0.5 ? 3 : 4;
                 const reversePos = [];
                 while (reversePos.length < reverseCount) {
-                    const pos = Math.floor(Math.random() * WAVE_SIZE);
+                    const pos = Math.floor(Math.random() * WAVE_SIZE_3);
                     if (!reversePos.includes(pos)) reversePos.push(pos);
                 }
                 reversePos.sort();
 
-                for (let i = 0; i < WAVE_SIZE; i++) {
-                    const progress = (i + 1) / WAVE_SIZE;
+                for (let i = 0; i < WAVE_SIZE_3; i++) {
+                    const progress = (i + 1) / WAVE_SIZE_3;
                     let targetPrice = startPrice + (endPrice - startPrice) * progress;
                     const isReverse = reversePos.includes(i);
                     let close;
@@ -1306,7 +1668,7 @@
                         close = Math.round((targetPrice + noise) * 100) / 100;
                     }
                     close = Math.max(CURRENT_RANGE_MIN + 0.5, Math.min(CURRENT_RANGE_MAX - 0.5, close));
-                    const candle = generateStandardCandle(currentPrice, close, CURRENT_RANGE_MIN, CURRENT_RANGE_MAX);
+                    const candle = generateStandardCandle3(currentPrice, close, CURRENT_RANGE_MIN, CURRENT_RANGE_MAX);
                     candles.push(candle);
                     RANGE_CANDLE_INDICES.push(candles.length - 1);
                     currentPrice = candle.close;
@@ -1316,7 +1678,7 @@
             return { candles, lastPrice: currentPrice };
         }
 
-        function shuffleSections() {
+        function shuffleSections3() {
             const sections = [
                 { type: 'random', count: 18 },
                 { type: 'random', count: 28 },
@@ -1330,9 +1692,9 @@
             return sections;
         }
 
-        function generateAllCandles() {
+        function generateAllCandles3() {
             generateRandomRange();
-            const shuffledSections = shuffleSections();
+            const shuffledSections = shuffleSections3();
             const allCandles = [];
             let currentPrice = 40;
             const pumpDirection = Math.random() < 0.5 ? 'up' : 'down';
@@ -1341,16 +1703,16 @@
             shuffledSections.forEach((section) => {
                 if (section.type === 'random') {
                     for (let i = 0; i < section.count; i++) {
-                        const candle = generateRandomCandle(currentPrice, true);
+                        const candle = generateRandomCandle3(currentPrice, true);
                         allCandles.push(candle);
                         currentPrice = candle.close;
                     }
                 } else if (section.type === 'pump') {
-                    const pumpResult = generatePumpCandles(currentPrice, pumpDirection);
+                    const pumpResult = generatePumpCandles3(currentPrice, pumpDirection);
                     allCandles.push(...pumpResult.candles);
                     currentPrice = pumpResult.lastPrice;
                 } else if (section.type === 'range') {
-                    const waveResult = generateWaveCandles(currentPrice);
+                    const waveResult = generateWaveCandles3(currentPrice);
                     const baseIndex = allCandles.length;
                     const rangeIndices = RANGE_CANDLE_INDICES.map(idx => idx + baseIndex);
                     RANGE_CANDLE_INDICES = rangeIndices;
@@ -1366,12 +1728,7 @@
             return { min: CURRENT_RANGE_MIN, max: CURRENT_RANGE_MAX };
         }
 
-        // ================================================================
-        // RENDER FUNCTION
-        // ================================================================
-
-        function renderCandlesOnSvg(svg, candles, minPrice, maxPrice, showAnswerLine = false, rangeMin = null, rangeMax =
-            null) {
+        function renderCandlesOnSvg3(svg, candles, minPrice, maxPrice, showAnswerLine = false, rangeMin = null, rangeMax = null) {
             const ns = 'http://www.w3.org/2000/svg';
 
             const toRemove = [];
@@ -1379,8 +1736,7 @@
                 const child = svg.children[i];
                 const isGrid = child.tagName === 'line' && child.getAttribute('stroke') === '#151515';
                 const isLabel = child.tagName === 'text' && !child.id;
-                const isAnswerLine = child.tagName === 'line' && child.getAttribute('stroke') === '#ff9b00' && child
-                    .getAttribute('stroke-width') === '2';
+                const isAnswerLine = child.tagName === 'line' && child.getAttribute('stroke') === '#ff9b00' && child.getAttribute('stroke-width') === '2';
                 const isBg = child.tagName === 'rect' && child.getAttribute('fill') === '#0a0a0a';
                 if (!isGrid && !isLabel && !isBg) {
                     toRemove.push(child);
@@ -1408,23 +1764,18 @@
 
             candles.forEach((candle, index) => {
                 const x = padding + (index * candleWidth) + (candleWidth - bodyWidth) / 2;
-
                 const high = Math.min(maxPrice, Math.max(minPrice, candle.high));
                 const low = Math.min(maxPrice, Math.max(minPrice, candle.low));
                 const open = Math.min(high, Math.max(low, candle.open));
                 const close = Math.min(high, Math.max(low, candle.close));
-
                 const yHigh = baseY - ((high - minPrice) / (maxPrice - minPrice)) * chartHeight;
                 const yLow = baseY - ((low - minPrice) / (maxPrice - minPrice)) * chartHeight;
                 const yOpen = baseY - ((open - minPrice) / (maxPrice - minPrice)) * chartHeight;
                 const yClose = baseY - ((close - minPrice) / (maxPrice - minPrice)) * chartHeight;
-
                 const isUp = close >= open;
                 const color = isUp ? '#ffffff' : '#890913';
-
                 const bodyY = Math.min(yOpen, yClose);
                 const bodyH = Math.max(1.5, Math.abs(yOpen - yClose));
-
                 const rect = document.createElementNS(ns, 'rect');
                 rect.setAttribute('x', x);
                 rect.setAttribute('y', bodyY);
@@ -1434,7 +1785,6 @@
                 rect.setAttribute('rx', '0');
                 rect.setAttribute('opacity', '0.95');
                 svg.appendChild(rect);
-
                 if (yHigh < bodyY) {
                     const lineTop = document.createElementNS(ns, 'line');
                     lineTop.setAttribute('x1', x + bodyWidth / 2);
@@ -1446,7 +1796,6 @@
                     lineTop.setAttribute('opacity', '0.8');
                     svg.appendChild(lineTop);
                 }
-
                 if (yLow > bodyY + bodyH) {
                     const lineBottom = document.createElementNS(ns, 'line');
                     lineBottom.setAttribute('x1', x + bodyWidth / 2);
@@ -1460,14 +1809,11 @@
                 }
             });
 
-            if (showAnswerLine && rangeMin !== null && rangeMax !== null && firstRangeIndex !== -1 && lastRangeIndex !==
-                -1) {
+            if (showAnswerLine && rangeMin !== null && rangeMax !== null && firstRangeIndex !== -1 && lastRangeIndex !== -1) {
                 const firstX = padding + (firstRangeIndex * candleWidth) + (candleWidth - bodyWidth) / 2 + bodyWidth / 2;
                 const lastX = padding + (lastRangeIndex * candleWidth) + (candleWidth - bodyWidth) / 2 + bodyWidth / 2;
-
                 const yTop = baseY - ((rangeMax - minPrice) / (maxPrice - minPrice)) * chartHeight;
                 const yBottom = baseY - ((rangeMin - minPrice) / (maxPrice - minPrice)) * chartHeight;
-
                 const lineTop = document.createElementNS(ns, 'line');
                 lineTop.setAttribute('x1', firstX);
                 lineTop.setAttribute('y1', yTop);
@@ -1477,7 +1823,6 @@
                 lineTop.setAttribute('stroke-width', '2');
                 lineTop.setAttribute('opacity', '0.7');
                 svg.appendChild(lineTop);
-
                 const lineBottom = document.createElementNS(ns, 'line');
                 lineBottom.setAttribute('x1', firstX);
                 lineBottom.setAttribute('y1', yBottom);
@@ -1490,24 +1835,16 @@
             }
         }
 
-        // ================================================================
-        // GENERATE NEW EXERCISE 3
-        // ================================================================
-
         let currentExercise3Candles = [];
 
         function generateNewExercise3(incrementCounter = true) {
-            const candles = generateAllCandles();
+            const candles = generateAllCandles3();
             currentExercise3Candles = candles;
-
             const range = findRangeInCandles(candles);
-
             const mainSvg = document.getElementById('s3');
-            renderCandlesOnSvg(mainSvg, candles, GLOBAL_MIN, GLOBAL_MAX, false);
-
+            renderCandlesOnSvg3(mainSvg, candles, GLOBAL_MIN_3, GLOBAL_MAX_3, false);
             const answerSvg = document.getElementById('answerSvg3');
-            renderCandlesOnSvg(answerSvg, candles, GLOBAL_MIN, GLOBAL_MAX, true, range.min, range.max);
-
+            renderCandlesOnSvg3(answerSvg, candles, GLOBAL_MIN_3, GLOBAL_MAX_3, true, range.min, range.max);
             const spoilerBtn = document.getElementById('spoilerBtn3');
             const spoilerContent = document.getElementById('spoilerContent3');
             if (spoilerContent.classList.contains('show')) {
@@ -1515,25 +1852,18 @@
                 spoilerBtn.textContent = 'نمایش جواب';
                 spoilerBtn.classList.remove('active');
             }
-
             document.getElementById('badge3').style.display = 'none';
-
+            document.getElementById('answerBadge3').style.display = 'none';
             const lines = mainSvg.querySelectorAll('line');
             lines.forEach(line => {
                 if (line.getAttribute('stroke') === '#ff9b00' && line.getAttribute('stroke-width') === '1.5') {
                     line.remove();
                 }
             });
-
-            // فقط اگر incrementCounter = true باشه، شمارنده رو افزایش بده
             if (incrementCounter) {
                 incrementExercise3Counter();
             }
         }
-
-        // ================================================================
-        // TOGGLE SPOILER
-        // ================================================================
 
         function toggleSpoiler(btn) {
             const content = btn.nextElementSibling;
@@ -1549,7 +1879,7 @@
         }
 
         // ================================================================
-        // TREND LINE TOOLS (خلاصه شده)
+        // TREND LINE TOOLS
         // ================================================================
 
         const history = {};
@@ -1666,8 +1996,9 @@
 
             function getCoords(e) {
                 const rect = svg.getBoundingClientRect();
-                const scaleX = svg.viewBox.baseVal.width / rect.width;
-                const scaleY = svg.viewBox.baseVal.height / rect.height;
+                const viewBox = svg.viewBox.baseVal;
+                const scaleX = viewBox.width / rect.width;
+                const scaleY = viewBox.height / rect.height;
                 let clientX, clientY;
                 if (e.touches) {
                     clientX = e.touches[0].clientX;
@@ -1676,8 +2007,8 @@
                     clientX = e.clientX;
                     clientY = e.clientY;
                 }
-                const x = Math.max(0, Math.min(svg.viewBox.baseVal.width, (clientX - rect.left) * scaleX));
-                const y = Math.max(0, Math.min(svg.viewBox.baseVal.height, (clientY - rect.top) * scaleY));
+                const x = Math.max(0, Math.min(viewBox.width, (clientX - rect.left) * scaleX));
+                const y = Math.max(0, Math.min(viewBox.height, (clientY - rect.top) * scaleY));
                 return { x, y };
             }
 
@@ -1719,7 +2050,7 @@
                 tempLine.setAttribute('x2', x2);
                 tempLine.setAttribute('y2', y2);
                 tempLine.setAttribute('stroke', '#ff9b00');
-                tempLine.setAttribute('stroke-width', '1.5');
+                tempLine.setAttribute('stroke-width', '3');
                 tempLine.setAttribute('stroke-dasharray', '6,4');
                 tempLine.setAttribute('opacity', '0.7');
                 tempLine.classList.add('temp-line');
@@ -1780,7 +2111,7 @@
                             line.setAttribute('x2', x);
                             line.setAttribute('y2', y);
                             line.setAttribute('stroke', '#ff9b00');
-                            line.setAttribute('stroke-width', '1.5');
+                            line.setAttribute('stroke-width', '3');
                             line.setAttribute('opacity', '0.9');
                             svg.appendChild(line);
                             saveLine(svg.id, line);
@@ -1817,7 +2148,7 @@
                             line.setAttribute('x2', x);
                             line.setAttribute('y2', y);
                             line.setAttribute('stroke', '#ff9b00');
-                            line.setAttribute('stroke-width', '1.5');
+                            line.setAttribute('stroke-width', '3');
                             line.setAttribute('opacity', '0.9');
                             svg.appendChild(line);
                             saveLine(svg.id, line);
@@ -1876,7 +2207,7 @@
                             line.setAttribute('x2', x);
                             line.setAttribute('y2', y);
                             line.setAttribute('stroke', '#ff9b00');
-                            line.setAttribute('stroke-width', '1.5');
+                            line.setAttribute('stroke-width', '3');
                             line.setAttribute('opacity', '0.9');
                             svg.appendChild(line);
                             saveLine(svg.id, line);
@@ -1913,7 +2244,7 @@
                             line.setAttribute('x2', x);
                             line.setAttribute('y2', y);
                             line.setAttribute('stroke', '#ff9b00');
-                            line.setAttribute('stroke-width', '1.5');
+                            line.setAttribute('stroke-width', '3');
                             line.setAttribute('opacity', '0.9');
                             svg.appendChild(line);
                             saveLine(svg.id, line);
@@ -2002,8 +2333,7 @@
                 const lines = svg.querySelectorAll('line:not(.temp-line)');
                 const userLines = [];
                 lines.forEach(line => {
-                    if (!line.id && !line.classList.contains('grid-line') && line.getAttribute('stroke') ===
-                        '#ff9b00') {
+                    if (!line.id && !line.classList.contains('grid-line') && line.getAttribute('stroke') === '#ff9b00') {
                         userLines.push(line);
                     }
                 });
@@ -2031,22 +2361,31 @@
         });
 
         // ================================================================
-        // INITIALIZATION - از ۱ شروع بشه
+        // INITIALIZATION
         // ================================================================
 
         window.addEventListener('load', function() {
-            // از ۱ شروع میشه
+            const initialCandles1 = generateExercise1Candles();
+            currentExercise1Candles = initialCandles1;
+            renderExercise1Candles(initialCandles1, 's1');
+            renderExercise1Candles(initialCandles1, 'answerSvg1', true);
+
+            exercise1Counter = 1;
+            document.getElementById('exerciseCounter1').textContent = exercise1Counter;
+            bestRecord = getBestRecord();
+            document.getElementById('bestRecordDisplay1').textContent = bestRecord;
+            document.getElementById('newRecordBadge1').classList.remove('show');
+
             exercise3Counter = 1;
             document.getElementById('exerciseCounter3').textContent = exercise3Counter;
-            bestRecord = getBestRecord();
-            document.getElementById('bestRecordDisplay').textContent = bestRecord;
-            document.getElementById('newRecordBadge').classList.remove('show');
+            document.getElementById('bestRecordDisplay3').textContent = bestRecord;
+            document.getElementById('newRecordBadge3').classList.remove('show');
 
-            // با false صدا بزنیم تا شمارنده افزایش پیدا نکنه (بارگذاری اولیه)
             generateNewExercise3(false);
         });
 
-        console.log('🕯️ Amitis v62 - شروع از ۱، حذف روند را تشخیص دهید، تعداد کل تمرین های حل شده با نئون سفید');
+        console.log('🕯️ Amitis v65 - خطوط ترندلاین اریب با استفاده از نقاط افراطی هر موج');
+        console.log('🕯️ خطوط از کندل‌ها عبور نمی‌کنند و به اندازه کافی به کندل‌ها نزدیک هستند');
     </script>
 
 </body>

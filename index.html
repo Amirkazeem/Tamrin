@@ -535,7 +535,7 @@
                     <button class="undo-btn" data-target="s1">←</button>
                 </div>
                 <div class="svg-wrap">
-                    <svg id="s1" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" style="pointer-events:all;">
+                    <svg id="s1" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
                         <rect width="400" height="200" fill="#0a0a0a" rx="8" />
                         <line x1="28" y1="168" x2="380" y2="168" stroke="#151515" stroke-width="0.4" />
                         <line x1="28" y1="134" x2="380" y2="134" stroke="#151515" stroke-width="0.4" />
@@ -609,7 +609,7 @@
                 <button class="spoiler-btn" onclick="toggleSpoiler(this)">نمایش جواب</button>
                 <div class="spoiler-content">
                     <div class="svg-wrap">
-                        <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+                        <svg viewBox="0 0 400 200">
                             <rect width="400" height="200" fill="#0a0a0a" rx="8" />
                             <line x1="28" y1="168" x2="380" y2="168" stroke="#151515" stroke-width="0.4" />
                             <line x1="28" y1="134" x2="380" y2="134" stroke="#151515" stroke-width="0.4" />
@@ -699,7 +699,7 @@
                     <button class="undo-btn" data-target="s2">←</button>
                 </div>
                 <div class="svg-wrap">
-                    <svg id="s2" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" style="pointer-events:all;">
+                    <svg id="s2" viewBox="0 0 400 200">
                         <rect width="400" height="200" fill="#0a0a0a" rx="8" />
                         <line x1="28" y1="168" x2="380" y2="168" stroke="#151515" stroke-width="0.4" />
                         <line x1="28" y1="134" x2="380" y2="134" stroke="#151515" stroke-width="0.4" />
@@ -773,7 +773,7 @@
                 <button class="spoiler-btn" onclick="toggleSpoiler(this)">نمایش جواب</button>
                 <div class="spoiler-content">
                     <div class="svg-wrap">
-                        <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+                        <svg viewBox="0 0 400 200">
                             <rect width="400" height="200" fill="#0a0a0a" rx="8" />
                             <line x1="28" y1="168" x2="380" y2="168" stroke="#151515" stroke-width="0.4" />
                             <line x1="28" y1="134" x2="380" y2="134" stroke="#151515" stroke-width="0.4" />
@@ -863,7 +863,7 @@
                     <button class="undo-btn" data-target="s3">←</button>
                 </div>
                 <div class="svg-wrap">
-                    <svg id="s3" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" style="pointer-events:all;">
+                    <svg id="s3" viewBox="0 0 400 200">
                         <rect width="400" height="200" fill="#0a0a0a" rx="8" />
                         <line x1="28" y1="168" x2="380" y2="168" stroke="#151515" stroke-width="0.4" />
                         <line x1="28" y1="134" x2="380" y2="134" stroke="#151515" stroke-width="0.4" />
@@ -937,7 +937,7 @@
                 <button class="spoiler-btn" onclick="toggleSpoiler(this)">نمایش جواب</button>
                 <div class="spoiler-content">
                     <div class="svg-wrap">
-                        <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+                        <svg viewBox="0 0 400 200">
                             <rect width="400" height="200" fill="#0a0a0a" rx="8" />
                             <line x1="28" y1="168" x2="380" y2="168" stroke="#151515" stroke-width="0.4" />
                             <line x1="28" y1="134" x2="380" y2="134" stroke="#151515" stroke-width="0.4" />
@@ -1013,14 +1013,16 @@
                 Powered by <span class="highlight">Amirkazem</span> Coding
             </span>
             <span class="dot-sep">•</span>
-            <span class="version">v49</span>
+            <span class="version">v50</span>
         </div>
 
     </div>
 
     <script>
         // ================================================================
-        // Amirkazem Coding - v49 (نسخه نهایی: دسکتاپ 2 تپ، موبایل 3 تپ)
+        // Amirkazem Coding - v50 (نسخه نهایی ساده)
+        // دسکتاپ: 2 کلیک (اول نقطه اول، دوم نقطه دوم)
+        // موبایل: 3 تپ (اول کراس‌هیر، دوم نقطه اول، سوم نقطه دوم)
         // ================================================================
 
         function toggleSpoiler(btn) {
@@ -1051,7 +1053,6 @@
             h.redo = [];
         }
 
-        // تشخیص موبایل
         function isMobile() {
             return /Mobi|Android|iPhone|iPad|iPod|BlackBerry|Opera Mini|IEMobile/i.test(navigator.userAgent);
         }
@@ -1069,13 +1070,9 @@
                     this.classList.remove('active');
                     svg.style.cursor = 'default';
                     svg.dataset.drawing = 'false';
-                    svg.dataset.isFirstTap = 'true';
-                    svg.dataset.tapCount = '0';
+                    svg.dataset.step = '0';
                     svg.dataset.startX = '';
                     svg.dataset.startY = '';
-                    svg.dataset.lastX = '';
-                    svg.dataset.lastY = '';
-                    svg.dataset.mobileMode = isMobile() ? 'true' : 'false';
                     const tempLine = svg.querySelector('.temp-line');
                     if (tempLine) tempLine.remove();
                     const crosshair = svg.querySelector('.trend-crosshair');
@@ -1089,12 +1086,9 @@
                 document.querySelectorAll('svg').forEach(s => {
                     s.style.cursor = 'default';
                     s.dataset.drawing = 'false';
-                    s.dataset.isFirstTap = 'true';
-                    s.dataset.tapCount = '0';
+                    s.dataset.step = '0';
                     s.dataset.startX = '';
                     s.dataset.startY = '';
-                    s.dataset.lastX = '';
-                    s.dataset.lastY = '';
                     const tl = s.querySelector('.temp-line');
                     if (tl) tl.remove();
                     const ch = s.querySelector('.trend-crosshair');
@@ -1106,13 +1100,9 @@
                 this.classList.add('active');
                 svg.style.cursor = 'crosshair';
                 svg.dataset.drawing = 'true';
-                svg.dataset.isFirstTap = 'true';
-                svg.dataset.tapCount = '0';
+                svg.dataset.step = '0';
                 svg.dataset.startX = '';
                 svg.dataset.startY = '';
-                svg.dataset.lastX = '';
-                svg.dataset.lastY = '';
-                svg.dataset.mobileMode = isMobile() ? 'true' : 'false';
 
                 const ns = 'http://www.w3.org/2000/svg';
                 const crosshair = document.createElementNS(ns, 'g');
@@ -1160,27 +1150,20 @@
         });
 
         // ================================================================
-        // هسته اصلی ترندلاین - v49
+        // هسته اصلی
         // ================================================================
         document.querySelectorAll('.svg-wrap svg').forEach(svg => {
 
             let tempLine = null;
             let startPointCircle = null;
-            let lastCrosshairX = 0;
-            let lastCrosshairY = 0;
-
-            let pointerStartX = 0,
-                pointerStartY = 0;
-            let isDragging = false;
-            let hasMoved = false;
-            const DRAG_THRESHOLD = 8;
+            let lastX = 0,
+                lastY = 0;
 
             function getCoords(e) {
                 const rect = svg.getBoundingClientRect();
                 const scaleX = svg.viewBox.baseVal.width / rect.width;
                 const scaleY = svg.viewBox.baseVal.height / rect.height;
                 let clientX, clientY;
-
                 if (e.touches) {
                     clientX = e.touches[0].clientX;
                     clientY = e.touches[0].clientY;
@@ -1188,7 +1171,6 @@
                     clientX = e.clientX;
                     clientY = e.clientY;
                 }
-
                 const x = Math.max(0, Math.min(svg.viewBox.baseVal.width, (clientX - rect.left) * scaleX));
                 const y = Math.max(0, Math.min(svg.viewBox.baseVal.height, (clientY - rect.top) * scaleY));
                 return { x, y };
@@ -1210,18 +1192,13 @@
                 circle.setAttribute('cy', y);
                 dot.setAttribute('cx', x);
                 dot.setAttribute('cy', y);
-
-                lastCrosshairX = x;
-                lastCrosshairY = y;
-                svg.dataset.lastX = x;
-                svg.dataset.lastY = y;
+                lastX = x;
+                lastY = y;
             }
 
             function hideCrosshair() {
                 const crosshair = svg.querySelector('.trend-crosshair');
-                if (crosshair) {
-                    crosshair.style.display = 'none';
-                }
+                if (crosshair) crosshair.style.display = 'none';
             }
 
             function createTempLine(x1, y1, x2, y2) {
@@ -1278,224 +1255,225 @@
             }
 
             // ============================================================
-            // شروع
+            // رویدادها
             // ============================================================
-            function handlePointerDown(e) {
+            svg.addEventListener('mousedown', function(e) {
                 if (svg.dataset.drawing !== 'true') return;
-                if (e.cancelable) e.preventDefault();
+                e.preventDefault();
 
                 const { x, y } = getCoords(e);
-                const isFirstTap = svg.dataset.isFirstTap === 'true';
-                const mobileMode = svg.dataset.mobileMode === 'true';
+                const step = parseInt(svg.dataset.step) || 0;
+                const mobile = isMobile();
 
-                pointerStartX = x;
-                pointerStartY = y;
-                isDragging = false;
-                hasMoved = false;
-
-                // ===== دسکتاپ: اولین کلیک = نقطه اول =====
-                if (!mobileMode && isFirstTap) {
-                    // ثبت نقطه اول
-                    svg.dataset.startX = x;
-                    svg.dataset.startY = y;
-                    svg.dataset.isFirstTap = 'false';
-                    svg.dataset.tapCount = '1';
-
-                    createStartPoint(x, y);
-                    createTempLine(x, y, x, y);
-                    updateCrosshair(x, y);
-                    return;
-                }
-
-                // ===== موبایل: اولین تپ = فقط کراس‌هیر =====
-                if (mobileMode && isFirstTap) {
-                    updateCrosshair(x, y);
-                    svg.dataset.isFirstTap = 'false';
-                    return;
-                }
-
-                // تپ‌های بعدی: نمایش کراس‌هیر
-                updateCrosshair(x, y);
-            }
-
-            // ============================================================
-            // حرکت
-            // ============================================================
-            function handlePointerMove(e) {
-                if (svg.dataset.drawing !== 'true') return;
-                if (e.cancelable) e.preventDefault();
-
-                const { x, y } = getCoords(e);
-                const tapCount = parseInt(svg.dataset.tapCount) || 0;
-
-                const dx = x - pointerStartX;
-                const dy = y - pointerStartY;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-                if (dist > DRAG_THRESHOLD) {
-                    isDragging = true;
-                    hasMoved = true;
-                }
-
-                updateCrosshair(x, y);
-
-                if (tapCount === 1) {
-                    const startX = parseFloat(svg.dataset.startX);
-                    const startY = parseFloat(svg.dataset.startY);
-                    if (startX && startY) {
-                        createTempLine(startX, startY, x, y);
-                    }
-                }
-            }
-
-            // ============================================================
-            // پایان
-            // ============================================================
-            function handlePointerUp(e) {
-                if (svg.dataset.drawing !== 'true') return;
-
-                const isFirstTap = svg.dataset.isFirstTap === 'true';
-                const tapCount = parseInt(svg.dataset.tapCount) || 0;
-                const mobileMode = svg.dataset.mobileMode === 'true';
-
-                if (isFirstTap) {
-                    return;
-                }
-
-                if (isDragging) {
-                    isDragging = false;
-                    hasMoved = false;
-                    return;
-                }
-
-                if (!isDragging && !hasMoved) {
-                    const x = lastCrosshairX;
-                    const y = lastCrosshairY;
-
-                    if (x === 0 && y === 0) return;
-
-                    // ===== دسکتاپ: تپ دوم = نقطه دوم =====
-                    if (!mobileMode && tapCount === 1) {
-                        const startX = parseFloat(svg.dataset.startX);
-                        const startY = parseFloat(svg.dataset.startY);
-                        if (startX === 0 || startY === 0) return;
-
-                        removeTempLine();
-                        hideCrosshair();
-                        removeStartPoint();
-
-                        const ns = 'http://www.w3.org/2000/svg';
-                        const finalLine = document.createElementNS(ns, 'line');
-                        finalLine.setAttribute('x1', startX);
-                        finalLine.setAttribute('y1', startY);
-                        finalLine.setAttribute('x2', x);
-                        finalLine.setAttribute('y2', y);
-                        finalLine.setAttribute('stroke', '#ff9b00');
-                        finalLine.setAttribute('stroke-width', '1.5');
-                        finalLine.setAttribute('opacity', '0.9');
-                        svg.appendChild(finalLine);
-
-                        saveLine(svg.id, finalLine);
-
-                        svg.dataset.tapCount = '0';
-                        svg.dataset.isFirstTap = 'true';
-                        svg.dataset.startX = '';
-                        svg.dataset.startY = '';
-                        lastCrosshairX = 0;
-                        lastCrosshairY = 0;
-                        return;
-                    }
-
-                    // ===== موبایل: تپ دوم = نقطه اول =====
-                    if (mobileMode && tapCount === 0) {
+                // دسکتاپ: step 0 = نقطه اول، step 1 = نقطه دوم
+                if (!mobile) {
+                    if (step === 0) {
                         svg.dataset.startX = x;
                         svg.dataset.startY = y;
-                        svg.dataset.tapCount = '1';
-
+                        svg.dataset.step = '1';
                         createStartPoint(x, y);
                         createTempLine(x, y, x, y);
                         updateCrosshair(x, y);
-                        return;
+                    } else if (step === 1) {
+                        const sx = parseFloat(svg.dataset.startX);
+                        const sy = parseFloat(svg.dataset.startY);
+                        if (sx && sy) {
+                            removeTempLine();
+                            removeStartPoint();
+                            hideCrosshair();
+
+                            const ns = 'http://www.w3.org/2000/svg';
+                            const line = document.createElementNS(ns, 'line');
+                            line.setAttribute('x1', sx);
+                            line.setAttribute('y1', sy);
+                            line.setAttribute('x2', x);
+                            line.setAttribute('y2', y);
+                            line.setAttribute('stroke', '#ff9b00');
+                            line.setAttribute('stroke-width', '1.5');
+                            line.setAttribute('opacity', '0.9');
+                            svg.appendChild(line);
+                            saveLine(svg.id, line);
+
+                            svg.dataset.step = '0';
+                            svg.dataset.startX = '';
+                            svg.dataset.startY = '';
+                        }
                     }
-
-                    // ===== موبایل: تپ سوم = نقطه دوم =====
-                    if (mobileMode && tapCount === 1) {
-                        const startX = parseFloat(svg.dataset.startX);
-                        const startY = parseFloat(svg.dataset.startY);
-                        if (startX === 0 || startY === 0) return;
-
-                        removeTempLine();
-                        hideCrosshair();
-                        removeStartPoint();
-
-                        const ns = 'http://www.w3.org/2000/svg';
-                        const finalLine = document.createElementNS(ns, 'line');
-                        finalLine.setAttribute('x1', startX);
-                        finalLine.setAttribute('y1', startY);
-                        finalLine.setAttribute('x2', x);
-                        finalLine.setAttribute('y2', y);
-                        finalLine.setAttribute('stroke', '#ff9b00');
-                        finalLine.setAttribute('stroke-width', '1.5');
-                        finalLine.setAttribute('opacity', '0.9');
-                        svg.appendChild(finalLine);
-
-                        saveLine(svg.id, finalLine);
-
-                        svg.dataset.tapCount = '0';
-                        svg.dataset.isFirstTap = 'true';
-                        svg.dataset.startX = '';
-                        svg.dataset.startY = '';
-                        lastCrosshairX = 0;
-                        lastCrosshairY = 0;
-                        return;
-                    }
+                    return;
                 }
 
-                hasMoved = false;
-                isDragging = false;
-            }
+                // موبایل: step 0 = کراس‌هیر، step 1 = نقطه اول، step 2 = نقطه دوم
+                if (mobile) {
+                    if (step === 0) {
+                        updateCrosshair(x, y);
+                        svg.dataset.step = '1';
+                    } else if (step === 1) {
+                        svg.dataset.startX = x;
+                        svg.dataset.startY = y;
+                        svg.dataset.step = '2';
+                        createStartPoint(x, y);
+                        createTempLine(x, y, x, y);
+                        updateCrosshair(x, y);
+                    } else if (step === 2) {
+                        const sx = parseFloat(svg.dataset.startX);
+                        const sy = parseFloat(svg.dataset.startY);
+                        if (sx && sy) {
+                            removeTempLine();
+                            removeStartPoint();
+                            hideCrosshair();
 
-            function handlePointerCancel(e) {
-                if (svg.dataset.drawing !== 'true') return;
-                if (parseInt(svg.dataset.tapCount) === 0) {
-                    hideCrosshair();
+                            const ns = 'http://www.w3.org/2000/svg';
+                            const line = document.createElementNS(ns, 'line');
+                            line.setAttribute('x1', sx);
+                            line.setAttribute('y1', sy);
+                            line.setAttribute('x2', x);
+                            line.setAttribute('y2', y);
+                            line.setAttribute('stroke', '#ff9b00');
+                            line.setAttribute('stroke-width', '1.5');
+                            line.setAttribute('opacity', '0.9');
+                            svg.appendChild(line);
+                            saveLine(svg.id, line);
+
+                            svg.dataset.step = '0';
+                            svg.dataset.startX = '';
+                            svg.dataset.startY = '';
+                        }
+                    }
                 }
-                isDragging = false;
-                hasMoved = false;
-            }
-
-            // ============================================================
-            // رویدادها
-            // ============================================================
-            svg.addEventListener('mousedown', handlePointerDown);
-            svg.addEventListener('mousemove', handlePointerMove);
-            svg.addEventListener('mouseup', handlePointerUp);
-            svg.addEventListener('mouseleave', function(e) {
-                if (!svg.dataset.drawing) return;
-                isDragging = false;
-                hasMoved = false;
             });
 
-            svg.addEventListener('touchstart', handlePointerDown, { passive: false });
-            svg.addEventListener('touchmove', handlePointerMove, { passive: false });
-            svg.addEventListener('touchend', handlePointerUp, { passive: false });
-            svg.addEventListener('touchcancel', handlePointerCancel, { passive: false });
+            // حرکت ماوس - به‌روزرسانی کراس‌هیر و خط موقت
+            svg.addEventListener('mousemove', function(e) {
+                if (svg.dataset.drawing !== 'true') return;
+                const { x, y } = getCoords(e);
+                const step = parseInt(svg.dataset.step) || 0;
+                const mobile = isMobile();
 
-            svg.addEventListener('mouseenter', function(e) {
-                if (!svg.dataset.drawing) return;
-                const tapCount = parseInt(svg.dataset.tapCount) || 0;
-                const isFirstTap = svg.dataset.isFirstTap === 'true';
+                updateCrosshair(x, y);
 
-                if (!isFirstTap || tapCount > 0) {
-                    const rect = svg.getBoundingClientRect();
-                    const scaleX = svg.viewBox.baseVal.width / rect.width;
-                    const scaleY = svg.viewBox.baseVal.height / rect.height;
-                    const x = ((e.clientX || 0) - rect.left) * scaleX;
-                    const y = ((e.clientY || 0) - rect.top) * scaleY;
-                    updateCrosshair(
-                        Math.max(0, Math.min(svg.viewBox.baseVal.width, x)),
-                        Math.max(0, Math.min(svg.viewBox.baseVal.height, y))
-                    );
+                if (!mobile && step === 1) {
+                    const sx = parseFloat(svg.dataset.startX);
+                    const sy = parseFloat(svg.dataset.startY);
+                    if (sx && sy) createTempLine(sx, sy, x, y);
                 }
+
+                if (mobile && step === 2) {
+                    const sx = parseFloat(svg.dataset.startX);
+                    const sy = parseFloat(svg.dataset.startY);
+                    if (sx && sy) createTempLine(sx, sy, x, y);
+                }
+            });
+
+            // تاچ
+            svg.addEventListener('touchstart', function(e) {
+                if (svg.dataset.drawing !== 'true') return;
+                e.preventDefault();
+
+                const { x, y } = getCoords(e);
+                const step = parseInt(svg.dataset.step) || 0;
+                const mobile = isMobile();
+
+                if (!mobile) {
+                    if (step === 0) {
+                        svg.dataset.startX = x;
+                        svg.dataset.startY = y;
+                        svg.dataset.step = '1';
+                        createStartPoint(x, y);
+                        createTempLine(x, y, x, y);
+                        updateCrosshair(x, y);
+                    } else if (step === 1) {
+                        const sx = parseFloat(svg.dataset.startX);
+                        const sy = parseFloat(svg.dataset.startY);
+                        if (sx && sy) {
+                            removeTempLine();
+                            removeStartPoint();
+                            hideCrosshair();
+
+                            const ns = 'http://www.w3.org/2000/svg';
+                            const line = document.createElementNS(ns, 'line');
+                            line.setAttribute('x1', sx);
+                            line.setAttribute('y1', sy);
+                            line.setAttribute('x2', x);
+                            line.setAttribute('y2', y);
+                            line.setAttribute('stroke', '#ff9b00');
+                            line.setAttribute('stroke-width', '1.5');
+                            line.setAttribute('opacity', '0.9');
+                            svg.appendChild(line);
+                            saveLine(svg.id, line);
+
+                            svg.dataset.step = '0';
+                            svg.dataset.startX = '';
+                            svg.dataset.startY = '';
+                        }
+                    }
+                    return;
+                }
+
+                if (mobile) {
+                    if (step === 0) {
+                        updateCrosshair(x, y);
+                        svg.dataset.step = '1';
+                    } else if (step === 1) {
+                        svg.dataset.startX = x;
+                        svg.dataset.startY = y;
+                        svg.dataset.step = '2';
+                        createStartPoint(x, y);
+                        createTempLine(x, y, x, y);
+                        updateCrosshair(x, y);
+                    } else if (step === 2) {
+                        const sx = parseFloat(svg.dataset.startX);
+                        const sy = parseFloat(svg.dataset.startY);
+                        if (sx && sy) {
+                            removeTempLine();
+                            removeStartPoint();
+                            hideCrosshair();
+
+                            const ns = 'http://www.w3.org/2000/svg';
+                            const line = document.createElementNS(ns, 'line');
+                            line.setAttribute('x1', sx);
+                            line.setAttribute('y1', sy);
+                            line.setAttribute('x2', x);
+                            line.setAttribute('y2', y);
+                            line.setAttribute('stroke', '#ff9b00');
+                            line.setAttribute('stroke-width', '1.5');
+                            line.setAttribute('opacity', '0.9');
+                            svg.appendChild(line);
+                            saveLine(svg.id, line);
+
+                            svg.dataset.step = '0';
+                            svg.dataset.startX = '';
+                            svg.dataset.startY = '';
+                        }
+                    }
+                }
+            }, { passive: false });
+
+            svg.addEventListener('touchmove', function(e) {
+                if (svg.dataset.drawing !== 'true') return;
+                e.preventDefault();
+                const { x, y } = getCoords(e);
+                const step = parseInt(svg.dataset.step) || 0;
+                const mobile = isMobile();
+
+                updateCrosshair(x, y);
+
+                if (!mobile && step === 1) {
+                    const sx = parseFloat(svg.dataset.startX);
+                    const sy = parseFloat(svg.dataset.startY);
+                    if (sx && sy) createTempLine(sx, sy, x, y);
+                }
+
+                if (mobile && step === 2) {
+                    const sx = parseFloat(svg.dataset.startX);
+                    const sy = parseFloat(svg.dataset.startY);
+                    if (sx && sy) createTempLine(sx, sy, x, y);
+                }
+            }, { passive: false });
+
+            // خروج ماوس
+            svg.addEventListener('mouseleave', function() {
+                if (svg.dataset.drawing !== 'true') return;
+                // فقط کراس‌هیر رو مخفی نکن
             });
         });
 
@@ -1534,12 +1512,9 @@
                 }
 
                 if (svg.dataset.drawing === 'true') {
-                    svg.dataset.isFirstTap = 'true';
-                    svg.dataset.tapCount = '0';
+                    svg.dataset.step = '0';
                     svg.dataset.startX = '';
                     svg.dataset.startY = '';
-                    lastCrosshairX = 0;
-                    lastCrosshairY = 0;
                     if (tempLine) { tempLine.remove();
                         tempLine = null; }
                     if (startPointCircle) { startPointCircle.remove();
@@ -1590,12 +1565,9 @@
                 h.redo = [];
 
                 if (svg.dataset.drawing === 'true') {
-                    svg.dataset.isFirstTap = 'true';
-                    svg.dataset.tapCount = '0';
+                    svg.dataset.step = '0';
                     svg.dataset.startX = '';
                     svg.dataset.startY = '';
-                    lastCrosshairX = 0;
-                    lastCrosshairY = 0;
                     if (tempLine) { tempLine.remove();
                         tempLine = null; }
                     if (startPointCircle) { startPointCircle.remove();

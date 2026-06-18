@@ -5,9 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
     <title>Amitis - تمرین تشخیص روند</title>
     <style>
-        /* ================================================================
-           Amirkazem Coding - v48 (اصلاح موبایل)
-           ================================================================ */
         * {
             margin: 0;
             padding: 0;
@@ -394,9 +391,6 @@
             color: #888;
         }
 
-        /* ================================================================
-           FOOTER
-           ================================================================ */
         .global-footer {
             margin-top: 40px;
             padding-top: 20px;
@@ -497,7 +491,6 @@
 
     <div class="glass-main">
 
-        <!-- ===== HEADER ===== -->
         <div class="header">
             <div class="deco-left">
                 <span class="deco-dot-outline"></span>
@@ -528,11 +521,8 @@
             </div>
         </div>
 
-        <!-- ============================================================ -->
-        <!-- تمرین ۱: سوال ۱ + جواب ۱ -->
-        <!-- ============================================================ -->
+        <!-- ===== تمرین ۱ ===== -->
         <div class="item">
-
             <div class="chart-box">
                 <div class="label">
                     <span class="title"><span class="num">●</span> سوال ۱</span>
@@ -611,15 +601,12 @@
                 <div class="footer-text">روند را تشخیص دهید</div>
             </div>
 
-            <!-- ===== جواب با اسپویلر ===== -->
             <div class="chart-box answer-box">
                 <div class="label">
                     <span class="title"><span class="num">●</span> جواب ۱</span>
                     <span class="badge green" style="display:none;">روند صعودی</span>
                 </div>
-
                 <button class="spoiler-btn" onclick="toggleSpoiler(this)">نمایش جواب</button>
-
                 <div class="spoiler-content">
                     <div class="svg-wrap">
                         <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
@@ -690,21 +677,16 @@
                     <div class="footer-text"><strong>پاسخ:</strong> کف‌های بالاتر → روند صعودی</div>
                 </div>
             </div>
-
         </div>
 
-        <!-- ===== جداکننده تمرین‌ها ===== -->
         <div class="exercise-separator">
             <div class="line"></div>
             <span class="star">✦</span>
             <div class="line"></div>
         </div>
 
-        <!-- ============================================================ -->
-        <!-- تمرین ۲: سوال ۲ + جواب ۲ -->
-        <!-- ============================================================ -->
+        <!-- ===== تمرین ۲ ===== -->
         <div class="item">
-
             <div class="chart-box">
                 <div class="label">
                     <span class="title"><span class="num">●</span> سوال ۲</span>
@@ -783,15 +765,12 @@
                 <div class="footer-text">روند را تشخیص دهید</div>
             </div>
 
-            <!-- ===== جواب با اسپویلر ===== -->
             <div class="chart-box answer-box">
                 <div class="label">
                     <span class="title"><span class="num">●</span> جواب ۲</span>
                     <span class="badge green" style="display:none;">روند نزولی</span>
                 </div>
-
                 <button class="spoiler-btn" onclick="toggleSpoiler(this)">نمایش جواب</button>
-
                 <div class="spoiler-content">
                     <div class="svg-wrap">
                         <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
@@ -862,21 +841,16 @@
                     <div class="footer-text"><strong>پاسخ:</strong> سقف‌های پایین‌تر → روند نزولی</div>
                 </div>
             </div>
-
         </div>
 
-        <!-- ===== جداکننده تمرین‌ها ===== -->
         <div class="exercise-separator">
             <div class="line"></div>
             <span class="star">✦</span>
             <div class="line"></div>
         </div>
 
-        <!-- ============================================================ -->
-        <!-- تمرین ۳: سوال ۳ + جواب ۳ -->
-        <!-- ============================================================ -->
+        <!-- ===== تمرین ۳ ===== -->
         <div class="item">
-
             <div class="chart-box">
                 <div class="label">
                     <span class="title"><span class="num">●</span> سوال ۳</span>
@@ -955,15 +929,12 @@
                 <div class="footer-text">روند را تشخیص دهید</div>
             </div>
 
-            <!-- ===== جواب با اسپویلر ===== -->
             <div class="chart-box answer-box">
                 <div class="label">
                     <span class="title"><span class="num">●</span> جواب ۳</span>
                     <span class="badge green" style="display:none;">روند رنج</span>
                 </div>
-
                 <button class="spoiler-btn" onclick="toggleSpoiler(this)">نمایش جواب</button>
-
                 <div class="spoiler-content">
                     <div class="svg-wrap">
                         <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
@@ -1035,28 +1006,23 @@
                     <div class="footer-text"><strong>پاسخ:</strong> نوسان بین حمایت و مقاومت → روند رنج</div>
                 </div>
             </div>
-
         </div>
 
-        <!-- ================================================================
-             FOOTER
-             ================================================================ -->
         <div class="global-footer">
             <span class="brand-name">
                 Powered by <span class="highlight">Amirkazem</span> Coding
             </span>
             <span class="dot-sep">•</span>
-            <span class="version">v48</span>
+            <span class="version">v49</span>
         </div>
 
     </div>
 
     <script>
         // ================================================================
-        // Amirkazem Coding - v48 (اصلاح موبایل)
+        // Amirkazem Coding - v49 (نسخه نهایی: دسکتاپ 2 تپ، موبایل 3 تپ)
         // ================================================================
 
-        // ===== تابع اسپویلر =====
         function toggleSpoiler(btn) {
             const content = btn.nextElementSibling;
             if (content.classList.contains('show')) {
@@ -1070,7 +1036,6 @@
             }
         }
 
-        // ===== تاریخچه خطوط برای Undo/Redo =====
         const history = {};
 
         function getHistory(svgId) {
@@ -1084,6 +1049,11 @@
             const h = getHistory(svgId);
             h.undo.push(line);
             h.redo = [];
+        }
+
+        // تشخیص موبایل
+        function isMobile() {
+            return /Mobi|Android|iPhone|iPad|iPod|BlackBerry|Opera Mini|IEMobile/i.test(navigator.userAgent);
         }
 
         // ================================================================
@@ -1105,6 +1075,7 @@
                     svg.dataset.startY = '';
                     svg.dataset.lastX = '';
                     svg.dataset.lastY = '';
+                    svg.dataset.mobileMode = isMobile() ? 'true' : 'false';
                     const tempLine = svg.querySelector('.temp-line');
                     if (tempLine) tempLine.remove();
                     const crosshair = svg.querySelector('.trend-crosshair');
@@ -1141,6 +1112,7 @@
                 svg.dataset.startY = '';
                 svg.dataset.lastX = '';
                 svg.dataset.lastY = '';
+                svg.dataset.mobileMode = isMobile() ? 'true' : 'false';
 
                 const ns = 'http://www.w3.org/2000/svg';
                 const crosshair = document.createElementNS(ns, 'g');
@@ -1188,25 +1160,21 @@
         });
 
         // ================================================================
-        // هسته اصلی ترندلاین - v48 (اصلاح موبایل)
+        // هسته اصلی ترندلاین - v49
         // ================================================================
         document.querySelectorAll('.svg-wrap svg').forEach(svg => {
 
             let tempLine = null;
             let startPointCircle = null;
+            let lastCrosshairX = 0;
+            let lastCrosshairY = 0;
 
-            // ===== متغیرهای تشخیص تپ =====
             let pointerStartX = 0,
                 pointerStartY = 0;
             let isDragging = false;
             let hasMoved = false;
             const DRAG_THRESHOLD = 8;
 
-            // موقعیت آخرین کراس‌هیر (برای موبایل)
-            let lastCrosshairX = 0;
-            let lastCrosshairY = 0;
-
-            // ===== تابع مختصات =====
             function getCoords(e) {
                 const rect = svg.getBoundingClientRect();
                 const scaleX = svg.viewBox.baseVal.width / rect.width;
@@ -1226,7 +1194,6 @@
                 return { x, y };
             }
 
-            // ===== نمایش کراس‌هیر =====
             function updateCrosshair(x, y) {
                 const crosshair = svg.querySelector('.trend-crosshair');
                 if (!crosshair) return;
@@ -1243,8 +1210,7 @@
                 circle.setAttribute('cy', y);
                 dot.setAttribute('cx', x);
                 dot.setAttribute('cy', y);
-                
-                // ذخیره موقعیت کراس‌هیر (مخصوص موبایل)
+
                 lastCrosshairX = x;
                 lastCrosshairY = y;
                 svg.dataset.lastX = x;
@@ -1258,7 +1224,6 @@
                 }
             }
 
-            // ===== خط موقت =====
             function createTempLine(x1, y1, x2, y2) {
                 const ns = 'http://www.w3.org/2000/svg';
                 if (tempLine) {
@@ -1288,7 +1253,6 @@
                 }
             }
 
-            // ===== نقطه شروع (دایره نارنجی) =====
             function createStartPoint(x, y) {
                 const ns = 'http://www.w3.org/2000/svg';
                 if (startPointCircle) {
@@ -1314,7 +1278,7 @@
             }
 
             // ============================================================
-            // شروع لمس/کلیک - فقط نمایش کراس‌هیر
+            // شروع
             // ============================================================
             function handlePointerDown(e) {
                 if (svg.dataset.drawing !== 'true') return;
@@ -1322,25 +1286,40 @@
 
                 const { x, y } = getCoords(e);
                 const isFirstTap = svg.dataset.isFirstTap === 'true';
+                const mobileMode = svg.dataset.mobileMode === 'true';
 
-                // ذخیره موقعیت برای تشخیص حرکت
                 pointerStartX = x;
                 pointerStartY = y;
                 isDragging = false;
                 hasMoved = false;
 
-                // ===== STEP 1: اولین تپ - فقط کراس‌هیر =====
-                if (isFirstTap) {
+                // ===== دسکتاپ: اولین کلیک = نقطه اول =====
+                if (!mobileMode && isFirstTap) {
+                    // ثبت نقطه اول
+                    svg.dataset.startX = x;
+                    svg.dataset.startY = y;
+                    svg.dataset.isFirstTap = 'false';
+                    svg.dataset.tapCount = '1';
+
+                    createStartPoint(x, y);
+                    createTempLine(x, y, x, y);
                     updateCrosshair(x, y);
                     return;
                 }
 
-                // در تپ‌های بعدی، کراس‌هیر رو به‌روز می‌کنیم
+                // ===== موبایل: اولین تپ = فقط کراس‌هیر =====
+                if (mobileMode && isFirstTap) {
+                    updateCrosshair(x, y);
+                    svg.dataset.isFirstTap = 'false';
+                    return;
+                }
+
+                // تپ‌های بعدی: نمایش کراس‌هیر
                 updateCrosshair(x, y);
             }
 
             // ============================================================
-            // حرکت - به‌روزرسانی کراس‌هیر و خط موقت
+            // حرکت
             // ============================================================
             function handlePointerMove(e) {
                 if (svg.dataset.drawing !== 'true') return;
@@ -1349,7 +1328,6 @@
                 const { x, y } = getCoords(e);
                 const tapCount = parseInt(svg.dataset.tapCount) || 0;
 
-                // تشخیص حرکت
                 const dx = x - pointerStartX;
                 const dy = y - pointerStartY;
                 const dist = Math.sqrt(dx * dx + dy * dy);
@@ -1358,10 +1336,8 @@
                     hasMoved = true;
                 }
 
-                // ===== همیشه کراس‌هیر رو به‌روز کن (مهم برای موبایل) =====
                 updateCrosshair(x, y);
 
-                // ===== اگر نقطه اول ثبت شده، خط موقت رسم کن =====
                 if (tapCount === 1) {
                     const startX = parseFloat(svg.dataset.startX);
                     const startY = parseFloat(svg.dataset.startY);
@@ -1372,59 +1348,41 @@
             }
 
             // ============================================================
-            // پایان لمس/کلیک - ثبت نقاط
+            // پایان
             // ============================================================
             function handlePointerUp(e) {
                 if (svg.dataset.drawing !== 'true') return;
 
                 const isFirstTap = svg.dataset.isFirstTap === 'true';
                 const tapCount = parseInt(svg.dataset.tapCount) || 0;
+                const mobileMode = svg.dataset.mobileMode === 'true';
 
-                // ===== اگر اولین تپ هست، فقط کراس‌هیر نمایش داده میشه =====
                 if (isFirstTap) {
-                    svg.dataset.isFirstTap = 'false';
                     return;
                 }
 
-                // ===== اگر کشیدن بوده، کاری نکن =====
                 if (isDragging) {
                     isDragging = false;
                     hasMoved = false;
                     return;
                 }
 
-                // ===== اگر تپ بوده =====
                 if (!isDragging && !hasMoved) {
-                    // استفاده از موقعیت ذخیره شده کراس‌هیر (مخصوص موبایل)
                     const x = lastCrosshairX;
                     const y = lastCrosshairY;
-                    
+
                     if (x === 0 && y === 0) return;
 
-                    // ===== ثبت نقطه اول (تپ دوم) - دایره نارنجی =====
-                    if (tapCount === 0) {
-                        svg.dataset.startX = x;
-                        svg.dataset.startY = y;
-                        svg.dataset.tapCount = '1';
-
-                        createStartPoint(x, y);
-                        createTempLine(x, y, x, y);
-                        updateCrosshair(x, y);
-                        return;
-                    }
-
-                    // ===== ثبت نقطه دوم و رسم خط (تپ سوم) =====
-                    if (tapCount === 1) {
+                    // ===== دسکتاپ: تپ دوم = نقطه دوم =====
+                    if (!mobileMode && tapCount === 1) {
                         const startX = parseFloat(svg.dataset.startX);
                         const startY = parseFloat(svg.dataset.startY);
                         if (startX === 0 || startY === 0) return;
 
-                        // حذف المان‌های موقت
                         removeTempLine();
                         hideCrosshair();
                         removeStartPoint();
 
-                        // رسم خط نهایی
                         const ns = 'http://www.w3.org/2000/svg';
                         const finalLine = document.createElementNS(ns, 'line');
                         finalLine.setAttribute('x1', startX);
@@ -1436,16 +1394,59 @@
                         finalLine.setAttribute('opacity', '0.9');
                         svg.appendChild(finalLine);
 
-                        const targetId = svg.id;
-                        saveLine(targetId, finalLine);
+                        saveLine(svg.id, finalLine);
 
-                        // ریست کامل برای خط بعدی
                         svg.dataset.tapCount = '0';
                         svg.dataset.isFirstTap = 'true';
                         svg.dataset.startX = '';
                         svg.dataset.startY = '';
                         lastCrosshairX = 0;
                         lastCrosshairY = 0;
+                        return;
+                    }
+
+                    // ===== موبایل: تپ دوم = نقطه اول =====
+                    if (mobileMode && tapCount === 0) {
+                        svg.dataset.startX = x;
+                        svg.dataset.startY = y;
+                        svg.dataset.tapCount = '1';
+
+                        createStartPoint(x, y);
+                        createTempLine(x, y, x, y);
+                        updateCrosshair(x, y);
+                        return;
+                    }
+
+                    // ===== موبایل: تپ سوم = نقطه دوم =====
+                    if (mobileMode && tapCount === 1) {
+                        const startX = parseFloat(svg.dataset.startX);
+                        const startY = parseFloat(svg.dataset.startY);
+                        if (startX === 0 || startY === 0) return;
+
+                        removeTempLine();
+                        hideCrosshair();
+                        removeStartPoint();
+
+                        const ns = 'http://www.w3.org/2000/svg';
+                        const finalLine = document.createElementNS(ns, 'line');
+                        finalLine.setAttribute('x1', startX);
+                        finalLine.setAttribute('y1', startY);
+                        finalLine.setAttribute('x2', x);
+                        finalLine.setAttribute('y2', y);
+                        finalLine.setAttribute('stroke', '#ff9b00');
+                        finalLine.setAttribute('stroke-width', '1.5');
+                        finalLine.setAttribute('opacity', '0.9');
+                        svg.appendChild(finalLine);
+
+                        saveLine(svg.id, finalLine);
+
+                        svg.dataset.tapCount = '0';
+                        svg.dataset.isFirstTap = 'true';
+                        svg.dataset.startX = '';
+                        svg.dataset.startY = '';
+                        lastCrosshairX = 0;
+                        lastCrosshairY = 0;
+                        return;
                     }
                 }
 
@@ -1453,9 +1454,6 @@
                 isDragging = false;
             }
 
-            // ============================================================
-            // لغو
-            // ============================================================
             function handlePointerCancel(e) {
                 if (svg.dataset.drawing !== 'true') return;
                 if (parseInt(svg.dataset.tapCount) === 0) {
@@ -1466,10 +1464,8 @@
             }
 
             // ============================================================
-            // ثبت رویدادها
+            // رویدادها
             // ============================================================
-
-            // ماوس
             svg.addEventListener('mousedown', handlePointerDown);
             svg.addEventListener('mousemove', handlePointerMove);
             svg.addEventListener('mouseup', handlePointerUp);
@@ -1479,18 +1475,16 @@
                 hasMoved = false;
             });
 
-            // تاچ
             svg.addEventListener('touchstart', handlePointerDown, { passive: false });
             svg.addEventListener('touchmove', handlePointerMove, { passive: false });
             svg.addEventListener('touchend', handlePointerUp, { passive: false });
             svg.addEventListener('touchcancel', handlePointerCancel, { passive: false });
 
-            // ورود ماوس - نمایش کراس‌هیر
             svg.addEventListener('mouseenter', function(e) {
                 if (!svg.dataset.drawing) return;
                 const tapCount = parseInt(svg.dataset.tapCount) || 0;
                 const isFirstTap = svg.dataset.isFirstTap === 'true';
-                
+
                 if (!isFirstTap || tapCount > 0) {
                     const rect = svg.getBoundingClientRect();
                     const scaleX = svg.viewBox.baseVal.width / rect.width;
@@ -1505,7 +1499,7 @@
             });
         });
 
-        // ===== دکمه بازگشت یک مرحله (Undo) =====
+        // ===== Undo =====
         document.querySelectorAll('.undo-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 const targetId = this.dataset.target;
@@ -1546,14 +1540,16 @@
                     svg.dataset.startY = '';
                     lastCrosshairX = 0;
                     lastCrosshairY = 0;
-                    removeTempLine();
-                    removeStartPoint();
+                    if (tempLine) { tempLine.remove();
+                        tempLine = null; }
+                    if (startPointCircle) { startPointCircle.remove();
+                        startPointCircle = null; }
                     hideCrosshair();
                 }
             });
         });
 
-        // ===== دکمه بازگردانی (Redo) =====
+        // ===== Redo =====
         document.querySelectorAll('.redo-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 const targetId = this.dataset.target;
@@ -1569,7 +1565,7 @@
             });
         });
 
-        // ===== دکمه پاک کردن همه خطوط =====
+        // ===== Clear =====
         document.querySelectorAll('.clear-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 const targetId = this.dataset.target;
@@ -1600,8 +1596,10 @@
                     svg.dataset.startY = '';
                     lastCrosshairX = 0;
                     lastCrosshairY = 0;
-                    removeTempLine();
-                    removeStartPoint();
+                    if (tempLine) { tempLine.remove();
+                        tempLine = null; }
+                    if (startPointCircle) { startPointCircle.remove();
+                        startPointCircle = null; }
                     hideCrosshair();
                 }
 

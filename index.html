@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
-    <title>Amitis - تمرین تشخیص روند (رندوم)</title>
+    <title>Amitis - تمرین تشخیص روند</title>
     <style>
+        /* ===== استایل‌های اصلی ===== */
         * {
             margin: 0;
             padding: 0;
@@ -19,19 +20,10 @@
             overflow-y: auto;
             overflow-x: hidden;
             -webkit-tap-highlight-color: transparent;
+            transition: background 0.4s ease;
         }
-        body::-webkit-scrollbar {
-            width: 5px;
-        }
-        body::-webkit-scrollbar-track {
-            background: #0a0a0a;
-        }
-        body::-webkit-scrollbar-thumb {
-            background: #2a2a2a;
-            border-radius: 10px;
-        }
-        body::-webkit-scrollbar-thumb:hover {
-            background: #3a3a3a;
+        body.light-mode {
+            background: #e0e0e0;
         }
 
         .glass-main {
@@ -45,8 +37,58 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            transition: background 0.4s ease, border-color 0.4s ease;
+        }
+        body.light-mode .glass-main {
+            background: #f0f0f0;
+            border-color: #ccc;
         }
 
+        /* ===== دکمه تم ===== */
+        .top-buttons {
+            display: flex;
+            justify-content: flex-end;
+            padding: 0 10px 12px 10px;
+            position: relative;
+            z-index: 10;
+        }
+        .theme-toggle-btn {
+            pointer-events: auto;
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(20, 20, 20, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            color: #fff;
+            font-size: 22px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            touch-action: manipulation;
+            user-select: none;
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        .theme-toggle-btn:hover {
+            transform: scale(1.05);
+            border-color: #fff;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+        }
+        body.light-mode .theme-toggle-btn {
+            background: rgba(240, 240, 240, 0.85);
+            border-color: rgba(0, 0, 0, 0.15);
+            color: #222;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        body.light-mode .theme-toggle-btn:hover {
+            border-color: #000;
+        }
+
+        /* ===== هدر ===== */
         .header {
             display: flex;
             justify-content: center;
@@ -54,190 +96,149 @@
             padding: 16px 20px;
             margin-bottom: 55px;
             gap: 10px;
-            position: relative;
             background: rgba(255, 255, 255, 0.02);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border-radius: 20px;
             border: 1px solid rgba(255, 255, 255, 0.04);
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1), background 0.3s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            transition: all 0.3s ease;
         }
         .header:hover {
             border-color: #ffffff !important;
-            border-width: 1px !important;
-            box-shadow: 0 8px 50px rgba(0, 0, 0, 0.4), 0 0 60px rgba(255, 255, 255, 0.04) !important;
+            box-shadow: 0 8px 50px rgba(0, 0, 0, 0.4) !important;
             transform: translateY(-2px);
-            background: rgba(255, 255, 255, 0.04) !important;
+        }
+        body.light-mode .header {
+            background: rgba(0, 0, 0, 0.03);
+            border-color: rgba(0, 0, 0, 0.08);
+        }
+        body.light-mode .header:hover {
+            border-color: #000 !important;
+            box-shadow: 0 8px 50px rgba(0, 0, 0, 0.08) !important;
         }
 
-        .header .deco-left,
-        .header .deco-right {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        .header .deco-line {
-            width: 25px;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, #555555);
-            border-radius: 2px;
-        }
-        .header .deco-line-right {
-            background: linear-gradient(90deg, #555555, transparent);
-        }
-        .header .deco-line-thick {
-            width: 10px;
-            height: 2px;
-            background: #444444;
-            border-radius: 2px;
-        }
-        .header .deco-dot {
-            width: 4px;
-            height: 4px;
-            background: #555555;
-            border-radius: 50%;
-            display: inline-block;
-        }
-        .header .deco-dot-outline {
-            width: 5px;
-            height: 5px;
-            border: 1px solid #444444;
-            border-radius: 50%;
-            display: inline-block;
-        }
-        .header .deco-diamond {
-            width: 5px;
-            height: 5px;
-            background: #555555;
-            transform: rotate(45deg);
-            display: inline-block;
-        }
-        .header .deco-dash {
-            width: 16px;
-            height: 0;
-            border-top: 1px dashed #3a3a3a;
-            display: inline-block;
-        }
-        .header .deco-circle {
-            width: 6px;
-            height: 6px;
-            border: 1px solid #444444;
-            border-radius: 50%;
-            display: inline-block;
-        }
-        .header .brand {
+        .brand {
             font-size: 24px;
             font-weight: 700;
-            color: #555555;
             letter-spacing: 5px;
             text-transform: uppercase;
-            padding: 0 6px;
-        }
-        .header .brand strong {
-            color: #dddddd;
+            background: linear-gradient(90deg, #000000, #890913, #000000, #890913);
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: cyberGlitch 3s ease-in-out infinite alternate;
             font-weight: 600;
-            text-shadow: 0 0 30px rgba(255, 255, 255, 0.03);
         }
-
-        @media (max-width: 480px) {
-            .glass-main {
-                padding: 14px 8px 24px;
+        @keyframes cyberGlitch {
+            0% {
+                background-position: 0% 50%;
             }
-            .header {
-                padding: 12px 14px;
-                margin-bottom: 40px;
-                border-radius: 16px;
+            50% {
+                background-position: 100% 50%;
             }
-            .header .deco-line {
-                width: 12px;
-            }
-            .header .deco-dash {
-                width: 10px;
-            }
-            .header .deco-line-thick {
-                width: 6px;
-            }
-            .header .brand {
-                font-size: 18px;
-                letter-spacing: 3px;
-            }
-            .header .deco-dot-outline {
-                width: 4px;
-                height: 4px;
-            }
-            .header .deco-circle {
-                width: 5px;
-                height: 5px;
-            }
-            .header .deco-diamond {
-                width: 4px;
-                height: 4px;
-            }
-        }
-        @media (max-width: 768px) {
-            .header {
-                margin-bottom: 45px;
+            100% {
+                background-position: 0% 50%;
             }
         }
 
+        .level-display {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #aaa;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 4px 14px 4px 10px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(4px);
+            margin-bottom: 20px;
+            align-self: flex-start;
+            transition: all 0.3s ease;
+        }
+        body.light-mode .level-display {
+            color: #333;
+            background: rgba(0, 0, 0, 0.03);
+            border-color: rgba(0, 0, 0, 0.08);
+        }
+        .level-display .level-label {
+            font-weight: 300;
+            font-size: 11px;
+            color: #888;
+        }
+        body.light-mode .level-display .level-label {
+            color: #666;
+        }
+        .level-display .level-name {
+            font-weight: 700;
+            font-size: 15px;
+            color: #ffffff;
+        }
+        body.light-mode .level-display .level-name {
+            color: #000;
+        }
+        .level-display .level-progress {
+            font-size: 10px;
+            color: #555;
+        }
+        body.light-mode .level-display .level-progress {
+            color: #888;
+        }
+
+        /* ===== بقیه استایل‌ها ===== */
         .item {
             margin-bottom: 30px;
             padding-bottom: 20px;
             flex: 1;
         }
-        .item:last-child {
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-
         .chart-box {
             background: #141414;
             border-radius: 16px;
             padding: 10px 10px 8px;
             border: 1px solid #2a2a2a;
-            position: relative;
-            transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1), background 0.3s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s cubic-bezier(0.22, 1, 0.36, 1);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        body.light-mode .chart-box {
+            background: #f8f8f8;
+            border-color: #ccc;
         }
         .chart-box:hover {
             border-color: #ffffff !important;
-            border-width: 1px !important;
-            box-shadow: 0 16px 60px rgba(0, 0, 0, 0.7), 0 0 80px rgba(255, 255, 255, 0.04), inset 0 0 40px rgba(255, 255, 255, 0.02) !important;
             transform: translateY(-8px) scale(1.005);
             background: #1e1e1e !important;
+            box-shadow: 0 16px 60px rgba(0, 0, 0, 0.7) !important;
         }
-
+        body.light-mode .chart-box:hover {
+            border-color: #000 !important;
+            background: #fff !important;
+            box-shadow: 0 16px 60px rgba(0, 0, 0, 0.1) !important;
+        }
         .chart-box.answer-box {
             margin-top: 100px;
             background: #161616;
             border-color: #323232;
-            border-width: 1px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1), background 0.3s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s cubic-bezier(0.22, 1, 0.36, 1);
         }
-        .chart-box.answer-box:hover {
-            border-color: #ffffff !important;
-            border-width: 1px !important;
-            box-shadow: 0 16px 60px rgba(0, 0, 0, 0.7), 0 0 80px rgba(255, 255, 255, 0.045), inset 0 0 40px rgba(255, 255, 255, 0.025) !important;
-            transform: translateY(-8px) scale(1.005);
-            background: #202020 !important;
+        body.light-mode .chart-box.answer-box {
+            background: #f0f0f0;
+            border-color: #bbb;
         }
 
         .label {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 5px;
+            margin-bottom: 12px;
         }
         .label .title {
             font-size: 14px;
             font-weight: 700;
             color: #aaa;
         }
-        .label .title .num {
-            color: #333;
-            font-weight: 400;
+        body.light-mode .label .title {
+            color: #555;
         }
         .label .badge {
             font-size: 9px;
@@ -247,29 +248,27 @@
             border-radius: 30px;
             border: 1px solid #222;
         }
-        .label .badge.green {
-            color: #555;
-            border-color: #2a2a2a;
+        body.light-mode .label .badge {
+            background: #e0e0e0;
+            border-color: #ccc;
+            color: #666;
         }
         .label .badge.trend-up {
             color: #000eff !important;
             border-color: #000eff !important;
             background: rgba(0, 14, 255, 0.08) !important;
-            text-shadow: 0 0 10px #000eff, 0 0 20px #000eff, 0 0 40px #000eff !important;
             animation: neonBlue 1.2s ease-in-out infinite alternate !important;
         }
         .label .badge.trend-down {
             color: #890913 !important;
             border-color: #890913 !important;
             background: rgba(137, 9, 19, 0.08) !important;
-            text-shadow: 0 0 10px #890913, 0 0 20px #890913, 0 0 40px #890913 !important;
             animation: neonRed 1.2s ease-in-out infinite alternate !important;
         }
         .label .badge.trend-range {
             color: #ff9b00 !important;
             border-color: #ff9b00 !important;
             background: rgba(255, 155, 0, 0.08) !important;
-            text-shadow: 0 0 10px #ff9b00, 0 0 20px #ff9b00, 0 0 40px #ff9b00 !important;
             animation: neonOrange 1.2s ease-in-out infinite alternate !important;
         }
 
@@ -279,7 +278,7 @@
                 opacity: 0.7;
             }
             100% {
-                text-shadow: 0 0 15px #000eff, 0 0 30px #000eff, 0 0 60px #000eff, 0 0 100px #000eff;
+                text-shadow: 0 0 15px #000eff, 0 0 30px #000eff, 0 0 60px #000eff;
                 opacity: 1;
             }
         }
@@ -289,7 +288,7 @@
                 opacity: 0.7;
             }
             100% {
-                text-shadow: 0 0 15px #890913, 0 0 30px #890913, 0 0 60px #890913, 0 0 100px #890913;
+                text-shadow: 0 0 15px #890913, 0 0 30px #890913, 0 0 60px #890913;
                 opacity: 1;
             }
         }
@@ -299,19 +298,15 @@
                 opacity: 0.7;
             }
             100% {
-                text-shadow: 0 0 15px #ff9b00, 0 0 30px #ff9b00, 0 0 60px #ff9b00, 0 0 100px #ff9b00;
+                text-shadow: 0 0 15px #ff9b00, 0 0 30px #ff9b00, 0 0 60px #ff9b00;
                 opacity: 1;
             }
-        }
-
-        .footer-text {
-            display: none !important;
         }
 
         .toolbar {
             display: flex;
             gap: 6px;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             flex-wrap: wrap;
             align-items: center;
         }
@@ -326,15 +321,22 @@
             transition: all 0.3s ease;
             font-family: inherit;
             touch-action: manipulation;
-            -webkit-tap-highlight-color: transparent;
             user-select: none;
-            position: relative;
-            z-index: 2;
+        }
+        body.light-mode .toolbar button {
+            background: #e8e8e8;
+            border-color: #ccc;
+            color: #555;
         }
         .toolbar button:hover {
             background: #2a2a2a;
             border-color: #444;
             color: #aaa;
+        }
+        body.light-mode .toolbar button:hover {
+            background: #d0d0d0;
+            border-color: #999;
+            color: #222;
         }
         .toolbar button.active {
             background: #2a2a2a;
@@ -342,47 +344,20 @@
             color: #ffffff;
             box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
         }
-
-        .toolbar .new-exercise-btn {
-            background: #1a1a1a;
-            border: 1px solid #2a2a2a;
-            color: #666;
-            padding: 3px 12px;
-            border-radius: 6px;
-            font-size: 11px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: inherit;
-            touch-action: manipulation;
-            -webkit-tap-highlight-color: transparent;
-            user-select: none;
-            position: relative;
-            z-index: 2;
-        }
-        .toolbar .new-exercise-btn:hover {
-            background: #2a2a2a;
-            border-color: #444;
-            color: #aaa;
+        body.light-mode .toolbar button.active {
+            background: #ccc;
+            border-color: #000;
+            color: #000;
         }
 
         .exercise-counter-inline {
             display: inline-flex;
             align-items: center;
             gap: 4px;
-            background: transparent;
-            border: none;
-            padding: 2px 4px 2px 2px;
             font-size: 11px;
             color: #666;
-            font-family: inherit;
             user-select: none;
             white-space: nowrap;
-        }
-        .exercise-counter-inline .counter-label {
-            color: #888;
-            font-weight: 300;
-            font-size: 10px;
-            letter-spacing: 0.3px;
         }
         .exercise-counter-inline .counter-number {
             color: #ffffff;
@@ -390,9 +365,9 @@
             font-size: 13px;
             min-width: 18px;
             text-align: center;
-            background: transparent;
-            padding: 0 2px;
-            opacity: 0.8;
+        }
+        body.light-mode .exercise-counter-inline .counter-number {
+            color: #000;
         }
 
         .record-item-inline {
@@ -405,27 +380,37 @@
             padding: 3px 10px 3px 8px;
             font-size: 11px;
             color: #666;
-            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s ease;
             user-select: none;
-            white-space: nowrap;
         }
-        .record-item-inline .record-label {
-            color: #888;
-            font-weight: 300;
-            font-size: 10px;
-            letter-spacing: 0.2px;
+        body.light-mode .record-item-inline {
+            background: #e8e8e8;
+            border-color: #ccc;
+            color: #555;
+        }
+        .record-item-inline:hover {
+            background: #252525;
+            border-color: #444;
+        }
+        body.light-mode .record-item-inline:hover {
+            background: #d0d0d0;
+            border-color: #999;
         }
         .record-item-inline .record-value-white {
             font-weight: 700;
             font-size: 14px;
             min-width: 20px;
             text-align: center;
-            padding: 0 2px;
             color: #ffffff;
             text-shadow: 0 0 8px #ffffff, 0 0 20px #aaaaaa, 0 0 40px #888888;
             animation: whitePulse 1.5s ease-in-out infinite alternate;
         }
-
+        body.light-mode .record-item-inline .record-value-white {
+            color: #000;
+            text-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+            animation: none;
+        }
         @keyframes whitePulse {
             0% {
                 text-shadow: 0 0 4px #ffffff, 0 0 10px #aaaaaa, 0 0 20px #888888;
@@ -453,7 +438,6 @@
         .new-record-badge-inline.show {
             display: inline-block;
         }
-
         @keyframes neonPulseGold {
             0% {
                 text-shadow: 0 0 4px #ffdd00, 0 0 10px #ffaa00, 0 0 20px #ff8800, 0 0 40px #ff6600;
@@ -466,7 +450,6 @@
                 transform: scale(1.02);
             }
         }
-
         .toolbar-divider {
             color: #2a2a2a;
             font-size: 14px;
@@ -474,36 +457,8 @@
             padding: 0 2px;
             user-select: none;
         }
-
-        @media (max-width: 480px) {
-            .record-item-inline {
-                padding: 2px 6px 2px 5px;
-                font-size: 9px;
-            }
-            .record-item-inline .record-value-white {
-                font-size: 12px;
-                min-width: 14px;
-            }
-            .record-item-inline .record-label {
-                font-size: 8px;
-            }
-            .new-record-badge-inline {
-                font-size: 9px;
-                padding: 1px 6px;
-            }
-            .exercise-counter-inline {
-                font-size: 9px;
-            }
-            .exercise-counter-inline .counter-number {
-                font-size: 11px;
-                min-width: 14px;
-            }
-            .exercise-counter-inline .counter-label {
-                font-size: 8px;
-            }
-            .toolbar-divider {
-                font-size: 10px;
-            }
+        body.light-mode .toolbar-divider {
+            color: #ccc;
         }
 
         .spoiler-btn {
@@ -517,26 +472,36 @@
             transition: all 0.3s ease;
             font-family: inherit;
             touch-action: manipulation;
-            -webkit-tap-highlight-color: transparent;
             user-select: none;
             margin-top: 4px;
             width: 100%;
             text-align: center;
-            position: relative;
-            z-index: 2;
             letter-spacing: 0.5px;
+        }
+        body.light-mode .spoiler-btn {
+            border-color: #333;
+            color: #333;
         }
         .spoiler-btn:hover {
             background: rgba(255, 255, 255, 0.05);
             border-color: #aaaaaa;
             color: #ffffff;
         }
+        body.light-mode .spoiler-btn:hover {
+            background: rgba(0, 0, 0, 0.05);
+            border-color: #666;
+            color: #000;
+        }
         .spoiler-btn.active {
             background: rgba(255, 255, 255, 0.03);
             border-color: #ffffff;
             color: #ffffff;
         }
-
+        body.light-mode .spoiler-btn.active {
+            background: rgba(0, 0, 0, 0.05);
+            border-color: #000;
+            color: #000;
+        }
         .spoiler-content {
             display: none;
             margin-top: 8px;
@@ -545,7 +510,6 @@
         .spoiler-content.show {
             display: block;
         }
-
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -556,15 +520,16 @@
                 transform: translateY(0);
             }
         }
-
         .svg-wrap {
             background: #0a0a0a;
             border-radius: 12px;
             padding: 4px;
             border: 1px solid #161616;
             overflow: hidden;
-            position: relative;
-            touch-action: none;
+        }
+        body.light-mode .svg-wrap {
+            background: #f0f0f0;
+            border-color: #ddd;
         }
         .svg-wrap svg {
             display: block;
@@ -572,15 +537,12 @@
             height: auto;
             border-radius: 8px;
             background: #0a0a0a;
-            touch-action: none;
-            pointer-events: all;
+        }
+        body.light-mode .svg-wrap svg {
+            background: #f0f0f0;
         }
 
-        .answer-box .footer-text {
-            display: none !important;
-        }
-
-        /* ===== FOOTER ===== */
+        /* ===== FOOTER - دقیقاً مثل کد شما ===== */
         .global-footer {
             margin-top: 50px;
             padding-top: 24px;
@@ -594,6 +556,10 @@
             font-weight: 300;
             letter-spacing: 0.3px;
             width: 100%;
+        }
+        body.light-mode .global-footer {
+            border-color: #ccc;
+            color: #999;
         }
         .global-footer .footer-links {
             display: flex;
@@ -631,12 +597,18 @@
             color: #555;
             margin-top: 4px;
         }
+        body.light-mode .global-footer .footer-copy {
+            color: #888;
+        }
         .global-footer .footer-copy .brand-highlight {
             color: #ccc;
             font-weight: 600;
             text-shadow: 0 0 12px rgba(255, 255, 255, 0.08);
             letter-spacing: 0.5px;
             font-size: 12px;
+        }
+        body.light-mode .global-footer .footer-copy .brand-highlight {
+            color: #444;
         }
         .global-footer .footer-copy .dot-sep {
             color: #333;
@@ -659,6 +631,11 @@
             border-color: #333;
             background: rgba(255, 255, 255, 0.03);
         }
+        body.light-mode .global-footer .footer-copy .telegram-link:hover {
+            color: #000;
+            border-color: #aaa;
+            background: rgba(0, 0, 0, 0.05);
+        }
         .global-footer .footer-copy .telegram-link svg {
             width: 16px;
             height: 16px;
@@ -667,6 +644,9 @@
         }
         .global-footer .footer-copy .telegram-link:hover svg {
             fill: #fff;
+        }
+        body.light-mode .global-footer .footer-copy .telegram-link:hover svg {
+            fill: #000;
         }
 
         .global-footer .footer-powered {
@@ -679,6 +659,9 @@
             color: #ccc;
             font-weight: 600;
             text-shadow: 0 0 12px rgba(255, 255, 255, 0.06);
+        }
+        body.light-mode .global-footer .footer-powered .powered-highlight {
+            color: #444;
         }
 
         @media (max-width: 480px) {
@@ -694,29 +677,8 @@
                 font-size: 16px;
                 letter-spacing: 2px;
             }
-            .chart-box {
-                padding: 6px 4px 4px;
-                border-radius: 12px;
-            }
             .chart-box.answer-box {
-                margin-top: 50px;
-            }
-            .item {
-                margin-bottom: 16px;
-                padding-bottom: 12px;
-            }
-            .toolbar button {
-                padding: 2px 8px;
-                font-size: 9px;
-            }
-            .spoiler-btn {
-                padding: 4px 12px;
-                font-size: 10px;
-            }
-            .global-footer {
-                margin-top: 30px;
-                padding-top: 16px;
-                gap: 8px;
+                margin-top: 40px;
             }
             .global-footer .footer-links {
                 gap: 10px 14px;
@@ -747,55 +709,43 @@
                 font-size: 9px;
             }
         }
-        @media (max-width: 768px) {
-            .chart-box.answer-box {
-                margin-top: 40px;
-            }
-        }
     </style>
 </head>
 <body>
 
     <div class="glass-main">
 
-        <div class="header">
-            <div class="deco-left">
-                <span class="deco-dot-outline"></span>
-                <span class="deco-line"></span>
-                <span class="deco-dot"></span>
-                <span class="deco-dash"></span>
-                <span class="deco-dot-outline"></span>
-                <span class="deco-line-thick"></span>
-                <span class="deco-circle"></span>
-                <span class="deco-dot"></span>
-                <span class="deco-dash"></span>
-                <span class="deco-diamond"></span>
-                <span class="deco-dot-outline"></span>
-            </div>
-            <span class="brand"><strong>Amitis</strong></span>
-            <div class="deco-right">
-                <span class="deco-dot-outline"></span>
-                <span class="deco-diamond"></span>
-                <span class="deco-dash"></span>
-                <span class="deco-dot"></span>
-                <span class="deco-circle"></span>
-                <span class="deco-line-thick"></span>
-                <span class="deco-dot-outline"></span>
-                <span class="deco-dash"></span>
-                <span class="deco-dot"></span>
-                <span class="deco-line"></span>
-                <span class="deco-dot-outline"></span>
-            </div>
+        <div class="top-buttons">
+            <button class="theme-toggle-btn" id="themeToggle" aria-label="تغییر تم">
+                <svg class="icon-moon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                </svg>
+                <svg class="icon-sun" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+                    <circle cx="12" cy="12" r="5" />
+                    <line x1="12" y1="1" x2="12" y2="3" />
+                    <line x1="12" y1="21" x2="12" y2="23" />
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                    <line x1="1" y1="12" x2="3" y2="12" />
+                    <line x1="21" y1="12" x2="23" y2="12" />
+                </svg>
+            </button>
         </div>
 
-        <!-- ============================================================ -->
-        <!-- تمرین واحد با روند رندوم -->
-        <!-- ============================================================ -->
-        <div class="item" id="exercise-container">
+        <div class="header">
+            <span class="brand">Amitis</span>
+        </div>
 
+        <div class="level-display" id="levelDisplay">
+            <span class="level-label">Your Level :</span>
+            <span class="level-name" id="levelName">Beginner</span>
+            <span class="level-progress" id="levelProgress">(0)</span>
+        </div>
+
+        <div class="item" id="exercise-container">
             <div class="chart-box">
                 <div class="label">
-                    <span class="title"><span class="num">●</span> روند را با خط روند مشخص کنید :</span>
+                    <span class="title">● روند رو با ترندلاین مشخص کنید :</span>
                     <span class="badge" id="questionBadge" style="display:none;">---</span>
                 </div>
                 <div class="toolbar">
@@ -804,22 +754,17 @@
                     <button class="redo-btn" data-target="mainSvg">→</button>
                     <button class="undo-btn" data-target="mainSvg">←</button>
                     <button class="new-exercise-btn" onclick="generateNewExercise(true)">تمرین جدید</button>
-
                     <span class="exercise-counter-inline">
                         <span class="counter-label">تمرین شماره :</span>
                         <span class="counter-number" id="exerciseCounter">1</span>
                     </span>
-
                     <span class="toolbar-divider">|</span>
-
-                    <span class="record-item-inline">
+                    <span class="record-item-inline" id="recordClickArea" title="برای ریست کردن کلیک کنید">
                         <span class="record-label">تعداد کل تمرین های حل شده :</span>
                         <span class="record-value-white" id="bestRecordDisplay">0</span>
                     </span>
-
                     <span class="new-record-badge-inline" id="newRecordBadge">✦ NEW RECORD ✦</span>
                 </div>
-
                 <div class="svg-wrap">
                     <svg id="mainSvg" viewBox="0 0 1000 320" width="100%" height="320" xmlns="http://www.w3.org/2000/svg">
                         <rect width="1000" height="320" fill="#0a0a0a" rx="8" />
@@ -830,7 +775,6 @@
                         <line x1="30" y1="120" x2="980" y2="120" stroke="#151515" stroke-width="0.4" />
                         <line x1="30" y1="80" x2="980" y2="80" stroke="#151515" stroke-width="0.4" />
                         <line x1="30" y1="40" x2="980" y2="40" stroke="#151515" stroke-width="0.4" />
-
                         <text x="970" y="284" fill="#222" font-size="8" text-anchor="end">26</text>
                         <text x="970" y="244" fill="#222" font-size="8" text-anchor="end">36</text>
                         <text x="970" y="204" fill="#222" font-size="8" text-anchor="end">46</text>
@@ -844,7 +788,7 @@
 
             <div class="chart-box answer-box">
                 <div class="label">
-                    <span class="title"><span class="num">●</span> جواب</span>
+                    <span class="title">● پاسخ :</span>
                     <span class="badge green" id="answerBadge" style="display:none;">---</span>
                 </div>
                 <button class="spoiler-btn" id="spoilerBtn" onclick="toggleSpoiler(this)">نمایش جواب</button>
@@ -859,7 +803,6 @@
                             <line x1="30" y1="120" x2="980" y2="120" stroke="#151515" stroke-width="0.4" />
                             <line x1="30" y1="80" x2="980" y2="80" stroke="#151515" stroke-width="0.4" />
                             <line x1="30" y1="40" x2="980" y2="40" stroke="#151515" stroke-width="0.4" />
-
                             <text x="970" y="284" fill="#222" font-size="8" text-anchor="end">26</text>
                             <text x="970" y="244" fill="#222" font-size="8" text-anchor="end">36</text>
                             <text x="970" y="204" fill="#222" font-size="8" text-anchor="end">46</text>
@@ -874,7 +817,7 @@
         </div>
 
         <!-- ================================================================
-             FOOTER - پایین‌ترین جای صفحه
+             FOOTER - دقیقاً مثل کد شما
              ================================================================ -->
         <div class="global-footer">
             <div class="footer-links">
@@ -892,7 +835,7 @@
                     </svg>
                     IPLocation
                 </a>
-                <!-- CoinMarketCap - لوگوی اصل با حرف C -->
+                <!-- CoinMarketCap -->
                 <a href="https://coinmarketcap.com" target="_blank" rel="noopener noreferrer">
                     <svg viewBox="0 0 24 24" fill="currentColor">
                         <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" fill="none"/>
@@ -900,7 +843,7 @@
                     </svg>
                     CoinMarketCap
                 </a>
-                <!-- TradingView - لوگوی اصل با خطوط نمودار -->
+                <!-- TradingView -->
                 <a href="https://tradingview.com" target="_blank" rel="noopener noreferrer">
                     <svg viewBox="0 0 24 24" fill="currentColor">
                         <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"/>
@@ -930,9 +873,67 @@
 
     <script>
         // ================================================================
-        // Amirkazem Coding - v74 (رفع باگ افکت چشمک‌زن + فیکس روند رنج)
+        // Amirkazem Coding - v86 (بدون نظر سنجی + فوتر کامل)
         // ================================================================
 
+        // ===== LEVEL SYSTEM =====
+        const LEVELS = [
+            { name: 'Beginner', threshold: 0 },
+            { name: 'Amateur', threshold: 50 },
+            { name: 'Regular', threshold: 200 },
+            { name: 'Professional', threshold: 600 },
+            { name: 'Top Player', threshold: 1000 },
+            { name: 'Superstar', threshold: 2000 },
+            { name: 'Legend', threshold: 10000 }
+        ];
+
+        function getLevel(totalSolved) {
+            let level = LEVELS[0];
+            for (let i = LEVELS.length - 1; i >= 0; i--) {
+                if (totalSolved >= LEVELS[i].threshold) {
+                    level = LEVELS[i];
+                    break;
+                }
+            }
+            return level;
+        }
+
+        function updateLevelDisplay(totalSolved) {
+            const level = getLevel(totalSolved);
+            document.getElementById('levelName').textContent = level.name;
+            document.getElementById('levelProgress').textContent = `(${totalSolved})`;
+        }
+
+        // ===== THEME =====
+        const themeToggle = document.getElementById('themeToggle');
+        let isLightMode = false;
+
+        function toggleTheme() {
+            isLightMode = !isLightMode;
+            document.body.classList.toggle('light-mode', isLightMode);
+            localStorage.setItem('amitis_theme', isLightMode ? 'light' : 'dark');
+            const moon = document.querySelector('.icon-moon');
+            const sun = document.querySelector('.icon-sun');
+            if (isLightMode) {
+                moon.style.display = 'none';
+                sun.style.display = 'block';
+            } else {
+                moon.style.display = 'block';
+                sun.style.display = 'none';
+            }
+        }
+
+        const savedTheme = localStorage.getItem('amitis_theme');
+        if (savedTheme === 'light') {
+            isLightMode = true;
+            document.body.classList.add('light-mode');
+            document.querySelector('.icon-moon').style.display = 'none';
+            document.querySelector('.icon-sun').style.display = 'block';
+        }
+
+        themeToggle.addEventListener('click', toggleTheme);
+
+        // ===== STORAGE =====
         const STORAGE_KEY = 'amitis_trend_record_single';
 
         function getBestRecord() {
@@ -955,8 +956,10 @@
                 bestRecord = exerciseCounter - 1;
                 setBestRecord(bestRecord);
                 document.getElementById('bestRecordDisplay').textContent = bestRecord;
+                updateLevelDisplay(bestRecord);
             } else {
                 badge.classList.remove('show');
+                updateLevelDisplay(bestRecord);
             }
         }
 
@@ -966,10 +969,20 @@
             updateRecordDisplay();
         }
 
-        // ================================================================
-        // CONSTANTS
-        // ================================================================
+        document.getElementById('recordClickArea').addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (confirm('آیا می‌خواهید شمارنده تمرین‌های حل شده را ریست کنید؟')) {
+                bestRecord = 0;
+                setBestRecord(0);
+                document.getElementById('bestRecordDisplay').textContent = '0';
+                document.getElementById('newRecordBadge').classList.remove('show');
+                exerciseCounter = 1;
+                document.getElementById('exerciseCounter').textContent = '1';
+                updateLevelDisplay(0);
+            }
+        });
 
+        // ===== CONSTANTS =====
         const GLOBAL_MIN = 26;
         const GLOBAL_MAX = 86;
         const WAVE_SIZE = 4;
@@ -977,14 +990,11 @@
 
         let currentCandles = [];
         let currentWaveRanges = [];
-        let currentTrendType = 'up'; // 'up', 'down', 'range'
+        let currentTrendType = 'up';
         let rangeMin = 0;
         let rangeMax = 0;
 
-        // ================================================================
-        // توابع کمکی
-        // ================================================================
-
+        // ===== HELPER FUNCTIONS =====
         function getWickType() {
             const r = Math.random();
             if (r < 0.25) return 0;
@@ -1038,19 +1048,14 @@
             return { candles, lastPrice: currentPrice };
         }
 
-        // ================================================================
-        // تولید روند صعودی
-        // ================================================================
-
+        // ===== GENERATE TRENDS =====
         function generateUpwardTrendRangeCandles(startPrice) {
             const candles = [];
             let currentPrice = startPrice;
-
             const initialHeight = 18 + Math.random() * 8;
             let currentHeight = initialHeight;
             const heightDecay = 0.93 + Math.random() * 0.05;
             const stepPerWave = 1.5 + Math.random() * 1.0;
-
             const waveRanges = [];
             const startMin = GLOBAL_MIN + 4 + Math.random() * 3;
             let baseMin = Math.round(startMin);
@@ -1060,11 +1065,9 @@
                     currentHeight = currentHeight * heightDecay;
                     currentHeight = Math.max(8, currentHeight);
                 }
-
                 const offset = i * stepPerWave;
                 let waveMin = baseMin + offset;
                 let waveMax = waveMin + currentHeight;
-
                 if (i > 0) {
                     const prevRange = waveRanges[i - 1];
                     const minRequired = prevRange.min + 1.0;
@@ -1073,15 +1076,12 @@
                         waveMax = waveMin + currentHeight;
                     }
                 }
-
                 waveMin = Math.max(GLOBAL_MIN + 2, Math.min(GLOBAL_MAX - currentHeight - 3, waveMin));
                 waveMax = waveMin + currentHeight;
-
                 if (waveMax > GLOBAL_MAX - 2) {
                     waveMax = GLOBAL_MAX - 2;
                     waveMin = waveMax - currentHeight;
                 }
-
                 waveRanges.push({
                     min: Math.round(waveMin * 10) / 10,
                     max: Math.round(waveMax * 10) / 10,
@@ -1113,14 +1113,12 @@
             }
 
             const resultWaveRanges = [];
-
             waveRanges.forEach((waveRange, waveIndex) => {
                 const waveMin = waveRange.min;
                 const waveMax = waveRange.max;
                 const isDown = waveIndex % 2 === 0;
                 const startPrice = isDown ? waveMax : waveMin;
                 const endPrice = isDown ? waveMin : waveMax;
-
                 const reverseCount = 2;
                 const reversePos = [];
                 while (reversePos.length < reverseCount) {
@@ -1128,9 +1126,7 @@
                     if (!reversePos.includes(pos)) reversePos.push(pos);
                 }
                 reversePos.sort();
-
                 const waveStartIndex = candles.length;
-
                 for (let i = 0; i < WAVE_SIZE; i++) {
                     const progress = (i + 1) / WAVE_SIZE;
                     let targetPrice = startPrice + (endPrice - startPrice) * progress;
@@ -1149,14 +1145,12 @@
                     candles.push(candle);
                     currentPrice = candle.close;
                 }
-
                 let waveLow = Infinity;
                 let waveHigh = -Infinity;
                 for (let i = waveStartIndex; i < candles.length; i++) {
                     if (candles[i].low < waveLow) waveLow = candles[i].low;
                     if (candles[i].high > waveHigh) waveHigh = candles[i].high;
                 }
-
                 resultWaveRanges.push({
                     startIndex: waveStartIndex,
                     endIndex: candles.length - 1,
@@ -1165,23 +1159,16 @@
                     isDown: isDown
                 });
             });
-
             return { candles, lastPrice: currentPrice, waveRanges: resultWaveRanges };
         }
-
-        // ================================================================
-        // تولید روند نزولی (فیکس شده)
-        // ================================================================
 
         function generateDownwardTrendRangeCandles(startPrice) {
             const candles = [];
             let currentPrice = startPrice;
-
             const initialHeight = 18 + Math.random() * 8;
             let currentHeight = initialHeight;
             const heightDecay = 0.93 + Math.random() * 0.05;
             const stepPerWave = 1.5 + Math.random() * 1.0;
-
             const waveRanges = [];
             const startMax = GLOBAL_MAX - 4 - Math.random() * 3;
             let baseMax = Math.round(startMax);
@@ -1191,11 +1178,9 @@
                     currentHeight = currentHeight * heightDecay;
                     currentHeight = Math.max(8, currentHeight);
                 }
-
                 const offset = i * stepPerWave;
                 let waveMax = baseMax - offset;
                 let waveMin = waveMax - currentHeight;
-
                 if (i > 0) {
                     const prevRange = waveRanges[i - 1];
                     const maxRequired = prevRange.max - 1.0;
@@ -1204,15 +1189,12 @@
                         waveMin = waveMax - currentHeight;
                     }
                 }
-
                 waveMax = Math.min(GLOBAL_MAX - 2, Math.max(GLOBAL_MIN + currentHeight + 3, waveMax));
                 waveMin = waveMax - currentHeight;
-
                 if (waveMin < GLOBAL_MIN + 2) {
                     waveMin = GLOBAL_MIN + 2;
                     waveMax = waveMin + currentHeight;
                 }
-
                 waveRanges.push({
                     min: Math.round(waveMin * 10) / 10,
                     max: Math.round(waveMax * 10) / 10,
@@ -1244,14 +1226,12 @@
             }
 
             const resultWaveRanges = [];
-
             waveRanges.forEach((waveRange, waveIndex) => {
                 const waveMin = waveRange.min;
                 const waveMax = waveRange.max;
                 const isUp = waveIndex % 2 === 0;
                 const startPrice = isUp ? waveMin : waveMax;
                 const endPrice = isUp ? waveMax : waveMin;
-
                 const reverseCount = 2;
                 const reversePos = [];
                 while (reversePos.length < reverseCount) {
@@ -1259,9 +1239,7 @@
                     if (!reversePos.includes(pos)) reversePos.push(pos);
                 }
                 reversePos.sort();
-
                 const waveStartIndex = candles.length;
-
                 for (let i = 0; i < WAVE_SIZE; i++) {
                     const progress = (i + 1) / WAVE_SIZE;
                     let targetPrice = startPrice + (endPrice - startPrice) * progress;
@@ -1279,14 +1257,12 @@
                     candles.push(candle);
                     currentPrice = candle.close;
                 }
-
                 let waveLow = Infinity;
                 let waveHigh = -Infinity;
                 for (let i = waveStartIndex; i < candles.length; i++) {
                     if (candles[i].low < waveLow) waveLow = candles[i].low;
                     if (candles[i].high > waveHigh) waveHigh = candles[i].high;
                 }
-
                 resultWaveRanges.push({
                     startIndex: waveStartIndex,
                     endIndex: candles.length - 1,
@@ -1295,26 +1271,18 @@
                     isDown: !isUp
                 });
             });
-
             return { candles, lastPrice: currentPrice, waveRanges: resultWaveRanges };
         }
-
-        // ================================================================
-        // تولید روند رنج (فیکس شده)
-        // ================================================================
 
         function generateRangeCandles(startPrice) {
             const candles = [];
             let currentPrice = startPrice;
-
             const rangeHeight = 18 + Math.random() * 12;
             const rangeMinPrice = GLOBAL_MIN + 8 + Math.random() * (GLOBAL_MAX - GLOBAL_MIN - rangeHeight - 16);
             const rangeMaxPrice = rangeMinPrice + rangeHeight;
-
             rangeMin = Math.round(rangeMinPrice);
             rangeMax = Math.round(rangeMaxPrice);
 
-            // انتقال نرم به رنج
             if (currentPrice < rangeMin) {
                 const steps = Math.min(3, Math.ceil((rangeMin - currentPrice) / 2));
                 for (let i = 0; i < steps; i++) {
@@ -1340,14 +1308,10 @@
             const waveRanges = [];
             const waves = 8;
             const waveSize = 6;
-
             for (let w = 0; w < waves; w++) {
-                // هر موج متناوب بالا و پایین می‌رود
                 const isDown = w % 2 === 0;
                 const startPrice = isDown ? rangeMax : rangeMin;
                 const endPrice = isDown ? rangeMin : rangeMax;
-
-                // تعداد برگشت‌های تصادفی در هر موج
                 const reverseCount = Math.random() < 0.5 ? 2 : 3;
                 const reversePos = [];
                 while (reversePos.length < reverseCount) {
@@ -1355,42 +1319,30 @@
                     if (!reversePos.includes(pos)) reversePos.push(pos);
                 }
                 reversePos.sort();
-
                 const waveStartIndex = candles.length;
-
                 for (let i = 0; i < waveSize; i++) {
                     const progress = (i + 1) / waveSize;
                     let targetPrice = startPrice + (endPrice - startPrice) * progress;
-
-                    // اعمال برگشت‌های تصادفی
                     const isReverse = reversePos.includes(i);
                     let close;
                     if (isReverse) {
-                        // برگشت به اندازه 1-3 واحد
                         const offset = (Math.random() * 2 + 1) * (isDown ? 1 : -1);
                         close = Math.round((targetPrice + offset) * 100) / 100;
                     } else {
                         const noise = (Math.random() - 0.5) * 0.8;
                         close = Math.round((targetPrice + noise) * 100) / 100;
                     }
-
-                    // محدود کردن کندل به داخل رنج با حاشیه امن
                     close = Math.max(rangeMin + 0.8, Math.min(rangeMax - 0.8, close));
-
-                    // تولید کندل با محدودیت دقیق
                     const candle = generateStandardCandle(currentPrice, close, rangeMin + 0.5, rangeMax - 0.5);
                     candles.push(candle);
                     currentPrice = candle.close;
                 }
-
-                // محاسبه محدوده واقعی موج
                 let waveLow = Infinity;
                 let waveHigh = -Infinity;
                 for (let i = waveStartIndex; i < candles.length; i++) {
                     if (candles[i].low < waveLow) waveLow = candles[i].low;
                     if (candles[i].high > waveHigh) waveHigh = candles[i].high;
                 }
-
                 waveRanges.push({
                     startIndex: waveStartIndex,
                     endIndex: candles.length - 1,
@@ -1399,14 +1351,10 @@
                     isDown: isDown
                 });
             }
-
             return { candles, lastPrice: currentPrice, waveRanges };
         }
 
-        // ================================================================
-        // تولید تمرین رندوم
-        // ================================================================
-
+        // ===== GENERATE EXERCISE =====
         function shuffleSections() {
             const sections = [
                 { type: 'random', count: 37 },
@@ -1424,7 +1372,6 @@
         function generateAllCandles() {
             const trendTypes = ['up', 'down', 'range'];
             currentTrendType = trendTypes[Math.floor(Math.random() * trendTypes.length)];
-
             const shuffledSections = shuffleSections();
             const allCandles = [];
             let currentPrice = 40 + Math.random() * 30;
@@ -1465,18 +1412,13 @@
                     currentPrice = waveResult.lastPrice;
                 }
             });
-
             currentWaveRanges = allWaveRanges;
             return allCandles;
         }
 
-        // ================================================================
-        // رندر کندل‌ها
-        // ================================================================
-
+        // ===== RENDER CANDLES =====
         function renderCandles(candles, svgId, showAnswerLine = false) {
             const svg = document.getElementById(svgId);
-
             const toRemove = [];
             for (let i = 0; i < svg.children.length; i++) {
                 const child = svg.children[i];
@@ -1505,7 +1447,6 @@
             const chartWidth = 950;
             const chartHeight = 250;
             const baseY = 280;
-
             const candleWidth = chartWidth / candles.length;
             const bodyWidth = candleWidth * 0.6;
 
@@ -1559,13 +1500,11 @@
             if (showAnswerLine && candles.length > 0 && currentWaveRanges.length > 0) {
                 const lowPoints = [];
                 const highPoints = [];
-
                 currentWaveRanges.forEach((wave) => {
                     let waveLow = Infinity;
                     let waveHigh = -Infinity;
                     let lowIndex = wave.startIndex;
                     let highIndex = wave.startIndex;
-
                     for (let i = wave.startIndex; i <= wave.endIndex && i < candles.length; i++) {
                         if (candles[i].low < waveLow) {
                             waveLow = candles[i].low;
@@ -1576,7 +1515,6 @@
                             highIndex = i;
                         }
                     }
-
                     lowPoints.push({ index: lowIndex, price: waveLow });
                     highPoints.push({ index: highIndex, price: waveHigh });
                 });
@@ -1586,15 +1524,12 @@
                     const lastLow = lowPoints[lowPoints.length - 1];
                     const firstHigh = highPoints[0];
                     const lastHigh = highPoints[highPoints.length - 1];
-
                     const firstX = padding + (firstLow.index * candleWidth) + (candleWidth - bodyWidth) / 2 + bodyWidth / 2;
                     const lastX = padding + (lastLow.index * candleWidth) + (candleWidth - bodyWidth) / 2 + bodyWidth / 2;
-
                     const yFirstLow = baseY - ((firstLow.price - GLOBAL_MIN) / (GLOBAL_MAX - GLOBAL_MIN)) * chartHeight;
                     const yLastLow = baseY - ((lastLow.price - GLOBAL_MIN) / (GLOBAL_MAX - GLOBAL_MIN)) * chartHeight;
                     const yFirstHigh = baseY - ((firstHigh.price - GLOBAL_MIN) / (GLOBAL_MAX - GLOBAL_MIN)) * chartHeight;
                     const yLastHigh = baseY - ((lastHigh.price - GLOBAL_MIN) / (GLOBAL_MAX - GLOBAL_MIN)) * chartHeight;
-
                     const lineBottom = document.createElementNS(ns, 'line');
                     lineBottom.setAttribute('x1', firstX);
                     lineBottom.setAttribute('y1', yFirstLow);
@@ -1604,7 +1539,6 @@
                     lineBottom.setAttribute('stroke-width', '2.5');
                     lineBottom.setAttribute('opacity', '0.8');
                     svg.appendChild(lineBottom);
-
                     const lineTop = document.createElementNS(ns, 'line');
                     lineTop.setAttribute('x1', firstX);
                     lineTop.setAttribute('y1', yFirstHigh);
@@ -1618,15 +1552,10 @@
             }
         }
 
-        // ================================================================
-        // توابع اصلی
-        // ================================================================
-
+        // ===== MAIN FUNCTIONS =====
         function generateNewExercise(incrementCounter = true) {
             const candles = generateAllCandles();
             currentCandles = candles;
-
-            // پاک کردن خطوط ترندلاین از SVG اصلی
             const mainSvg = document.getElementById('mainSvg');
             const linesToRemove = [];
             for (let i = 0; i < mainSvg.children.length; i++) {
@@ -1636,28 +1565,19 @@
                 }
             }
             linesToRemove.forEach(line => line.remove());
-
-            // پاک کردن history
             if (history['mainSvg']) {
                 history['mainSvg'] = { undo: [], redo: [] };
             }
-
             renderCandles(candles, 'mainSvg');
             renderCandles(candles, 'answerSvg', true);
-
-            // پنهان کردن نشانگر روند در سوال
             const questionBadge = document.getElementById('questionBadge');
             questionBadge.style.display = 'none';
             questionBadge.className = 'badge';
             questionBadge.textContent = '---';
-
-            // پنهان کردن نشانگر روند در جواب
             const answerBadge = document.getElementById('answerBadge');
             answerBadge.style.display = 'none';
             answerBadge.className = 'badge green';
             answerBadge.textContent = '---';
-
-            // بستن اسپویلر
             const spoilerBtn = document.getElementById('spoilerBtn');
             const spoilerContent = document.getElementById('spoilerContent');
             if (spoilerContent.classList.contains('show')) {
@@ -1665,8 +1585,6 @@
                 spoilerBtn.textContent = 'نمایش جواب';
                 spoilerBtn.classList.remove('active');
             }
-
-            // غیرفعال کردن حالت رسم ترندلاین
             const trendBtn = document.querySelector(`.trend-btn[data-target="mainSvg"]`);
             if (trendBtn) {
                 trendBtn.classList.remove('active');
@@ -1682,7 +1600,6 @@
                 const crosshair = mainSvg.querySelector('.trend-crosshair');
                 if (crosshair) crosshair.remove();
             }
-
             if (incrementCounter) {
                 incrementExerciseCounter();
             }
@@ -1691,7 +1608,6 @@
         function toggleSpoiler(btn) {
             const content = btn.nextElementSibling;
             const answerBadge = document.getElementById('answerBadge');
-
             if (content.classList.contains('show')) {
                 content.classList.remove('show');
                 btn.textContent = 'نمایش جواب';
@@ -1703,11 +1619,8 @@
                 content.classList.add('show');
                 btn.textContent = 'بستن جواب';
                 btn.classList.add('active');
-
-                // نمایش نوع روند در جواب با رنگ‌های نئونی
                 let badgeText = '';
                 let badgeClass = 'green';
-
                 if (currentTrendType === 'up') {
                     badgeText = 'روند صعودی';
                     badgeClass = 'green trend-up';
@@ -1718,17 +1631,13 @@
                     badgeText = 'روند رنج';
                     badgeClass = 'green trend-range';
                 }
-
                 answerBadge.textContent = badgeText;
                 answerBadge.className = 'badge ' + badgeClass;
                 answerBadge.style.display = 'inline-block';
             }
         }
 
-        // ================================================================
-        // TREND LINE TOOLS
-        // ================================================================
-
+        // ===== TREND LINE TOOLS =====
         const history = {};
 
         function getHistory(svgId) {
@@ -1753,7 +1662,6 @@
                 const targetId = this.dataset.target;
                 const svg = document.getElementById(targetId);
                 if (!svg) return;
-
                 if (this.classList.contains('active')) {
                     this.classList.remove('active');
                     svg.style.cursor = 'default';
@@ -1769,7 +1677,6 @@
                     if (startPoint) startPoint.remove();
                     return;
                 }
-
                 document.querySelectorAll('.trend-btn').forEach(b => b.classList.remove('active'));
                 document.querySelectorAll('svg').forEach(s => {
                     s.style.cursor = 'default';
@@ -1784,19 +1691,16 @@
                     const sp = s.querySelector('.start-point');
                     if (sp) sp.remove();
                 });
-
                 this.classList.add('active');
                 svg.style.cursor = 'crosshair';
                 svg.dataset.drawing = 'true';
                 svg.dataset.step = '0';
                 svg.dataset.startX = '';
                 svg.dataset.startY = '';
-
                 const ns = 'http://www.w3.org/2000/svg';
                 const crosshair = document.createElementNS(ns, 'g');
                 crosshair.classList.add('trend-crosshair');
                 crosshair.style.display = 'none';
-
                 const vLine = document.createElementNS(ns, 'line');
                 vLine.setAttribute('x1', '0');
                 vLine.setAttribute('y1', '0');
@@ -1805,7 +1709,6 @@
                 vLine.setAttribute('stroke', 'rgba(255,255,255,0.15)');
                 vLine.setAttribute('stroke-width', '0.5');
                 vLine.setAttribute('stroke-dasharray', '3,3');
-
                 const hLine = document.createElementNS(ns, 'line');
                 hLine.setAttribute('x1', '0');
                 hLine.setAttribute('y1', '0');
@@ -1814,7 +1717,6 @@
                 hLine.setAttribute('stroke', 'rgba(255,255,255,0.15)');
                 hLine.setAttribute('stroke-width', '0.5');
                 hLine.setAttribute('stroke-dasharray', '3,3');
-
                 const circle = document.createElementNS(ns, 'circle');
                 circle.setAttribute('cx', '0');
                 circle.setAttribute('cy', '0');
@@ -1822,13 +1724,11 @@
                 circle.setAttribute('fill', 'none');
                 circle.setAttribute('stroke', 'rgba(255,255,255,0.3)');
                 circle.setAttribute('stroke-width', '1.2');
-
                 const dot = document.createElementNS(ns, 'circle');
                 dot.setAttribute('cx', '0');
                 dot.setAttribute('cy', '0');
                 dot.setAttribute('r', '1.5');
                 dot.setAttribute('fill', 'rgba(255,255,255,0.2)');
-
                 crosshair.appendChild(vLine);
                 crosshair.appendChild(hLine);
                 crosshair.appendChild(circle);
@@ -1935,7 +1835,6 @@
                 const { x, y } = getCoords(e);
                 const step = parseInt(svg.dataset.step) || 0;
                 const mobile = isMobile();
-
                 if (!mobile) {
                     if (step === 0) {
                         svg.dataset.startX = x;
@@ -1969,7 +1868,6 @@
                     }
                     return;
                 }
-
                 if (mobile) {
                     if (step === 0) {
                         updateCrosshair(x, y);
@@ -2031,7 +1929,6 @@
                 const { x, y } = getCoords(e);
                 const step = parseInt(svg.dataset.step) || 0;
                 const mobile = isMobile();
-
                 if (!mobile) {
                     if (step === 0) {
                         svg.dataset.startX = x;
@@ -2065,7 +1962,6 @@
                     }
                     return;
                 }
-
                 if (mobile) {
                     if (step === 0) {
                         updateCrosshair(x, y);
@@ -2218,18 +2114,14 @@
             bestRecord = getBestRecord();
             document.getElementById('bestRecordDisplay').textContent = bestRecord;
             document.getElementById('newRecordBadge').classList.remove('show');
-
+            updateLevelDisplay(bestRecord);
             generateNewExercise(false);
         });
 
-        console.log('🕯️ Amitis v74 - رفع باگ افکت چشمک‌زن + فیکس روند رنج');
-        console.log('✅ صعودی / نزولی / رنج - به صورت تصادفی');
-        console.log('✅ افکت چشمک‌زن (نئون) با !important و انیمیشن قوی‌تر');
-        console.log('✅ روند رنج فیکس شد - موج‌ها به درستی متناوب بالا و پایین می‌روند');
-        console.log('✅ رنگ‌های نئونی برای جواب‌ها:');
-        console.log('   - صعودی: #000eff (آبی نئونی)');
-        console.log('   - نزولی: #890913 (قرمز نئونی)');
-        console.log('   - رنج: #ff9b00 (نارنجی نئونی)');
+        console.log('⚡ Amitis v86 - بدون نظر سنجی + فوتر کامل');
+        console.log('✅ دکمه بازخورد حذف شد');
+        console.log('✅ فوتر با آیتم‌های کامل (GitHub, IPLocation, CoinMarketCap, TradingView)');
+        console.log('✅ تمام آیتم‌های فوتر مثل کد شما');
     </script>
 
 </body>

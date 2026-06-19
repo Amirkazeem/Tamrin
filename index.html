@@ -1021,14 +1021,14 @@
                 Powered by <span class="highlight">Amirkazem</span> Coding
             </span>
             <span class="dot-sep">•</span>
-            <span class="version">v65</span>
+            <span class="version">v68</span>
         </div>
 
     </div>
 
     <script>
         // ================================================================
-        // Amirkazem Coding - v65 (Fixed - Trendlines are sloped and don't cross candles)
+        // Amirkazem Coding - v68 (خطوط معمولی + کاهش نامحسوس‌تر ارتفاع)
         // ================================================================
 
         const STORAGE_KEY = 'amitis_trend_record';
@@ -1085,6 +1085,10 @@
             document.getElementById('exerciseCounter3').textContent = exercise3Counter;
             updateRecordDisplay3();
         }
+
+        // ================================================================
+        // تولید کندل برای تمرین ۱ با کاهش نامحسوس ارتفاع موج‌ها
+        // ================================================================
 
         const GLOBAL_MIN = 26;
         const GLOBAL_MAX = 86;
@@ -1147,41 +1151,68 @@
             return { candles, lastPrice: currentPrice };
         }
 
+        // ================================================================
+        // تولید کندل‌های روند رنج صعودی با کاهش نامحسوس ارتفاع موج‌ها
+        // ================================================================
         function generateUpwardTrendRangeCandles(startPrice) {
             const candles = [];
             let currentPrice = startPrice;
-            const rangeHeight = 18 + Math.random() * 10;
-            const maxStart = GLOBAL_MAX - GLOBAL_MIN - rangeHeight - 15;
-            const start = GLOBAL_MIN + 5 + Math.random() * maxStart;
-            let baseMin = Math.round(start);
-            let baseMax = Math.round(start + rangeHeight);
-            baseMin = Math.max(GLOBAL_MIN + 3, Math.min(GLOBAL_MAX - rangeHeight - 15, baseMin));
-            baseMax = baseMin + Math.round(rangeHeight);
-            const stepPerWave = 1.8 + Math.random() * 1.5;
+            
+            // ===== تنظیم ارتفاع اولیه =====
+            const initialHeight = 18 + Math.random() * 8;
+            let currentHeight = initialHeight;
+            
+            // ===== کاهش بسیار نامحسوس ارتفاع (2% تا 7% در هر موج) =====
+            // ضریب کاهش بین 0.93 تا 0.98 - بسیار ملایم و نامحسوس
+            const heightDecay = 0.93 + Math.random() * 0.05;
+            
+            // شیب صعودی ملایم
+            const stepPerWave = 1.5 + Math.random() * 1.0;
+            
+            // ===== محاسبه محدوده هر موج =====
             const waveRanges = [];
+            const startMin = GLOBAL_MIN + 4 + Math.random() * 3;
+            let baseMin = Math.round(startMin);
+            
             for (let i = 0; i < TOTAL_WAVES; i++) {
+                if (i > 0) {
+                    currentHeight = currentHeight * heightDecay;
+                    // حداقل ارتفاع 8 واحد (برای اینکه خیلی کوچک نشه)
+                    currentHeight = Math.max(8, currentHeight);
+                }
+                
                 const offset = i * stepPerWave;
-                const waveMin = Math.min(GLOBAL_MAX - rangeHeight - 1, baseMin + offset);
-                const waveMax = Math.min(GLOBAL_MAX - 1, waveMin + rangeHeight);
+                let waveMin = baseMin + offset;
+                let waveMax = waveMin + currentHeight;
+                
                 if (i > 0) {
                     const prevRange = waveRanges[i - 1];
-                    if (waveMin <= prevRange.min) {
-                        const newMin = Math.min(GLOBAL_MAX - rangeHeight - 1, prevRange.min + stepPerWave * 0.8);
-                        const newMax = Math.min(GLOBAL_MAX - 1, newMin + rangeHeight);
-                        waveRanges.push({ min: newMin, max: newMax });
-                    } else {
-                        waveRanges.push({ min: waveMin, max: waveMax });
+                    const minRequired = prevRange.min + 1.0;
+                    if (waveMin < minRequired) {
+                        waveMin = minRequired;
+                        waveMax = waveMin + currentHeight;
                     }
-                } else {
-                    waveRanges.push({ min: waveMin, max: waveMax });
                 }
+                
+                waveMin = Math.max(GLOBAL_MIN + 2, Math.min(GLOBAL_MAX - currentHeight - 3, waveMin));
+                waveMax = waveMin + currentHeight;
+                
+                if (waveMax > GLOBAL_MAX - 2) {
+                    waveMax = GLOBAL_MAX - 2;
+                    waveMin = waveMax - currentHeight;
+                }
+                
+                waveRanges.push({ 
+                    min: Math.round(waveMin * 10) / 10, 
+                    max: Math.round(waveMax * 10) / 10, 
+                    height: currentHeight 
+                });
             }
-
-            const resultWaveRanges = [];
-
+            
+            // ===== انتقال نرم به اولین موج =====
             const firstWave = waveRanges[0];
             if (currentPrice < firstWave.min) {
-                const steps = Math.min(2, Math.ceil((firstWave.min - currentPrice) / 2));
+                const steps = Math.min(3, Math.ceil((firstWave.min - currentPrice) / 2));
                 for (let i = 0; i < steps; i++) {
                     const progress = (i + 1) / (steps + 1);
                     const targetPrice = currentPrice + (firstWave.min - currentPrice) * progress + 0.5;
@@ -1191,7 +1222,7 @@
                     currentPrice = candle.close;
                 }
             } else if (currentPrice > firstWave.max) {
-                const steps = Math.min(2, Math.ceil((currentPrice - firstWave.max) / 2));
+                const steps = Math.min(3, Math.ceil((currentPrice - firstWave.max) / 2));
                 for (let i = 0; i < steps; i++) {
                     const progress = (i + 1) / (steps + 1);
                     const targetPrice = currentPrice - (currentPrice - firstWave.max) * progress - 0.5;
@@ -1202,12 +1233,16 @@
                 }
             }
 
+            // ===== تولید کندل‌های هر موج =====
+            const resultWaveRanges = [];
+            
             waveRanges.forEach((waveRange, waveIndex) => {
                 const waveMin = waveRange.min;
                 const waveMax = waveRange.max;
                 const isDown = waveIndex % 2 === 0;
                 const startPrice = isDown ? waveMax : waveMin;
                 const endPrice = isDown ? waveMin : waveMax;
+                
                 const reverseCount = 2;
                 const reversePos = [];
                 while (reversePos.length < reverseCount) {
@@ -1237,7 +1272,6 @@
                     currentPrice = candle.close;
                 }
 
-                // پیدا کردن پایین‌ترین و بالاترین نقطه در این موج
                 let waveLow = Infinity;
                 let waveHigh = -Infinity;
                 for (let i = waveStartIndex; i < candles.length; i++) {
@@ -1253,7 +1287,12 @@
                     isDown: isDown
                 });
             });
-
+            
+            const heights = waveRanges.map(w => Math.round(w.height * 10) / 10);
+            const reduction = Math.round((1 - heights[heights.length-1] / heights[0]) * 100);
+            console.log('📊 ارتفاع موج‌ها:', heights.join(' → '));
+            console.log(`📈 کاهش از ${heights[0]} به ${heights[heights.length-1]} (${reduction}% کاهش)`);
+            
             return { candles, lastPrice: currentPrice, waveRanges: resultWaveRanges };
         }
 
@@ -1311,7 +1350,7 @@
         }
 
         // ================================================================
-        // RENDER FUNCTION FOR EXERCISE 1
+        // RENDER FUNCTION FOR EXERCISE 1 - با خطوط معمولی
         // ================================================================
 
         function renderExercise1Candles(candles, svgId, showAnswerLine = false) {
@@ -1323,7 +1362,8 @@
                 const isGrid = child.tagName === 'line' && child.getAttribute('stroke') === '#151515';
                 const isLabel = child.tagName === 'text' && !child.id;
                 const isBg = child.tagName === 'rect' && child.getAttribute('fill') === '#0a0a0a';
-                const isAnswerLine = child.tagName === 'line' && child.getAttribute('stroke') === '#ff9b00' && child.getAttribute('stroke-width') === '3';
+                const isAnswerLine = child.tagName === 'line' && child.getAttribute('stroke') === '#ff9b00' && 
+                                    (child.getAttribute('stroke-width') === '3' || child.getAttribute('stroke-width') === '2.5');
                 if (!isGrid && !isLabel && !isBg && !isAnswerLine) {
                     toRemove.push(child);
                 }
@@ -1331,7 +1371,8 @@
             if (showAnswerLine) {
                 const oldLines = svg.querySelectorAll('line');
                 oldLines.forEach(line => {
-                    if (line.getAttribute('stroke') === '#ff9b00' && line.getAttribute('stroke-width') === '3') {
+                    if (line.getAttribute('stroke') === '#ff9b00' && 
+                        (line.getAttribute('stroke-width') === '3' || line.getAttribute('stroke-width') === '2.5')) {
                         line.remove();
                     }
                 });
@@ -1394,15 +1435,12 @@
                 }
             });
 
-            // ===== رسم دو ترندلاین اریب با استفاده از نقاط افراطی هر موج =====
+            // ===== رسم دو ترندلاین معمولی (بدون نقطه‌چین) =====
             if (showAnswerLine && candles.length > 0 && currentExercise1WaveRanges.length > 0) {
-                // جمع‌آوری نقاط پایین و بالا برای هر موج
                 const lowPoints = [];
                 const highPoints = [];
-
-                currentExercise1WaveRanges.forEach((wave, idx) => {
-                    // از هر موج یک نقطه پایین و یک نقطه بالا انتخاب می‌کنیم
-                    // برای دقت بیشتر، از پایین‌ترین و بالاترین نقطه هر موج استفاده می‌کنیم
+                
+                currentExercise1WaveRanges.forEach((wave) => {
                     let waveLow = Infinity;
                     let waveHigh = -Infinity;
                     let lowIndex = wave.startIndex;
@@ -1419,44 +1457,13 @@
                         }
                     }
 
-                    // اگر موج‌ها دوتایی هستند، از هر دو موج برای دقت بیشتر استفاده می‌کنیم
-                    // اما برای جلوگیری از نویز، فقط از موج‌های با فاصله مناسب استفاده می‌کنیم
-                    if (idx % 2 === 0 || idx === currentExercise1WaveRanges.length - 1) {
-                        lowPoints.push({ index: lowIndex, price: waveLow });
-                        highPoints.push({ index: highIndex, price: waveHigh });
-                    }
+                    lowPoints.push({ index: lowIndex, price: waveLow });
+                    highPoints.push({ index: highIndex, price: waveHigh });
                 });
 
-                // اگر تعداد نقاط کافی نیست، از همه موج‌ها استفاده کن
-                if (lowPoints.length < 2) {
-                    lowPoints.length = 0;
-                    highPoints.length = 0;
-                    currentExercise1WaveRanges.forEach((wave) => {
-                        let waveLow = Infinity;
-                        let waveHigh = -Infinity;
-                        let lowIndex = wave.startIndex;
-                        let highIndex = wave.startIndex;
-                        for (let i = wave.startIndex; i <= wave.endIndex && i < candles.length; i++) {
-                            if (candles[i].low < waveLow) {
-                                waveLow = candles[i].low;
-                                lowIndex = i;
-                            }
-                            if (candles[i].high > waveHigh) {
-                                waveHigh = candles[i].high;
-                                highIndex = i;
-                            }
-                        }
-                        lowPoints.push({ index: lowIndex, price: waveLow });
-                        highPoints.push({ index: highIndex, price: waveHigh });
-                    });
-                }
-
                 if (lowPoints.length >= 2 && highPoints.length >= 2) {
-                    // محاسبه خط پایین (از پایین‌ترین نقاط)
                     const firstLow = lowPoints[0];
                     const lastLow = lowPoints[lowPoints.length - 1];
-
-                    // محاسبه خط بالا (از بالاترین نقاط)
                     const firstHigh = highPoints[0];
                     const lastHigh = highPoints[highPoints.length - 1];
 
@@ -1468,25 +1475,25 @@
                     const yFirstHigh = baseY - ((firstHigh.price - GLOBAL_MIN) / (GLOBAL_MAX - GLOBAL_MIN)) * chartHeight;
                     const yLastHigh = baseY - ((lastHigh.price - GLOBAL_MIN) / (GLOBAL_MAX - GLOBAL_MIN)) * chartHeight;
 
-                    // خط پایین (اربیب)
+                    // ===== خط پایین (حمایت) - معمولی بدون نقطه‌چین =====
                     const lineBottom = document.createElementNS(ns, 'line');
                     lineBottom.setAttribute('x1', firstX);
                     lineBottom.setAttribute('y1', yFirstLow);
                     lineBottom.setAttribute('x2', lastX);
                     lineBottom.setAttribute('y2', yLastLow);
                     lineBottom.setAttribute('stroke', '#ff9b00');
-                    lineBottom.setAttribute('stroke-width', '3');
+                    lineBottom.setAttribute('stroke-width', '2.5');
                     lineBottom.setAttribute('opacity', '0.8');
                     svg.appendChild(lineBottom);
 
-                    // خط بالا (اربیب)
+                    // ===== خط بالا (مقاومت) - معمولی بدون نقطه‌چین =====
                     const lineTop = document.createElementNS(ns, 'line');
                     lineTop.setAttribute('x1', firstX);
                     lineTop.setAttribute('y1', yFirstHigh);
                     lineTop.setAttribute('x2', lastX);
                     lineTop.setAttribute('y2', yLastHigh);
                     lineTop.setAttribute('stroke', '#ff9b00');
-                    lineTop.setAttribute('stroke-width', '3');
+                    lineTop.setAttribute('stroke-width', '2.5');
                     lineTop.setAttribute('opacity', '0.8');
                     svg.appendChild(lineTop);
                 }
@@ -2384,8 +2391,11 @@
             generateNewExercise3(false);
         });
 
-        console.log('🕯️ Amitis v65 - خطوط ترندلاین اریب با استفاده از نقاط افراطی هر موج');
-        console.log('🕯️ خطوط از کندل‌ها عبور نمی‌کنند و به اندازه کافی به کندل‌ها نزدیک هستند');
+        console.log('🕯️ Amitis v68 - خطوط معمولی + کاهش نامحسوس‌تر ارتفاع');
+        console.log('✅ ارتفاع موج اول بزرگترین است (18-26 واحد)');
+        console.log('✅ کاهش بسیار نامحسوس: 2% تا 7% در هر موج');
+        console.log('✅ خطوط روند به صورت معمولی (بدون نقطه‌چین) رسم می‌شوند');
+        console.log('✅ هر موج 4 کندل دارد - 8 موج');
     </script>
 
 </body>

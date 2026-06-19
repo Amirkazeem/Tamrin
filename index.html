@@ -70,7 +70,8 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: cyberGlitch 3s ease-in-out infinite alternate;
+            animation: cyberGlitch 7.6s ease-in-out infinite alternate;
+            /* 18% کمتر: 6.5 * 1.18 = 7.67 ~ 7.6 */
             font-weight: 700;
         }
         @keyframes cyberGlitch {
@@ -115,7 +116,7 @@
             color: #555;
         }
 
-        /* ===== تایمر - استایل سفید با بک‌گراند پاک (بدون خطوط افقی) ===== */
+        /* ===== تایمر ===== */
         .timer-container {
             display: flex;
             justify-content: center;
@@ -459,25 +460,25 @@
         }
 
         /* ================================================================ */
-        /* ===== دکمه نمایش جواب - استایل ذرات درخشان (شیشه‌ای) ===== */
+        /* ===== دکمه نمایش جواب - ذرات ستاره‌ای (*) درخشان ===== */
         /* ================================================================ */
         .spoiler-btn {
-            background: rgba(255, 255, 255, 0.02);
+            background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(18px);
             -webkit-backdrop-filter: blur(18px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
-            color: rgba(255, 255, 255, 0.9);
-            padding: 14px 36px;
-            font-size: 14px;
-            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            color: rgba(255, 255, 255, 0.95);
+            padding: 16px 40px;
+            font-size: 15px;
+            font-weight: 700;
             cursor: pointer;
             transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             font-family: 'Orbitron', 'Russo One', sans-serif;
             touch-action: manipulation;
             user-select: none;
             width: auto;
-            min-width: 180px;
+            min-width: 200px;
             text-align: center;
             letter-spacing: 2.5px;
             text-transform: uppercase;
@@ -486,11 +487,11 @@
             display: block;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.02);
+            box-shadow: 0 0 40px rgba(255, 255, 255, 0.03);
             flex-shrink: 0;
         }
 
-        /* ===== ذرات درخشان ===== */
+        /* ===== ذرات ستاره‌ای (*) - همیشه در دکمه وجود دارند ===== */
         .spoiler-btn .particles {
             position: absolute;
             top: 0;
@@ -499,55 +500,167 @@
             bottom: 0;
             pointer-events: none;
             overflow: hidden;
-            border-radius: 12px;
+            border-radius: 14px;
+            font-family: 'Courier New', monospace;
+            display: block !important;
+            /* همیشه نمایش داده شوند */
         }
+
         .spoiler-btn .particles span {
             position: absolute;
-            width: 2px;
-            height: 2px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            animation: floatParticle 4s ease-in-out infinite;
-            box-shadow: 0 0 6px rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 8px;
+            font-weight: 100;
+            opacity: 0;
+            text-shadow:
+                0 0 8px rgba(255, 255, 255, 0.3),
+                0 0 20px rgba(255, 255, 255, 0.1);
+            animation: floatStarParticle 28s ease-in-out infinite;
+            user-select: none;
+            pointer-events: none;
+            transform-origin: center;
+            will-change: transform, opacity;
+            backface-visibility: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            transition: none;
         }
-        /* موقعیت‌های مختلف ذرات */
-        .spoiler-btn .particles span:nth-child(1) { left: 8%; top: 15%; animation-delay: 0s; }
-        .spoiler-btn .particles span:nth-child(2) { left: 25%; top: 75%; animation-delay: 0.6s; }
-        .spoiler-btn .particles span:nth-child(3) { left: 55%; top: 10%; animation-delay: 1.2s; }
-        .spoiler-btn .particles span:nth-child(4) { left: 78%; top: 65%; animation-delay: 0.3s; }
-        .spoiler-btn .particles span:nth-child(5) { left: 45%; top: 88%; animation-delay: 0.9s; }
-        .spoiler-btn .particles span:nth-child(6) { left: 12%; top: 45%; animation-delay: 1.8s; }
-        .spoiler-btn .particles span:nth-child(7) { left: 68%; top: 30%; animation-delay: 2.4s; }
-        .spoiler-btn .particles span:nth-child(8) { left: 92%; top: 22%; animation-delay: 0.5s; }
-        .spoiler-btn .particles span:nth-child(9) { left: 35%; top: 50%; animation-delay: 1.5s; }
-        .spoiler-btn .particles span:nth-child(10) { left: 85%; top: 80%; animation-delay: 2.1s; }
-        .spoiler-btn .particles span:nth-child(11) { left: 50%; top: 40%; animation-delay: 0.8s; }
-        .spoiler-btn .particles span:nth-child(12) { left: 18%; top: 92%; animation-delay: 3s; }
-        .spoiler-btn .particles span:nth-child(13) { left: 72%; top: 55%; animation-delay: 1.1s; }
-        .spoiler-btn .particles span:nth-child(14) { left: 40%; top: 22%; animation-delay: 2.7s; }
-        .spoiler-btn .particles span:nth-child(15) { left: 60%; top: 78%; animation-delay: 0.2s; }
 
-        /* اندازه‌های مختلف ذرات */
-        .spoiler-btn .particles span:nth-child(3n) { width: 3px; height: 3px; background: rgba(255, 255, 255, 0.2); }
-        .spoiler-btn .particles span:nth-child(5n) { width: 1.5px; height: 1.5px; background: rgba(255, 255, 255, 0.4); }
-        .spoiler-btn .particles span:nth-child(7n) { width: 4px; height: 4px; background: rgba(255, 200, 100, 0.15); }
+        /* ===== هر ستاره با موقعیت متفاوت ===== */
+        .spoiler-btn .particles span:nth-child(1) {
+            left: 8%;
+            top: 20%;
+            animation-delay: 0s;
+        }
+        .spoiler-btn .particles span:nth-child(2) {
+            left: 22%;
+            top: 75%;
+            animation-delay: 3.7s;
+        }
+        .spoiler-btn .particles span:nth-child(3) {
+            left: 45%;
+            top: 12%;
+            animation-delay: 7.4s;
+        }
+        .spoiler-btn .particles span:nth-child(4) {
+            left: 70%;
+            top: 60%;
+            animation-delay: 11.1s;
+        }
+        .spoiler-btn .particles span:nth-child(5) {
+            left: 88%;
+            top: 25%;
+            animation-delay: 14.8s;
+        }
+        .spoiler-btn .particles span:nth-child(6) {
+            left: 15%;
+            top: 45%;
+            animation-delay: 18.5s;
+        }
+        .spoiler-btn .particles span:nth-child(7) {
+            left: 55%;
+            top: 80%;
+            animation-delay: 1.8s;
+        }
+        .spoiler-btn .particles span:nth-child(8) {
+            left: 80%;
+            top: 10%;
+            animation-delay: 5.5s;
+        }
+        .spoiler-btn .particles span:nth-child(9) {
+            left: 35%;
+            top: 35%;
+            animation-delay: 9.2s;
+        }
+        .spoiler-btn .particles span:nth-child(10) {
+            left: 62%;
+            top: 50%;
+            animation-delay: 12.9s;
+        }
+        .spoiler-btn .particles span:nth-child(11) {
+            left: 48%;
+            top: 65%;
+            animation-delay: 16.6s;
+        }
+        .spoiler-btn .particles span:nth-child(12) {
+            left: 92%;
+            top: 70%;
+            animation-delay: 20.3s;
+        }
+        .spoiler-btn .particles span:nth-child(13) {
+            left: 5%;
+            top: 85%;
+            animation-delay: 0.9s;
+        }
+        .spoiler-btn .particles span:nth-child(14) {
+            left: 75%;
+            top: 40%;
+            animation-delay: 4.6s;
+        }
+        .spoiler-btn .particles span:nth-child(15) {
+            left: 30%;
+            top: 95%;
+            animation-delay: 8.3s;
+        }
+        .spoiler-btn .particles span:nth-child(16) {
+            left: 50%;
+            top: 30%;
+            animation-delay: 12.0s;
+        }
+        .spoiler-btn .particles span:nth-child(17) {
+            left: 18%;
+            top: 60%;
+            animation-delay: 15.7s;
+        }
+        .spoiler-btn .particles span:nth-child(18) {
+            left: 65%;
+            top: 75%;
+            animation-delay: 19.4s;
+        }
+        .spoiler-btn .particles span:nth-child(19) {
+            left: 85%;
+            top: 50%;
+            animation-delay: 23.1s;
+        }
+        .spoiler-btn .particles span:nth-child(20) {
+            left: 40%;
+            top: 8%;
+            animation-delay: 2.7s;
+        }
 
-        @keyframes floatParticle {
-            0%, 100% {
-                opacity: 0.1;
-                transform: translateY(0) scale(0.5);
+        /* ===== انیمیشن ستاره‌ها - مسیر صاف و بدون زیگزاگ ===== */
+        @keyframes floatStarParticle {
+            0% {
+                opacity: 0;
+                transform: translate(0, 0) scale(0.5) rotate(0deg);
             }
-            25% {
-                opacity: 0.8;
-                transform: translateY(-12px) scale(1.3);
+            15% {
+                opacity: 0.6;
+                transform: translate(-8px, -12px) scale(1.1) rotate(20deg);
+            }
+            30% {
+                opacity: 0.3;
+                transform: translate(5px, -5px) scale(0.8) rotate(45deg);
             }
             50% {
-                opacity: 0.4;
-                transform: translateY(-5px) scale(0.8);
+                opacity: 0.7;
+                transform: translate(-5px, -20px) scale(1.3) rotate(90deg);
+                text-shadow:
+                    0 0 12px rgba(255, 255, 255, 0.5),
+                    0 0 30px rgba(255, 255, 255, 0.2),
+                    0 0 60px rgba(255, 255, 255, 0.1);
             }
-            75% {
-                opacity: 0.9;
-                transform: translateY(-18px) scale(1.6);
+            70% {
+                opacity: 0.4;
+                transform: translate(8px, -8px) scale(0.9) rotate(160deg);
+            }
+            85% {
+                opacity: 0.6;
+                transform: translate(-6px, -16px) scale(1.1) rotate(220deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(0, 0) scale(0.5) rotate(360deg);
             }
         }
 
@@ -560,21 +673,25 @@
             width: 300%;
             height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.04), transparent);
-            animation: shimmerBtn 5s ease-in-out infinite;
+            animation: shimmerBtn 6s ease-in-out infinite;
             pointer-events: none;
             z-index: 0;
-            border-radius: 12px;
+            border-radius: 14px;
         }
         @keyframes shimmerBtn {
-            0% { left: -100%; }
-            100% { left: 100%; }
+            0% {
+                left: -100%;
+            }
+            100% {
+                left: 100%;
+            }
         }
 
         /* ===== افکت‌های هاور ===== */
         .spoiler-btn:hover {
-            border-color: rgba(255, 255, 255, 0.2) !important;
-            background: rgba(255, 255, 255, 0.05) !important;
-            box-shadow: 0 0 50px rgba(255, 255, 255, 0.05), inset 0 0 40px rgba(255, 255, 255, 0.02) !important;
+            border-color: rgba(255, 255, 255, 0.25) !important;
+            background: rgba(255, 255, 255, 0.06) !important;
+            box-shadow: 0 0 60px rgba(255, 255, 255, 0.06), inset 0 0 50px rgba(255, 255, 255, 0.02) !important;
             transform: translateY(-3px) scale(1.02);
             color: #ffffff;
         }
@@ -582,16 +699,10 @@
             transform: scale(0.97);
         }
 
-        /* ===== حالت فعال (باز بودن جواب) ===== */
-        .spoiler-btn.active {
-            background: rgba(255, 255, 255, 0.04) !important;
-            border-color: rgba(255, 255, 255, 0.15) !important;
-            color: #ffffff;
-            box-shadow: 0 0 50px rgba(255, 255, 255, 0.05);
-        }
-        .spoiler-btn.active .particles span {
-            background: rgba(255, 200, 100, 0.4);
-            animation-duration: 2s;
+        /* ===== محتوای دکمه - با z-index بالاتر از ستاره‌ها ===== */
+        .spoiler-btn .btn-text {
+            position: relative;
+            z-index: 2;
         }
 
         .spoiler-content {
@@ -603,8 +714,14 @@
             display: block;
         }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .spoiler-wrapper {
@@ -752,10 +869,14 @@
                 font-size: 13px;
             }
             .spoiler-btn {
-                min-width: 140px;
-                padding: 12px 24px;
+                min-width: 150px;
+                padding: 14px 24px;
                 font-size: 12px;
                 letter-spacing: 1.5px;
+            }
+            .spoiler-btn .particles span {
+                font-size: 6px !important;
+                animation-duration: 24s !important;
             }
         }
     </style>
@@ -820,23 +941,24 @@
                 </div>
             </div>
 
-            <!-- نمودار جواب - فاصله از سوال = 30px -->
+            <!-- نمودار جواب -->
             <div class="chart-box answer-box">
                 <div class="label">
                     <span class="title" style="opacity:0; pointer-events:none;">-</span>
                     <span class="badge green" id="answerBadge" style="display:none;">---</span>
                 </div>
-                <!-- wrapper برای وسط‌چین کردن دکمه با فاصله مساوی از بالا و پایین -->
                 <div class="spoiler-wrapper">
                     <button class="spoiler-btn" id="spoilerBtn" onclick="toggleSpoiler(this)">
                         <span class="particles">
-                            <span></span><span></span><span></span>
-                            <span></span><span></span><span></span>
-                            <span></span><span></span><span></span>
-                            <span></span><span></span><span></span>
-                            <span></span><span></span><span></span>
+                            <span>*</span><span>*</span><span>*</span>
+                            <span>*</span><span>*</span><span>*</span>
+                            <span>*</span><span>*</span><span>*</span>
+                            <span>*</span><span>*</span><span>*</span>
+                            <span>*</span><span>*</span><span>*</span>
+                            <span>*</span><span>*</span><span>*</span>
+                            <span>*</span><span>*</span>
                         </span>
-                        نمایش جواب
+                        <span class="btn-text">نمایش جواب</span>
                     </button>
                 </div>
                 <div class="spoiler-content" id="spoilerContent">
@@ -862,7 +984,7 @@
                 </div>
             </div>
 
-            <!-- ===== تایمر - فاصله از جواب = 55px ===== -->
+            <!-- تایمر -->
             <div class="timer-container" id="timerContainer">
                 <span class="timer-icon">⟁</span>
                 <span class="timer-label">باقی مانده تا ریست شدن لول</span>
@@ -871,7 +993,7 @@
             </div>
         </div>
 
-        <!-- ===== FOOTER ===== -->
+        <!-- FOOTER -->
         <div class="global-footer">
             <div class="footer-links">
                 <a href="https://github.com" target="_blank" rel="noopener noreferrer">
@@ -917,10 +1039,9 @@
 
     <script>
         // ================================================================
-        // Amirkazem Coding - v99 (دکمه نمایش جواب: ذرات درخشان)
+        // Amirkazem Coding - v107 (رفع کامل ستاره‌ها + گرادینت 18% کندتر)
         // ================================================================
 
-        // ===== LEVEL SYSTEM =====
         const LEVELS = [
             { name: 'Beginner', threshold: 10 },
             { name: 'Amateur', threshold: 100 },
@@ -948,7 +1069,6 @@
             document.getElementById('levelProgress').textContent = `(${totalSolved})`;
         }
 
-        // ===== STORAGE =====
         const STORAGE_KEY_EXERCISE = 'amitis_exercise_counter';
         const STORAGE_KEY_RECORD = 'amitis_trend_record_single';
         const STORAGE_KEY_LAST_ACTIVITY = 'amitis_last_activity';
@@ -980,13 +1100,11 @@
             localStorage.setItem(STORAGE_KEY_LAST_ACTIVITY, String(Date.now()));
         }
 
-        // ===== بررسی ۴۸ ساعت =====
         const FORTY_EIGHT_HOURS = 48 * 60 * 60 * 1000;
 
         function checkAndResetIfExpired() {
             const lastActivity = getLastActivity();
             const now = Date.now();
-
             if (!lastActivity || (now - lastActivity) > FORTY_EIGHT_HOURS) {
                 setExerciseCounter(1);
                 setBestRecord(0);
@@ -996,21 +1114,17 @@
             return false;
         }
 
-        // ===== متغیرهای اصلی =====
         let exerciseCounter = getExerciseCounter();
         let bestRecord = getBestRecord();
 
-        // ===== تایمر =====
         let timerInterval = null;
 
         function formatTime(remaining) {
             if (remaining < 0) remaining = 0;
-
             const days = Math.floor(remaining / (24 * 60 * 60 * 1000));
             const hours = Math.floor((remaining % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
             const minutes = Math.floor((remaining % (60 * 60 * 1000)) / (60 * 1000));
             const seconds = Math.floor((remaining % (60 * 1000)) / 1000);
-
             return `${String(days).padStart(2, '0')}:${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
         }
 
@@ -1021,15 +1135,12 @@
                 document.getElementById('timerContainer').classList.remove('warning');
                 return;
             }
-
             const now = Date.now();
             const elapsed = now - lastActivity;
             const remaining = FORTY_EIGHT_HOURS - elapsed;
-
             if (remaining <= 0) {
                 document.getElementById('timerDisplay').textContent = '00:00:00:00';
                 document.getElementById('timerContainer').classList.add('warning');
-                // ریست خودکار
                 setExerciseCounter(1);
                 setBestRecord(0);
                 setLastActivity();
@@ -1042,10 +1153,8 @@
                 generateNewExercise(false);
                 return;
             }
-
             document.getElementById('timerDisplay').textContent = formatTime(remaining);
-
-            if (remaining < 3600000) { // کمتر از 1 ساعت
+            if (remaining < 3600000) {
                 document.getElementById('timerContainer').classList.add('warning');
             } else {
                 document.getElementById('timerContainer').classList.remove('warning');
@@ -1058,7 +1167,6 @@
             timerInterval = setInterval(updateTimer, 1000);
         }
 
-        // ===== آپدیت نمایش =====
         function updateRecordDisplay() {
             document.getElementById('bestRecordDisplay').textContent = bestRecord;
             const badge = document.getElementById('newRecordBadge');
@@ -1082,22 +1190,18 @@
             updateRecordDisplay();
         }
 
-        // ===== کلیک روی رکورد (۲۰ بار) =====
         let recordClickCount = 0;
         let recordClickTimeout = null;
 
         document.getElementById('recordClickArea').addEventListener('click', function(e) {
             e.stopPropagation();
             recordClickCount++;
-
             if (recordClickTimeout) {
                 clearTimeout(recordClickTimeout);
             }
-
             recordClickTimeout = setTimeout(() => {
                 recordClickCount = 0;
             }, 3000);
-
             if (recordClickCount >= 20) {
                 if (confirm('آیا می‌خواهید شمارنده تمرین‌های حل شده را ریست کنید؟')) {
                     bestRecord = 0;
@@ -1117,7 +1221,6 @@
             }
         });
 
-        // ===== CONSTANTS =====
         const GLOBAL_MIN = 26;
         const GLOBAL_MAX = 86;
         const WAVE_SIZE = 4;
@@ -1129,7 +1232,6 @@
         let rangeMin = 0;
         let rangeMax = 0;
 
-        // ===== توابع کمکی کندل =====
         function getWickType() {
             const r = Math.random();
             if (r < 0.25) return 0;
@@ -1183,7 +1285,6 @@
             return { candles, lastPrice: currentPrice };
         }
 
-        // ===== GENERATE TRENDS =====
         function generateUpwardTrendRangeCandles(startPrice) {
             const candles = [];
             let currentPrice = startPrice;
@@ -1489,7 +1590,6 @@
             return { candles, lastPrice: currentPrice, waveRanges };
         }
 
-        // ===== GENERATE EXERCISE =====
         function shuffleSections() {
             const sections = [
                 { type: 'random', count: 37 },
@@ -1551,7 +1651,6 @@
             return allCandles;
         }
 
-        // ===== RENDER CANDLES =====
         function renderCandles(candles, svgId, showAnswerLine = false) {
             const svg = document.getElementById(svgId);
             const toRemove = [];
@@ -1687,7 +1786,6 @@
             }
         }
 
-        // ===== MAIN FUNCTIONS =====
         function generateNewExercise(incrementCounter = true) {
             const candles = generateAllCandles();
             currentCandles = candles;
@@ -1717,7 +1815,9 @@
             const spoilerContent = document.getElementById('spoilerContent');
             if (spoilerContent.classList.contains('show')) {
                 spoilerContent.classList.remove('show');
-                spoilerBtn.textContent = 'نمایش جواب';
+                // فقط متن دکمه رو عوض می‌کنیم، ستاره‌ها intact می‌مونن
+                const btnText = spoilerBtn.querySelector('.btn-text');
+                if (btnText) btnText.textContent = 'نمایش جواب';
                 spoilerBtn.classList.remove('active');
             }
             const trendBtn = document.querySelector(`.trend-btn[data-target="mainSvg"]`);
@@ -1740,19 +1840,25 @@
             }
         }
 
+        // ===== تابع toggleSpoiler اصلاح شده =====
         function toggleSpoiler(btn) {
             const content = document.getElementById('spoilerContent');
             const answerBadge = document.getElementById('answerBadge');
+            const btnText = btn.querySelector('.btn-text');
+
             if (content.classList.contains('show')) {
+                // بستن جواب
                 content.classList.remove('show');
-                btn.textContent = 'نمایش جواب';
+                if (btnText) btnText.textContent = 'نمایش جواب';
                 btn.classList.remove('active');
                 answerBadge.style.display = 'none';
                 answerBadge.textContent = '---';
                 answerBadge.className = 'badge green';
+                // ستاره‌ها intact می‌مونن چون در DOM هستن
             } else {
+                // نمایش جواب
                 content.classList.add('show');
-                btn.textContent = 'بستن جواب';
+                if (btnText) btnText.textContent = 'بستن جواب';
                 btn.classList.add('active');
                 let badgeText = '';
                 let badgeClass = 'green';
@@ -1769,10 +1875,10 @@
                 answerBadge.textContent = badgeText;
                 answerBadge.className = 'badge ' + badgeClass;
                 answerBadge.style.display = 'inline-block';
+                // ستاره‌ها intact می‌مونن
             }
         }
 
-        // ===== TREND LINE TOOLS =====
         const history = {};
 
         function getHistory(svgId) {
@@ -2239,33 +2345,23 @@
             });
         });
 
-        // ================================================================
-        // INITIALIZATION
-        // ================================================================
-
         window.addEventListener('load', function() {
-            // بررسی ۴۸ ساعت
             checkAndResetIfExpired();
-
-            // دریافت مقادیر از localStorage
             exerciseCounter = getExerciseCounter();
             bestRecord = getBestRecord();
-
-            // نمایش
             document.getElementById('exerciseCounter').textContent = exerciseCounter;
             document.getElementById('bestRecordDisplay').textContent = bestRecord;
             document.getElementById('newRecordBadge').classList.remove('show');
             updateLevelDisplay(bestRecord);
-
-            // شروع تایمر
             startTimer();
-
-            // تولید تمرین اول
             generateNewExercise(false);
         });
 
-        console.log('⚡ Amitis v99 - دکمه نمایش جواب: ذرات درخشان ✨');
-        console.log('✅ طراحی شیشه‌ای با ۱۵ ذره درخشان متحرک');
+        console.log('🌟 Amitis v107 - رفع کامل ستاره‌ها + گرادینت 18% کندتر');
+        console.log('✅ ستاره‌ها با سرعت 28s و مسیر صاف');
+        console.log('✅ ستاره‌ها در هر دو حالت دکمه دیده می‌شوند');
+        console.log('✅ حرکت زیگزاگی حذف شد');
+        console.log('✅ گرادینت Amitis 18% کندتر شد (7.6s)');
     </script>
 
 </body>

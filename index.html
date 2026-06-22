@@ -36,10 +36,10 @@
         }
         .header {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            padding: 20px 20px;
-            margin-bottom: 55px;
+            padding: 16px 24px;
+            margin-bottom: 30px;
             gap: 10px;
             background: rgba(255, 255, 255, 0.02);
             backdrop-filter: blur(16px);
@@ -54,20 +54,29 @@
             box-shadow: 0 8px 50px rgba(0, 0, 0, 0.4) !important;
             transform: translateY(-2px);
         }
-        .brand {
-            font-size: 36px;
-            font-weight: 700;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            background: linear-gradient(90deg, #000000, #890913, #000000, #890913);
-            background-size: 300% 100%;
+
+        .header-center {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .brand-logo {
+            font-family: 'Orbitron', 'Russo One', sans-serif;
+            font-size: 22px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            background: linear-gradient(90deg, #000000, #890913, #000000);
+            background-size: 200% 100%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: cyberGlitch 7.6s ease-in-out infinite alternate;
-            font-weight: 700;
+            animation: shimmerBrand 4s ease-in-out infinite;
+            text-shadow: 0 0 30px rgba(137, 9, 19, 0.15);
+            user-select: none;
         }
-        @keyframes cyberGlitch {
+        @keyframes shimmerBrand {
             0% {
                 background-position: 0% 50%;
             }
@@ -78,6 +87,50 @@
                 background-position: 0% 50%;
             }
         }
+
+        .header-left,
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .icon-btn {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 2px solid rgba(255, 0, 68, 0.5);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            color: rgba(255, 255, 255, 0.85);
+            box-shadow: 0 0 20px rgba(255, 0, 68, 0.15);
+            user-select: none;
+            position: relative;
+            font-size: 18px;
+            padding: 0;
+        }
+        .icon-btn:hover {
+            border-color: rgba(255, 0, 68, 0.9) !important;
+            background: rgba(255, 0, 68, 0.1) !important;
+            color: #ffffff;
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 0 40px rgba(255, 0, 68, 0.25) !important;
+        }
+        .icon-btn:active {
+            transform: scale(0.95);
+        }
+        .icon-btn svg {
+            width: 22px;
+            height: 22px;
+        }
+
         .level-display {
             display: flex;
             align-items: center;
@@ -107,6 +160,7 @@
             font-size: 10px;
             color: #555;
         }
+
         .timer-container {
             display: flex;
             justify-content: center;
@@ -220,6 +274,7 @@
         .timer-container.warning .timer-label {
             color: rgba(255, 0, 68, 0.3);
         }
+
         .item {
             margin-bottom: 30px;
             padding-bottom: 20px;
@@ -747,7 +802,6 @@
             border-radius: 8px;
             background: #0a0a0a;
         }
-        /* استایل‌های ابزار رنج - بدون کادر آبی و بدون خطوط مرزی */
         .range-line {
             display: none !important;
         }
@@ -849,21 +903,300 @@
         .global-footer .footer-copy .telegram-link:hover svg {
             fill: #fff;
         }
+
+        /* ===== پنل پخش‌کننده موسیقی ===== */
+        .music-panel {
+            position: fixed;
+            top: 80px;
+            left: 20px;
+            z-index: 999;
+            background: rgba(16, 16, 16, 0.88);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 18px 20px 16px;
+            min-width: 280px;
+            max-width: 360px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+            animation: slideDown 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            display: none;
+        }
+        .music-panel.show {
+            display: block;
+        }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .music-panel-header {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            direction: ltr;
+        }
+        .music-panel-brand {
+            display: none;
+        }
+        .music-panel-close {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            color: #666;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .music-panel-close:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .music-track-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+            direction: ltr;
+        }
+        .music-artwork {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 0, 68, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+            color: #890913;
+            box-shadow: 0 0 30px rgba(255, 0, 68, 0.05);
+        }
+        .music-artwork:hover {
+            border-color: rgba(255, 0, 68, 0.5);
+            transform: scale(1.03);
+            box-shadow: 0 0 40px rgba(255, 0, 68, 0.08);
+        }
+        .music-track-details {
+            flex: 1;
+            min-width: 0;
+        }
+        .music-track-title {
+            color: #fff;
+            font-size: 16px;
+            font-weight: 900;
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            background: linear-gradient(90deg, #000000, #890913, #000000);
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmerText 4s ease-in-out infinite;
+            letter-spacing: 1.5px;
+            text-shadow: 0 0 30px rgba(137, 9, 19, 0.1);
+        }
+        @keyframes shimmerText {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        .music-track-artist {
+            color: #666;
+            font-size: 10px;
+            font-weight: 400;
+            display: block;
+            margin-top: 1px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .music-track-time {
+            color: #444;
+            font-size: 10px;
+            font-weight: 400;
+            display: block;
+            margin-top: 2px;
+            font-family: 'Courier New', monospace;
+            direction: ltr;
+            text-align: left;
+            letter-spacing: 0.5px;
+        }
+
+        /* اکولایزر - فقط خط پیشرفت */
+        .music-eq-container {
+            width: 100%;
+            margin-bottom: 12px;
+            position: relative;
+            direction: ltr;
+            height: 32px;
+            background: transparent;
+            border: none;
+            border-radius: 0;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .music-eq-container svg {
+            display: block;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+        }
+        .eq-path {
+            display: none !important;
+        }
+        .eq-path-progress {
+            fill: none;
+            stroke: #ff0044;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            filter: drop-shadow(0 0 12px rgba(255, 0, 68, 0.4));
+            opacity: 1;
+        }
+        .eq-grid-line {
+            display: none;
+        }
+        .eq-progress-overlay {
+            display: none;
+        }
+        .music-progress-thumb {
+            display: none;
+        }
+
+        .music-controls-center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 10px;
+            direction: ltr;
+        }
+        .ctrl-btn {
+            background: transparent;
+            border: none;
+            color: #888;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 4px 6px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+        }
+        .ctrl-btn:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+            transform: scale(1.06);
+        }
+        .ctrl-btn:active {
+            transform: scale(0.92);
+        }
+        .ctrl-btn.active {
+            color: #890913;
+        }
+        .ctrl-btn.active:hover {
+            color: #ff0044;
+            background: rgba(255, 0, 68, 0.05);
+        }
+
+        .play-btn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 0, 68, 0.15);
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            padding: 0;
+            box-shadow: 0 0 30px rgba(255, 0, 68, 0.03);
+        }
+        .play-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 0, 68, 0.3);
+            transform: scale(1.04);
+            box-shadow: 0 0 40px rgba(255, 0, 68, 0.06);
+        }
+        .play-btn svg {
+            width: 22px;
+            height: 22px;
+        }
+        .play-btn.playing {
+            border-color: rgba(255, 0, 68, 0.3);
+            box-shadow: 0 0 40px rgba(255, 0, 68, 0.08);
+        }
+
+        .music-controls-bottom {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            direction: ltr;
+        }
+        .music-controls-bottom .ctrl-btn {
+            padding: 3px 6px;
+            font-size: 10px;
+        }
+        .music-controls-bottom .ctrl-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
         @media (max-width: 480px) {
             .glass-main {
                 padding: 12px 6px 20px;
             }
             .header {
-                padding: 14px 10px;
-                margin-bottom: 30px;
+                padding: 12px 14px;
+                margin-bottom: 24px;
                 border-radius: 14px;
+                gap: 8px;
+                flex-wrap: wrap;
+                justify-content: center;
             }
-            .brand {
-                font-size: 26px;
-                letter-spacing: 3px;
+            .icon-btn {
+                width: 34px;
+                height: 34px;
+                font-size: 15px;
             }
-            .chart-box.answer-box {
-                margin-top: 24px;
+            .icon-btn svg {
+                width: 18px;
+                height: 18px;
+            }
+            .header-left,
+            .header-right {
+                gap: 8px;
+            }
+            .brand-logo {
+                font-size: 16px;
+                letter-spacing: 2px;
             }
             .timer-container {
                 max-width: 85%;
@@ -894,6 +1227,40 @@
                 font-size: 6px !important;
                 animation-duration: 24s !important;
             }
+            .music-panel {
+                top: 70px;
+                left: 10px;
+                right: 10px;
+                min-width: auto;
+                max-width: none;
+                padding: 14px 14px 12px;
+                border-radius: 16px;
+            }
+            .music-artwork {
+                width: 38px;
+                height: 38px;
+                font-size: 16px;
+            }
+            .music-track-title {
+                font-size: 14px;
+            }
+            .play-btn {
+                width: 40px;
+                height: 40px;
+            }
+            .play-btn svg {
+                width: 20px;
+                height: 20px;
+            }
+            .music-panel-brand {
+                font-size: 18px;
+            }
+            .music-controls-center {
+                gap: 10px;
+            }
+            .music-eq-container {
+                height: 26px;
+            }
         }
     </style>
 </head>
@@ -902,7 +1269,28 @@
     <div class="glass-main">
 
         <div class="header">
-            <span class="brand">Amitis</span>
+            <div class="header-left">
+                <button class="icon-btn" id="musicToggleBtn" onclick="toggleMusicPanel()" title="پخش‌کننده موسیقی">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 18V5l12-2v13"/>
+                        <circle cx="6" cy="18" r="3"/>
+                        <circle cx="18" cy="16" r="3"/>
+                        <line x1="9" y1="7" x2="21" y2="5"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="header-center">
+                <span class="brand-logo">✦ AMITIS ✦</span>
+            </div>
+
+            <div class="header-right">
+                <button class="icon-btn" id="themeToggleBtn" onclick="toggleTheme()" title="تغییر تم">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="theme-icon moon-mode" id="themeSvg">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" fill="none"/>
+                    </svg>
+                </button>
+            </div>
         </div>
 
         <div class="level-display" id="levelDisplay">
@@ -938,7 +1326,7 @@
                 </div>
                 <div class="svg-wrap">
                     <svg id="mainSvg" viewBox="0 0 1000 420" width="100%" height="420" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="1000" height="420" fill="#0a0a0a" rx="8" />
+                        <rect class="bg-rect" width="1000" height="420" fill="#0a0a0a" rx="8" />
                         <line x1="30" y1="280" x2="980" y2="280" stroke="#151515" stroke-width="0.4" />
                         <line x1="30" y1="240" x2="980" y2="240" stroke="#151515" stroke-width="0.4" />
                         <line x1="30" y1="200" x2="980" y2="200" stroke="#151515" stroke-width="0.4" />
@@ -979,7 +1367,7 @@
                 <div class="spoiler-content" id="spoilerContent">
                     <div class="svg-wrap">
                         <svg id="answerSvg" viewBox="0 0 1000 420" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="1000" height="420" fill="#0a0a0a" rx="8" />
+                            <rect class="bg-rect" width="1000" height="420" fill="#0a0a0a" rx="8" />
                             <line x1="30" y1="280" x2="980" y2="280" stroke="#151515" stroke-width="0.4" />
                             <line x1="30" y1="240" x2="980" y2="240" stroke="#151515" stroke-width="0.4" />
                             <line x1="30" y1="200" x2="980" y2="200" stroke="#151515" stroke-width="0.4" />
@@ -1050,9 +1438,560 @@
 
     </div>
 
+    <!-- ===== پنل پخش‌کننده موسیقی ===== -->
+    <div class="music-panel" id="musicPanel">
+        <div class="music-panel-header">
+            <button class="music-panel-close" onclick="toggleMusicPanel()">✕</button>
+        </div>
+        <div class="music-track-info">
+            <div class="music-artwork" id="musicArtwork">♫</div>
+            <div class="music-track-details">
+                <span class="music-track-title" id="currentTitle">✦ Amitis ✦</span>
+                <span class="music-track-artist" id="currentArtist">—</span>
+                <span class="music-track-time" id="currentTime">۰۰:۰۰ / ۰۰:۰۰</span>
+            </div>
+        </div>
+
+        <div class="music-eq-container" id="eqContainer">
+            <svg viewBox="0 0 600 32" preserveAspectRatio="none" id="eqSvg">
+                <path class="eq-path" id="eqPath" d="M0,16 L600,16" />
+                <path class="eq-path-progress" id="eqPathProgress" d="M0,16" />
+            </svg>
+        </div>
+
+        <div class="music-controls-center">
+            <button onclick="prevTrack()" class="ctrl-btn" title="آهنگ قبلی">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+                    <polygon points="19,20 9,12 19,4 19,20"/>
+                    <line x1="5" y1="4" x2="5" y2="20"/>
+                </svg>
+            </button>
+            <button onclick="togglePlay()" id="playBtn" class="ctrl-btn play-btn" title="پخش/مکث">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="5,3 19,12 5,21 5,3"/>
+                </svg>
+            </button>
+            <button onclick="nextTrack()" class="ctrl-btn" title="آهنگ بعدی">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+                    <polygon points="5,4 15,12 5,20 5,4"/>
+                    <line x1="19" y1="4" x2="19" y2="20"/>
+                </svg>
+            </button>
+        </div>
+        <div class="music-controls-bottom">
+            <button onclick="toggleRepeat()" id="repeatBtn" class="ctrl-btn" title="تکرار">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="17,1 21,5 17,9"/>
+                    <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+                    <polyline points="7,23 3,19 7,15"/>
+                    <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+                </svg>
+            </button>
+            <button onclick="toggleShuffle()" id="shuffleBtn" class="ctrl-btn" title="شافل">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="16,3 21,3 21,8"/>
+                    <line x1="4" y1="20" x2="21" y2="3"/>
+                    <polyline points="21,16 21,21 16,21"/>
+                    <line x1="15" y1="15" x2="21" y2="21"/>
+                    <line x1="4" y1="4" x2="9" y2="9"/>
+                </svg>
+            </button>
+            <button onclick="toggleVolume()" class="ctrl-btn" title="صدا" id="volumeBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="11,5 6,9 2,9 2,15 6,15 11,19 11,5"/>
+                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+                    <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
     <script>
         // ================================================================
-        // Amirkazem Coding - v139 (اصلاح نهایی Clear برای ابزار رنج)
+        // 1. پخش‌کننده موسیقی - پخش خودکار هنگام باز شدن صفحه
+        // ================================================================
+
+        const playlist = [{
+            url: 'https://github.com/Amirkazeem/Music/raw/main/Mawjouaa%20Galbi%20-%20Najwa%20Farouk.mp3',
+            title: 'Mawjouaa Galbi',
+            artist: 'Najwa Farouk'
+        }, {
+            url: 'https://github.com/Amirkazeem/Music/raw/refs/heads/main/Sensizlik%20(Ferid%20Sumqayit)%20%20%20EL%C4%B0KO%20GENCEL%C4%B0.m4a',
+            title: 'Sensizlik',
+            artist: 'Ferid Sumqayit'
+        }, {
+            url: 'https://github.com/Amirkazeem/Music/raw/refs/heads/main/Kalmaz_I_LIVE_VERS%C4%B0ON_Anatolian_Psychedelic_Rock_Sessizler.m4a',
+            title: 'Kalmaz',
+            artist: 'Sessizler'
+        }, {
+            url: 'https://github.com/Amirkazeem/Music/raw/refs/heads/main/Nica%20s%20Theme%20-%20Andrea%20Farri%20(320).mp3',
+            title: 'Nica\'s Theme',
+            artist: 'Andrea Farri'
+        }, {
+            url: 'https://github.com/Amirkazeem/Music/raw/main/Ahange%20Irem%20Deric%20Kalbimin%20Tek%20Sahibine%20%5BSevilMusic%5D.mp3',
+            title: 'Kalbimin Tek Sahibine',
+            artist: 'İrem Derici'
+        }];
+
+        let audio = new Audio();
+        let isPlaying = false;
+        let currentTrackIndex = 0;
+        let isRepeat = false;
+        let isShuffle = false;
+        let isMuted = false;
+        let isPanelOpen = false;
+        let isTrackLoaded = false;
+        let isChangingTrack = false;
+        let autoPlayStarted = false;
+        let isFirstInteraction = true;
+
+        let eqAnimationId = null;
+        const EQ_POINTS = 200;
+        let eqAmplitude = 7;
+        let isEqAnimating = false;
+
+        // ===== توابع پخش =====
+        function toggleMusicPanel() {
+            const panel = document.getElementById('musicPanel');
+            isPanelOpen = !isPanelOpen;
+            panel.classList.toggle('show', isPanelOpen);
+            const btn = document.getElementById('musicToggleBtn');
+            if (isPanelOpen) {
+                btn.style.borderColor = 'rgba(255,0,68,0.9)';
+                btn.style.background = 'rgba(255,0,68,0.1)';
+                if (playlist.length > 0 && !isTrackLoaded) {
+                    loadTrack(currentTrackIndex);
+                }
+                if (isPlaying) {
+                    startEqAnimation();
+                }
+            } else {
+                btn.style.borderColor = 'rgba(255,0,68,0.5)';
+                btn.style.background = '';
+                stopEqAnimation();
+            }
+        }
+
+        function removeAudioEvents() {
+            audio.onplay = null;
+            audio.onpause = null;
+            audio.onended = null;
+            audio.ontimeupdate = null;
+            audio.onloadedmetadata = null;
+            audio.oncanplay = null;
+            audio.onerror = null;
+        }
+
+        function loadTrack(index, forcePlay = false) {
+            if (isChangingTrack && !forcePlay) return;
+            isChangingTrack = true;
+
+            const track = playlist[index];
+            if (!track) {
+                isChangingTrack = false;
+                return;
+            }
+
+            const wasPlaying = isPlaying || forcePlay || autoPlayStarted;
+            stopEqAnimation();
+
+            if (audio.src) {
+                audio.pause();
+            }
+
+            removeAudioEvents();
+
+            audio.src = track.url;
+            audio.load();
+            isTrackLoaded = true;
+
+            document.getElementById('currentTitle').textContent = track.title || '✦ Amitis ✦';
+            document.getElementById('currentArtist').textContent = track.artist || '—';
+            document.getElementById('musicArtwork').textContent = '♫';
+            resetEqualizer();
+
+            audio.oncanplay = function() {
+                if (wasPlaying) {
+                    audio.play().catch(() => {});
+                }
+                isChangingTrack = false;
+            };
+
+            audio.onloadedmetadata = function() {
+                updateTimeDisplay();
+                if (wasPlaying) {
+                    audio.play().catch(() => {});
+                }
+            };
+
+            audio.ontimeupdate = function() {
+                updateTimeDisplay();
+                // به‌روزرسانی اکولایزر بر اساس پیشرفت آهنگ
+                const progress = audio.duration > 0 ? (audio.currentTime / audio.duration) * 100 : 0;
+                updateEqPathSmooth(progress);
+            };
+
+            audio.onended = function() {
+                if (isRepeat) {
+                    audio.currentTime = 0;
+                    audio.play().catch(() => {});
+                } else {
+                    nextTrack();
+                }
+            };
+
+            audio.onplay = function() {
+                isPlaying = true;
+                document.getElementById('playBtn').classList.add('playing');
+                updatePlayButton();
+                startEqAnimation();
+                console.log('🎵 پخش آهنگ:', track.title);
+            };
+
+            audio.onpause = function() {
+                isPlaying = false;
+                document.getElementById('playBtn').classList.remove('playing');
+                updatePlayButton();
+                stopEqAnimation();
+            };
+
+            audio.onerror = function(e) {
+                console.log('❌ خطا در پخش آهنگ:', track.title);
+                isChangingTrack = false;
+                setTimeout(() => {
+                    if (!isPlaying) {
+                        nextTrack();
+                    }
+                }, 2000);
+            };
+
+            if (wasPlaying) {
+                setTimeout(() => {
+                    if (audio.readyState >= 2) {
+                        audio.play().catch(() => {});
+                    }
+                }, 300);
+            }
+
+            setTimeout(() => {
+                isChangingTrack = false;
+            }, 3000);
+        }
+
+        function resetEqualizer() {
+            const pathProgress = document.getElementById('eqPathProgress');
+            if (pathProgress) {
+                pathProgress.setAttribute('d', 'M0,16');
+            }
+        }
+
+        function togglePlay() {
+            if (!isTrackLoaded) {
+                loadTrack(currentTrackIndex, true);
+                return;
+            }
+
+            if (isPlaying) {
+                audio.pause();
+            } else {
+                if (!audio.src) {
+                    loadTrack(currentTrackIndex, true);
+                    return;
+                }
+                audio.play().catch(function(error) {
+                    console.log('خطا در پخش آهنگ:', error);
+                    setTimeout(() => {
+                        audio.play().catch(() => {});
+                    }, 500);
+                });
+            }
+        }
+
+        function updatePlayButton() {
+            const btn = document.getElementById('playBtn');
+            const svg = btn.querySelector('svg');
+            if (isPlaying) {
+                svg.innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
+            } else {
+                svg.innerHTML = '<polygon points="5,3 19,12 5,21 5,3"/>';
+            }
+        }
+
+        function nextTrack() {
+            if (playlist.length === 0 || isChangingTrack) return;
+
+            stopEqAnimation();
+
+            if (isShuffle) {
+                let newIndex;
+                let attempts = 0;
+                do {
+                    newIndex = Math.floor(Math.random() * playlist.length);
+                    attempts++;
+                } while (newIndex === currentTrackIndex && playlist.length > 1 && attempts < 10);
+                currentTrackIndex = newIndex;
+            } else {
+                currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+            }
+
+            loadTrack(currentTrackIndex, true);
+        }
+
+        function prevTrack() {
+            if (playlist.length === 0 || isChangingTrack) return;
+
+            if (audio.currentTime > 3) {
+                audio.currentTime = 0;
+                return;
+            }
+
+            stopEqAnimation();
+
+            if (isShuffle) {
+                let newIndex;
+                let attempts = 0;
+                do {
+                    newIndex = Math.floor(Math.random() * playlist.length);
+                    attempts++;
+                } while (newIndex === currentTrackIndex && playlist.length > 1 && attempts < 10);
+                currentTrackIndex = newIndex;
+            } else {
+                currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
+            }
+
+            loadTrack(currentTrackIndex, true);
+        }
+
+        function updateTimeDisplay() {
+            const current = formatTime(audio.currentTime || 0);
+            const duration = formatTime(audio.duration || 0);
+            document.getElementById('currentTime').textContent = `${current} / ${duration}`;
+        }
+
+        function formatTime(seconds) {
+            if (isNaN(seconds) || !isFinite(seconds)) return '۰۰:۰۰';
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        }
+
+        function toggleRepeat() {
+            isRepeat = !isRepeat;
+            document.getElementById('repeatBtn').classList.toggle('active', isRepeat);
+        }
+
+        function toggleShuffle() {
+            isShuffle = !isShuffle;
+            document.getElementById('shuffleBtn').classList.toggle('active', isShuffle);
+        }
+
+        function toggleVolume() {
+            isMuted = !isMuted;
+            audio.muted = isMuted;
+            const btn = document.getElementById('volumeBtn');
+            const svg = btn.querySelector('svg');
+            if (isMuted) {
+                svg.innerHTML =
+                    '<line x1="1" y1="1" x2="23" y2="23"/><polygon points="11,5 6,9 2,9 2,15 6,15 11,19 11,5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>';
+            } else {
+                svg.innerHTML =
+                    '<polygon points="11,5 6,9 2,9 2,15 6,15 11,19 11,5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>';
+            }
+        }
+
+        // ===== اکولایزر با حرکت پیوسته بر اساس درصد پیشرفت =====
+        function generateSmoothPath(progressPercent) {
+            const width = 600;
+            const height = 32;
+            const midY = 16;
+
+            const progress = Math.max(0, Math.min(1, progressPercent / 100));
+            const totalPoints = EQ_POINTS;
+            const visibleCount = Math.floor(totalPoints * progress);
+
+            if (visibleCount < 1) {
+                return `M0,${midY}`;
+            }
+
+            let points = [];
+
+            for (let i = 0; i <= visibleCount; i++) {
+                const x = (i / totalPoints) * width;
+                let y = midY;
+
+                const phase = (i / totalPoints) * Math.PI * 3.5;
+                const beat1 = Math.sin(phase) * 0.5;
+                const beat2 = Math.sin(phase * 1.8 + 0.5) * 0.25;
+                const beat3 = Math.sin(phase * 0.7 + 1.2) * 0.2;
+
+                const spike1 = Math.exp(-Math.pow((i / totalPoints - 0.3) * 12, 2)) * 1.8;
+                const spike2 = Math.exp(-Math.pow((i / totalPoints - 0.6) * 14, 2)) * 1.4;
+                const spike3 = Math.exp(-Math.pow((i / totalPoints - 0.85) * 10, 2)) * 1.0;
+
+                const amplitude = eqAmplitude * (0.6 + 0.4 * Math.sin(i / 8 + 0.3));
+                const value = (beat1 + beat2 + beat3 + spike1 + spike2 + spike3) * amplitude * 0.4;
+                y = midY - value;
+                y = Math.max(3, Math.min(29, y));
+
+                points.push({ x, y });
+            }
+
+            let d = `M${points[0].x},${points[0].y}`;
+            for (let i = 1; i < points.length; i++) {
+                const prev = points[i - 1];
+                const curr = points[i];
+                const cp1x = prev.x + (curr.x - prev.x) * 0.35;
+                const cp2x = curr.x - (curr.x - prev.x) * 0.35;
+                d += ` C${cp1x},${prev.y} ${cp2x},${curr.y} ${curr.x},${curr.y}`;
+            }
+
+            return d;
+        }
+
+        function updateEqPathSmooth(progress) {
+            const pathProgress = document.getElementById('eqPathProgress');
+            if (!pathProgress) return;
+            const progressPath = generateSmoothPath(progress);
+            pathProgress.setAttribute('d', progressPath);
+        }
+
+        function startEqAnimation() {
+            stopEqAnimation();
+
+            let time = 0;
+            let lastTime = performance.now();
+
+            function animate(timestamp) {
+                const delta = Math.min((timestamp - lastTime) / 16, 2);
+                lastTime = timestamp;
+
+                time += delta * 0.015;
+
+                const targetAmplitude = isPlaying && audio.src && audio.readyState >= 2 ?
+                    8 + Math.sin(time) * 2.5 + Math.sin(time * 1.4) * 1.5 :
+                    5 + Math.sin(time * 0.8) * 1.5;
+
+                eqAmplitude += (targetAmplitude - eqAmplitude) * 0.12;
+                eqAmplitude = Math.max(3.5, Math.min(13, eqAmplitude));
+
+                // فقط دامنه را به‌روز می‌کنیم، مسیر در ontimeupdate آپدیت می‌شود
+                // اما برای زمانی که آهنگ در حال پخش نیست و می‌خواهیم اکولایزر حرکت کند
+                if (!isPlaying || !audio.src || audio.readyState < 2) {
+                    const progress = audio.duration > 0 ? (audio.currentTime / audio.duration) * 100 : 0;
+                    updateEqPathSmooth(progress);
+                }
+
+                eqAnimationId = requestAnimationFrame(animate);
+            }
+
+            eqAnimationId = requestAnimationFrame(animate);
+        }
+
+        function stopEqAnimation() {
+            if (eqAnimationId) {
+                cancelAnimationFrame(eqAnimationId);
+                eqAnimationId = null;
+            }
+        }
+
+        // ===== تابع برای شروع پخش خودکار با تعامل کاربر =====
+        function startAutoPlayOnInteraction() {
+            if (!isFirstInteraction) return;
+            isFirstInteraction = false;
+
+            if (!isPlaying && isTrackLoaded) {
+                audio.play().then(function() {
+                    isPlaying = true;
+                    updatePlayButton();
+                    startEqAnimation();
+                    console.log('✅ پخش خودکار با تعامل کاربر شروع شد');
+                }).catch(function(e) {
+                    console.log('⏳ پخش خودکار ممکن نیست');
+                });
+            }
+        }
+
+        // ===== راه‌اندازی اولیه با پخش خودکار =====
+        document.addEventListener('DOMContentLoaded', function() {
+            const eqContainer = document.getElementById('eqContainer');
+            if (eqContainer) {
+                eqContainer.addEventListener('click', function(e) {
+                    if (audio.duration && audio.duration > 0) {
+                        const rect = this.getBoundingClientRect();
+                        const percent = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+                        audio.currentTime = percent * audio.duration;
+                    }
+                });
+            }
+
+            // بارگذاری آهنگ اولیه
+            if (playlist.length > 0) {
+                autoPlayStarted = true;
+                loadTrack(0, true);
+
+                // تلاش برای پخش خودکار
+                setTimeout(function() {
+                    if (!isPlaying) {
+                        audio.play().then(function() {
+                            isPlaying = true;
+                            updatePlayButton();
+                            startEqAnimation();
+                            console.log('✅ پخش خودکار آهنگ شروع شد');
+                        }).catch(function(e) {
+                            console.log('⏳ پخش خودکار توسط مرورگر مسدود شد');
+                            // وقتی کاربر کلیک کرد، پخش می‌شود
+                            isFirstInteraction = true;
+                        });
+                    }
+                }, 500);
+            }
+
+            // گوش دادن به رویدادهای تعامل کاربر
+            document.addEventListener('click', startAutoPlayOnInteraction);
+            document.addEventListener('touchstart', startAutoPlayOnInteraction);
+            document.addEventListener('keydown', startAutoPlayOnInteraction);
+        });
+
+        window.addEventListener('beforeunload', function() {
+            stopEqAnimation();
+        });
+
+        console.log('💓 پخش‌کننده با پخش خودکار');
+
+        // ================================================================
+        // 2. تغییر تم
+        // ================================================================
+
+        let isDarkMode = true;
+
+        function toggleTheme() {
+            isDarkMode = !isDarkMode;
+            const themeSvg = document.getElementById('themeSvg');
+
+            if (isDarkMode) {
+                themeSvg.classList.remove('sun-mode');
+                themeSvg.classList.add('moon-mode');
+                themeSvg.innerHTML =
+                    `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" fill="none"/>`;
+            } else {
+                themeSvg.classList.remove('moon-mode');
+                themeSvg.classList.add('sun-mode');
+                themeSvg.innerHTML = `
+                    <circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="2"/>
+                    <line x1="12" y1="1" x2="12" y2="4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="12" y1="20" x2="12" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="4.22" y1="4.22" x2="6.34" y2="6.34" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="17.66" y1="17.66" x2="19.78" y2="19.78" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="1" y1="12" x2="4" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="20" y1="12" x2="23" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="4.22" y1="19.78" x2="6.34" y2="17.66" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="17.66" y1="6.34" x2="19.78" y2="4.22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                `;
+            }
+        }
+
+        // ================================================================
+        // 3. کد اصلی تمرین تشخیص روند (بدون تغییر)
         // ================================================================
 
         const LEVELS = [
@@ -1132,7 +2071,7 @@
 
         let timerInterval = null;
 
-        function formatTime(remaining) {
+        function formatTimer(remaining) {
             if (remaining < 0) remaining = 0;
             const days = Math.floor(remaining / (24 * 60 * 60 * 1000));
             const hours = Math.floor((remaining % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
@@ -1166,7 +2105,7 @@
                 generateNewExercise(false);
                 return;
             }
-            document.getElementById('timerDisplay').textContent = formatTime(remaining);
+            document.getElementById('timerDisplay').textContent = formatTimer(remaining);
             if (remaining < 3600000) {
                 document.getElementById('timerContainer').classList.add('warning');
             } else {
@@ -1244,6 +2183,8 @@
         let currentTrendType = 'up';
         let rangeMin = 0;
         let rangeMax = 0;
+
+        // ===== توابع تولید کندل =====
 
         function calculateMACD(candles, fastLen = 12, slowLen = 26, sigLen = 9) {
             const closes = candles.map(c => c.close);
@@ -1717,6 +2658,8 @@
             return allCandles;
         }
 
+        // ===== توابع پاک‌سازی SVG =====
+
         function clearMACDElements(svg) {
             const toRemove = [];
             for (let i = 0; i < svg.children.length; i++) {
@@ -1764,23 +2707,25 @@
                 const isRangeLabelBg = child.tagName === 'rect' && child.getAttribute('class') === 'range-label-bg';
                 const isRangeArrow = child.tagName === 'polygon' && child.getAttribute('class') === 'range-arrow';
                 const isRangeTemp = child.classList && child.classList.contains('range-temp');
-                const isRangeGroup = child.tagName === 'g' && child.classList && 
-                                    (child.classList.contains('range-temp') || 
-                                     child.querySelector('.range-line') ||
-                                     child.querySelector('.range-label') ||
-                                     child.querySelector('.range-arrow') ||
-                                     child.querySelector('.range-label-bg'));
+                const isRangeGroup = child.tagName === 'g' && child.classList &&
+                    (child.classList.contains('range-temp') ||
+                        child.querySelector('.range-line') ||
+                        child.querySelector('.range-label') ||
+                        child.querySelector('.range-arrow') ||
+                        child.querySelector('.range-label-bg'));
                 if (isRangeLine || isRangeLabel || isRangeLabelBg || isRangeArrow || isRangeTemp || isRangeGroup) {
                     toRemove.push(child);
                 }
-                if (child.tagName === 'rect' && 
-                    (child.getAttribute('class') === 'range-box' || 
-                     (child.getAttribute('fill') && child.getAttribute('fill').includes('rgba(0, 14, 255')))) {
+                if (child.tagName === 'rect' &&
+                    (child.getAttribute('class') === 'range-box' ||
+                        (child.getAttribute('fill') && child.getAttribute('fill').includes('rgba(0, 14, 255')))) {
                     toRemove.push(child);
                 }
             }
             toRemove.forEach(el => el.remove());
         }
+
+        // ===== فیبوناچی =====
 
         const FIB_LEVELS = [0, 0.236, 0.382, 0.5, 0.618, 0.786, 1, 1.272];
         const FIB_LABELS = ['0', '0.236', '0.382', '0.5', '0.618', '0.786', '1', '1.272'];
@@ -1908,9 +2853,7 @@
             return fiboState[id];
         }
 
-        // ================================================================
-        // ===== ابزار Range - نسخه نهایی v136 =====
-        // ================================================================
+        // ===== رنج =====
 
         const rangeStateObj = {};
 
@@ -1942,44 +2885,38 @@
             const toRemove = [];
             for (let i = 0; i < svg.children.length; i++) {
                 const child = svg.children[i];
-                // بررسی گروه‌های رنج
                 if (child.tagName === 'g') {
-                    // اگر گروه دارای کلاس range-temp باشد
                     if (child.classList && child.classList.contains('range-temp')) {
                         toRemove.push(child);
                         continue;
                     }
-                    // اگر گروه دارای فرزند با کلاس‌های رنج باشد
-                    const hasRangeChild = child.querySelector('.range-line') || 
-                                         child.querySelector('.range-label') ||
-                                         child.querySelector('.range-arrow') ||
-                                         child.querySelector('.range-label-bg');
+                    const hasRangeChild = child.querySelector('.range-line') ||
+                        child.querySelector('.range-label') ||
+                        child.querySelector('.range-arrow') ||
+                        child.querySelector('.range-label-bg');
                     if (hasRangeChild) {
                         toRemove.push(child);
                         continue;
                     }
                 }
-                
-                // بررسی تک تک المان‌ها با کلاس‌های رنج
+
                 const isRangeLine = child.tagName === 'line' && child.getAttribute('class') === 'range-line';
                 const isRangeLabel = child.tagName === 'text' && child.getAttribute('class') === 'range-label';
                 const isRangeLabelBg = child.tagName === 'rect' && child.getAttribute('class') === 'range-label-bg';
                 const isRangeArrow = child.tagName === 'polygon' && child.getAttribute('class') === 'range-arrow';
                 const isRangeTemp = child.classList && child.classList.contains('range-temp');
-                
+
                 if (isRangeLine || isRangeLabel || isRangeLabelBg || isRangeArrow || isRangeTemp) {
                     toRemove.push(child);
                 }
-                
-                // بررسی رکت‌های اضافی
-                if (child.tagName === 'rect' && 
-                    (child.getAttribute('class') === 'range-box' || 
-                     (child.getAttribute('fill') && child.getAttribute('fill').includes('rgba(0, 14, 255')))) {
+
+                if (child.tagName === 'rect' &&
+                    (child.getAttribute('class') === 'range-box' ||
+                        (child.getAttribute('fill') && child.getAttribute('fill').includes('rgba(0, 14, 255')))) {
                     toRemove.push(child);
                 }
             }
-            
-            // حذف المان‌ها
+
             toRemove.forEach(el => {
                 const mainHistory = getHistory(svg.id);
                 const index = mainHistory.undo.indexOf(el);
@@ -1988,8 +2925,7 @@
                 }
                 el.remove();
             });
-            
-            // ریست کردن state
+
             const state = getRangeState(svg);
             state.step = 0;
             state.startX = null;
@@ -2007,14 +2943,6 @@
             return `${remainingHours}h`;
         }
 
-        /**
-         * رسم ابزار Range با:
-         * - برچسب خط اول: (درصد) عدد قیمت  ← اصلاح: درصد داخل پرانتز با فونت خوانا
-         * - فلش عمودی با بدنه کلفت و نوک < (متصل به بدنه در وسط)
-         * - فلش افقی با بدنه کلفت و نوک > (متصل به بدنه در وسط)
-         * - بدون ۴ خط مرزی و بدون کادر آبی
-         * - شفافیت بک‌گراند ۹۸٪
-         */
         function drawRange(svg, x1, y1, x2, y2, isTemp = false) {
             const ns = 'http://www.w3.org/2000/svg';
 
@@ -2028,16 +2956,11 @@
                 group.classList.add('range-temp');
             }
 
-            // ===== بدون ۴ خط مرزی =====
-
-            // ===== وسط اضلاع =====
             const centerX = (minX + maxX) / 2;
             const centerY = (minY + maxY) / 2;
             const arrowSize = 10;
             const bodyThickness = 3;
 
-            // ===== فلش عمودی (از پایین به بالا) با نوک < و اتصال به وسط نوک =====
-            // بدنه فلش (از پایین تا وسط نوک)
             const vBody = document.createElementNS(ns, 'line');
             vBody.setAttribute('x1', centerX);
             vBody.setAttribute('y1', maxY);
@@ -2047,11 +2970,10 @@
             vBody.setAttribute('stroke-width', String(bodyThickness));
             vBody.setAttribute('opacity', '0.7');
             group.appendChild(vBody);
-            
-            // نوک فلش به شکل < (بزرگ‌تر) - در بالا، بدنه به وسط نوک برخورد می‌کند
+
             const arrowUp = document.createElementNS(ns, 'polygon');
             const tipY = minY;
-            arrowUp.setAttribute('points', 
+            arrowUp.setAttribute('points',
                 `${centerX - arrowSize},${tipY - 4} ` +
                 `${centerX},${tipY + 4} ` +
                 `${centerX + arrowSize},${tipY - 4}`
@@ -2061,8 +2983,6 @@
             arrowUp.setAttribute('opacity', '0.7');
             group.appendChild(arrowUp);
 
-            // ===== فلش افقی (از چپ به راست) با نوک > و اتصال به وسط نوک =====
-            // بدنه فلش (از چپ تا وسط نوک)
             const hBody = document.createElementNS(ns, 'line');
             hBody.setAttribute('x1', minX);
             hBody.setAttribute('y1', centerY);
@@ -2072,11 +2992,10 @@
             hBody.setAttribute('stroke-width', String(bodyThickness));
             hBody.setAttribute('opacity', '0.7');
             group.appendChild(hBody);
-            
-            // نوک فلش به شکل > (کوچک‌تر) - در راست، بدنه به وسط نوک برخورد می‌کند
+
             const arrowRight = document.createElementNS(ns, 'polygon');
             const tipX = maxX;
-            arrowRight.setAttribute('points', 
+            arrowRight.setAttribute('points',
                 `${tipX - 4},${centerY - arrowSize} ` +
                 `${tipX + 4},${centerY} ` +
                 `${tipX - 4},${centerY + arrowSize}`
@@ -2086,26 +3005,21 @@
             arrowRight.setAttribute('opacity', '0.7');
             group.appendChild(arrowRight);
 
-            // ===== محاسبه اطلاعات =====
             const priceRange = Math.abs(y1 - y2);
             const percentChange = (priceRange / Math.min(y1, y2)) * 100;
             const priceDiff = Math.abs(y1 - y2);
-            
+
             const padding = 30;
             const chartWidth = 950;
             const candleWidth = currentCandles.length > 0 ? chartWidth / currentCandles.length : 10;
             const barCount = Math.round((maxX - minX) / candleWidth);
             const timeDuration = getTimeDuration(barCount);
 
-            // ===== برچسب‌ها =====
-            // خط اول: ( درصد ) , عدد قیمت  ← اصلاح: درصد داخل پرانتز با فونت خوانا
             const line1 = `( ${percentChange.toFixed(2)}% ) , ${priceDiff.toFixed(3)}`;
-            // خط دوم: زمان, تعداد کندل
             const line2 = `${timeDuration}, ${barCount} Bars`;
 
             const labelX = (minX + maxX) / 2;
-            
-            // برچسب خط اول - بالاتر (درصد و عدد قیمت)
+
             const labelY1 = minY - 22;
             const labelBg1 = document.createElementNS(ns, 'rect');
             labelBg1.setAttribute('x', labelX - 110);
@@ -2129,7 +3043,6 @@
             label1.textContent = line1;
             group.appendChild(label1);
 
-            // برچسب خط دوم - پایین‌تر (زمان و تعداد کندل)
             const labelY2 = minY - 2;
             const labelBg2 = document.createElementNS(ns, 'rect');
             labelBg2.setAttribute('x', labelX - 110);
@@ -2181,6 +3094,8 @@
             const y = Math.max(0, Math.min(viewBox.height, (clientY - rect.top) * scaleY));
             return { x, y };
         }
+
+        // ===== رویدادهای دکمه‌ها =====
 
         document.getElementById('fiboBtn').addEventListener('click', function() {
             const targetId = this.dataset.target;
@@ -2289,7 +3204,6 @@
         });
 
         document.querySelectorAll('.svg-wrap svg').forEach(svg => {
-            // Fibo events
             svg.addEventListener('mousedown', function(e) {
                 const state = initFiboForSvg(this);
                 if (!state.active) return;
@@ -2377,7 +3291,6 @@
                 }
             }, { passive: false });
 
-            // Range events
             svg.addEventListener('mousedown', function(e) {
                 const state = getRangeState(this);
                 if (!state.active) return;
@@ -2466,9 +3379,7 @@
             }, { passive: false });
         });
 
-        // ================================================================
-        // ===== تابع اصلی رندر با MACD معکوس (آینه‌ای ۱۸۰ درجه) =====
-        // ================================================================
+        // ===== رندر کندل‌ها =====
 
         function renderCandlesWithMACD(candles, svgId, showAnswerLine = false) {
             const svg = document.getElementById(svgId);
@@ -2506,7 +3417,6 @@
             const candleWidth = chartWidth / candles.length;
             const bodyWidth = candleWidth * 0.6;
 
-            // رسم کندل‌ها
             candles.forEach((candle, index) => {
                 const x = padding + (index * candleWidth) + (candleWidth - bodyWidth) / 2;
                 const high = Math.min(GLOBAL_MAX, Math.max(GLOBAL_MIN, candle.high));
@@ -2554,7 +3464,6 @@
                 }
             });
 
-            // محاسبه MACD
             const macdData = calculateMACD(candles);
             const macdValues = macdData.macdLine;
             const signalValues = macdData.signalLine;
@@ -2581,7 +3490,6 @@
             const macdBottom = 410;
             const macdHeight = macdBottom - macdTop;
 
-            // خط صفر
             const zeroLineY = macdTop + (0 - macdMin) / macdTotalRange * macdHeight;
             const zeroLine = document.createElementNS(ns, 'line');
             zeroLine.setAttribute('x1', padding);
@@ -2593,13 +3501,11 @@
             zeroLine.setAttribute('opacity', '0.5');
             svg.appendChild(zeroLine);
 
-            // ===== هیستوگرام معکوس (آینه‌ای) =====
             for (let i = 0; i < histValues.length; i++) {
                 const x = padding + (i * candleWidth) + candleWidth / 2;
                 const histValue = histValues[i];
                 const prevHistValue = i > 0 ? histValues[i - 1] : histValue;
 
-                // مقدار معکوس: منفی می‌شود مثبت و بالعکس
                 const invertedHist = -histValue;
 
                 const y = macdTop + (0 - macdMin) / macdTotalRange * macdHeight;
@@ -2617,7 +3523,6 @@
                 svg.appendChild(rect);
             }
 
-            // ===== خط MACD معکوس (آینه‌ای) =====
             const macdPoints = [];
             for (let i = 0; i < macdValues.length; i++) {
                 const x = padding + (i * candleWidth) + candleWidth / 2;
@@ -2637,7 +3542,6 @@
                 svg.appendChild(line);
             }
 
-            // ===== خط سیگنال معکوس (آینه‌ای) =====
             const signalPoints = [];
             for (let i = 0; i < signalValues.length; i++) {
                 const x = padding + (i * candleWidth) + candleWidth / 2;
@@ -2657,7 +3561,6 @@
                 svg.appendChild(line);
             }
 
-            // ===== رسم خط روند در صورت نیاز =====
             if (showAnswerLine && candles.length > 0 && currentWaveRanges.length > 0) {
                 const lowPoints = [];
                 const highPoints = [];
@@ -2712,6 +3615,8 @@
                 }
             }
         }
+
+        // ===== تولید تمرین جدید =====
 
         function generateNewExercise(incrementCounter = true) {
             const candles = generateAllCandles();
@@ -2805,6 +3710,8 @@
             }
         }
 
+        // ===== اسپویلر =====
+
         function toggleSpoiler(btn) {
             const content = document.getElementById('spoilerContent');
             const answerBadge = document.getElementById('answerBadge');
@@ -2838,6 +3745,8 @@
                 answerBadge.style.display = 'inline-block';
             }
         }
+
+        // ===== تاریخچه و ترندلاین =====
 
         const history = {};
 
@@ -3226,10 +4135,6 @@
             }
         });
 
-        // ================================================================
-        // ===== اصلاح نهایی دکمه‌های Undo/Redo و Clear =====
-        // ================================================================
-
         document.querySelectorAll('.undo-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 const targetId = this.dataset.target;
@@ -3237,8 +4142,7 @@
                 if (!svg) return;
                 const h = getHistory(targetId);
                 if (h.undo.length === 0) return;
-                
-                // پیدا کردن آخرین آیتم غیرتخریب‌شده
+
                 let lastItem = null;
                 while (h.undo.length > 0) {
                     const item = h.undo.pop();
@@ -3247,12 +4151,11 @@
                         break;
                     }
                 }
-                
+
                 if (!lastItem) return;
                 h.redo.push(lastItem);
                 lastItem.remove();
 
-                // اگر فیبو بود، از history فیبو هم حذف کن
                 if (lastItem.classList && lastItem.classList.contains('fibo-group')) {
                     const fh = getFiboHistory(targetId);
                     const idx = fh.indexOf(lastItem);
@@ -3299,12 +4202,11 @@
 
                 const h = getHistory(targetId);
 
-                // پاک کردن ترندلاین‌ها
                 const lines = svg.querySelectorAll('line');
                 const userLines = [];
                 lines.forEach(line => {
-                    if (!line.id && 
-                        !line.classList.contains('grid-line') && 
+                    if (!line.id &&
+                        !line.classList.contains('grid-line') &&
                         !line.classList.contains('temp-line') &&
                         line.getAttribute('stroke') === '#ff9b00' &&
                         line.getAttribute('stroke-width') !== '2' &&
@@ -3317,11 +4219,9 @@
                     line.remove();
                 });
 
-                // پاک کردن فیبوها
                 clearFibos(svg);
                 if (fiboHistory[targetId]) fiboHistory[targetId] = [];
 
-                // پاک کردن رنج‌ها با تابع اصلاح‌شده
                 clearRanges(svg);
 
                 h.redo = [];
@@ -3364,6 +4264,8 @@
             });
         });
 
+        // ===== راه‌اندازی اولیه =====
+
         window.addEventListener('load', function() {
             checkAndResetIfExpired();
             exerciseCounter = getExerciseCounter();
@@ -3376,12 +4278,7 @@
             generateNewExercise(false);
         });
 
-        console.log('🌟 Amitis v139 - اصلاح نهایی Clear برای ابزار رنج');
-        console.log('✅ دکمه پاک کردن: رنج‌ها به طور کامل حذف می‌شوند');
-        console.log('✅ تشخیص گروه‌های رنج با فرزندان');
-        console.log('✅ پاک کردن history مرتبط با رنج');
-        console.log('✅ فیبو و ترندلاین بدون تغییر');
+        console.log('🌟 Amitis v146 - پخش خودکار فعال');
     </script>
-
 </body>
 </html>

@@ -2225,7 +2225,8 @@
         let isFirstInteraction = true;
 
         let eqAnimationId = null;
-        const EQ_POINTS = 200;
+        // ===== تعداد نقاط اکولایزر = 1200 =====
+        const EQ_POINTS = 1200;
         let eqAmplitude = 7;
 
         function toggleMusicPanel() {
@@ -2481,6 +2482,7 @@
             }
         }
 
+        // ===== تابع تولید منحنی با ۱۲۰۰ نقطه و ۳۰٪ قله‌های بیشتر =====
         function generateSmoothPath(progressPercent) {
             const width = 600;
             const height = 32;
@@ -2500,14 +2502,15 @@
                 const x = (i / totalPoints) * width;
                 let y = midY;
 
-                const phase = (i / totalPoints) * Math.PI * 3.5;
+                // ===== ضرایب ۳۰٪ بیشتر از حالت قبلی (ضرب در ۱.۳) =====
+                const phase = (i / totalPoints) * Math.PI * 4.095;    // 3.15 * 1.3 = 4.095
                 const beat1 = Math.sin(phase) * 0.5;
-                const beat2 = Math.sin(phase * 1.8 + 0.5) * 0.25;
-                const beat3 = Math.sin(phase * 0.7 + 1.2) * 0.2;
+                const beat2 = Math.sin(phase * 2.106 + 0.5) * 0.25;   // 1.62 * 1.3 = 2.106
+                const beat3 = Math.sin(phase * 0.819 + 1.2) * 0.2;    // 0.63 * 1.3 = 0.819
 
-                const spike1 = Math.exp(-Math.pow((i / totalPoints - 0.3) * 12, 2)) * 1.8;
-                const spike2 = Math.exp(-Math.pow((i / totalPoints - 0.6) * 14, 2)) * 1.4;
-                const spike3 = Math.exp(-Math.pow((i / totalPoints - 0.85) * 10, 2)) * 1.0;
+                const spike1 = Math.exp(-Math.pow((i / totalPoints - 0.3) * 14.04, 2)) * 1.8;   // 10.8 * 1.3 = 14.04
+                const spike2 = Math.exp(-Math.pow((i / totalPoints - 0.6) * 16.38, 2)) * 1.4;   // 12.6 * 1.3 = 16.38
+                const spike3 = Math.exp(-Math.pow((i / totalPoints - 0.85) * 11.7, 2)) * 1.0;    // 9.0 * 1.3 = 11.7
 
                 const amplitude = eqAmplitude * (0.6 + 0.4 * Math.sin(i / 8 + 0.3));
                 const value = (beat1 + beat2 + beat3 + spike1 + spike2 + spike3) * amplitude * 0.4;
@@ -5059,7 +5062,6 @@
                     ratingItems.forEach(el => el.style.cursor = 'default');
                     feedbackText.disabled = true;
 
-                    // ===== زمان بسته شدن از 4000 به 9000 میلی‌ثانیه افزایش یافت =====
                     setTimeout(() => {
                         closeSurvey();
                         setTimeout(() => {
@@ -5097,7 +5099,7 @@
             generateNewExercise(false);
         });
 
-        console.log('🌟 Amitis v147 - ادغام کامل با نظرسنجی + پنل درگ‌پذیر');
+        console.log('🌟 Amitis v147 - اکولایزر با 1200 نقطه و 30٪ قله‌های بیشتر');
     </script>
 </body>
 </html>

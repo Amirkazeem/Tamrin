@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
 <title>Amitis</title>
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -335,15 +337,15 @@ body.entry-mode { overflow: hidden; }
 }
 .timer-container:hover .timer-time { text-shadow: 0 0 20px rgba(255, 255, 255, 0.2), 0 0 50px rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.05); }
 
-/* ===== استایل شیک‌تر مخصوص تایمر «کل زمان سپری‌شده» در لیدربرد — همون ابعاد/فونت، فقط رنگ‌بندی جدید (اضافه‌شده) ===== */
-.js-total-time-timer { background: linear-gradient(135deg, #0a0a0a 0%, #1a0507 50%, #0a0a0a 100%); border: 1px solid rgba(255, 0, 68, 0.25); box-shadow: 0 0 20px rgba(137, 9, 19, 0.12), inset 0 0 20px rgba(137, 9, 19, 0.04); }
-.js-total-time-timer::before { background: linear-gradient(90deg, transparent, rgba(255, 0, 68, 0.06), transparent); }
-.js-total-time-timer:hover { border-color: rgba(255, 0, 68, 0.5) !important; background: linear-gradient(135deg, #120406 0%, #220810 50%, #120406 100%) !important; box-shadow: 0 0 36px rgba(255, 0, 68, 0.18), inset 0 0 30px rgba(137, 9, 19, 0.06) !important; }
-.js-total-time-timer .timer-icon { color: rgba(255, 0, 68, 0.55); }
-.js-total-time-timer:hover .timer-icon { color: rgba(255, 0, 68, 0.9); }
-.js-total-time-timer .timer-label { color: rgba(255, 120, 140, 0.5); }
-.js-total-time-timer .timer-time { color: #ffdfe4; background: rgba(255, 0, 68, 0.07); border: 1px solid rgba(255, 0, 68, 0.15); text-shadow: 0 0 10px rgba(255, 0, 68, 0.35), 0 0 26px rgba(255, 0, 68, 0.15); }
-.js-total-time-timer:hover .timer-time { text-shadow: 0 0 18px rgba(255, 0, 68, 0.5), 0 0 44px rgba(255, 0, 68, 0.25); border-color: rgba(255, 0, 68, 0.3); background: rgba(255, 0, 68, 0.1); }
+/* ===== استایل مشترک تایمرها: هم تایمر ریست (خط روند و پیوت) و هم تایمر لیدربرد ===== */
+.js-total-time-timer, .js-timer { background: linear-gradient(135deg, #0a0a0a 0%, #1a0507 50%, #0a0a0a 100%); border: 1px solid rgba(255, 0, 68, 0.25); box-shadow: 0 0 20px rgba(137, 9, 19, 0.12), inset 0 0 20px rgba(137, 9, 19, 0.04); }
+.js-total-time-timer::before, .js-timer::before { background: linear-gradient(90deg, transparent, rgba(255, 0, 68, 0.06), transparent); }
+.js-total-time-timer:hover, .js-timer:hover { border-color: rgba(255, 0, 68, 0.5) !important; background: linear-gradient(135deg, #120406 0%, #220810 50%, #120406 100%) !important; box-shadow: 0 0 36px rgba(255, 0, 68, 0.18), inset 0 0 30px rgba(137, 9, 19, 0.06) !important; }
+.js-total-time-timer .timer-icon, .js-timer .timer-icon { color: rgba(255, 0, 68, 0.55); }
+.js-total-time-timer:hover .timer-icon, .js-timer:hover .timer-icon { color: rgba(255, 0, 68, 0.9); }
+.js-total-time-timer .timer-label, .js-timer .timer-label { color: rgba(255, 120, 140, 0.5); }
+.js-total-time-timer .timer-time, .js-timer .timer-time { color: #ffdfe4; background: rgba(255, 0, 68, 0.07); border: 1px solid rgba(255, 0, 68, 0.15); text-shadow: 0 0 10px rgba(255, 0, 68, 0.35), 0 0 26px rgba(255, 0, 68, 0.15); }
+.js-total-time-timer:hover .timer-time, .js-timer:hover .timer-time { text-shadow: 0 0 18px rgba(255, 0, 68, 0.5), 0 0 44px rgba(255, 0, 68, 0.25); border-color: rgba(255, 0, 68, 0.3); background: rgba(255, 0, 68, 0.1); }
 .timer-container.warning { border-color: rgba(255, 0, 68, 0.3) !important; box-shadow: 0 0 25px rgba(255, 0, 68, 0.05) !important; }
 .timer-container.warning .timer-time { color: #ff0044; text-shadow: 0 0 15px rgba(255, 0, 68, 0.3), 0 0 40px rgba(255, 0, 68, 0.1); border-color: rgba(255, 0, 68, 0.1); background: rgba(255, 0, 68, 0.03); }
 .timer-container.warning .timer-icon { color: rgba(255, 0, 68, 0.5); }
@@ -353,9 +355,10 @@ body.entry-mode { overflow: hidden; }
 
 /* ===== خط روند: کادرها و ابزارها ===== */
 .item { margin-bottom: 30px; padding-bottom: 20px; flex: 1; display: flex; flex-direction: column; }
-.chart-box { background: #141414; border-radius: 16px; padding: 10px 10px 8px; border: 1px solid #2a2a2a; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); transition: all 0.3s ease; }
-.chart-box:hover { border-color: #ffffff !important; transform: translateY(-8px) scale(1.005); background: #1e1e1e !important; box-shadow: 0 16px 60px rgba(0, 0, 0, 0.7) !important; }
-.chart-box.answer-box { margin-top: 30px; background: #161616; border-color: #323232; display: flex; flex-direction: column; padding: 10px 10px 8px; }
+/* کادر خاکستری تمرین خط روند و کادر جواب — طبق درخواست، مشکی شد */
+.chart-box { background: #000000; border-radius: 16px; padding: 10px 10px 8px; border: 1px solid #2a2a2a; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); transition: all 0.3s ease; }
+.chart-box:hover { border-color: #ffffff !important; transform: translateY(-8px) scale(1.005); background: #000000 !important; box-shadow: 0 16px 60px rgba(0, 0, 0, 0.7) !important; }
+.chart-box.answer-box { margin-top: 30px; background: #000000; border-color: #323232; display: flex; flex-direction: column; padding: 10px 10px 8px; }
 .label { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
 .label .title { font-size: 14px; font-weight: 700; color: #aaa; }
 .label .badge { font-size: 9px; color: #333; background: #1a1a1a; padding: 2px 12px; border-radius: 30px; border: 1px solid #222; }
@@ -448,8 +451,10 @@ body.entry-mode { overflow: hidden; }
 .spoiler-content.show { display: block; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 .spoiler-wrapper { display: flex; flex-direction: column; justify-content: center; flex: 1; padding-top: 6px; padding-bottom: 6px; }
-.svg-wrap { background: #0a0a0a; border-radius: 12px; padding: 4px; border: 1px solid #161616; overflow: hidden; position: relative; }
-.svg-wrap svg { display: block; width: 100%; height: auto; border-radius: 8px; background: #0a0a0a; }
+.svg-wrap { background: #000000; border-radius: 12px; padding: 4px; border: 1px solid #161616; overflow: hidden; position: relative; }
+.svg-wrap svg { display: block; width: 100%; height: auto; border-radius: 8px; background: #000000; }
+/* پس‌زمینه‌ی داخلی چارت هم مشکی کامل — تا با کادر مشکی یکدست باشد و خاکستری دیده نشود */
+.svg-wrap svg .bg-rect { fill: #000000; }
 .range-line { display: none !important; }
 .range-label { fill: #000eff; font-size: 14px; font-family: 'Courier New', monospace; font-weight: 600; }
 .range-label-bg { fill: rgba(0, 0, 0, 0.98); }
@@ -509,25 +514,38 @@ body.entry-mode { overflow: hidden; }
 
 /* ===== ولوم اسلایدر و پنل پلی‌لیست (اضافه‌شده) ===== */
 .music-controls-bottom { flex-wrap: wrap; }
-.music-volume-row { display: flex; align-items: center; gap: 12px; width: 100%; padding: 10px 12px; margin-top: 8px; border-radius: 14px; background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(137,9,19,0.05)); border: 1px solid rgba(255,255,255,0.05); direction: ltr; transition: border-color 0.3s ease; }
-.music-volume-row:hover { border-color: rgba(255,0,68,0.2); }
-.volume-icon-mini { color: #999; flex-shrink: 0; display: flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; background: rgba(255,255,255,0.04); transition: all 0.25s ease; }
-.volume-icon-mini svg { width: 13px; height: 13px; }
-.music-volume-row:hover .volume-icon-mini { color: #ff0044; background: rgba(255,0,68,0.1); }
-.volume-slider { --vol-percent: 80%; flex: 1; -webkit-appearance: none; appearance: none; height: 5px; border-radius: 6px; outline: none; cursor: pointer; background: linear-gradient(90deg, #890913 0%, #ff0044 var(--vol-percent), rgba(255,255,255,0.06) var(--vol-percent), rgba(255,255,255,0.06) 100%); box-shadow: inset 0 1px 2px rgba(0,0,0,0.4); transition: box-shadow 0.2s ease; }
-.volume-slider:hover { box-shadow: inset 0 1px 2px rgba(0,0,0,0.4), 0 0 12px rgba(255,0,68,0.15); }
-.volume-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 15px; height: 15px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #ffffff, #f0f0f0 60%, #ddd); box-shadow: 0 0 0 3px rgba(255,0,68,0.15), 0 2px 10px rgba(255,0,68,0.5); cursor: pointer; border: 2px solid #890913; transition: transform 0.2s cubic-bezier(0.25,0.46,0.45,0.94), box-shadow 0.2s ease; }
-.volume-slider::-webkit-slider-thumb:hover { transform: scale(1.25); box-shadow: 0 0 0 5px rgba(255,0,68,0.2), 0 2px 14px rgba(255,0,68,0.7); }
-.volume-slider::-moz-range-thumb { width: 15px; height: 15px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #ffffff, #f0f0f0 60%, #ddd); box-shadow: 0 0 0 3px rgba(255,0,68,0.15), 0 2px 10px rgba(255,0,68,0.5); cursor: pointer; border: 2px solid #890913; }
-.volume-slider::-moz-range-track { height: 5px; border-radius: 6px; background: rgba(255,255,255,0.06); }
-.volume-slider::-moz-range-progress { height: 5px; border-radius: 6px; background: linear-gradient(90deg, #890913, #ff0044); }
-.volume-value { color: #aaa; font-size: 10.5px; font-weight: 700; font-family: 'Courier New', monospace; min-width: 32px; text-align: right; flex-shrink: 0; background: rgba(255,255,255,0.04); padding: 2px 6px; border-radius: 6px; }
+.music-volume-row { display: flex; align-items: center; gap: 8px; width: 100%; padding: 0; margin-top: 10px; direction: ltr; }
+.volume-icon-mini { color: #777; flex-shrink: 0; display: flex; align-items: center; justify-content: center; width: 14px; height: 14px; transition: color 0.25s ease; }
+.volume-icon-mini svg { width: 12px; height: 12px; }
+.music-volume-row:hover .volume-icon-mini { color: #ff0044; }
+.volume-slider { --vol-percent: 80%; flex: 1; -webkit-appearance: none; appearance: none; height: 3px; border-radius: 3px; outline: none; cursor: pointer; background: linear-gradient(90deg, #890913 0%, #ff0044 var(--vol-percent), rgba(255,255,255,0.08) var(--vol-percent), rgba(255,255,255,0.08) 100%); }
+.volume-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 9px; height: 9px; border-radius: 50%; background: #ff0044; box-shadow: 0 0 6px rgba(255,0,68,0.7); cursor: pointer; border: none; transition: transform 0.2s ease; }
+.volume-slider::-webkit-slider-thumb:hover { transform: scale(1.4); }
+.volume-slider::-moz-range-thumb { width: 9px; height: 9px; border-radius: 50%; background: #ff0044; box-shadow: 0 0 6px rgba(255,0,68,0.7); cursor: pointer; border: none; }
+.volume-slider::-moz-range-track { height: 3px; border-radius: 3px; background: rgba(255,255,255,0.08); }
+.volume-slider::-moz-range-progress { height: 3px; border-radius: 3px; background: linear-gradient(90deg, #890913, #ff0044); }
 
-.playlist-toggle-btn { position: relative; overflow: hidden; background: linear-gradient(135deg, rgba(137,9,19,0.12), rgba(255,0,68,0.04)); border: 1px solid rgba(255,0,68,0.25); color: #ddd; cursor: pointer; padding: 9px 14px; border-radius: 14px; font-size: 12px; font-family: 'Vazirmatn', sans-serif; font-weight: 700; letter-spacing: 0.3px; display: flex; align-items: center; gap: 8px; width: 100%; justify-content: center; margin-top: 10px; transition: all 0.35s cubic-bezier(0.25,0.46,0.45,0.94); box-shadow: 0 4px 16px rgba(137,9,19,0.08); }
-.playlist-toggle-btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 300%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.07), transparent); animation: shimmerBtn 5s ease-in-out infinite; pointer-events: none; }
-.playlist-toggle-btn:hover { color: #fff; background: linear-gradient(135deg, rgba(137,9,19,0.22), rgba(255,0,68,0.1)); border-color: #ff0044; box-shadow: 0 6px 24px rgba(255,0,68,0.2); transform: translateY(-2px); }
-.playlist-toggle-btn:active { transform: translateY(0) scale(0.98); }
-.playlist-toggle-btn svg { width: 15px; height: 15px; position: relative; z-index: 1; }
+/* ===== دکمه‌ی پخش/مکث بازطراحی‌شده ===== */
+.play-btn { position: relative; background: radial-gradient(circle at 32% 28%, rgba(255,255,255,0.10), rgba(137,9,19,0.22) 55%, rgba(10,10,10,0.9)); border: 1px solid rgba(255, 0, 68, 0.35); box-shadow: 0 4px 20px rgba(255, 0, 68, 0.15), inset 0 1px 0 rgba(255,255,255,0.08); color: #fff; transition: all 0.35s cubic-bezier(0.25,0.46,0.45,0.94); }
+.play-btn::after { content: ''; position: absolute; inset: -4px; border-radius: 50%; border: 1px solid rgba(255,0,68,0.18); opacity: 0; transition: opacity 0.35s ease, transform 0.35s ease; transform: scale(0.85); pointer-events: none; }
+.play-btn:hover { background: radial-gradient(circle at 32% 28%, rgba(255,255,255,0.16), rgba(255,0,68,0.28) 55%, rgba(16,16,16,0.9)); border-color: #ff0044; transform: scale(1.08); box-shadow: 0 6px 30px rgba(255, 0, 68, 0.35), inset 0 1px 0 rgba(255,255,255,0.12); }
+.play-btn:hover::after { opacity: 1; transform: scale(1); }
+.play-btn:active { transform: scale(0.94); }
+.play-btn svg { position: relative; z-index: 1; filter: drop-shadow(0 0 6px rgba(255,0,68,0.5)); }
+.play-btn.playing { border-color: rgba(255, 0, 68, 0.6); box-shadow: 0 4px 26px rgba(255, 0, 68, 0.3), inset 0 1px 0 rgba(255,255,255,0.1); animation: playPulse 2.2s ease-in-out infinite; }
+/* دکمه‌های آهنگ قبلی/بعدی — هم‌خانواده با دکمه‌ی پخش */
+.music-controls-center .ctrl-btn:not(.play-btn) { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(137,9,19,0.10)); border: 1px solid rgba(255,0,68,0.18); color: #bbb; box-shadow: inset 0 1px 0 rgba(255,255,255,0.06); transition: all 0.32s cubic-bezier(0.25,0.46,0.45,0.94); }
+.music-controls-center .ctrl-btn:not(.play-btn):hover { color: #fff; border-color: rgba(255,0,68,0.6); background: linear-gradient(145deg, rgba(255,255,255,0.09), rgba(255,0,68,0.16)); box-shadow: 0 3px 16px rgba(255,0,68,0.25), inset 0 1px 0 rgba(255,255,255,0.1); transform: scale(1.1); }
+.music-controls-center .ctrl-btn:not(.play-btn):active { transform: scale(0.93); }
+.music-controls-center .ctrl-btn:not(.play-btn) svg { width: 16px; height: 16px; filter: drop-shadow(0 0 4px rgba(255,0,68,0.35)); }
+
+@keyframes playPulse { 0%, 100% { box-shadow: 0 4px 26px rgba(255,0,68,0.22), inset 0 1px 0 rgba(255,255,255,0.1); } 50% { box-shadow: 0 4px 38px rgba(255,0,68,0.45), inset 0 1px 0 rgba(255,255,255,0.14); } }
+
+.playlist-toggle-btn, .crypto-more-btn { position: relative; overflow: hidden; background: radial-gradient(circle at 32% 28%, rgba(255,255,255,0.10), rgba(137,9,19,0.22) 55%, rgba(10,10,10,0.9)); border: 1px solid rgba(255, 0, 68, 0.35); color: #fff; cursor: pointer; padding: 9px 14px; border-radius: 12px; font-size: 12px; font-family: 'Vazirmatn', sans-serif; font-weight: 700; letter-spacing: 0.3px; display: flex; align-items: center; gap: 8px; width: 100%; justify-content: center; margin-top: 10px; box-shadow: 0 4px 20px rgba(255, 0, 68, 0.15); transition: all 0.35s cubic-bezier(0.25,0.46,0.45,0.94); }
+.playlist-toggle-btn::before, .crypto-more-btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 300%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent); animation: shimmerBtn 5s ease-in-out infinite; pointer-events: none; }
+.playlist-toggle-btn:hover, .crypto-more-btn:hover { background: radial-gradient(circle at 32% 28%, rgba(255,255,255,0.16), rgba(255,0,68,0.28) 55%, rgba(16,16,16,0.9)); border-color: #ff0044; box-shadow: 0 6px 30px rgba(255, 0, 68, 0.35); transform: translateY(-2px); color: #fff; }
+.playlist-toggle-btn:active, .crypto-more-btn:active { transform: translateY(0) scale(0.98); }
+.playlist-toggle-btn svg, .crypto-more-btn svg { width: 15px; height: 15px; position: relative; z-index: 1; filter: drop-shadow(0 0 6px rgba(255,0,68,0.5)); }
 
 .playlist-panel { position: fixed; top: 80px; left: 20px; z-index: 998; background: rgba(16, 16, 16, 0.92); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 16px 16px 14px; width: 320px; max-width: 90vw; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8); display: none; animation: slideDown 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
 .playlist-panel.show { display: block; }
@@ -544,6 +562,11 @@ body.entry-mode { overflow: hidden; }
 .playlist-track-row { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 10px; cursor: pointer; transition: background 0.2s ease; border: 1px solid transparent; }
 .playlist-track-row:hover { background: rgba(255, 255, 255, 0.04); }
 .playlist-track-row.active { background: rgba(137, 9, 19, 0.12); border-color: rgba(137, 9, 19, 0.4); }
+.playlist-track-row[draggable="true"] { cursor: grab; }
+.playlist-track-row.dragging { opacity: 0.4; cursor: grabbing; }
+.playlist-track-row.drag-over { border-color: #ff0044; box-shadow: inset 0 2px 0 #ff0044; }
+.playlist-drag-handle { color: #444; font-size: 12px; flex-shrink: 0; cursor: grab; user-select: none; transition: color 0.2s ease; }
+.playlist-track-row:hover .playlist-drag-handle { color: #999; }
 .playlist-track-index { color: #555; font-size: 11px; font-family: 'Courier New', monospace; min-width: 16px; text-align: center; flex-shrink: 0; }
 .playlist-track-row.active .playlist-track-index { color: #ff0044; }
 .playlist-track-title { flex: 1; min-width: 0; color: #ddd; font-size: 12.5px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -554,6 +577,7 @@ body.entry-mode { overflow: hidden; }
 .playlist-upload-btn { width: 100%; background: rgba(137, 9, 19, 0.1); border: 1px dashed rgba(137, 9, 19, 0.5); color: #ddd; padding: 10px; border-radius: 10px; font-size: 12px; font-family: 'Vazirmatn', sans-serif; font-weight: 600; cursor: pointer; margin-bottom: 10px; transition: all 0.3s ease; }
 .playlist-upload-btn:hover { background: rgba(137, 9, 19, 0.18); border-color: #890913; color: #fff; }
 .playlist-empty-note { color: #555; font-size: 11.5px; text-align: center; padding: 18px 4px; }
+.playlist-upload-progress { font-size: 11px; color: #ff5c7a; text-align: center; padding: 6px 0 10px; }
 
 /* ===== نظرسنجی مشترک ===== */
 .survey-btn-header { position: relative; }
@@ -762,18 +786,65 @@ body.entry-mode { overflow: hidden; }
 .crypto-list { display: flex; flex-direction: column; gap: 12px; }
 .crypto-row { display: flex; align-items: center; flex-wrap: wrap; gap: 22px; background: #0a0a0a; border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 14px 22px; box-shadow: 0 12px 30px rgba(0,0,0,0.5); transition: border-color 0.2s, box-shadow 0.2s; }
 .crypto-row:hover { border-color: rgba(137,9,19,0.5); box-shadow: 0 12px 30px rgba(137,9,19,0.15); }
-.crypto-logo { position: relative; width: 52px; height: 52px; flex-shrink: 0; border-radius: 50%; background: #000; border: 1px solid rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; overflow: hidden; }
-.crypto-logo-fallback { font-size: 11px; font-weight: 800; color: #fff; letter-spacing: 0.3px; }
-.crypto-logo-img { position: absolute; inset: 0; background-repeat: no-repeat; background-position: center; background-size: 68%; }
+/* لوگوی ارزها — رنگ برند واقعی هر ارز به‌صورت پر و solid، با یک لایه‌ی شیشه‌ای روی آن (نزدیک‌تر به رنگ اصلی) */
+.crypto-logo {
+    position: relative; width: 46px; height: 46px; flex-shrink: 0; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+    background: #14151a; border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 3px 14px color-mix(in srgb, var(--coin-color) 40%, transparent), inset 0 1px 0 rgba(255,255,255,0.08);
+    transition: transform 0.32s cubic-bezier(0.25,0.46,0.45,0.94), box-shadow 0.32s ease;
+}
+.crypto-logo-img { width: 66%; height: 66%; object-fit: contain; position: relative; z-index: 2; }
+.crypto-logo-fallback { position: absolute; font-size: 11px; font-weight: 800; color: var(--coin-color); letter-spacing: 0.2px; z-index: 1; }
+/* لایه‌ی شیشه‌ای ملایم روی رنگ اصلی — رنگ برند را کم‌رنگ نمی‌کند */
+.crypto-logo::before { content: ''; position: absolute; inset: 0; border-radius: 50%; background: linear-gradient(165deg, rgba(255,255,255,0.32) 0%, rgba(255,255,255,0.06) 30%, rgba(255,255,255,0) 48%, rgba(0,0,0,0.18) 100%); pointer-events: none; z-index: 1; }
+.crypto-logo svg { position: relative; z-index: 2; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.35)); }
+.crypto-row:hover .crypto-logo { transform: scale(1.07); box-shadow: 0 5px 20px color-mix(in srgb, var(--coin-color) 65%, transparent), inset 0 1px 0 rgba(255,255,255,0.3); }
+/* درخشش بسیار آرام و کم‌تکرار — طوری‌که آزاردهنده نباشد */
+.crypto-logo::after { content: ''; position: absolute; top: -55%; left: -150%; width: 45%; height: 210%; background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.22) 45%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0.22) 55%, transparent 100%); transform: rotate(20deg); filter: blur(2px); animation: logoShine 22s cubic-bezier(0.5,0,0.3,1) infinite; pointer-events: none; z-index: 3; }
+@keyframes logoShine {
+    0%    { left: -150%; opacity: 0; }
+    2%    { opacity: 1; }
+    13%   { left: 190%; opacity: 1; }
+    16%   { left: 190%; opacity: 0; }
+    100%  { left: 190%; opacity: 0; }
+}
+
+/* فونت اطلاعات ارزها هم‌سبک با تریدینگ‌ویو */
+.crypto-row { font-family: 'Trebuchet MS', 'Roboto', 'Ubuntu', -apple-system, 'Segoe UI', sans-serif; }
 .crypto-row-name { font-weight: 700; font-size: 15px; color: #fff; min-width: 150px; }
 .crypto-row-name .crypto-row-pair { color: #888; font-weight: 400; font-size: 12px; margin-right: 4px; }
-.crypto-row-price { font-family: monospace; font-size: 15px; color: #fff; min-width: 130px; }
+.crypto-row-price { font-family: 'Trebuchet MS', 'Roboto', 'Ubuntu', sans-serif; font-weight: 600; font-size: 15px; color: #fff; min-width: 130px; letter-spacing: 0.2px; }
 .crypto-row-price.up { color: #000eff; }
-.crypto-row-vol { font-family: monospace; font-size: 12.5px; color: #ccc; min-width: 190px; }
-.crypto-row-change { font-family: monospace; font-size: 12.5px; display: flex; gap: 14px; min-width: 130px; }
+.crypto-row-vol { font-family: 'Trebuchet MS', 'Roboto', 'Ubuntu', sans-serif; font-size: 12.5px; color: #ccc; min-width: 190px; }
+.crypto-row-change { font-family: 'Trebuchet MS', 'Roboto', 'Ubuntu', sans-serif; font-weight: 600; font-size: 12.5px; display: flex; gap: 14px; min-width: 130px; }
 .crypto-row-change.up { color: #000eff; }
 .crypto-row-change.down { color: #890913; }
 .crypto-row-source { font-size: 11px; color: #666; margin-right: auto; }
+.crypto-row-spark { width: 84px; height: 34px; flex-shrink: 0; }
+.crypto-row-spark svg { display: block; width: 100%; height: 100%; }
+.crypto-row-spark .spark-fill { opacity: 0.12; }
+
+/* ===== درایور «نمایش بیشتر» — ۱۰۰ ارز برتر، با انیمیشن باز شدن و جابه‌جایی رتبه ===== */
+.crypto-more-drawer { max-height: 0; overflow: hidden; transition: max-height 0.6s cubic-bezier(0.25,0.46,0.45,0.94); }
+.crypto-more-drawer.open { max-height: 4200px; }
+.crypto-more-list { display: flex; flex-direction: column; gap: 8px; padding-top: 14px; }
+.crypto-more-row { position: relative; display: flex; align-items: center; gap: 14px; background: #0a0a0a; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 10px 16px; transition: border-color 0.2s ease, background 0.2s ease; }
+.crypto-more-row:hover { border-color: rgba(255,0,68,0.3); background: #0d0d0d; }
+.crypto-more-rank { width: 26px; flex-shrink: 0; font-family: 'Trebuchet MS', monospace; font-weight: 800; font-size: 13px; color: #666; text-align: center; }
+.crypto-more-row:nth-child(-n+3) .crypto-more-rank { color: #ff0044; }
+.crypto-more-logo { width: 30px; height: 30px; flex-shrink: 0; border-radius: 50%; background: #14151a; border: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.crypto-more-logo img { width: 62%; height: 62%; object-fit: contain; }
+.crypto-more-logo .crypto-logo-fallback { position: absolute; font-size: 8px; }
+.crypto-more-name { flex: 1; min-width: 0; display: flex; align-items: baseline; gap: 7px; }
+.crypto-more-name .nm { font-size: 13.5px; font-weight: 700; color: #eee; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.crypto-more-name .sym { font-size: 11px; color: #777; flex-shrink: 0; }
+.crypto-more-price { font-family: 'Trebuchet MS', monospace; font-size: 13px; color: #ddd; min-width: 90px; text-align: left; direction: ltr; }
+.crypto-more-change { font-family: 'Trebuchet MS', monospace; font-size: 12px; min-width: 64px; text-align: left; direction: ltr; }
+.crypto-more-change.up { color: #000eff; }
+.crypto-more-change.down { color: #890913; }
+.crypto-more-change.na { color: #555; }
+.crypto-more-note { text-align: center; font-size: 11px; color: #555; padding: 14px 0 4px; line-height: 1.9; }
 .crypto-row-error { color: #890913; font-size: 12px; }
 .ltr-num { direction: ltr; unicode-bidi: isolate; display: inline-block; }
 .crypto-loading { color: #888; text-align: center; padding: 60px 0; font-size: 13px; }
@@ -784,6 +855,88 @@ body.entry-mode { overflow: hidden; }
 .economic-calendar-block .ec-title-row .ec-sub { font-size: 12px; color: #888; }
 .economic-calendar-card { background: #0a0a0a; border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 10px; box-shadow: 0 12px 30px rgba(0,0,0,0.5); overflow: hidden; }
 
+/* ===== بخش اطلاعات آی‌پی (جایگزین سایت iplocation) — بازطراحی‌شده ===== */
+.ip-block { margin-top: 34px; }
+.ip-title-row { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px; margin-bottom: 18px; }
+.ip-title-row h2 { font-size: 22px; font-weight: 800; color: #fff; letter-spacing: 1px; }
+.ip-title-row .ip-sub { font-size: 12px; color: #888; }
+
+.ip-hero { position: relative; overflow: hidden; background: linear-gradient(135deg, #0d0305 0%, #16060a 50%, #0a0a0a 100%); border: 1px solid rgba(255,0,68,0.28); border-radius: 18px; padding: 22px 24px; box-shadow: 0 16px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.04); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 18px; }
+.ip-hero::before { content: ''; position: absolute; top: 0; left: -100%; width: 300%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,0,68,0.05), transparent); animation: shimmerBtn 6s ease-in-out infinite; pointer-events: none; }
+.ip-hero-left { display: flex; align-items: center; gap: 16px; position: relative; z-index: 1; }
+.ip-flag { cursor: pointer; display: flex; align-items: center; justify-content: center; width: 62px; height: 44px; border-radius: 8px; overflow: hidden; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 4px 14px rgba(0,0,0,0.7); flex-shrink: 0; transition: border-color 0.25s ease, transform 0.25s ease; }
+.ip-flag:hover { border-color: #ff0044; transform: scale(1.05); }
+.ip-flag img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ip-flag .ip-flag-fallback { font-size: 15px; font-weight: 800; color: #ccc; letter-spacing: 1px; }
+.ip-hero-text { display: flex; flex-direction: column; gap: 3px; }
+.ip-hero-label { font-size: 11px; color: #9a7a80; letter-spacing: 0.5px; }
+.ip-hero-ip { font-family: 'Trebuchet MS', 'Roboto', sans-serif; font-size: 27px; font-weight: 800; color: #fff; letter-spacing: 1.5px; direction: ltr; text-shadow: 0 0 22px rgba(255,0,68,0.4); }
+.ip-hero-place { font-size: 12.5px; color: #bbb; }
+.ip-hero-right { display: flex; align-items: center; gap: 8px; position: relative; z-index: 1; }
+.ip-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.14); color: #ccc; padding: 8px 14px; border-radius: 11px; font-family: 'Vazirmatn', sans-serif; font-size: 12px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; white-space: nowrap; }
+.ip-btn:hover { color: #fff; border-color: #ff0044; background: rgba(255,0,68,0.12); transform: translateY(-2px); box-shadow: 0 5px 18px rgba(255,0,68,0.2); }
+
+.ip-confidence { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 14px 0 4px; font-size: 11.5px; color: #888; }
+.ip-conf-dot { width: 8px; height: 8px; border-radius: 50%; background: #ffffff; box-shadow: 0 0 10px rgba(255,255,255,0.6); }
+.ip-confidence { cursor: pointer; transition: color 0.25s ease; }
+.ip-confidence:hover { color: #ff5c7a; }
+
+.ip-sections { display: flex; flex-direction: column; gap: 16px; margin-top: 18px; }
+.ip-section { background: #0a0a0a; border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 16px 18px; box-shadow: 0 12px 30px rgba(0,0,0,0.5); }
+.ip-section-title { display: flex; align-items: center; gap: 8px; font-size: 13.5px; font-weight: 700; color: #fff; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,0,68,0.15); }
+.ip-section-title .ip-dot { width: 6px; height: 6px; border-radius: 50%; background: #ff0044; box-shadow: 0 0 8px rgba(255,0,68,0.7); flex-shrink: 0; }
+.ip-rows { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 2px 22px; }
+.ip-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 9px 2px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.ip-row:hover { background: rgba(255,0,68,0.03); }
+.ip-row .ip-k { font-size: 12px; color: #888; flex-shrink: 0; }
+.ip-row .ip-v { font-family: 'Trebuchet MS', 'Roboto', sans-serif; font-size: 12.5px; font-weight: 600; color: #eee; direction: ltr; text-align: left; word-break: break-word; max-width: 62%; }
+.ip-row .ip-v.muted { color: #666; font-weight: 400; }
+
+.ip-map-card { background: #0a0a0a; border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; overflow: hidden; box-shadow: 0 12px 30px rgba(0,0,0,0.5); }
+.ip-map-head { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-bottom: 1px solid rgba(255,0,68,0.15); font-size: 13.5px; font-weight: 700; color: #fff; }
+.ip-map-coords { font-family: 'Trebuchet MS', monospace; font-size: 11.5px; color: #888; direction: ltr; }
+.ip-map-frame { position: relative; background: #000; height: 320px; }
+#ipLeafletMap { width: 100%; height: 320px; background: #000; }
+/* تم آمیتیس روی نقشه: بک‌گراند مشکی، خیابان‌ها قرمز کندلی، اسامی سفید */
+.leaflet-container { background: #000 !important; outline: none; }
+/* لایه‌ی پایه (بدون نوشته): خاکستری‌های نقشه به قرمز کندلی تبدیل می‌شوند */
+.ip-roads-layer { filter: grayscale(1) brightness(1.35) sepia(1) saturate(9) hue-rotate(-24deg) contrast(1.25) brightness(0.82); }
+/* لایه‌ی اسامی: بدون فیلتر می‌ماند تا نوشته‌ها سفید بمانند */
+.ip-labels-layer { filter: brightness(1.6) contrast(1.25) grayscale(1); }
+.leaflet-control-zoom a { background: #0a0a0a !important; color: #ff0044 !important; border-color: rgba(255,0,68,0.35) !important; }
+.leaflet-control-zoom a:hover { background: #180608 !important; }
+.leaflet-control-attribution { background: rgba(0,0,0,0.6) !important; color: #555 !important; font-size: 9px !important; }
+.leaflet-control-attribution a { color: #890913 !important; }
+.ip-marker-pin { width: 16px; height: 16px; border-radius: 50%; background: #ff0044; box-shadow: 0 0 0 4px rgba(255,0,68,0.25), 0 0 22px rgba(255,0,68,0.95); animation: ipPinPulse 1.8s ease-in-out infinite; }
+.ip-map-pin { position: absolute; top: 50%; left: 50%; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; background: #ff0044; box-shadow: 0 0 0 4px rgba(255,0,68,0.25), 0 0 20px rgba(255,0,68,0.9); pointer-events: none; z-index: 2; animation: ipPinPulse 1.8s ease-in-out infinite; }
+@keyframes ipPinPulse { 0%,100% { box-shadow: 0 0 0 4px rgba(255,0,68,0.22), 0 0 18px rgba(255,0,68,0.8); } 50% { box-shadow: 0 0 0 10px rgba(255,0,68,0.06), 0 0 30px rgba(255,0,68,1); } }
+
+.ip-loading, .ip-error { text-align: center; padding: 40px 0; font-size: 13px; }
+.ip-loading { color: #888; }
+.ip-error { color: #890913; }
+.ip-source-note { margin-top: 12px; font-size: 10.5px; color: #555; text-align: center; line-height: 1.8; }
+
+/* ===== پاپ‌آپ منابع اطلاعات آی‌پی (هم‌سبک پنل نظرسنجی) ===== */
+.ip-sources-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.65); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); z-index: 10001; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease; }
+.ip-sources-overlay.show { display: flex; opacity: 1; }
+.ip-sources-modal { position: relative; background: rgba(10,10,10,0.85); backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px); border: 1px solid #890913; border-radius: 24px; padding: 30px 26px 24px; max-width: 440px; width: 90%; max-height: 80vh; overflow-y: auto; box-shadow: 0 30px 80px rgba(0,0,0,0.8); animation: slideUpModal 0.4s cubic-bezier(0.25,0.46,0.45,0.94); }
+.ip-sources-modal .close-btn { position: absolute; top: 14px; right: 16px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.5); font-size: 16px; cursor: pointer; width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; }
+.ip-sources-modal .close-btn:hover { color: #fff; background: rgba(255,255,255,0.1); }
+.ip-sources-modal h3 { color: #fff; font-size: 17px; font-weight: 700; margin-bottom: 6px; text-align: center; }
+.ip-sources-modal .sub-title { color: rgba(255,255,255,0.35); font-size: 11.5px; text-align: center; margin-bottom: 18px; font-weight: 300; }
+.ip-sources-list { display: flex; flex-direction: column; gap: 6px; }
+.ip-source-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 14px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); transition: all 0.25s ease; }
+.ip-source-row:hover { border-color: rgba(255,0,68,0.4); background: rgba(255,0,68,0.05); }
+.ip-source-row .src-name { font-size: 13px; font-weight: 600; color: #eee; }
+.ip-source-row .src-status { font-size: 10.5px; color: #666; }
+.ip-source-row .src-status.ok { color: #ffffff; font-weight: 700; }
+.ip-source-row .src-status.fail { color: #890913; }
+.ip-source-row a { color: #c9101f; font-weight: 700; font-size: 11px; text-decoration: none; direction: ltr; white-space: nowrap; transition: color 0.2s ease; }
+.ip-source-row a:hover { color: #ff2a44; }
+.ip-detail-row { justify-content: space-between; }
+.ip-detail-vals { font-size: 11.5px; color: #ccc; direction: ltr; text-align: left; }
+.ip-source-row a:hover { text-decoration: underline; }
+
 /* ============================================================
    ریسپانسیو
    ============================================================ */
@@ -791,7 +944,7 @@ body.entry-mode { overflow: hidden; }
    نشانگر سفارشی ماوس در کل پروژه (اضافه‌شده)
    ============================================================ */
 *, *::before, *::after {
-    cursor: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAqCAYAAAA9IzKsAAAFl0lEQVR4nMVYXWicRRQ9585sNsmmqbTUqmhtdtd217+iVQSppGmhapFW0UTBJ1EsFhT0QRAqMeiTgqDSgiKiIlUT/MGWNE2FdCH1QeyDqK2hSW21L/rQJmabpNmZuT58uzU1m02bbuKFhf1mvpl79s65595ZdKfTjShaJ2DwP5j8Phm78+tk5qvudLqxDfB9aLYLDmIYYdzTPlinsf5vrl+VaUHOLTQQaVAjpwrOF8BbFhnT353Mbm5BzilajQJcEBAxACTNKR+8EkvjxN79TZnniS4PAO2AzDuIAiIvZ5UmHzR4VU0Y82ZvKvPuK4DpAMJ8E1aAKOYOwIhCAHDUO9dA8/Q9yeyBL1Zkrm4DfF/z/PFECkZFQQiAESUKAIW0w965uHD9FTEe2rsye1dLbv4Ie/68CaAAYFijQSFt3nsnQFOdQV9P0+rHI8JCqk1Y+e/DcCAKRVAk7YRq8Kp19cZ80pPKvEogEFCtImEv2IgAJhEdiwDQaEw8oGMh+EYxOw4kM13vr169iECo1vFM+zVRNCKilmLO6KsZcc7Vi3mkqcDcl02ZVdUStrIgJgD8rVFe6pQ5knbEO2dFbltM9nevzGxqQc61o9leDk+mgdDi4BklPKbvLKQdC94rsazWcF9PavWzHcg5YO7CVnaRAJhQYLRMNACAoCmohklVNtC+3ZvM7uwCZK7CVhZEyekZJQLKx5lRqmI0ONdgZPuSpsz+3U1Ny+dSiWcMnwAYUyBfzMX/RqMIhATtsHMubszGK1l7aG8qs7YFOXcpCjvrGZ5RlhzOvAlp8955Q6bqFbmeVPbRllzOdQIXVYkrgogKW/QhECq9S9JMaAiOSNSRn/UmM+1tgL8YYas4SUSeh5WopYjOBgQQr9DxEHyDmFcOpLKffrz81gSBoGidkbAVQSigMRKjqqfzIfQtEhEAQctTpAQkEjbvXD3lsWsaCge/vC6dIrpmJOxsIEAFoJDv87JlTMNrCTEi0fBsx2NHvHM15B2La+yh7uSqjVMU9gKezErMqH4Q11hXu2no15fzwT0RA8/FSVFVX2mtkPZs8B7g8lqY/T3J7DORwoJThW1WECSg0ImJRJhUQO4/PvDhGMOGoPpHwhgTVF3F9aCZVA2TUGkQ2fVtKvNWB4CpwnaxMsuEMUog/LB2beyBoYHvRsTdPamh/wprrULdjCTBv8KWD87Vi3nu22SmuzOdXtYGeAXkkrV+7eHDrhMwDw8Onjodl4157z9oFGsJhDArYWlHnHNxkXuXhlhuz8ob1hAIcyo4bYBvB6TtyJHCpuO/PpkP4cU4KTGSipl5Uswq5r33i63N1orp35fK3D7n7qgjSlUoWs29x4++MeHDVoEO18l0niigquoE4CJjjSX1jCt0quABydcMXFZDQkCBLt/X3Gxbcrlv9qWy6+IhfN5o7E2j3jlGGRSsiK03xo55n5/UsNsHv+u+E8d+LO1TlT6x1InfP3T0lxE/vu5cCHsajbWWlEZjLaF/jQX/Opxfs2Ho6Lb7Thz7sVhXBACq1sK3ICpYD508OQxgS28y+2ac2DIewntn1X609bef/wSATrSaVnQpgfPcsUrozJy+NCumHAnopuNHX+hOp1/aPDR4DgD60GwPIhfaitfLqWZtQIMQ8AplFe4TLGZAO8DNg4Pn+tBs1yPnWWwBy5k1QHwert7aEZVwVnJeMlFW6zCmGyuI1wUgLuKdUGy8580qgQiAeksKFUsWFIQCQaE+RkpCrPWqJ4S6IzVw1XiJ+dUGMUUn1AOUuIgYAIWgPxUQdtbE/e6nBgZGgYFq+/4XhEa9E+rEWAXgVb8LGt4xJxNfbMPhAhAJTLn8rhoIEjVUaiGEPZayc/uJI72lyaLzsgJTVdt1bebm91bcuKH0rAA7o854Qf65A4B/APNQiXFOIX0ZAAAAAElFTkSuQmCC") 1 1, auto !important;
+    cursor: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAaCAYAAAC3g3x9AAADRElEQVR4nKWVQWhcVRiFv//eO+NkkiFtsUgEbZMpM5mAKHYhKDgZNFp3LZJxXURXLguCCIouFNwIUrQg4sKNM1JTCNLRSjq23XXThaWBmkYtBqqYTpNMJpl37+9iXtokTdqJ/ZeX+7537jnv3EdlX+7QeyMjSYAKWB5wTEPsW8+2dHIin8+UwU9RdA8GVJ231o31t+XcycHhXIl6NFX8/1CTUHGzbR8QebJf5PwPQ7kXSvV6FCuVHQMNKm3E/OPDqhH2PiS2VssOv1miHimI7hBqiGXMI3ZFNbRVTa+YE7Wh4U8EgoBqvK8rYACMQFOFpmIEWAjBZ4w99nO2cHIin88IhG7Duv1mVZhXQTqCbcNHUUrMkb62/HIqmz3QbVgGQAErsKjQpPMxiohr+ChKGPNUhuT5yWy+1E1YG7wJwHwQJH6JEXFN773CIz1qfqwNFl4vUY8qYLYL686RY2WLCssdCUpHqV1VDRFq01a+rA0WPi6D3y6sDQsCREBDhaSIhI5oJA5vKQSfcebtM0OF7yojI30CQRm32wIVcMDNoM3loDcyxhhFfQwVwN6MoqjHmFf3rOjZU4/nBoXqhrpuBqoRIUDrVrCjKyGc2WWdVTTStQfisJIiB/sS9sLk/sLzJW6HdbcHChgVd71l//h35olDi8F/3W+cM+A19tWIuCXvPTCQNvx0eih/tEQ92hLYMVOjPdJMl6n6sd+uHF3w/p2UMdYiomu+xmG10USPsV+dzg5/eHHgYHpLoIIEl/QKMlUsupevXfmo6X3ZCUspEaPa8RVUA2AQ+o199++exTfu2VEBHa3X/RRF98q16eqyhtGgzPZaaxXIGGcd+NXgv21Eq88spOznXfVzzfTSTP3ixGP55/qSUkmJPN0K4Rsf7PGx2V8vre3t+iKNG2IP/zn914mBgZdy6d2Pvjhz+Sp0fh3joALBiUiauEd6H2i5k7TI3FwT5q5WGLfjVFXAr1e4uZMBxLPNxJWT90HKVO/at/7IHlSTYl1Lo933uqjjnm95IAcEBU2KSVoR2iFcAv30wPW9txRE7u/EZqD2JkSkpf6sIscf/v3y92XwML0Tzp35bF/hgy/2F15bv1bZdIPsZP4DwqNvO+QYhCMAAAAASUVORK5CYII=") 1 1, auto !important;
 }
 
 @media (max-width: 480px) {
@@ -1126,6 +1279,14 @@ body.entry-mode { overflow: hidden; }
                 <div class="crypto-loading">در حال دریافت اطلاعات...</div>
             </div>
 
+            <button class="crypto-more-btn" id="cryptoMoreBtn" onclick="toggleCryptoMore()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                نمایش بیشتر
+            </button>
+            <div class="crypto-more-drawer" id="cryptoMoreDrawer">
+                <div class="crypto-more-list" id="cryptoMoreList"></div>
+            </div>
+
             <div class="economic-calendar-block">
                 <div class="ec-title-row">
                     <h2>📅 تقویم اقتصادی</h2>
@@ -1144,6 +1305,80 @@ body.entry-mode { overflow: hidden; }
                         "locale": "en"
                     }
                     </script>
+                </div>
+            </div>
+
+            <div class="ip-block">
+                <div class="ip-title-row">
+                    <h2>🌐 اطلاعات آی‌پی و اتصال شما</h2>
+                </div>
+
+                <div class="ip-loading" id="ipLoading">در حال استعلام از چندین منبع...</div>
+                <div class="ip-error" id="ipError" style="display:none;"></div>
+
+                <div id="ipContent" style="display:none;">
+                    <div class="ip-hero">
+                        <div class="ip-hero-left">
+                            <span class="ip-flag" id="ipFlag" onclick="openIpSourcesPanel()" title="کلیک کنید تا منابع اطلاعات را ببینید"></span>
+                            <div class="ip-hero-text">
+                                <span class="ip-hero-label">آی‌پی عمومی شما</span>
+                                <span class="ip-hero-ip" id="ipValue">—</span>
+                                <span class="ip-hero-place" id="ipPlace">—</span>
+                            </div>
+                        </div>
+                        <div class="ip-hero-right">
+                            <button class="ip-btn" id="ipCopyBtn">📋 کپی</button>
+                            <button class="ip-btn" id="ipRefreshBtn">↻ بررسی دوباره</button>
+                        </div>
+                    </div>
+
+                    <div class="ip-confidence" onclick="openIpDetailPanel()" title="کلیک کنید تا جزئیات هر منبع را ببینید">
+                        <span class="ip-conf-dot" id="ipConfDot"></span>
+                        <span id="ipConfText">—</span>
+                    </div>
+
+                    <div class="ip-sections">
+                        <div class="ip-section">
+                            <div class="ip-section-title"><span class="ip-dot"></span> موقعیت جغرافیایی</div>
+                            <div class="ip-rows" id="ipRowsGeo"></div>
+                        </div>
+                        <div class="ip-section">
+                            <div class="ip-section-title"><span class="ip-dot"></span> شبکه، اپراتور و دی‌ان‌اس</div>
+                            <div class="ip-rows" id="ipRowsNet"></div>
+                        </div>
+                        <div class="ip-section">
+                            <div class="ip-section-title"><span class="ip-dot"></span> دستگاه، سیستم‌عامل و مرورگر</div>
+                            <div class="ip-rows" id="ipRowsDev"></div>
+                        </div>
+                        <div class="ip-map-card" id="ipMapCard" style="display:none;">
+                            <div class="ip-map-head">
+                                <span>📍 موقعیت روی نقشه</span>
+                                <span class="ip-map-coords" id="ipMapCoords">—</span>
+                            </div>
+                            <div class="ip-map-frame">
+                                <div id="ipLeafletMap"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ip-source-note" id="ipSourceNote"></div>
+                </div>
+            </div>
+
+            <div class="ip-sources-overlay" id="ipSourcesOverlay" onclick="if(event.target===this) closeIpSourcesPanel()">
+                <div class="ip-sources-modal">
+                    <button class="close-btn" onclick="closeIpSourcesPanel()">✕</button>
+                    <h3>🌐 منابع اطلاعات آی‌پی</h3>
+                    <p class="sub-title">این سایت‌ها برای استعلام و تأیید متقابل اطلاعات شما بررسی شدند</p>
+                    <div class="ip-sources-list" id="ipSourcesList"></div>
+                </div>
+            </div>
+
+            <div class="ip-sources-overlay" id="ipDetailOverlay" onclick="if(event.target===this) closeIpDetailPanel()">
+                <div class="ip-sources-modal">
+                    <button class="close-btn" onclick="closeIpDetailPanel()">✕</button>
+                    <h3>🔎 مقایسه‌ی جزئیات هر منبع</h3>
+                    <p class="sub-title">هر سایت چه آی‌پی و موقعیتی برای شما گزارش داده است</p>
+                    <div class="ip-sources-list" id="ipDetailList"></div>
                 </div>
             </div>
 
@@ -1231,7 +1466,6 @@ body.entry-mode { overflow: hidden; }
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11,5 6,9 2,9 2,15 6,15 11,19 11,5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
         </span>
         <input type="range" id="volumeSlider" class="volume-slider" min="0" max="100" value="80" step="1">
-        <span class="volume-value" id="volumeValue">80%</span>
     </div>
     <button class="playlist-toggle-btn" id="playlistToggleBtn" onclick="togglePlaylistPanel()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
@@ -1255,7 +1489,8 @@ body.entry-mode { overflow: hidden; }
         <div class="playlist-track-list" id="playlistListDefault"></div>
     </div>
     <div class="playlist-tab-content" id="playlistTabCustom">
-        <button class="playlist-upload-btn" id="playlistUploadBtn">📁 آپلود آهنگ (چند فایل مجاز است)</button>
+        <button class="playlist-upload-btn" id="playlistUploadBtn">📁 افزودن آهنگ — می‌توانید هر تعداد فایل را با هم انتخاب کنید</button>
+        <div class="playlist-upload-progress" id="playlistUploadProgress" style="display:none;"></div>
         <input type="file" id="playlistUploadInput" accept="audio/*" multiple style="display:none;">
         <div class="playlist-track-list" id="playlistListCustom"></div>
         <div class="playlist-empty-note" id="playlistCustomEmptyNote">هنوز آهنگی آپلود نکرده‌اید.</div>
@@ -1952,8 +2187,8 @@ function clearMACDElements(svg) {
     const toRemove = [];
     for (let i = 0; i < svg.children.length; i++) {
         const child = svg.children[i];
-        const isMACDLine = child.tagName === 'line' && (child.getAttribute('stroke') === '#ffffff' || child.getAttribute('stroke') === '#808080' || child.getAttribute('stroke') === '#89091380' || child.getAttribute('stroke') === '#890913');
-        const isMACDRect = child.tagName === 'rect' && (child.getAttribute('fill') === '#ffffff' || child.getAttribute('fill') === '#808080' || child.getAttribute('fill') === '#89091380' || child.getAttribute('fill') === '#890913');
+        const isMACDLine = child.tagName === 'line' && (child.getAttribute('stroke') === '#ffffff' || child.getAttribute('stroke') === '#808080' || child.getAttribute('stroke') === '#000000' || child.getAttribute('stroke') === '#89091380' || child.getAttribute('stroke') === '#890913');
+        const isMACDRect = child.tagName === 'rect' && (child.getAttribute('fill') === '#ffffff' || child.getAttribute('fill') === '#808080' || child.getAttribute('fill') === '#000000' || child.getAttribute('fill') === '#89091380' || child.getAttribute('fill') === '#890913');
         const isZeroLine = child.tagName === 'line' && child.getAttribute('stroke') === '#787b8680' && child.getAttribute('stroke-width') === '0.5';
         if (isMACDLine || isMACDRect || isZeroLine) toRemove.push(child);
     }
@@ -3338,6 +3573,32 @@ function initPivot() {
     newExercise(false);
 }
 
+/* کد مخفی: تایپ «levelup» در تمرین خط روند، هر بار ۱۰۰۰ تمرین جلو می‌برد (حالت کد تقلب) */
+let levelUpBuffer = '';
+document.addEventListener('keydown', function(e) {
+    if (e.key.length !== 1 || !e.key.match(/[a-zA-Z]/)) return;
+    levelUpBuffer += e.key.toLowerCase();
+    if (levelUpBuffer.length > 7) levelUpBuffer = levelUpBuffer.slice(-7);
+    if (levelUpBuffer === 'levelup') {
+        levelUpBuffer = '';
+        if (activeView !== 'trend') return;
+        exerciseCounter += 1000;
+        bestRecord += 1000;
+        setExerciseCounter(exerciseCounter);
+        setBestRecord(bestRecord);
+        setLastActivity();
+        document.getElementById('exerciseCounter').textContent = exerciseCounter;
+        document.getElementById('bestRecordDisplay').textContent = bestRecord;
+        updateLevelDisplay(bestRecord);
+        const badge = document.getElementById('newRecordBadge');
+        if (badge) {
+            badge.classList.add('show');
+            setTimeout(() => badge.classList.remove('show'), 2500);
+        }
+        if (typeof updateLbUserStatsBlock === 'function') updateLbUserStatsBlock();
+    }
+});
+
 let typedBuffer = '';
 document.addEventListener('keydown', function(e) {
     if (e.key.length === 1 && e.key.match(/[a-zA-Z]/)) {
@@ -3433,6 +3694,24 @@ const playlist = [
 ];
 
 /* ===== پلی‌لیست شخصی و پلی‌لیست فعال (اضافه‌شده) ===== */
+/* ترتیب دلخواه پلی‌لیست پیش‌فرض (با درگ‌اند‌دراپ) از دفعات قبل بازیابی می‌شود */
+(function restoreDefaultPlaylistOrder() {
+    try {
+        const saved = JSON.parse(localStorage.getItem('amitis_music_default_order') || 'null');
+        if (!Array.isArray(saved) || saved.length === 0) return;
+        const byUrl = {};
+        playlist.forEach(t => { byUrl[t.url] = t; });
+        const reordered = [];
+        saved.forEach(u => { if (byUrl[u]) { reordered.push(byUrl[u]); delete byUrl[u]; } });
+        // آهنگ‌هایی که بعداً به لیست اضافه شده‌اند (و در ترتیب ذخیره‌شده نبودند) به انتها می‌روند
+        playlist.forEach(t => { if (byUrl[t.url]) reordered.push(t); });
+        if (reordered.length === playlist.length) playlist.splice(0, playlist.length, ...reordered);
+    } catch (e) {}
+})();
+function saveDefaultPlaylistOrder() {
+    try { localStorage.setItem('amitis_music_default_order', JSON.stringify(playlist.map(t => t.url))); } catch (e) {}
+}
+
 let customPlaylist = [];
 let activePlaylist = playlist;
 let playlistMode = localStorage.getItem('amitis_music_playlist_mode') || 'default';
@@ -3484,9 +3763,49 @@ function removeAudioEvents() {
     audio.ontimeupdate = null; audio.onloadedmetadata = null;
     audio.oncanplay = null; audio.onerror = null;
 }
-function loadTrack(index, forcePlay = false, startAt = 0) {
+/* ================================================================
+   کراس‌فید: به‌جای قطع ناگهانی، صدای آهنگ فعلی نرم کم می‌شود،
+   آهنگ بعدی بارگذاری و سپس صدایش نرم بالا می‌آید (محو در محو)
+   ================================================================ */
+let CROSSFADE_MS = 1400;
+let __fadeTimer = null;
+function targetVolume() {
+    const sl = document.getElementById('volumeSlider');
+    return sl ? (parseInt(sl.value, 10) || 80) / 100 : 0.8;
+}
+function cancelFade() { if (__fadeTimer) { clearInterval(__fadeTimer); __fadeTimer = null; } }
+function fadeAudio(from, to, ms) {
+    return new Promise(resolve => {
+        cancelFade();
+        const steps = Math.max(1, Math.round(ms / 40));
+        let i = 0;
+        audio.volume = Math.max(0, Math.min(1, from));
+        __fadeTimer = setInterval(() => {
+            i++;
+            const t = i / steps;
+            const eased = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+            audio.volume = Math.max(0, Math.min(1, from + (to - from) * eased));
+            if (i >= steps) { cancelFade(); audio.volume = Math.max(0, Math.min(1, to)); resolve(); }
+        }, 40);
+    });
+}
+/* تعویض آهنگ همراه با کراس‌فید */
+function crossfadeTo(index, startAt = 0) {
+    if (!isPlaying || !audio.src) { loadTrack(index, true, startAt); return; }
+    const vol = targetVolume();
+    fadeAudio(audio.volume, 0, CROSSFADE_MS / 2).then(() => {
+        loadTrack(index, true, startAt, true);   // بدون صدا بارگذاری می‌شود
+        audio.volume = 0;
+        const ramp = () => fadeAudio(0, vol, CROSSFADE_MS);
+        if (audio.readyState >= 2) ramp();
+        else audio.addEventListener('canplay', ramp, { once: true });
+    });
+}
+
+function loadTrack(index, forcePlay = false, startAt = 0, silentStart = false) {
     if (isChangingTrack && !forcePlay) return;
     isChangingTrack = true;
+    if (!silentStart) { cancelFade(); audio.volume = targetVolume(); }
     const track = activePlaylist[index];
     if (!track) { isChangingTrack = false; return; }
     const wasPlaying = isPlaying || forcePlay || autoPlayStarted;
@@ -3549,7 +3868,7 @@ function nextTrack() {
         do { n = Math.floor(Math.random() * activePlaylist.length); a++; } while (n === currentTrackIndex && activePlaylist.length > 1 && a < 10);
         currentTrackIndex = n;
     } else currentTrackIndex = (currentTrackIndex + 1) % activePlaylist.length;
-    loadTrack(currentTrackIndex, true);
+    crossfadeTo(currentTrackIndex);
 }
 function prevTrack() {
     if (activePlaylist.length === 0 || isChangingTrack) return;
@@ -3561,7 +3880,7 @@ function prevTrack() {
         do { n = Math.floor(Math.random() * activePlaylist.length); a++; } while (n === currentTrackIndex && activePlaylist.length > 1 && a < 10);
         currentTrackIndex = n;
     } else currentTrackIndex = (currentTrackIndex - 1 + activePlaylist.length) % activePlaylist.length;
-    loadTrack(currentTrackIndex, true);
+    crossfadeTo(currentTrackIndex);
 }
 function updateTimeDisplay() {
     document.getElementById('currentTime').textContent = `${formatTime(audio.currentTime || 0)} / ${formatTime(audio.duration || 0)}`;
@@ -3733,6 +4052,7 @@ async function loadCustomPlaylistFromDB() {
         const tracks = await musicDB.getAllTracks();
         customPlaylist = tracks.map(t => ({ url: URL.createObjectURL(t.blob), title: t.name.replace(/\.[^/.]+$/, ''), artist: 'پلی‌لیست من', dbId: t.id }));
     } catch (e) { customPlaylist = []; }
+    applyCustomOrder();
     if (typeof renderPlaylistPanel === 'function') renderPlaylistPanel();
 }
 
@@ -3758,19 +4078,54 @@ async function restoreMusicState() {
     if (typeof renderPlaylistPanel === 'function') renderPlaylistPanel();
 }
 
+/* ترتیب دلخواه پلی‌لیست شخصی هم ذخیره و بازیابی می‌شود */
+function saveCustomPlaylistOrder() {
+    try { localStorage.setItem('amitis_music_custom_order', JSON.stringify(customPlaylist.map(t => t.dbId))); } catch (e) {}
+}
+function applyCustomOrder() {
+    try {
+        const saved = JSON.parse(localStorage.getItem('amitis_music_custom_order') || 'null');
+        if (!Array.isArray(saved) || !saved.length) return;
+        const byId = {};
+        customPlaylist.forEach(t => { byId[t.dbId] = t; });
+        const out = [];
+        saved.forEach(id => { if (byId[id]) { out.push(byId[id]); delete byId[id]; } });
+        customPlaylist.forEach(t => { if (byId[t.dbId]) out.push(t); });
+        if (out.length === customPlaylist.length) customPlaylist = out;
+    } catch (e) {}
+}
+
+/* آپلود انبوه — هر تعداد فایل (حتی هزاران آهنگ) پشتیبانی می‌شود؛
+   فایل‌ها دسته‌دسته ذخیره می‌شوند تا مرورگر هنگ نکند و پیشرفت نمایش داده شود */
 async function handleCustomUpload(fileList) {
-    const files = Array.from(fileList || []);
-    for (const file of files) {
-        try { await musicDB.addTrack(file.name, file); } catch (e) {}
+    const files = Array.from(fileList || []).filter(f => f && f.type.startsWith('audio'));
+    if (!files.length) return;
+    const prog = document.getElementById('playlistUploadProgress');
+    if (prog) { prog.style.display = 'block'; }
+    let done = 0;
+    const BATCH = 20;
+    for (let i = 0; i < files.length; i += BATCH) {
+        const chunk = files.slice(i, i + BATCH);
+        await Promise.all(chunk.map(async f => {
+            try { await musicDB.addTrack(f.name, f); } catch (e) {}
+            done++;
+        }));
+        if (prog) prog.textContent = 'در حال افزودن... ' + done + ' از ' + files.length;
+        await new Promise(r => setTimeout(r, 0));   // نفس‌کشیدن رابط کاربری
     }
     await loadCustomPlaylistFromDB();
     if (playlistMode === 'custom') activePlaylist = customPlaylist;
+    if (prog) {
+        prog.textContent = '✓ ' + files.length + ' آهنگ اضافه شد';
+        setTimeout(() => { prog.style.display = 'none'; }, 2500);
+    }
 }
 
 async function deleteCustomTrack(id) {
     try { await musicDB.deleteTrack(id); } catch (e) {}
     const wasActive = playlistMode === 'custom';
     await loadCustomPlaylistFromDB();
+    saveCustomPlaylistOrder();
     if (wasActive) {
         activePlaylist = customPlaylist;
         if (activePlaylist.length === 0) {
@@ -3821,12 +4176,14 @@ function renderPlaylistPanel() {
     if (!defaultList || !customList) return;
     defaultList.innerHTML = playlist.map((t, i) => {
         const active = playlistMode === 'default' && i === currentTrackIndex;
-        return `<div class="playlist-track-row${active ? ' active' : ''}" onclick="playFromPanel('default', ${i})">
+        return `<div class="playlist-track-row${active ? ' active' : ''}" draggable="true" data-pl-index="${i}" data-pl-list="default" onclick="playFromPanel('default', ${i})">
+            <span class="playlist-drag-handle" title="برای جابه‌جایی بکشید">⠿</span>
             <span class="playlist-track-index">${i + 1}</span>
             <span class="playlist-track-title">${escapePlHtml(t.title)}</span>
             <span class="playlist-track-artist">${escapePlHtml(t.artist || '')}</span>
         </div>`;
     }).join('');
+    bindPlaylistDragAndDrop(defaultList);
     if (customPlaylist.length === 0) {
         customList.innerHTML = '';
         emptyNote.style.display = 'block';
@@ -3834,20 +4191,67 @@ function renderPlaylistPanel() {
         emptyNote.style.display = 'none';
         customList.innerHTML = customPlaylist.map((t, i) => {
             const active = playlistMode === 'custom' && i === currentTrackIndex;
-            return `<div class="playlist-track-row${active ? ' active' : ''}" onclick="playFromPanel('custom', ${i})">
+            return `<div class="playlist-track-row${active ? ' active' : ''}" draggable="true" data-pl-index="${i}" data-pl-list="custom" onclick="playFromPanel('custom', ${i})">
+                <span class="playlist-drag-handle" title="برای جابه‌جایی بکشید">⠿</span>
                 <span class="playlist-track-index">${i + 1}</span>
                 <span class="playlist-track-title">${escapePlHtml(t.title)}</span>
                 <button class="playlist-track-delete" onclick="event.stopPropagation(); deleteCustomTrack(${t.dbId})" title="حذف">🗑</button>
             </div>`;
         }).join('');
+        bindPlaylistDragAndDrop(customList);
     }
 }
+/* درگ‌اند‌دراپ برای تغییر ترتیب پخش پلی‌لیست پیش‌فرض (اضافه‌شده) */
+let __plDragFrom = null;
+function bindPlaylistDragAndDrop(listEl) {
+    listEl.querySelectorAll('.playlist-track-row[draggable="true"]').forEach(row => {
+        row.addEventListener('dragstart', function(e) {
+            __plDragFrom = parseInt(this.dataset.plIndex, 10);
+            this.classList.add('dragging');
+            if (e.dataTransfer) { e.dataTransfer.effectAllowed = 'move'; try { e.dataTransfer.setData('text/plain', String(__plDragFrom)); } catch (err) {} }
+        });
+        row.addEventListener('dragend', function() {
+            this.classList.remove('dragging');
+            listEl.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+            __plDragFrom = null;
+        });
+        row.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            if (e.dataTransfer) e.dataTransfer.dropEffect = 'move';
+            this.classList.add('drag-over');
+        });
+        row.addEventListener('dragleave', function() { this.classList.remove('drag-over'); });
+        row.addEventListener('drop', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            this.classList.remove('drag-over');
+            const which = this.dataset.plList || 'default';
+            const to = parseInt(this.dataset.plIndex, 10);
+            const from = __plDragFrom;
+            if (from === null || isNaN(from) || isNaN(to) || from === to) return;
+            const arr = which === 'custom' ? customPlaylist : playlist;
+            const playingKey = (playlistMode === which && arr[currentTrackIndex])
+                ? (which === 'custom' ? arr[currentTrackIndex].dbId : arr[currentTrackIndex].url) : null;
+            const moved = arr.splice(from, 1)[0];
+            arr.splice(to, 0, moved);
+            if (which === 'custom') saveCustomPlaylistOrder(); else saveDefaultPlaylistOrder();
+            if (playingKey !== null) {
+                const ni = which === 'custom'
+                    ? arr.findIndex(t => t.dbId === playingKey)
+                    : arr.findIndex(t => t.url === playingKey);
+                if (ni !== -1) { currentTrackIndex = ni; persistMusicState(); }
+            }
+            renderPlaylistPanel();
+        });
+    });
+}
+
 function playFromPanel(mode, index) {
     if (mode !== playlistMode) {
         switchPlaylistMode(mode, index);
     } else {
         userManuallyPaused = false;
-        loadTrack(index, true);
+        crossfadeTo(index);
     }
 }
 
@@ -4162,27 +4566,370 @@ function playFromPanel(mode, index) {
 /* ================================================================
    انیمیشن صفحه ورود
    ================================================================ */
+/* ================================================================
+   موتور مشترک تعامل ذرات غبار (هولد + کلیک) — قابل استفاده در همه‌ی صفحات
+   ================================================================ */
+const __shapeCache = {};
+
+/* نقاط دقیق شکل بی‌نهایت — مستقیماً از تصویری که کاربر فرستاده استخراج شده */
+const INFINITY_MASK = [[-81.2,-72.9],[-78.4,-72.9],[-75.7,-72.9],[-72.9,-72.9],[-70.2,-72.9],[81.2,-72.9],[83.9,-72.9],[86.7,-72.9],[89.4,-72.9],[92.2,-72.9],[95.0,-72.9],[97.7,-72.9],[100.5,-72.9],[-97.7,-70.2],[-95.0,-70.2],[-92.2,-70.2],[-89.4,-70.2],[-86.7,-70.2],[-83.9,-70.2],[-81.2,-70.2],[-78.4,-70.2],[-75.7,-70.2],[-72.9,-70.2],[-70.2,-70.2],[-67.4,-70.2],[-64.7,-70.2],[-61.9,-70.2],[-59.2,-70.2],[-56.4,-70.2],[70.2,-70.2],[72.9,-70.2],[75.7,-70.2],[78.4,-70.2],[81.2,-70.2],[83.9,-70.2],[86.7,-70.2],[89.4,-70.2],[92.2,-70.2],[95.0,-70.2],[97.7,-70.2],[100.5,-70.2],[103.2,-70.2],[106.0,-70.2],[108.7,-70.2],[111.5,-70.2],[-103.2,-67.4],[-100.5,-67.4],[-97.7,-67.4],[-95.0,-67.4],[-92.2,-67.4],[-89.4,-67.4],[-86.7,-67.4],[-83.9,-67.4],[-81.2,-67.4],[-78.4,-67.4],[-75.7,-67.4],[-72.9,-67.4],[-70.2,-67.4],[-67.4,-67.4],[-64.7,-67.4],[-61.9,-67.4],[-59.2,-67.4],[-56.4,-67.4],[-53.7,-67.4],[-50.9,-67.4],[-48.2,-67.4],[61.9,-67.4],[64.7,-67.4],[67.4,-67.4],[70.2,-67.4],[72.9,-67.4],[75.7,-67.4],[78.4,-67.4],[81.2,-67.4],[83.9,-67.4],[86.7,-67.4],[89.4,-67.4],[92.2,-67.4],[95.0,-67.4],[97.7,-67.4],[100.5,-67.4],[103.2,-67.4],[106.0,-67.4],[108.7,-67.4],[111.5,-67.4],[114.2,-67.4],[117.0,-67.4],[119.7,-67.4],[-108.7,-64.7],[-106.0,-64.7],[-103.2,-64.7],[-100.5,-64.7],[-97.7,-64.7],[-95.0,-64.7],[-92.2,-64.7],[-89.4,-64.7],[-86.7,-64.7],[-83.9,-64.7],[-81.2,-64.7],[-78.4,-64.7],[-75.7,-64.7],[-72.9,-64.7],[-70.2,-64.7],[-67.4,-64.7],[-64.7,-64.7],[-61.9,-64.7],[-59.2,-64.7],[-56.4,-64.7],[-53.7,-64.7],[-50.9,-64.7],[-48.2,-64.7],[-45.4,-64.7],[-42.7,-64.7],[56.4,-64.7],[59.2,-64.7],[61.9,-64.7],[64.7,-64.7],[67.4,-64.7],[70.2,-64.7],[72.9,-64.7],[75.7,-64.7],[78.4,-64.7],[81.2,-64.7],[83.9,-64.7],[86.7,-64.7],[89.4,-64.7],[92.2,-64.7],[95.0,-64.7],[97.7,-64.7],[100.5,-64.7],[103.2,-64.7],[106.0,-64.7],[108.7,-64.7],[111.5,-64.7],[114.2,-64.7],[117.0,-64.7],[119.7,-64.7],[122.5,-64.7],[125.2,-64.7],[-114.2,-61.9],[-111.5,-61.9],[-108.7,-61.9],[-106.0,-61.9],[-103.2,-61.9],[-100.5,-61.9],[-97.7,-61.9],[-95.0,-61.9],[-92.2,-61.9],[-89.4,-61.9],[-86.7,-61.9],[-83.9,-61.9],[-81.2,-61.9],[-78.4,-61.9],[-75.7,-61.9],[-72.9,-61.9],[-70.2,-61.9],[-67.4,-61.9],[-64.7,-61.9],[-61.9,-61.9],[-59.2,-61.9],[-56.4,-61.9],[-53.7,-61.9],[-50.9,-61.9],[-48.2,-61.9],[-45.4,-61.9],[-42.7,-61.9],[-39.9,-61.9],[53.7,-61.9],[56.4,-61.9],[59.2,-61.9],[61.9,-61.9],[64.7,-61.9],[67.4,-61.9],[70.2,-61.9],[72.9,-61.9],[75.7,-61.9],[78.4,-61.9],[81.2,-61.9],[83.9,-61.9],[86.7,-61.9],[89.4,-61.9],[92.2,-61.9],[95.0,-61.9],[97.7,-61.9],[100.5,-61.9],[103.2,-61.9],[106.0,-61.9],[108.7,-61.9],[111.5,-61.9],[114.2,-61.9],[117.0,-61.9],[119.7,-61.9],[122.5,-61.9],[125.2,-61.9],[128.0,-61.9],[-119.7,-59.2],[-117.0,-59.2],[-114.2,-59.2],[-111.5,-59.2],[-108.7,-59.2],[-106.0,-59.2],[-103.2,-59.2],[-100.5,-59.2],[-97.7,-59.2],[-95.0,-59.2],[-92.2,-59.2],[-89.4,-59.2],[-86.7,-59.2],[-83.9,-59.2],[-81.2,-59.2],[-78.4,-59.2],[-75.7,-59.2],[-72.9,-59.2],[-70.2,-59.2],[-67.4,-59.2],[-64.7,-59.2],[-61.9,-59.2],[-59.2,-59.2],[-56.4,-59.2],[-53.7,-59.2],[-50.9,-59.2],[-48.2,-59.2],[-45.4,-59.2],[-42.7,-59.2],[-39.9,-59.2],[-37.2,-59.2],[48.2,-59.2],[50.9,-59.2],[53.7,-59.2],[56.4,-59.2],[59.2,-59.2],[61.9,-59.2],[64.7,-59.2],[67.4,-59.2],[70.2,-59.2],[72.9,-59.2],[75.7,-59.2],[78.4,-59.2],[81.2,-59.2],[83.9,-59.2],[86.7,-59.2],[89.4,-59.2],[92.2,-59.2],[95.0,-59.2],[97.7,-59.2],[100.5,-59.2],[103.2,-59.2],[106.0,-59.2],[108.7,-59.2],[111.5,-59.2],[114.2,-59.2],[117.0,-59.2],[119.7,-59.2],[122.5,-59.2],[125.2,-59.2],[128.0,-59.2],[130.7,-59.2],[133.5,-59.2],[-122.5,-56.4],[-119.7,-56.4],[-117.0,-56.4],[-114.2,-56.4],[-111.5,-56.4],[-108.7,-56.4],[-106.0,-56.4],[-103.2,-56.4],[-100.5,-56.4],[-97.7,-56.4],[-95.0,-56.4],[-92.2,-56.4],[-89.4,-56.4],[-86.7,-56.4],[-83.9,-56.4],[-81.2,-56.4],[-78.4,-56.4],[-75.7,-56.4],[-72.9,-56.4],[-70.2,-56.4],[-67.4,-56.4],[-64.7,-56.4],[-61.9,-56.4],[-59.2,-56.4],[-56.4,-56.4],[-53.7,-56.4],[-50.9,-56.4],[-48.2,-56.4],[-45.4,-56.4],[-42.7,-56.4],[-39.9,-56.4],[-37.2,-56.4],[-34.4,-56.4],[-31.7,-56.4],[45.4,-56.4],[48.2,-56.4],[50.9,-56.4],[53.7,-56.4],[56.4,-56.4],[59.2,-56.4],[61.9,-56.4],[64.7,-56.4],[67.4,-56.4],[70.2,-56.4],[72.9,-56.4],[75.7,-56.4],[78.4,-56.4],[81.2,-56.4],[83.9,-56.4],[86.7,-56.4],[89.4,-56.4],[92.2,-56.4],[95.0,-56.4],[97.7,-56.4],[100.5,-56.4],[103.2,-56.4],[106.0,-56.4],[108.7,-56.4],[111.5,-56.4],[114.2,-56.4],[117.0,-56.4],[119.7,-56.4],[122.5,-56.4],[125.2,-56.4],[128.0,-56.4],[130.7,-56.4],[133.5,-56.4],[136.2,-56.4],[-125.2,-53.7],[-122.5,-53.7],[-119.7,-53.7],[-117.0,-53.7],[-114.2,-53.7],[-111.5,-53.7],[-108.7,-53.7],[-106.0,-53.7],[-103.2,-53.7],[-100.5,-53.7],[-97.7,-53.7],[-95.0,-53.7],[-92.2,-53.7],[-64.7,-53.7],[-61.9,-53.7],[-59.2,-53.7],[-56.4,-53.7],[-53.7,-53.7],[-50.9,-53.7],[-48.2,-53.7],[-45.4,-53.7],[-42.7,-53.7],[-39.9,-53.7],[-37.2,-53.7],[-34.4,-53.7],[-31.7,-53.7],[-28.9,-53.7],[42.7,-53.7],[45.4,-53.7],[48.2,-53.7],[50.9,-53.7],[53.7,-53.7],[56.4,-53.7],[59.2,-53.7],[61.9,-53.7],[64.7,-53.7],[67.4,-53.7],[70.2,-53.7],[72.9,-53.7],[75.7,-53.7],[108.7,-53.7],[111.5,-53.7],[114.2,-53.7],[117.0,-53.7],[119.7,-53.7],[122.5,-53.7],[125.2,-53.7],[128.0,-53.7],[130.7,-53.7],[133.5,-53.7],[136.2,-53.7],[139.0,-53.7],[-128.0,-50.9],[-125.2,-50.9],[-122.5,-50.9],[-119.7,-50.9],[-117.0,-50.9],[-114.2,-50.9],[-111.5,-50.9],[-108.7,-50.9],[-106.0,-50.9],[-103.2,-50.9],[-100.5,-50.9],[-56.4,-50.9],[-53.7,-50.9],[-50.9,-50.9],[-48.2,-50.9],[-45.4,-50.9],[-42.7,-50.9],[-39.9,-50.9],[-37.2,-50.9],[-34.4,-50.9],[-31.7,-50.9],[-28.9,-50.9],[-26.1,-50.9],[39.9,-50.9],[42.7,-50.9],[45.4,-50.9],[48.2,-50.9],[50.9,-50.9],[53.7,-50.9],[56.4,-50.9],[59.2,-50.9],[61.9,-50.9],[64.7,-50.9],[67.4,-50.9],[114.2,-50.9],[117.0,-50.9],[119.7,-50.9],[122.5,-50.9],[125.2,-50.9],[128.0,-50.9],[130.7,-50.9],[133.5,-50.9],[136.2,-50.9],[-130.7,-48.2],[-128.0,-48.2],[-125.2,-48.2],[-122.5,-48.2],[-119.7,-48.2],[-117.0,-48.2],[-114.2,-48.2],[-111.5,-48.2],[-108.7,-48.2],[-106.0,-48.2],[-50.9,-48.2],[-48.2,-48.2],[-45.4,-48.2],[-42.7,-48.2],[-39.9,-48.2],[-37.2,-48.2],[-34.4,-48.2],[-31.7,-48.2],[-28.9,-48.2],[-26.1,-48.2],[-23.4,-48.2],[37.2,-48.2],[39.9,-48.2],[42.7,-48.2],[45.4,-48.2],[48.2,-48.2],[50.9,-48.2],[53.7,-48.2],[56.4,-48.2],[59.2,-48.2],[61.9,-48.2],[119.7,-48.2],[122.5,-48.2],[125.2,-48.2],[128.0,-48.2],[130.7,-48.2],[133.5,-48.2],[136.2,-48.2],[-133.5,-45.4],[-130.7,-45.4],[-128.0,-45.4],[-125.2,-45.4],[-122.5,-45.4],[-119.7,-45.4],[-117.0,-45.4],[-114.2,-45.4],[-111.5,-45.4],[-45.4,-45.4],[-42.7,-45.4],[-39.9,-45.4],[-37.2,-45.4],[-34.4,-45.4],[-31.7,-45.4],[-28.9,-45.4],[-26.1,-45.4],[-23.4,-45.4],[-20.6,-45.4],[34.4,-45.4],[37.2,-45.4],[39.9,-45.4],[42.7,-45.4],[45.4,-45.4],[48.2,-45.4],[50.9,-45.4],[53.7,-45.4],[56.4,-45.4],[59.2,-45.4],[125.2,-45.4],[128.0,-45.4],[130.7,-45.4],[133.5,-45.4],[136.2,-45.4],[-136.2,-42.7],[-133.5,-42.7],[-130.7,-42.7],[-128.0,-42.7],[-125.2,-42.7],[-122.5,-42.7],[-119.7,-42.7],[-117.0,-42.7],[-114.2,-42.7],[-42.7,-42.7],[-39.9,-42.7],[-37.2,-42.7],[-34.4,-42.7],[-31.7,-42.7],[-28.9,-42.7],[-26.1,-42.7],[-23.4,-42.7],[-20.6,-42.7],[31.7,-42.7],[34.4,-42.7],[37.2,-42.7],[39.9,-42.7],[42.7,-42.7],[45.4,-42.7],[48.2,-42.7],[50.9,-42.7],[53.7,-42.7],[128.0,-42.7],[130.7,-42.7],[-136.2,-39.9],[-133.5,-39.9],[-130.7,-39.9],[-128.0,-39.9],[-125.2,-39.9],[-122.5,-39.9],[-119.7,-39.9],[-117.0,-39.9],[-39.9,-39.9],[-37.2,-39.9],[-34.4,-39.9],[-31.7,-39.9],[-28.9,-39.9],[-26.1,-39.9],[-23.4,-39.9],[-20.6,-39.9],[-17.9,-39.9],[31.7,-39.9],[34.4,-39.9],[37.2,-39.9],[39.9,-39.9],[42.7,-39.9],[45.4,-39.9],[48.2,-39.9],[50.9,-39.9],[130.7,-39.9],[-139.0,-37.2],[-136.2,-37.2],[-133.5,-37.2],[-130.7,-37.2],[-128.0,-37.2],[-125.2,-37.2],[-122.5,-37.2],[-119.7,-37.2],[-37.2,-37.2],[-34.4,-37.2],[-31.7,-37.2],[-28.9,-37.2],[-26.1,-37.2],[-23.4,-37.2],[-20.6,-37.2],[-17.9,-37.2],[-15.1,-37.2],[28.9,-37.2],[31.7,-37.2],[34.4,-37.2],[37.2,-37.2],[39.9,-37.2],[42.7,-37.2],[45.4,-37.2],[48.2,-37.2],[133.5,-37.2],[-139.0,-34.4],[-136.2,-34.4],[-133.5,-34.4],[-130.7,-34.4],[-128.0,-34.4],[-125.2,-34.4],[-122.5,-34.4],[-34.4,-34.4],[-31.7,-34.4],[-28.9,-34.4],[-26.1,-34.4],[-23.4,-34.4],[-20.6,-34.4],[-17.9,-34.4],[-15.1,-34.4],[-12.4,-34.4],[28.9,-34.4],[31.7,-34.4],[34.4,-34.4],[37.2,-34.4],[39.9,-34.4],[42.7,-34.4],[45.4,-34.4],[-141.7,-31.7],[-139.0,-31.7],[-136.2,-31.7],[-133.5,-31.7],[-130.7,-31.7],[-128.0,-31.7],[-125.2,-31.7],[-31.7,-31.7],[-28.9,-31.7],[-26.1,-31.7],[-23.4,-31.7],[-20.6,-31.7],[-17.9,-31.7],[-15.1,-31.7],[-12.4,-31.7],[-9.6,-31.7],[28.9,-31.7],[31.7,-31.7],[34.4,-31.7],[37.2,-31.7],[39.9,-31.7],[42.7,-31.7],[45.4,-31.7],[-141.7,-28.9],[-139.0,-28.9],[-136.2,-28.9],[-133.5,-28.9],[-130.7,-28.9],[-128.0,-28.9],[-28.9,-28.9],[-26.1,-28.9],[-23.4,-28.9],[-20.6,-28.9],[-17.9,-28.9],[-15.1,-28.9],[-12.4,-28.9],[-9.6,-28.9],[28.9,-28.9],[31.7,-28.9],[34.4,-28.9],[37.2,-28.9],[39.9,-28.9],[42.7,-28.9],[-144.5,-26.1],[-141.7,-26.1],[-139.0,-26.1],[-136.2,-26.1],[-133.5,-26.1],[-130.7,-26.1],[-128.0,-26.1],[-26.1,-26.1],[-23.4,-26.1],[-20.6,-26.1],[-17.9,-26.1],[-15.1,-26.1],[-12.4,-26.1],[-9.6,-26.1],[-6.9,-26.1],[31.7,-26.1],[34.4,-26.1],[37.2,-26.1],[39.9,-26.1],[-144.5,-23.4],[-141.7,-23.4],[-139.0,-23.4],[-136.2,-23.4],[-133.5,-23.4],[-130.7,-23.4],[-23.4,-23.4],[-20.6,-23.4],[-17.9,-23.4],[-15.1,-23.4],[-12.4,-23.4],[-9.6,-23.4],[-6.9,-23.4],[-4.1,-23.4],[-144.5,-20.6],[-141.7,-20.6],[-139.0,-20.6],[-136.2,-20.6],[-133.5,-20.6],[-130.7,-20.6],[-20.6,-20.6],[-17.9,-20.6],[-15.1,-20.6],[-12.4,-20.6],[-9.6,-20.6],[-6.9,-20.6],[-4.1,-20.6],[-1.4,-20.6],[-147.2,-17.9],[-144.5,-17.9],[-141.7,-17.9],[-139.0,-17.9],[-136.2,-17.9],[-133.5,-17.9],[-20.6,-17.9],[-17.9,-17.9],[-15.1,-17.9],[-12.4,-17.9],[-9.6,-17.9],[-6.9,-17.9],[-4.1,-17.9],[-1.4,-17.9],[1.4,-17.9],[-147.2,-15.1],[-144.5,-15.1],[-141.7,-15.1],[-139.0,-15.1],[-136.2,-15.1],[-133.5,-15.1],[-17.9,-15.1],[-15.1,-15.1],[-12.4,-15.1],[-9.6,-15.1],[-6.9,-15.1],[-4.1,-15.1],[-1.4,-15.1],[1.4,-15.1],[4.1,-15.1],[-147.2,-12.4],[-144.5,-12.4],[-141.7,-12.4],[-139.0,-12.4],[-136.2,-12.4],[-133.5,-12.4],[-15.1,-12.4],[-12.4,-12.4],[-9.6,-12.4],[-6.9,-12.4],[-4.1,-12.4],[-1.4,-12.4],[1.4,-12.4],[4.1,-12.4],[-147.2,-9.6],[-144.5,-9.6],[-141.7,-9.6],[-139.0,-9.6],[-136.2,-9.6],[-133.5,-9.6],[-12.4,-9.6],[-9.6,-9.6],[-6.9,-9.6],[-4.1,-9.6],[-1.4,-9.6],[1.4,-9.6],[4.1,-9.6],[6.9,-9.6],[-147.2,-6.9],[-144.5,-6.9],[-141.7,-6.9],[-139.0,-6.9],[-136.2,-6.9],[-133.5,-6.9],[-9.6,-6.9],[-6.9,-6.9],[-4.1,-6.9],[-1.4,-6.9],[1.4,-6.9],[4.1,-6.9],[6.9,-6.9],[9.6,-6.9],[-150.0,-4.1],[-147.2,-4.1],[-144.5,-4.1],[-141.7,-4.1],[-139.0,-4.1],[-136.2,-4.1],[-6.9,-4.1],[-4.1,-4.1],[-1.4,-4.1],[1.4,-4.1],[4.1,-4.1],[6.9,-4.1],[9.6,-4.1],[12.4,-4.1],[-150.0,-1.4],[-147.2,-1.4],[-144.5,-1.4],[-141.7,-1.4],[-139.0,-1.4],[-136.2,-1.4],[-4.1,-1.4],[-1.4,-1.4],[1.4,-1.4],[4.1,-1.4],[6.9,-1.4],[9.6,-1.4],[12.4,-1.4],[15.1,-1.4],[-150.0,1.4],[-147.2,1.4],[-144.5,1.4],[-141.7,1.4],[-139.0,1.4],[-136.2,1.4],[-1.4,1.4],[1.4,1.4],[4.1,1.4],[6.9,1.4],[9.6,1.4],[12.4,1.4],[15.1,1.4],[17.9,1.4],[-150.0,4.1],[-147.2,4.1],[-144.5,4.1],[-141.7,4.1],[-139.0,4.1],[-136.2,4.1],[-1.4,4.1],[1.4,4.1],[4.1,4.1],[6.9,4.1],[9.6,4.1],[12.4,4.1],[15.1,4.1],[17.9,4.1],[20.6,4.1],[-147.2,6.9],[-144.5,6.9],[-141.7,6.9],[-139.0,6.9],[-136.2,6.9],[-133.5,6.9],[1.4,6.9],[4.1,6.9],[6.9,6.9],[9.6,6.9],[12.4,6.9],[15.1,6.9],[17.9,6.9],[20.6,6.9],[-147.2,9.6],[-144.5,9.6],[-141.7,9.6],[-139.0,9.6],[-136.2,9.6],[-133.5,9.6],[4.1,9.6],[6.9,9.6],[9.6,9.6],[12.4,9.6],[15.1,9.6],[17.9,9.6],[20.6,9.6],[23.4,9.6],[-147.2,12.4],[-144.5,12.4],[-141.7,12.4],[-139.0,12.4],[-136.2,12.4],[-133.5,12.4],[6.9,12.4],[9.6,12.4],[12.4,12.4],[15.1,12.4],[17.9,12.4],[20.6,12.4],[23.4,12.4],[26.1,12.4],[-147.2,15.1],[-144.5,15.1],[-141.7,15.1],[-139.0,15.1],[-136.2,15.1],[-133.5,15.1],[9.6,15.1],[12.4,15.1],[15.1,15.1],[17.9,15.1],[20.6,15.1],[23.4,15.1],[26.1,15.1],[28.9,15.1],[-147.2,17.9],[-144.5,17.9],[-141.7,17.9],[-139.0,17.9],[-136.2,17.9],[-133.5,17.9],[12.4,17.9],[15.1,17.9],[17.9,17.9],[20.6,17.9],[23.4,17.9],[26.1,17.9],[28.9,17.9],[31.7,17.9],[-144.5,20.6],[-141.7,20.6],[-139.0,20.6],[-136.2,20.6],[-133.5,20.6],[-130.7,20.6],[15.1,20.6],[17.9,20.6],[20.6,20.6],[23.4,20.6],[26.1,20.6],[28.9,20.6],[31.7,20.6],[34.4,20.6],[-144.5,23.4],[-141.7,23.4],[-139.0,23.4],[-136.2,23.4],[-133.5,23.4],[-130.7,23.4],[-23.4,23.4],[-20.6,23.4],[17.9,23.4],[20.6,23.4],[23.4,23.4],[26.1,23.4],[28.9,23.4],[31.7,23.4],[34.4,23.4],[37.2,23.4],[-144.5,26.1],[-141.7,26.1],[-139.0,26.1],[-136.2,26.1],[-133.5,26.1],[-130.7,26.1],[-128.0,26.1],[-26.1,26.1],[-23.4,26.1],[-20.6,26.1],[-17.9,26.1],[17.9,26.1],[20.6,26.1],[23.4,26.1],[26.1,26.1],[28.9,26.1],[31.7,26.1],[34.4,26.1],[37.2,26.1],[39.9,26.1],[-141.7,28.9],[-139.0,28.9],[-136.2,28.9],[-133.5,28.9],[-130.7,28.9],[-128.0,28.9],[-28.9,28.9],[-26.1,28.9],[-23.4,28.9],[-20.6,28.9],[-17.9,28.9],[-15.1,28.9],[20.6,28.9],[23.4,28.9],[26.1,28.9],[28.9,28.9],[31.7,28.9],[34.4,28.9],[37.2,28.9],[39.9,28.9],[42.7,28.9],[-141.7,31.7],[-139.0,31.7],[-136.2,31.7],[-133.5,31.7],[-130.7,31.7],[-128.0,31.7],[-125.2,31.7],[-31.7,31.7],[-28.9,31.7],[-26.1,31.7],[-23.4,31.7],[-20.6,31.7],[-17.9,31.7],[-15.1,31.7],[23.4,31.7],[26.1,31.7],[28.9,31.7],[31.7,31.7],[34.4,31.7],[37.2,31.7],[39.9,31.7],[42.7,31.7],[-139.0,34.4],[-136.2,34.4],[-133.5,34.4],[-130.7,34.4],[-128.0,34.4],[-125.2,34.4],[-122.5,34.4],[-34.4,34.4],[-31.7,34.4],[-28.9,34.4],[-26.1,34.4],[-23.4,34.4],[-20.6,34.4],[-17.9,34.4],[-15.1,34.4],[26.1,34.4],[28.9,34.4],[31.7,34.4],[34.4,34.4],[37.2,34.4],[39.9,34.4],[42.7,34.4],[45.4,34.4],[-139.0,37.2],[-136.2,37.2],[-133.5,37.2],[-130.7,37.2],[-128.0,37.2],[-125.2,37.2],[-122.5,37.2],[-119.7,37.2],[-34.4,37.2],[-31.7,37.2],[-28.9,37.2],[-26.1,37.2],[-23.4,37.2],[-20.6,37.2],[-17.9,37.2],[-15.1,37.2],[28.9,37.2],[31.7,37.2],[34.4,37.2],[37.2,37.2],[39.9,37.2],[42.7,37.2],[45.4,37.2],[48.2,37.2],[133.5,37.2],[-136.2,39.9],[-133.5,39.9],[-130.7,39.9],[-128.0,39.9],[-125.2,39.9],[-122.5,39.9],[-119.7,39.9],[-117.0,39.9],[-37.2,39.9],[-34.4,39.9],[-31.7,39.9],[-28.9,39.9],[-26.1,39.9],[-23.4,39.9],[-20.6,39.9],[-17.9,39.9],[31.7,39.9],[34.4,39.9],[37.2,39.9],[39.9,39.9],[42.7,39.9],[45.4,39.9],[48.2,39.9],[50.9,39.9],[130.7,39.9],[-136.2,42.7],[-133.5,42.7],[-130.7,42.7],[-128.0,42.7],[-125.2,42.7],[-122.5,42.7],[-119.7,42.7],[-117.0,42.7],[-114.2,42.7],[-39.9,42.7],[-37.2,42.7],[-34.4,42.7],[-31.7,42.7],[-28.9,42.7],[-26.1,42.7],[-23.4,42.7],[-20.6,42.7],[-17.9,42.7],[34.4,42.7],[37.2,42.7],[39.9,42.7],[42.7,42.7],[45.4,42.7],[48.2,42.7],[50.9,42.7],[53.7,42.7],[128.0,42.7],[130.7,42.7],[-133.5,45.4],[-130.7,45.4],[-128.0,45.4],[-125.2,45.4],[-122.5,45.4],[-119.7,45.4],[-117.0,45.4],[-114.2,45.4],[-111.5,45.4],[-45.4,45.4],[-42.7,45.4],[-39.9,45.4],[-37.2,45.4],[-34.4,45.4],[-31.7,45.4],[-28.9,45.4],[-26.1,45.4],[-23.4,45.4],[-20.6,45.4],[37.2,45.4],[39.9,45.4],[42.7,45.4],[45.4,45.4],[48.2,45.4],[50.9,45.4],[53.7,45.4],[56.4,45.4],[59.2,45.4],[125.2,45.4],[128.0,45.4],[130.7,45.4],[133.5,45.4],[136.2,45.4],[147.2,45.4],[-130.7,48.2],[-128.0,48.2],[-125.2,48.2],[-122.5,48.2],[-119.7,48.2],[-117.0,48.2],[-114.2,48.2],[-111.5,48.2],[-108.7,48.2],[-106.0,48.2],[-48.2,48.2],[-45.4,48.2],[-42.7,48.2],[-39.9,48.2],[-37.2,48.2],[-34.4,48.2],[-31.7,48.2],[-28.9,48.2],[-26.1,48.2],[-23.4,48.2],[39.9,48.2],[42.7,48.2],[45.4,48.2],[48.2,48.2],[50.9,48.2],[53.7,48.2],[56.4,48.2],[59.2,48.2],[61.9,48.2],[119.7,48.2],[122.5,48.2],[125.2,48.2],[128.0,48.2],[130.7,48.2],[133.5,48.2],[136.2,48.2],[-128.0,50.9],[-125.2,50.9],[-122.5,50.9],[-119.7,50.9],[-117.0,50.9],[-114.2,50.9],[-111.5,50.9],[-108.7,50.9],[-106.0,50.9],[-103.2,50.9],[-100.5,50.9],[-53.7,50.9],[-50.9,50.9],[-48.2,50.9],[-45.4,50.9],[-42.7,50.9],[-39.9,50.9],[-37.2,50.9],[-34.4,50.9],[-31.7,50.9],[-28.9,50.9],[-26.1,50.9],[42.7,50.9],[45.4,50.9],[48.2,50.9],[50.9,50.9],[53.7,50.9],[56.4,50.9],[59.2,50.9],[61.9,50.9],[64.7,50.9],[67.4,50.9],[114.2,50.9],[117.0,50.9],[119.7,50.9],[122.5,50.9],[125.2,50.9],[128.0,50.9],[130.7,50.9],[133.5,50.9],[136.2,50.9],[-125.2,53.7],[-122.5,53.7],[-119.7,53.7],[-117.0,53.7],[-114.2,53.7],[-111.5,53.7],[-108.7,53.7],[-106.0,53.7],[-103.2,53.7],[-100.5,53.7],[-97.7,53.7],[-95.0,53.7],[-61.9,53.7],[-59.2,53.7],[-56.4,53.7],[-53.7,53.7],[-50.9,53.7],[-48.2,53.7],[-45.4,53.7],[-42.7,53.7],[-39.9,53.7],[-37.2,53.7],[-34.4,53.7],[-31.7,53.7],[-28.9,53.7],[45.4,53.7],[48.2,53.7],[50.9,53.7],[53.7,53.7],[56.4,53.7],[59.2,53.7],[61.9,53.7],[64.7,53.7],[67.4,53.7],[70.2,53.7],[72.9,53.7],[75.7,53.7],[108.7,53.7],[111.5,53.7],[114.2,53.7],[117.0,53.7],[119.7,53.7],[122.5,53.7],[125.2,53.7],[128.0,53.7],[130.7,53.7],[133.5,53.7],[136.2,53.7],[139.0,53.7],[-122.5,56.4],[-119.7,56.4],[-117.0,56.4],[-114.2,56.4],[-111.5,56.4],[-108.7,56.4],[-106.0,56.4],[-103.2,56.4],[-100.5,56.4],[-97.7,56.4],[-95.0,56.4],[-92.2,56.4],[-89.4,56.4],[-86.7,56.4],[-83.9,56.4],[-81.2,56.4],[-78.4,56.4],[-75.7,56.4],[-72.9,56.4],[-70.2,56.4],[-67.4,56.4],[-64.7,56.4],[-61.9,56.4],[-59.2,56.4],[-56.4,56.4],[-53.7,56.4],[-50.9,56.4],[-48.2,56.4],[-45.4,56.4],[-42.7,56.4],[-39.9,56.4],[-37.2,56.4],[-34.4,56.4],[-31.7,56.4],[48.2,56.4],[50.9,56.4],[53.7,56.4],[56.4,56.4],[59.2,56.4],[61.9,56.4],[64.7,56.4],[67.4,56.4],[70.2,56.4],[72.9,56.4],[75.7,56.4],[78.4,56.4],[81.2,56.4],[83.9,56.4],[86.7,56.4],[89.4,56.4],[92.2,56.4],[95.0,56.4],[97.7,56.4],[100.5,56.4],[103.2,56.4],[106.0,56.4],[108.7,56.4],[111.5,56.4],[114.2,56.4],[117.0,56.4],[119.7,56.4],[122.5,56.4],[125.2,56.4],[128.0,56.4],[130.7,56.4],[133.5,56.4],[136.2,56.4],[-119.7,59.2],[-117.0,59.2],[-114.2,59.2],[-111.5,59.2],[-108.7,59.2],[-106.0,59.2],[-103.2,59.2],[-100.5,59.2],[-97.7,59.2],[-95.0,59.2],[-92.2,59.2],[-89.4,59.2],[-86.7,59.2],[-83.9,59.2],[-81.2,59.2],[-78.4,59.2],[-75.7,59.2],[-72.9,59.2],[-70.2,59.2],[-67.4,59.2],[-64.7,59.2],[-61.9,59.2],[-59.2,59.2],[-56.4,59.2],[-53.7,59.2],[-50.9,59.2],[-48.2,59.2],[-45.4,59.2],[-42.7,59.2],[-39.9,59.2],[-37.2,59.2],[-34.4,59.2],[50.9,59.2],[53.7,59.2],[56.4,59.2],[59.2,59.2],[61.9,59.2],[64.7,59.2],[67.4,59.2],[70.2,59.2],[72.9,59.2],[75.7,59.2],[78.4,59.2],[81.2,59.2],[83.9,59.2],[86.7,59.2],[89.4,59.2],[92.2,59.2],[95.0,59.2],[97.7,59.2],[100.5,59.2],[103.2,59.2],[106.0,59.2],[108.7,59.2],[111.5,59.2],[114.2,59.2],[117.0,59.2],[119.7,59.2],[122.5,59.2],[125.2,59.2],[128.0,59.2],[130.7,59.2],[-114.2,61.9],[-111.5,61.9],[-108.7,61.9],[-106.0,61.9],[-103.2,61.9],[-100.5,61.9],[-97.7,61.9],[-95.0,61.9],[-92.2,61.9],[-89.4,61.9],[-86.7,61.9],[-83.9,61.9],[-81.2,61.9],[-78.4,61.9],[-75.7,61.9],[-72.9,61.9],[-70.2,61.9],[-67.4,61.9],[-64.7,61.9],[-61.9,61.9],[-59.2,61.9],[-56.4,61.9],[-53.7,61.9],[-50.9,61.9],[-48.2,61.9],[-45.4,61.9],[-42.7,61.9],[-39.9,61.9],[56.4,61.9],[59.2,61.9],[61.9,61.9],[64.7,61.9],[67.4,61.9],[70.2,61.9],[72.9,61.9],[75.7,61.9],[78.4,61.9],[81.2,61.9],[83.9,61.9],[86.7,61.9],[89.4,61.9],[92.2,61.9],[95.0,61.9],[97.7,61.9],[100.5,61.9],[103.2,61.9],[106.0,61.9],[108.7,61.9],[111.5,61.9],[114.2,61.9],[117.0,61.9],[119.7,61.9],[122.5,61.9],[125.2,61.9],[128.0,61.9],[-108.7,64.7],[-106.0,64.7],[-103.2,64.7],[-100.5,64.7],[-97.7,64.7],[-95.0,64.7],[-92.2,64.7],[-89.4,64.7],[-86.7,64.7],[-83.9,64.7],[-81.2,64.7],[-78.4,64.7],[-75.7,64.7],[-72.9,64.7],[-70.2,64.7],[-67.4,64.7],[-64.7,64.7],[-61.9,64.7],[-59.2,64.7],[-56.4,64.7],[-53.7,64.7],[-50.9,64.7],[-48.2,64.7],[-45.4,64.7],[61.9,64.7],[64.7,64.7],[67.4,64.7],[70.2,64.7],[72.9,64.7],[75.7,64.7],[78.4,64.7],[81.2,64.7],[83.9,64.7],[86.7,64.7],[89.4,64.7],[92.2,64.7],[95.0,64.7],[97.7,64.7],[100.5,64.7],[103.2,64.7],[106.0,64.7],[108.7,64.7],[111.5,64.7],[114.2,64.7],[117.0,64.7],[119.7,64.7],[122.5,64.7],[-103.2,67.4],[-100.5,67.4],[-97.7,67.4],[-95.0,67.4],[-92.2,67.4],[-89.4,67.4],[-86.7,67.4],[-83.9,67.4],[-81.2,67.4],[-78.4,67.4],[-75.7,67.4],[-72.9,67.4],[-70.2,67.4],[-67.4,67.4],[-64.7,67.4],[-61.9,67.4],[-59.2,67.4],[-56.4,67.4],[-53.7,67.4],[-50.9,67.4],[67.4,67.4],[70.2,67.4],[72.9,67.4],[75.7,67.4],[78.4,67.4],[81.2,67.4],[83.9,67.4],[86.7,67.4],[89.4,67.4],[92.2,67.4],[95.0,67.4],[97.7,67.4],[100.5,67.4],[103.2,67.4],[106.0,67.4],[108.7,67.4],[111.5,67.4],[114.2,67.4],[117.0,67.4],[-95.0,70.2],[-92.2,70.2],[-89.4,70.2],[-86.7,70.2],[-83.9,70.2],[-81.2,70.2],[-78.4,70.2],[-75.7,70.2],[-72.9,70.2],[-70.2,70.2],[-67.4,70.2],[-64.7,70.2],[-61.9,70.2],[-59.2,70.2],[-56.4,70.2],[75.7,70.2],[78.4,70.2],[81.2,70.2],[83.9,70.2],[86.7,70.2],[89.4,70.2],[92.2,70.2],[95.0,70.2],[97.7,70.2],[100.5,70.2],[103.2,70.2],[106.0,70.2],[-81.2,72.9],[-78.4,72.9],[-75.7,72.9],[-72.9,72.9]];
+
+/* انتخاب نقاط با پوشش یکنواخت: کل شکل به یک شبکه با تعداد سلول ~= تعداد ذرات تقسیم می‌شود
+   و از هر سلول یک نقطه برداشته می‌شود؛ نتیجه: شکل کامل و بدون حفره، در هر تعداد ذره */
+function evenSample(points, count) {
+    if (!points.length) return [];
+    if (points.length <= count) return points.slice();
+    let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+    for (const p of points) {
+        if (p.x < minX) minX = p.x; if (p.x > maxX) maxX = p.x;
+        if (p.y < minY) minY = p.y; if (p.y > maxY) maxY = p.y;
+    }
+    const w = (maxX - minX) || 1, h = (maxY - minY) || 1;
+    // تعداد ستون/سطر طوری که سلول‌های «پرِ» شبکه تقریباً برابر count شود
+    let cols = Math.max(2, Math.round(Math.sqrt(count * w / h)));
+    let rows = Math.max(2, Math.ceil(count / cols));
+    let chosen = null;
+    for (let iter = 0; iter < 14; iter++) {
+        const cells = new Map();
+        for (const p of points) {
+            const cxi = Math.min(cols - 1, Math.floor((p.x - minX) / w * cols));
+            const cyi = Math.min(rows - 1, Math.floor((p.y - minY) / h * rows));
+            const k = cyi * cols + cxi;
+            if (!cells.has(k)) cells.set(k, p);
+        }
+        chosen = Array.from(cells.values());
+        if (chosen.length >= count * 0.92 && chosen.length <= count * 1.08) break;
+        const factor = Math.sqrt(count / Math.max(1, chosen.length));
+        cols = Math.max(2, Math.round(cols * factor));
+        rows = Math.max(2, Math.round(rows * factor));
+    }
+    return chosen;
+}
+
+function buildInfinityPoints(count) {
+    const key = 'inf_' + count;
+    if (__shapeCache[key]) return __shapeCache[key];
+    const S = 0.62;   // بی‌نهایت کوچک‌تر
+    const all = INFINITY_MASK.map(p => ({ x: p[0] * S, y: p[1] * S }));
+    const out = evenSample(all, count);
+    __shapeCache[key] = out;
+    return out;
+}
+
+/* نقاط متن — نمونه‌برداری با همان روش پوشش یکنواخت تا حروف کامل و خوانا شکل بگیرند */
+function buildTextPoints(text, count) {
+    const key = 'txt_' + text + '_' + count;
+    if (__shapeCache[key]) return __shapeCache[key];
+    const off = document.createElement('canvas');
+    off.width = 1100; off.height = 240;
+    const octx = off.getContext('2d');
+    octx.clearRect(0, 0, off.width, off.height);
+    octx.fillStyle = '#fff';
+    octx.font = '700 118px Arial, Helvetica, sans-serif';
+    octx.textAlign = 'center';
+    octx.textBaseline = 'middle';
+    octx.fillText(text, off.width / 2, off.height / 2);
+    const data = octx.getImageData(0, 0, off.width, off.height).data;
+    const all = [];
+    let minX = off.width, maxX = 0, minY = off.height, maxY = 0;
+    for (let y = 0; y < off.height; y += 2) {
+        for (let x = 0; x < off.width; x += 2) {
+            if (data[(y * off.width + x) * 4 + 3] > 128) {
+                all.push({ x, y });
+                if (x < minX) minX = x; if (x > maxX) maxX = x;
+                if (y < minY) minY = y; if (y > maxY) maxY = y;
+            }
+        }
+    }
+    if (!all.length) { __shapeCache[key] = []; return []; }
+    const picked = evenSample(all, count);
+    const cx = (minX + maxX) / 2, cy = (minY + maxY) / 2;
+    const scale = 330 / (maxX - minX);   // عرض نهایی کلمه روی صفحه (کوچک‌تر)
+    const out = picked.map(p => ({ x: (p.x - cx) * scale, y: (p.y - cy) * scale }));
+    __shapeCache[key] = out;
+    return out;
+}
+
+/* سازنده‌ی تعامل غبار برای یک بوم — در صفحه ورود و همه‌ی صفحات دیگر استفاده می‌شود */
+function createDustInteraction(opts) {
+    const particles = opts.particles;
+    const target = opts.eventTarget;
+    const getMouse = opts.getMouse;
+    const excludeUI = !!opts.excludeUI;
+    const MAX_CLICK_PARTICLES = 800;
+    // توجه: دیگر هیچ ذره‌ی کمکی اضافه نمی‌شود؛ فقط با همان ذرات موجود در صفحه شکل ساخته می‌شود
+    const STILL_MS = 240;              // آستانه‌ی «ثابت ماندن» ماوس
+    const INF_DURATION = 5000;         // ۵ ثانیه بی‌نهایت، سپس کلمه — از لحظه‌ی ثابت شدن ماوس
+    const CLICK_LIFETIME = 2600;       // ذرات کلیکی همیشه بعد از این مدت محو می‌شوند
+    const FORM_STAGGER = 900;          // حداکثر تأخیر لایه‌به‌لایه‌ی شکل‌گیری (ms) برای دورترین ذره
+
+    const st = {
+        active: false, releasing: false, startTime: 0, releaseStart: 0,
+        anchorX: 0, anchorY: 0, lastMoveTime: 0, stillSince: 0,
+        trail: [], phaseNow: 'idle', lastAssigned: null, formStartTime: 0,
+    };
+    let holdTimer = null, pressPos = null;
+
+    function shapeables() { return particles.filter(p => !p.isClickSpawned); }
+
+    /* تخصیص هدف بر اساس نزدیکی — با مرتب‌سازی زاویه‌ای (سریع، O(n log n)).
+       ذرات کلیکی از شکل‌گیری کنار گذاشته می‌شوند تا هم سبک‌تر بماند هم فقط جرقه‌ی زودگذر باشند */
+    function assignNearest(points) {
+        const pool = shapeables();
+        const n = pool.length;
+        if (!points.length || !n) return;
+        const targets = points.map(p => ({ x: st.anchorX + p.x, y: st.anchorY + p.y }));
+        const pOrder = pool.map((p, i) => i).sort((a, b) => {
+            const pa = pool[a], pb = pool[b];
+            return Math.atan2(pa.y - st.anchorY, pa.x - st.anchorX) - Math.atan2(pb.y - st.anchorY, pb.x - st.anchorX);
+        });
+        const tOrder = targets.slice().sort((a, b) => Math.atan2(a.y - st.anchorY, a.x - st.anchorX) - Math.atan2(b.y - st.anchorY, b.x - st.anchorX));
+        // رتبه‌ی هر ذره بر اساس فاصله‌ی واقعی فعلی‌اش تا لنگر — نزدیک‌تر = رتبه‌ی کمتر = زودتر شروع می‌کند
+        const byDist = pool.map((p, i) => i).sort((a, b) => {
+            const da = (pool[a].x - st.anchorX) ** 2 + (pool[a].y - st.anchorY) ** 2;
+            const db = (pool[b].x - st.anchorX) ** 2 + (pool[b].y - st.anchorY) ** 2;
+            return da - db;
+        });
+        byDist.forEach((pi, rankIdx) => { pool[pi].rank = n > 1 ? rankIdx / (n - 1) : 0; });
+        for (let k = 0; k < n; k++) {
+            const p = pool[pOrder[k]];
+            const t = tOrder[k % tOrder.length];
+            p.shX = t.x - st.anchorX;
+            p.shY = t.y - st.anchorY;
+            p.easeF = 0.026 + Math.random() * 0.014;
+        }
+        st.formStartTime = performance.now();
+    }
+
+    function assignFor(shape) {
+        const n = shapeables().length;
+        const pts = shape === 'inf' ? buildInfinityPoints(n) : buildTextPoints('INFINITY', n);
+        assignNearest(pts);
+        st.lastAssigned = shape;
+    }
+
+    function startHold(x, y) {
+        st.active = true; st.releasing = false;
+        st.startTime = performance.now();
+        st.lastMoveTime = 0;
+        st.stillSince = performance.now();
+        st.anchorX = x; st.anchorY = y;
+        st.trail = [{ x: x, y: y }];
+        st.lastAssigned = null;
+        assignFor('inf');
+    }
+    function endHold() {
+        if (!st.active) return;
+        st.active = false; st.releasing = true;
+        st.releaseStart = performance.now();
+        // فاکتور بازگشت از صفر شروع و به‌تدریج زیاد می‌شود — نرم و بدون جهش،
+        // و هدف بازگشت همیشه همان جایگاه واقعی و اصلی ذره (ox/oy) است که هرگز حین هولد تغییر نکرده
+        particles.forEach(p => { p.relStart = performance.now(); });
+    }
+    function spawnSparks(x, y) {
+        const now = performance.now();
+        const count = 18 + Math.floor(Math.random() * 12);
+        for (let k = 0; k < count; k++) {
+            const ringMode = k < count * 0.55;
+            const ang = ringMode ? (k / (count * 0.55)) * Math.PI * 2 + Math.random() * 0.25 : Math.random() * Math.PI * 2;
+            const sp = ringMode ? (3.2 + Math.random() * 1.6) : (0.8 + Math.random() * 3.2);
+            const rAng = ang + (Math.random() - 0.5) * 1.2;
+            const swirl = (Math.random() < 0.5 ? -1 : 1) * (0.004 + Math.random() * 0.010);
+            particles.push({
+                ox: x, oy: y, x: x, y: y,
+                vx: Math.cos(ang) * sp, vy: Math.sin(ang) * sp,
+                size: ringMode ? (0.9 + Math.random() * 1.4) : (1.2 + Math.random() * 2.6),
+                opacity: 0.5 + Math.random() * 0.45,
+                phase: Math.random() * Math.PI * 2,
+                speed: Math.random() * 0.08 + 0.02,
+                isCyan: true, isClickSpawned: true, spawnTime: now, bornAt: now, swirl: swirl,
+                clickExpireAt: now + CLICK_LIFETIME,
+                roamVX: Math.cos(rAng) * (0.05 + Math.random() * 0.10),
+                roamVY: Math.sin(rAng) * (0.05 + Math.random() * 0.10),
+            });
+        }
+        // ذرات کلیکی دیگر وارد شکل‌گیری نمی‌شوند (فقط جرقه‌ی زودگذر هستند)، پس نیازی به تخصیص مجدد نیست
+        enforceLimit();
+    }
+    function enforceLimit() {
+        const idx = [];
+        for (let i = 0; i < particles.length; i++) if (particles[i].isClickSpawned && !particles[i].fading) idx.push(i);
+        const excess = idx.length - MAX_CLICK_PARTICLES;
+        for (let k = 0; k < excess; k++) {
+            particles[idx[k]].fading = true;
+            particles[idx[k]].fadeStart = performance.now();
+        }
+    }
+    function isUIElement(el) {
+        if (!el || !el.closest) return false;
+        return !!el.closest('button, a, input, textarea, select, svg, .music-panel, .playlist-panel, .survey-overlay, .lb-modal-backdrop, .toolbar, .record-item-inline, .lb-row, .crypto-row, .ip-block, .economic-calendar-block');
+    }
+    function pressStart(x, y, ev) {
+        if (excludeUI && ev && isUIElement(ev.target)) return;
+        pressPos = { x, y };
+        holdTimer = setTimeout(() => { startHold(x, y); holdTimer = null; }, 220);
+    }
+    function pressEnd(x, y) {
+        const rx = x != null ? x : (pressPos ? pressPos.x : -999);
+        const ry = y != null ? y : (pressPos ? pressPos.y : -999);
+        if (holdTimer) {
+            clearTimeout(holdTimer); holdTimer = null;
+            if (rx > -900) spawnSparks(rx, ry);
+        } else if (st.active) endHold();
+        pressPos = null;
+    }
+
+    target.addEventListener('mousedown', e => { const m = getMouse(e); pressStart(m.x, m.y, e); });
+    target.addEventListener('mouseup', e => { const m = getMouse(e); pressEnd(m.x, m.y); });
+    target.addEventListener('mouseleave', () => {
+        if (holdTimer) { clearTimeout(holdTimer); holdTimer = null; pressPos = null; }
+        if (st.active) endHold();
+    });
+    target.addEventListener('touchstart', e => {
+        if (!e.touches || !e.touches[0]) return;
+        const m = getMouse(e.touches[0]);
+        pressStart(m.x, m.y, e);
+    }, { passive: true });
+    target.addEventListener('touchend', () => pressEnd(null, null), { passive: true });
+
+    return {
+        state: st,
+        phase() { return st.phaseNow; },
+
+        sync(mx, my, now) {
+            if (!st.active) { st.phaseNow = st.releasing ? 'release' : 'idle'; return; }
+            const dx = mx - st.anchorX, dy = my - st.anchorY;
+            const moved = Math.sqrt(dx * dx + dy * dy) > 1.4;
+            if (moved) { st.lastMoveTime = now; st.stillSince = 0; }
+            st.anchorX = mx; st.anchorY = my;
+
+            const last = st.trail[st.trail.length - 1];
+            if (!last || Math.abs(last.x - mx) > 1 || Math.abs(last.y - my) > 1) {
+                st.trail.push({ x: mx, y: my });
+                if (st.trail.length > 500) st.trail.shift();
+            }
+            const moveAmt = Math.sqrt(dx * dx + dy * dy);
+            st.trailLen = (st.trailLen || 2) + (moved ? Math.min(4, moveAmt * 0.35) : -1.2);
+            st.trailLen = Math.max(2, Math.min(st.trail.length, st.trailLen));
+
+            const isMoving = (now - st.lastMoveTime) < STILL_MS && st.trail.length > 1;
+            if (isMoving) {
+                if (st.phaseNow !== 'tail') {
+                    // تازه وارد حالت کشیدن می‌شویم: رتبه‌ی هر ذره را بر اساس فاصله‌ی واقعی‌اش
+                    // تا لنگر (نه شماره‌ی ثابت) محاسبه می‌کنیم، تا واقعاً طنابی و پیوسته حرکت کند
+                    const pool = shapeables();
+                    const order = pool.map((p, i) => i).sort((a, b) => {
+                        const da = (pool[a].x - st.anchorX) ** 2 + (pool[a].y - st.anchorY) ** 2;
+                        const db = (pool[b].x - st.anchorX) ** 2 + (pool[b].y - st.anchorY) ** 2;
+                        return da - db;
+                    });
+                    order.forEach((pi, rankIdx) => { pool[pi].rank = pool.length > 1 ? rankIdx / (pool.length - 1) : 0; });
+                }
+                st.phaseNow = 'tail';
+                return;
+            }
+
+            if (!st.stillSince) st.stillSince = now;
+            const stillFor = now - st.stillSince;
+            const want = stillFor < INF_DURATION ? 'inf' : 'text';
+            if (st.lastAssigned !== want) assignFor(want);
+            st.phaseNow = want;
+        },
+
+        prune(now) {
+            const HARD_CAP = 1600;
+            if (particles.length > HARD_CAP) particles.splice(0, particles.length - HARD_CAP);
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                // ذرات کلیکی همیشه بعد از مدت کوتاهی محو و حذف می‌شوند (بدون توجه به وضعیت هولد)
+                if (p.isClickSpawned && !p.fading && p.clickExpireAt && now >= p.clickExpireAt) { p.fading = true; p.fadeStart = now; }
+                if (p.isClickSpawned && p.fading && (now - p.fadeStart) >= 900) particles.splice(i, 1);
+            }
+        },
+
+        /* اگر true برگرداند یعنی موقعیت ذره را خودش تنظیم کرده است */
+        update(p, i, now) {
+            // ذرات کلیکی هرگز وارد فرم‌گیری نمی‌شوند؛ فقط فیزیک جرقه‌ی معمولی خودشان را دارند
+            if (p.isClickSpawned) return false;
+
+            if (st.active) {
+                // توجه: p.ox/p.oy عمداً حین هولد دست‌نخورده می‌مانند — همان جایگاه واقعی و اصلی
+                // ذره پیش از هولد — تا وقتی رها شد، دقیقاً به همان‌جا برگردد، نه یک نقطه‌ی متمرکز جدید
+
+                if (st.phaseNow === 'tail') {
+                    const T = st.trail;
+                    const rank = p.rank !== undefined ? p.rank : 0.5;
+                    const usable = Math.max(2, Math.min(T.length, st.trailLen | 0));
+                    const fi = (1 - rank) * (usable - 1);
+                    const base = T.length - usable;
+                    const i0 = Math.max(0, Math.min(T.length - 2, base + Math.floor(fi)));
+                    const fr = fi - Math.floor(fi);
+                    const bx = T[i0].x + (T[i0 + 1].x - T[i0].x) * fr;
+                    const by = T[i0].y + (T[i0 + 1].y - T[i0].y) * fr;
+                    const tx = T[i0 + 1].x - T[i0].x, ty = T[i0 + 1].y - T[i0].y;
+                    const tl = Math.sqrt(tx * tx + ty * ty) || 1;
+                    const nx = -ty / tl, ny = tx / tl;
+                    const width = 3 + rank * 4;
+                    const sp = (p.tailSpread === undefined ? (p.tailSpread = (Math.random() - 0.5) * 2) : p.tailSpread) * width;
+                    // نزدیک‌ترها سریع‌تر واکنش می‌دهند، دورترها با تأخیر بیشتر (مثل کشیدن طناب)
+                    const ease = 0.16 - rank * 0.11;
+                    p.x += (bx + nx * sp - p.x) * ease;
+                    p.y += (by + ny * sp - p.y) * ease;
+                    return true;
+                }
+
+                // شکل‌گیری لایه‌به‌لایه: نزدیک‌ترین ذرات به لنگر زودتر شروع به حرکت می‌کنند
+                const rank = p.rank !== undefined ? p.rank : 0.5;
+                const delay = rank * FORM_STAGGER;
+                const elapsed = now - st.formStartTime;
+                if (elapsed < delay) return true;   // نوبتش نرسیده، فعلاً همان‌جا می‌ماند
+                const localT = Math.min(1, (elapsed - delay) / 500);
+                const smooth = localT * localT * (3 - 2 * localT);   // شروع و پایان نرم
+                const tx = st.anchorX + (p.shX || 0);
+                const ty = st.anchorY + (p.shY || 0);
+                const f = (p.easeF || 0.03) * (0.25 + 0.9 * smooth);
+                p.x += (tx - p.x) * f;
+                p.y += (ty - p.y) * f;
+                return true;
+            }
+            if (st.releasing) {
+                // فاکتور بازگشت از صفر شروع و به‌تدریج زیاد می‌شود (بدون جهش)، و همیشه
+                // به سمت جایگاه واقعی و اصلی ذره (که هرگز تغییر نکرده) می‌رود
+                const relElapsed = now - (p.relStart || st.releaseStart);
+                const prog = Math.min(1, relElapsed / 2600);
+                const f = 0.006 + prog * prog * 0.05;
+                const tx = p.ox + p.vx, ty = p.oy + p.vy;
+                p.x += (tx - p.x) * f;
+                p.y += (ty - p.y) * f;
+                if (prog >= 1) st.releasing = false;
+                return true;
+            }
+            return false;
+        }
+    };
+}
+
 (function entryAnimation() {
     const AVAX = [
-        {o:2.55,h:16.57,l:2.00,c:3.14},{o:3.09,h:7.50,l:2.00,c:5.98},{o:5.95,h:6.50,l:3.80,c:4.32},{o:4.32,h:5.20,l:3.30,c:3.64},
-        {o:3.64,h:4.10,l:3.20,c:3.69},{o:3.69,h:4.00,l:2.90,c:3.15},{o:3.17,h:16.00,l:3.10,c:13.54},{o:13.23,h:27.00,l:12.50,c:23.77},
-        {o:23.98,h:35.00,l:22.00,c:28.70},{o:28.81,h:39.00,l:25.00,c:32.91},{o:32.74,h:41.00,l:14.00,c:18.07},{o:18.21,h:19.50,l:9.50,c:11.92},
-        {o:11.93,h:18.00,l:11.00,c:13.57},{o:13.50,h:48.00,l:13.00,c:39.63},{o:39.32,h:79.00,l:38.00,c:66.39},{o:66.55,h:75.00,l:55.00,c:64.29},
-        {o:64.34,h:145.55,l:62.00,c:120.60},{o:120.18,h:138.00,l:90.00,c:109.40},{o:109.67,h:117.24,l:60.00,c:69.91},{o:69.80,h:95.00,l:63.00,c:84.30},
-        {o:84.63,h:100.00,l:78.00,c:96.84},{o:97.10,h:100.00,l:50.00,c:57.79},{o:57.79,h:60.00,l:18.00,c:26.43},{o:26.48,h:28.00,l:14.00,c:16.93},
-        {o:16.92,h:28.00,l:16.00,c:23.73},{o:23.70,h:27.00,l:18.00,c:19.12},{o:19.13,h:20.50,l:15.50,c:17.20},{o:17.19,h:21.00,l:15.50,c:19.32},
-        {o:19.29,h:21.00,l:11.50,c:13.18},{o:13.16,h:14.50,l:10.64,c:10.90},{o:10.90,h:22.50,l:10.50,c:19.86},{o:19.81,h:22.00,l:15.50,c:17.07},
-        {o:17.08,h:19.50,l:15.00,c:17.71},{o:17.71,h:19.50,l:15.50,c:17.15},{o:17.12,h:18.50,l:13.00,c:14.12},{o:14.11,h:15.00,l:11.00,c:13.02},
-        {o:13.04,h:15.50,l:12.00,c:12.82},{o:12.81,h:13.50,l:8.69,c:9.98},{o:9.98,h:11.00,l:8.80,c:9.24},{o:9.23,h:13.00,l:8.80,c:11.32},
-        {o:11.30,h:24.00,l:11.00,c:21.38},{o:21.38,h:49.75,l:21.00,c:38.52},{o:38.59,h:44.00,l:29.00,c:33.20},{o:33.26,h:43.50,l:30.00,c:40.92},
-        {o:41.05,h:65.27,l:40.00,c:54.08},{o:54.01,h:55.00,l:27.00,c:32.72},{o:32.69,h:40.00,l:30.00,c:36.07},{o:36.08,h:38.00,l:24.00,c:29.40},
-        {o:29.41,h:30.50,l:22.00,c:25.72},{o:25.72,h:27.00,l:20.00,c:22.83},{o:22.82,h:30.00,l:21.00,c:27.75},{o:27.72,h:30.00,l:22.00,c:25.05},
-        {o:25.02,h:44.98,l:24.00,c:44.84},{o:44.82,h:55.00,l:33.00,c:35.75},{o:35.70,h:40.00,l:30.00,c:34.39},{o:34.41,h:35.00,l:17.54,c:22.37},
-        {o:22.39,h:24.00,l:15.00,c:18.77},{o:18.77,h:23.00,l:17.00,c:20.90},{o:20.92,h:22.50,l:18.00,c:20.80},{o:20.80,h:22.00,l:16.00,c:17.96},
-        {o:17.97,h:26.00,l:17.00,c:22.48},{o:22.46,h:26.00,l:22.00,c:23.41},{o:23.40,h:36.00,l:23.00,c:29.99},{o:30.03,h:32.00,l:16.19,c:18.20},
-        {o:18.19,h:20.00,l:11.27,c:13.67},{o:13.62,h:14.92,l:12.00,c:12.32},{o:12.31,h:13.50,l:9.55,c:10.11},{o:10.12,h:10.50,l:8.50,c:9.16},
-        {o:9.18,h:10.00,l:8.29,c:8.91},{o:8.91,h:9.80,l:8.50,c:9.09},{o:9.10,h:9.80,l:8.45,c:8.97},
-        {o:8.97,h:9.10,l:5.71,c:6.57,live:true}
+        {o:42.05,h:42.05,l:37.72,c:37.72},{o:37.72,h:37.72,l:31.3,c:31.3},{o:31.3,h:31.3,l:28.2,c:28.2},{o:28.2,h:28.36,l:27.34,c:27.5},
+        {o:27.5,h:29.21,l:27.34,c:29.21},{o:29.21,h:29.21,l:28.73,c:28.73},{o:28.73,h:28.73,l:24.94,c:24.94},{o:24.94,h:26.01,l:21.3,c:22.37},
+        {o:22.37,h:23.44,l:21.13,c:22.2},{o:22.2,h:24.77,l:22.2,c:24.77},{o:24.77,h:25.47,l:24.77,c:25.47},{o:25.47,h:26.7,l:25.47,c:26.54},
+        {o:26.54,h:30.07,l:26.38,c:30.07},{o:30.07,h:36.92,l:29.91,c:35.32},{o:35.32,h:44.3,l:35.32,c:39.81},{o:39.81,h:44.14,l:35.96,c:43.18},
+        {o:43.18,h:46.12,l:41.9,c:46.12},{o:46.12,h:49.44,l:45.96,c:49.44},{o:49.44,h:52.6,l:49.44,c:52.6},{o:52.6,h:54.41,l:52.6,c:54.41},
+        {o:54.41,h:56.02,l:54.41,c:55.86},{o:55.86,h:61.05,l:55.7,c:61.05},{o:61.05,h:67.95,l:59.98,c:66.88},{o:66.88,h:69.88,l:64.63,c:69.88},
+        {o:69.88,h:70.04,l:66.45,c:66.45},{o:66.45,h:66.61,l:62.12,c:62.12},{o:62.12,h:62.12,l:58.43,c:58.59},{o:58.59,h:58.59,l:55.97,c:55.97},
+        {o:55.97,h:56.13,l:53.72,c:53.72},{o:53.72,h:53.88,l:51.95,c:52.11},{o:52.11,h:52.54,l:52.11,c:52.54},{o:52.54,h:54.73,l:52.37,c:54.73},
+        {o:54.73,h:57.04,l:54.73,c:57.04},{o:57.04,h:57.47,l:57.04,c:57.31},{o:57.31,h:57.47,l:56.4,c:56.4},{o:56.4,h:57.68,l:53.07,c:53.56},
+        {o:53.56,h:54.63,l:50.51,c:51.58},{o:51.58,h:51.58,l:48.96,c:49.12},{o:49.12,h:49.28,l:48.8,c:48.8},{o:48.8,h:49.65,l:48.8,c:49.49},
+        {o:49.49,h:51.47,l:49.49,c:51.47},{o:51.47,h:54.46,l:51.47,c:54.46},{o:54.46,h:57.94,l:53.39,c:56.87},{o:56.87,h:59.76,l:55.8,c:58.69},
+        {o:58.69,h:61.69,l:57.62,c:60.62},{o:60.62,h:62.6,l:60.62,c:62.6},{o:62.6,h:64.53,l:62.6,c:64.53},{o:64.53,h:67.79,l:64.53,c:67.79},
+        {o:67.79,h:74.96,l:67.63,c:74.96},{o:74.96,h:83.2,l:73.89,c:82.13},{o:82.13,h:88.82,l:81.16,c:88.34},{o:88.34,h:91.49,l:86.09,c:91.33},
+        {o:91.33,h:93.15,l:89.25,c:92.99},{o:92.99,h:92.99,l:90.84,c:91.01},{o:91.01,h:91.01,l:85.39,c:85.39},{o:85.39,h:85.55,l:77.85,c:78.01},
+        {o:78.01,h:78.17,l:72.5,c:72.5},{o:72.5,h:72.5,l:69.82,c:69.82},{o:69.82,h:71.59,l:69.82,c:71.59},{o:71.59,h:71.59,l:71.27,c:71.27},
+        {o:71.27,h:71.27,l:70.15,c:70.31},{o:70.31,h:70.47,l:69.44,c:69.61},{o:69.61,h:72.19,l:69.61,c:72.02},{o:72.02,h:74.37,l:72.02,c:74.21},
+        {o:74.21,h:74.48,l:74.21,c:74.48},{o:74.48,h:75.23,l:74.48,c:75.23},{o:75.23,h:78.06,l:75.07,c:78.06},{o:78.06,h:82.24,l:78.06,c:82.08},
+        {o:82.08,h:85.18,l:82.08,c:85.02},{o:85.02,h:85.98,l:85.02,c:85.98},{o:85.98,h:86.41,l:85.98,c:86.41},{o:86.41,h:87.69,l:86.25,c:87.69},
+        {o:87.69,h:91.28,l:87.53,c:91.12},{o:91.12,h:95.4,l:91.12,c:95.24},{o:95.24,h:100.91,l:94.17,c:99.84,live:true}
     ];
     const CYAN = "#890913";
     const RED = "#890913";
@@ -4223,200 +4970,16 @@ function playFromPanel(mode, index) {
     }));
     particles.forEach(p => { p.x = p.ox; p.y = p.oy; });
 
-    /* ============================================================
-       نگه‌داشتن کلیک برای فرم گرفتن ذرات به شکل بی‌نهایت سپس «Amirkazem» +
-       کلیک تکی برای جرقه ذرات (اضافه‌شده)
-       ============================================================ */
-    // نقاط نمونه‌برداری‌شده از تصویر بی‌نهایت ارسالی کاربر (مختصات نسبی به مرکز شکل)
-    const INFINITY_POINTS = [[-71.6,-63.2],[-71.6,-62.0],[83.5,-62.0],[-57.2,-60.8],[89.4,-60.8],[-59.6,-59.6],[79.9,-59.6],[-75.1,-58.4],[57.2,-58.4],[95.4,-58.4],[-64.4,-57.2],[63.2,-57.2],[101.4,-57.2],[-63.2,-56.1],[59.6,-56.1],[97.8,-56.1],[-71.6,-54.9],[48.9,-54.9],[87.1,-54.9],[-87.1,-53.7],[-48.9,-53.7],[66.8,-53.7],[13.6,-52.5],[-27.2,-51.3],[-107.5,-51.3],[27.2,-51.3],[107.5,-51.3],[-119.4,-50.1],[119.4,-50.1],[-19.5,-48.9],[35.6,-48.9],[-131.3,-48.9],[131.3,-48.9],[9.9,-47.7],[-9.9,-47.7],[-141.2,-47.7],[141.2,-47.7],[43.6,-46.5],[-43.6,-46.5],[-149.8,-46.5],[149.8,-46.5],[-2.4,-45.3],[2.4,-45.3],[-157.2,-45.3],[157.2,-45.3],[-163.2,-44.1],[163.2,-44.1],[-168.0,-42.9],[168.0,-42.9],[-171.6,-41.7],[171.6,-41.7],[-174.0,-40.5],[174.0,-40.5],[-175.2,-39.3],[175.2,-39.3],[-175.2,-38.1],[175.2,-38.1],[-174.0,-36.9],[174.0,-36.9],[-171.6,-35.7],[171.6,-35.7],[-168.0,-34.5],[168.0,-34.5],[-163.2,-33.3],[163.2,-33.3],[-157.2,-32.1],[157.2,-32.1],[-150.0,-30.9],[150.0,-30.9],[-141.6,-29.7],[141.6,-29.7],[-132.0,-28.5],[132.0,-28.5],[-121.2,-27.3],[121.2,-27.3],[-109.2,-26.1],[109.2,-26.1],[-96.0,-24.9],[96.0,-24.9],[-81.6,-23.7],[81.6,-23.7],[-66.0,-22.5],[66.0,-22.5],[-49.2,-21.3],[49.2,-21.3],[-31.2,-20.1],[31.2,-20.1],[-12.0,-18.9],[12.0,-18.9],[-108.0,-18.9],[108.0,-18.9],[8.4,-17.7],[-8.4,-17.7],[-118.8,-17.7],[118.8,-17.7],[27.6,-16.5],[-27.6,-16.5],[-128.4,-16.5],[128.4,-16.5],[45.6,-15.3],[-45.6,-15.3],[-136.8,-15.3],[136.8,-15.3],[62.4,-14.1],[-62.4,-14.1],[-144.0,-14.1],[144.0,-14.1],[78.0,-12.9],[-78.0,-12.9],[-150.0,-12.9],[150.0,-12.9],[-96.0,-9.3],[96.0,-9.3],[-154.8,-11.7],[154.8,-11.7],[91.2,-10.5],[-91.2,-10.5],[-158.4,-10.5],[158.4,-10.5],[103.2,-8.1],[-103.2,-8.1],[-160.8,-9.3],[160.8,-9.3],[114.0,-6.9],[-114.0,-6.9],[-162.0,-8.1],[162.0,-8.1],[123.6,-5.7],[-123.6,-5.7],[132.0,-4.5],[-132.0,-4.5],[139.2,-3.3],[-139.2,-3.3],[-162.0,-4.5],[162.0,-4.5],[145.2,-2.1],[-145.2,-2.1],[-160.8,-3.3],[160.8,-3.3],[150.0,-0.9],[-150.0,-0.9],[-158.4,-2.1],[158.4,-2.1],[153.6,0.3],[-153.6,0.3],[-154.8,-0.9],[154.8,-0.9],[156.0,1.5],[-156.0,1.5],[-150.0,0.3],[150.0,0.3],[157.2,2.7],[-157.2,2.7],[-144.0,1.5],[144.0,1.5],[156.0,3.9],[-156.0,3.9],[-136.8,2.7],[136.8,2.7],[153.6,5.1],[-153.6,5.1],[-128.4,3.9],[128.4,3.9],[150.0,6.3],[-150.0,6.3],[-118.8,5.1],[118.8,5.1],[145.2,7.5],[-145.2,7.5],[-108.0,6.3],[108.0,6.3],[139.2,8.7],[-139.2,8.7],[-96.0,7.5],[96.0,7.5],[132.0,9.9],[-132.0,9.9],[-81.6,8.7],[81.6,8.7],[123.6,11.1],[-123.6,11.1],[-66.0,9.9],[66.0,9.9],[114.0,12.3],[-114.0,12.3],[-49.2,11.1],[49.2,11.1],[103.2,13.5],[-103.2,13.5],[-31.2,12.3],[31.2,12.3],[91.2,14.7],[-91.2,14.7],[-12.0,13.5],[12.0,13.5],[78.0,15.9],[-78.0,15.9],[8.4,14.7],[-8.4,14.7],[62.4,17.1],[-62.4,17.1],[27.6,15.9],[-27.6,15.9],[45.6,18.3],[-45.6,18.3],[27.6,19.5],[-27.6,19.5],[8.4,20.7],[-8.4,20.7],[-12.0,21.9],[12.0,21.9],[-31.2,23.1],[31.2,23.1],[-49.2,24.3],[49.2,24.3],[-66.0,25.5],[66.0,25.5],[-81.6,26.7],[81.6,26.7],[-96.0,27.9],[96.0,27.9],[-109.2,29.1],[109.2,29.1],[-121.2,30.3],[121.2,30.3],[-132.0,31.5],[132.0,31.5],[-141.6,32.7],[141.6,32.7],[-150.0,33.9],[150.0,33.9],[-157.2,35.1],[157.2,35.1],[-163.2,36.3],[163.2,36.3],[-168.0,37.5],[168.0,37.5],[-171.6,38.7],[171.6,38.7],[-174.0,39.9],[174.0,39.9],[-175.2,41.1],[175.2,41.1],[-175.2,42.3],[175.2,42.3],[-174.0,43.5],[174.0,43.5],[-171.6,44.7],[171.6,44.7],[-168.0,45.9],[168.0,45.9],[-163.2,47.1],[163.2,47.1],[-157.2,48.3],[157.2,48.3],[-149.8,49.5],[149.8,49.5],[-141.2,50.7],[141.2,50.7],[-131.3,51.9],[131.3,51.9],[-119.4,53.1],[119.4,53.1],[-107.5,54.3],[107.5,54.3],[-2.4,55.5],[2.4,55.5],[-95.4,54.3],[95.4,54.3],[9.9,56.7],[-9.9,56.7],[-27.2,55.5],[27.2,55.5],[43.6,57.9],[-43.6,57.9],[-48.9,56.7],[48.9,56.7],[13.6,59.1],[-13.6,59.1],[-19.5,57.9],[19.5,57.9],[-64.4,59.6],[64.4,59.6],[-71.6,58.4],[71.6,58.4],[-78.7,60.8],[78.7,60.8],[-65.6,60.8],[85.9,60.8],[73.9,62.0]];
-    let holdState = { active: false, startTime: 0, anchorX: 0, anchorY: 0, releasing: false, releaseStart: 0, lastMoveTime: 0 };
-    let __textPointsCache = null;
-    function getTextPoints() {
-        if (__textPointsCache) return __textPointsCache;
-        const off = document.createElement('canvas');
-        off.width = 640; off.height = 140;
-        const octx = off.getContext('2d');
-        octx.clearRect(0, 0, off.width, off.height);
-        octx.fillStyle = '#fff';
-        octx.font = 'bold 64px -apple-system, "Segoe UI", Roboto, sans-serif';
-        octx.textAlign = 'center';
-        octx.textBaseline = 'middle';
-        octx.fillText('Amirkazem', off.width / 2, off.height / 2);
-        const imgData = octx.getImageData(0, 0, off.width, off.height).data;
-        const allPoints = [];
-        for (let yy = 0; yy < off.height; yy += 2) {
-            for (let xx = 0; xx < off.width; xx += 2) {
-                const idx = (yy * off.width + xx) * 4;
-                if (imgData[idx + 3] > 128) allPoints.push({ x: xx - off.width / 2, y: yy - off.height / 2 });
-            }
-        }
-        // به‌جای زیرنمونه‌ی تصادفی، با گام یکنواخت انتخاب می‌کنیم تا با همون تعداد محدود ذرات،
-        // کل عرض کلمه پوشش داده بشه و شکل حروف خواناتر بمونه
-        const desiredCount = Math.min(allPoints.length, 190);
-        const stride = Math.max(1, Math.floor(allPoints.length / desiredCount));
-        const points = [];
-        for (let i = 0; i < allPoints.length; i += stride) points.push(allPoints[i]);
-        // فقط ترتیب نمایش رو به‌هم می‌ریزیم (برای طبیعی‌تر شدن انیمیشن)، نه انتخاب نقاط
-        for (let i = points.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [points[i], points[j]] = [points[j], points[i]];
-        }
-        __textPointsCache = points;
-        return points;
-    }
-    function assignLetterTargets() {
-        const points = getTextPoints();
-        if (points.length === 0) return;
-        particles.forEach((p, i) => {
-            if (p.isClickSpawned) return;
-            const pt = points[i % points.length];
-            p.letterOffsetX = pt.x;
-            p.letterOffsetY = pt.y;
-        });
-    }
-    function assignInfinityTargets() {
-        if (INFINITY_POINTS.length === 0) return;
-        particles.forEach((p, i) => {
-            if (p.isClickSpawned) return;
-            const pt = INFINITY_POINTS[i % INFINITY_POINTS.length];
-            p.infOffsetX = pt[0];
-            p.infOffsetY = pt[1];
-        });
-    }
-    function startHold(x, y) {
-        holdState.active = true;
-        holdState.releasing = false;
-        holdState.startTime = performance.now();
-        holdState.lastMoveTime = 0;
-        holdState.anchorX = x;
-        holdState.anchorY = y;
-        assignInfinityTargets();
-        assignLetterTargets();
-    }
-    function endHold() {
-        if (!holdState.active) return;
-        holdState.active = false;
-        holdState.releasing = true;
-        holdState.releaseStart = performance.now();
-    }
-    function updateHeldParticle(p, i, now) {
-        // اگر همین الان (طی ~۲۲۰ میلی‌ثانیه‌ی اخیر) ماوس حرکت کرده، ذرات به‌جای شکل منظم،
-        // پراکنده و دنبال ماوس راه می‌افتند؛ با ایست ماوس، دوباره شکل خودشون رو می‌گیرند
-        const isChasing = (now - holdState.lastMoveTime) < 220;
-        if (isChasing) {
-            if (p.chaseOffsetX === undefined) {
-                p.chaseOffsetX = (Math.random() - 0.5) * 170;
-                p.chaseOffsetY = (Math.random() - 0.5) * 170;
-            }
-            const tx = holdState.anchorX + p.chaseOffsetX;
-            const ty = holdState.anchorY + p.chaseOffsetY;
-            p.x += (tx - p.x) * 0.10;
-            p.y += (ty - p.y) * 0.10;
-            return;
-        }
-        p.chaseOffsetX = undefined;
-        p.chaseOffsetY = undefined;
-        const elapsed = now - holdState.startTime;
-        if (elapsed < 7000) {
-            const tx = holdState.anchorX + (p.infOffsetX || 0);
-            const ty = holdState.anchorY + (p.infOffsetY || 0);
-            p.x += (tx - p.x) * 0.06;
-            p.y += (ty - p.y) * 0.06;
-        } else if (elapsed < 14000) {
-            const tx = holdState.anchorX + (p.letterOffsetX || 0);
-            const ty = holdState.anchorY + (p.letterOffsetY || 0);
-            p.x += (tx - p.x) * 0.08;
-            p.y += (ty - p.y) * 0.08;
-        } else {
-            const jitterX = Math.sin(now / 300 + i) * 0.4;
-            const jitterY = Math.cos(now / 340 + i) * 0.4;
-            const tx = holdState.anchorX + (p.letterOffsetX || 0) + jitterX;
-            const ty = holdState.anchorY + (p.letterOffsetY || 0) + jitterY;
-            p.x += (tx - p.x) * 0.08;
-            p.y += (ty - p.y) * 0.08;
-        }
-    }
-    function updateReleasingParticle(p, now) {
-        const elapsed = now - holdState.releaseStart;
-        const tx = p.ox + p.vx;
-        const ty = p.oy + p.vy;
-        const factor = 0.06;
-        p.x += (tx - p.x) * factor;
-        p.y += (ty - p.y) * factor;
-        if (elapsed > 1200) holdState.releasing = false;
-    }
-    function spawnClickSparks(x, y) {
-        const count = 14 + Math.floor(Math.random() * 12);
-        for (let k = 0; k < count; k++) {
-            const angle = Math.random() * Math.PI * 2;
-            const speed = 1.5 + Math.random() * 3.5;
-            const roamAngle = Math.random() * Math.PI * 2;
-            particles.push({
-                ox: x, oy: y,
-                x: x, y: y,
-                vx: Math.cos(angle) * speed,
-                vy: Math.sin(angle) * speed,
-                size: Math.random() * 3 + 0.8,
-                opacity: Math.random() * 0.55 + 0.35,
-                phase: Math.random() * Math.PI * 2,
-                speed: Math.random() * 0.08 + 0.02,
-                isCyan: true,
-                isClickSpawned: true,
-                spawnTime: performance.now(),
-                roamVX: Math.cos(roamAngle) * (0.05 + Math.random() * 0.10),
-                roamVY: Math.sin(roamAngle) * (0.05 + Math.random() * 0.10),
-            });
-        }
-        enforceClickParticleLimit();
-    }
-    function enforceClickParticleLimit() {
-        const clickIndices = [];
-        for (let i = 0; i < particles.length; i++) { if (particles[i].isClickSpawned && !particles[i].fading) clickIndices.push(i); }
-        const excess = clickIndices.length - 800;
-        if (excess > 0) {
-            for (let k = 0; k < excess; k++) {
-                const p = particles[clickIndices[k]];
-                p.fading = true;
-                p.fadeStart = performance.now();
-            }
-        }
-    }
-    let clickHoldTimer = null;
-    let pressStartPos = null;
-    function handlePressStart(x, y) {
-        pressStartPos = { x, y };
-        clickHoldTimer = setTimeout(() => { startHold(x, y); clickHoldTimer = null; }, 220);
-    }
-    function handlePressEnd(x, y) {
-        const rx = x != null ? x : (pressStartPos ? pressStartPos.x : mouse.x);
-        const ry = y != null ? y : (pressStartPos ? pressStartPos.y : mouse.y);
-        if (clickHoldTimer) {
-            clearTimeout(clickHoldTimer);
-            clickHoldTimer = null;
-            spawnClickSparks(rx, ry);
-        } else if (holdState.active) {
-            endHold();
-        }
-        pressStartPos = null;
-    }
-    canvas.addEventListener('mousedown', e => {
-        const rect = canvas.getBoundingClientRect();
-        handlePressStart(e.clientX - rect.left, e.clientY - rect.top);
+    /* تعامل هولد/کلیک ذرات — از موتور مشترک (اضافه‌شده) */
+    const dustFX = createDustInteraction({
+        particles: particles,
+        eventTarget: canvas,
+        getMouse: (e) => {
+            const r = canvas.getBoundingClientRect();
+            return { x: e.clientX - r.left, y: e.clientY - r.top };
+        },
+        excludeUI: false,
     });
-    canvas.addEventListener('mouseup', e => {
-        const rect = canvas.getBoundingClientRect();
-        handlePressEnd(e.clientX - rect.left, e.clientY - rect.top);
-    });
-    canvas.addEventListener('mouseleave', () => {
-        if (clickHoldTimer) { clearTimeout(clickHoldTimer); clickHoldTimer = null; pressStartPos = null; }
-        if (holdState.active) endHold();
-    });
-    canvas.addEventListener('touchstart', e => {
-        if (!e.touches || !e.touches[0]) return;
-        const rect = canvas.getBoundingClientRect();
-        handlePressStart(e.touches[0].clientX - rect.left, e.touches[0].clientY - rect.top);
-    }, { passive: true });
-    canvas.addEventListener('touchend', () => { handlePressEnd(null, null); }, { passive: true });
 
 
     let startTime = performance.now();
@@ -4477,9 +5040,9 @@ function playFromPanel(mode, index) {
             ctx.fillStyle = mg;
             ctx.fillRect(0, 0, W, H);
         }
-        // mouse trail
+        // mouse trail (حین هولد نمایش داده نمی‌شود تا با جلوه‌ی طنابی ذرات تداخل نداشته باشد)
         const nowMs = performance.now();
-        if (mouseTrail.length > 1) {
+        if (mouseTrail.length > 1 && !dustFX.state.active) {
             for (let i = 1; i < mouseTrail.length; i++) {
                 const p = mouseTrail[i - 1], q = mouseTrail[i];
                 const age = (nowMs - q.t) / 500;
@@ -4493,32 +5056,25 @@ function playFromPanel(mode, index) {
                 ctx.stroke();
             }
         }
-        // حین نگه‌داشتن، لنگر شکل هر فریم با موقعیت فعلی ماوس به‌روزرسانی می‌شود؛
-        // اگر واقعاً جابه‌جایی محسوسی رخ داده باشد، حالت «تعقیب/پراکندگی» فعال می‌شود
-        if (holdState.active) {
-            const adx = mouse.x - holdState.anchorX;
-            const ady = mouse.y - holdState.anchorY;
-            if (Math.sqrt(adx * adx + ady * ady) > 1.6) holdState.lastMoveTime = now;
-            holdState.anchorX = mouse.x;
-            holdState.anchorY = mouse.y;
-        }
-        // حذف ذرات کلیک‌شده‌ای که کاملا محو شده‌اند (ذرات محیطی هرگز حذف نمی‌شوند)
-        for (let pi = particles.length - 1; pi >= 0; pi--) {
-            const pp = particles[pi];
-            if (pp.isClickSpawned && pp.fading && (now - pp.fadeStart) >= 1500) particles.splice(pi, 1);
-        }
+        dustFX.sync(mouse.x, mouse.y, now);
+        dustFX.prune(now);
+        const dustPhase = dustFX.phase();
         // particles (fireflies)
         particles.forEach((p, pIndex) => {
-            if (holdState.active && !p.isClickSpawned) {
-                updateHeldParticle(p, pIndex, now);
-            } else if (holdState.releasing && !p.isClickSpawned) {
-                updateReleasingParticle(p, now);
-            } else {
+            const handled = dustFX.update(p, pIndex, now);
+            if (!handled) {
                 p.ox += Math.sin(t * p.speed + p.phase) * 0.15;
                 p.oy += Math.cos(t * p.speed * 0.7 + p.phase) * 0.10;
                 // ذرات ساخته‌شده با کلیک تکی، یک رانش آرام و پیوسته هم دارند تا به‌جای
                 // متمرکز ماندن دور نقطه‌ی کلیک، با یک ریتم نرم توی کل صفحه پخش بشن
                 if (p.isClickSpawned && p.roamVX !== undefined) {
+                    // چرخش آرام دنباله‌ی جرقه هنگام پخش‌شدن در صفحه
+                    if (p.swirl) {
+                        const cs = Math.cos(p.swirl), sn = Math.sin(p.swirl);
+                        const rx = p.roamVX * cs - p.roamVY * sn;
+                        const ry = p.roamVX * sn + p.roamVY * cs;
+                        p.roamVX = rx; p.roamVY = ry;
+                    }
                     p.ox += p.roamVX;
                     p.oy += p.roamVY;
                 }
@@ -4526,16 +5082,14 @@ function playFromPanel(mode, index) {
                 if (p.ox < -20) p.ox += W + 40;
                 if (p.oy > H + 20) p.oy -= H + 40;
                 if (p.oy < -20) p.oy += H + 40;
-                if (!holdState.active) {
-                    const dx = mouse.x - p.x;
-                    const dy = mouse.y - p.y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-                    const radius = 100;
-                    if (dist < radius && dist > 0) {
-                        const force = (1 - dist / radius) * 0.8;
-                        p.vx += dx / dist * force;
-                        p.vy += dy / dist * force;
-                    }
+                const dx = mouse.x - p.x;
+                const dy = mouse.y - p.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                const radius = 100;
+                if (dist < radius && dist > 0) {
+                    const force = (1 - dist / radius) * 0.8;
+                    p.vx += dx / dist * force;
+                    p.vy += dy / dist * force;
                 }
                 p.vx *= 0.87;
                 p.vy *= 0.87;
@@ -4544,19 +5098,34 @@ function playFromPanel(mode, index) {
             }
             const flicker = 0.5 + 0.5 * Math.sin(now / 1000 + p.phase);
             let alpha = p.opacity * (0.7 + 0.3 * flicker);
+            // درخشش کوتاه لحظه‌ی تولد جرقه
+            if (p.bornAt !== undefined) {
+                const age = now - p.bornAt;
+                if (age < 520) alpha += (1 - age / 520) * 0.75;
+            }
+            // ذرات کمکیِ شکل، به‌جای پریدن ناگهانی، نرم ظاهر می‌شوند
             if (p.fading) {
-                const fadeProgress = Math.min(1, (now - p.fadeStart) / 1500);
-                alpha *= (1 - fadeProgress);
+                alpha *= (1 - Math.min(1, (now - p.fadeStart) / 1600));
             }
             const mdx = mouse.x - p.x, mdy = mouse.y - p.y;
             const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
-            const boost = (!holdState.active && mdist < 80) ? (1 - mdist / 80) * 0.6 : 0;
+            const boost = (!dustFX.state.active && mdist < 80) ? (1 - mdist / 80) * 0.6 : 0;
             ctx.beginPath();
-            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-            ctx.fillStyle = p.isCyan
-                ? `rgba(137,9,19,${alpha + boost})`
-                : `rgba(255,255,255,${alpha + boost})`;
-            ctx.fill();
+            if (dustPhase === 'text' || dustPhase === 'inf') {
+                // هر دو شکل دقیقاً یک استایل دارند: قرمز کندلی، فقط کمی روشن‌تر از حالت عادی
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.shadowColor = 'rgba(137,9,19,0.55)';
+                ctx.shadowBlur = 4;
+                ctx.fillStyle = `rgba(150,12,22,${Math.min(1, alpha + 0.14)})`;
+                ctx.fill();
+                ctx.shadowBlur = 0;
+            } else {
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fillStyle = p.isCyan
+                    ? `rgba(137,9,19,${alpha + boost})`
+                    : `rgba(255,255,255,${alpha + boost})`;
+                ctx.fill();
+            }
         });
         // constellation
         for (let i = 0; i < particles.length; i += 2) {
@@ -4647,9 +5216,9 @@ function playFromPanel(mode, index) {
         ctx.globalAlpha = 1;
         // AVAX chart — candles form left to right, as in the originally supplied code
         const chartPadL = W * 0.05, chartPadR = W * 0.05;
-        const chartTop = H * 0.08, chartBottom = H * 0.62;
+        const chartTop = H * 0.32, chartBottom = H * 0.82;
         const chartW = W - chartPadL - chartPadR, chartH = chartBottom - chartTop;
-        const count = AVAX.length, cw = chartW / count, bw = Math.max(cw * 0.55, 2);
+        const count = AVAX.length, cw = chartW / count, bw = Math.max(cw * 0.361, 1.2);  // نسبت دقیق بدنه به فاصله، طبق اندازه‌گیری از عکس مرجع
         const revealWidth = chartW * eased + chartPadL;
         ctx.save();
         ctx.beginPath();
@@ -4669,9 +5238,9 @@ function playFromPanel(mode, index) {
             const yO = chartTop + ((maxVal - cOpen) / range) * chartH;
             const yC = chartTop + ((maxVal - cClose) / range) * chartH;
             const bodyTop = Math.min(yO, yC);
-            const bodyH = Math.max(Math.abs(yC - yO), 1.5);
-            const bodyRadius = Math.min(bw * 0.12, 1.2);
-            const wickW = Math.max(bw * 0.11, 1);
+            const bodyH = Math.max(Math.abs(yC - yO), 1.2);
+            const bodyRadius = 0;                    // بدنه‌ی مستطیلی تیز، مثل کندل‌های آن سایت
+            const wickW = Math.max(bw * 0.30, 0.7);  // شدوی نازک
             if (isLive) {
                 // wick
                 ctx.globalAlpha = 0.95;
@@ -4682,7 +5251,7 @@ function playFromPanel(mode, index) {
                 ctx.lineTo(x, yL);
                 ctx.strokeStyle = color;
                 ctx.lineWidth = wickW;
-                ctx.lineCap = "round";
+                ctx.lineCap = "butt";
                 ctx.stroke();
                 // body
                 ctx.shadowBlur = 7;
@@ -4711,7 +5280,7 @@ function playFromPanel(mode, index) {
                 ctx.lineTo(x, yL);
                 ctx.strokeStyle = color;
                 ctx.lineWidth = wickW;
-                ctx.lineCap = "round";
+                ctx.lineCap = "butt";
                 ctx.stroke();
                 // body — solid fill, TradingView style
                 ctx.globalAlpha = 1;
@@ -4859,6 +5428,17 @@ function playFromPanel(mode, index) {
         speed: Math.random() * 0.08 + 0.02,
     }));
     particles.forEach(p => { p.x = p.ox; p.y = p.oy; });
+
+    /* تعامل هولد/کلیک ذرات در همه‌ی صفحات داخلی (اضافه‌شده) —
+       چون این بوم pointer-events ندارد، رویدادها روی خود صفحه گرفته می‌شوند
+       و روی عناصر تعاملی (دکمه، ورودی، چارت، پنل‌ها) فعال نمی‌شود */
+    const dustFX = createDustInteraction({
+        particles: particles,
+        eventTarget: document,
+        getMouse: (e) => ({ x: e.clientX, y: e.clientY }),
+        excludeUI: true,
+    });
+
     function draw(now) {
         const entryScreenEl = document.getElementById('entryScreen');
         if (!entryScreenEl || !entryScreenEl.classList.contains('hidden')) { requestAnimationFrame(draw); return; }
@@ -4878,9 +5458,9 @@ function playFromPanel(mode, index) {
             ctx.fillStyle = mg;
             ctx.fillRect(0, 0, W, H);
         }
-        // mouse trail
+        // mouse trail (حین هولد نمایش داده نمی‌شود تا با جلوه‌ی طنابی ذرات تداخل نداشته باشد)
         const nowMs = performance.now();
-        if (mouseTrail.length > 1) {
+        if (mouseTrail.length > 1 && !dustFX.state.active) {
             for (let i = 1; i < mouseTrail.length; i++) {
                 const p = mouseTrail[i - 1], q = mouseTrail[i];
                 const age = (nowMs - q.t) / 500;
@@ -4894,32 +5474,51 @@ function playFromPanel(mode, index) {
                 ctx.stroke();
             }
         }
-        particles.forEach(p => {
-            p.ox += Math.sin(t * p.speed + p.phase) * 0.15;
-            p.oy += Math.cos(t * p.speed * 0.7 + p.phase) * 0.10;
-            if (p.ox > W + 20) p.ox -= W + 40;
-            if (p.ox < -20) p.ox += W + 40;
-            if (p.oy > H + 20) p.oy -= H + 40;
-            if (p.oy < -20) p.oy += H + 40;
-            const dx = mouse.x - p.x;
-            const dy = mouse.y - p.y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            const radius = 100;
-            if (dist < radius && dist > 0) {
-                const force = (1 - dist / radius) * 0.8;
-                p.vx += dx / dist * force;
-                p.vy += dy / dist * force;
+        dustFX.sync(mouse.x, mouse.y, now);
+        dustFX.prune(now);
+        particles.forEach((p, pIndex) => {
+            const handled = dustFX.update(p, pIndex, now);
+            if (!handled) {
+                p.ox += Math.sin(t * p.speed + p.phase) * 0.15;
+                p.oy += Math.cos(t * p.speed * 0.7 + p.phase) * 0.10;
+                if (p.isClickSpawned && p.roamVX !== undefined) {
+                    p.ox += p.roamVX;
+                    p.oy += p.roamVY;
+                }
+                if (p.ox > W + 20) p.ox -= W + 40;
+                if (p.ox < -20) p.ox += W + 40;
+                if (p.oy > H + 20) p.oy -= H + 40;
+                if (p.oy < -20) p.oy += H + 40;
+                const dx = mouse.x - p.x;
+                const dy = mouse.y - p.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                const radius = 100;
+                if (dist < radius && dist > 0) {
+                    const force = (1 - dist / radius) * 0.8;
+                    p.vx += dx / dist * force;
+                    p.vy += dy / dist * force;
+                }
+                p.vx *= 0.87;
+                p.vy *= 0.87;
+                p.x = p.ox + p.vx;
+                p.y = p.oy + p.vy;
             }
-            p.vx *= 0.87;
-            p.vy *= 0.87;
-            p.x = p.ox + p.vx;
-            p.y = p.oy + p.vy;
             const flicker = 0.5 + 0.5 * Math.sin(now / 1000 + p.phase);
-            const alpha = p.opacity * (0.7 + 0.3 * flicker);
+            let alpha = p.opacity * (0.7 + 0.3 * flicker);
+            if (p.fading) alpha *= (1 - Math.min(1, (now - p.fadeStart) / 1600));
+            const ph = dustFX.phase();
             ctx.beginPath();
             ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(137,9,19,${alpha})`;
-            ctx.fill();
+            if (ph === 'text' || ph === 'inf') {
+                ctx.shadowColor = 'rgba(137,9,19,0.55)';
+                ctx.shadowBlur = 4;
+                ctx.fillStyle = `rgba(150,12,22,${Math.min(1, alpha + 0.14)})`;
+                ctx.fill();
+                ctx.shadowBlur = 0;
+            } else {
+                ctx.fillStyle = `rgba(137,9,19,${alpha})`;
+                ctx.fill();
+            }
         });
         requestAnimationFrame(draw);
     }
@@ -5208,14 +5807,16 @@ function playFromPanel(mode, index) {
 (function cryptoEngine() {
     // ۸ ارز درخواستی به همراه نماد در هر دو صرافی، اسلاگ آیکون و رنگ اصلی برند خودشان
     const CRYPTO_COINS = [
-        { id: 'btc', label: 'بیت‌کوین', binance: 'BTCUSDT', kucoin: 'BTC-USDT', icon: 'bitcoin', mono: '₿', color: '#F7931A' },
-        { id: 'eth', label: 'اتریوم', binance: 'ETHUSDT', kucoin: 'ETH-USDT', icon: 'ethereum', mono: 'Ξ', color: '#627EEA' },
-        { id: 'ton', label: 'گرم (TON)', binance: 'TONUSDT', kucoin: 'TON-USDT', icon: 'ton', mono: 'TON', color: '#0098EA' },
-        { id: 'avax', label: 'آواکس', binance: 'AVAXUSDT', kucoin: 'AVAX-USDT', icon: 'avalanche', mono: 'AVAX', color: '#E84142' },
-        { id: 'bnb', label: 'بی‌ان‌بی', binance: 'BNBUSDT', kucoin: 'BNB-USDT', icon: 'binance', mono: 'BNB', color: '#F3BA2F' },
-        { id: 'link', label: 'لینک', binance: 'LINKUSDT', kucoin: 'LINK-USDT', icon: 'chainlink', mono: 'LINK', color: '#375BD2' },
-        { id: 'bch', label: 'بیت‌کوین کش', binance: 'BCHUSDT', kucoin: 'BCH-USDT', icon: 'bitcoincash', mono: 'BCH', color: '#0AC18E' },
-        { id: 'ltc', label: 'لایت‌کوین', binance: 'LTCUSDT', kucoin: 'LTC-USDT', icon: 'litecoin', mono: 'LTC', color: '#345D9D' },
+        { id: 'btc', symbol: 'btc', label: 'بیت‌کوین', binance: 'BTCUSDT', kucoin: 'BTC-USDT', mono: '₿', color: '#F7931A' },
+        { id: 'eth', symbol: 'eth', label: 'اتریوم', binance: 'ETHUSDT', kucoin: 'ETH-USDT', mono: 'Ξ', color: '#627EEA' },
+        { id: 'ton', symbol: 'ton', label: 'گرم (TON)', binance: 'TONUSDT', kucoin: 'TON-USDT', mono: 'TON', color: '#0098EA' },
+        { id: 'avax', symbol: 'avax', label: 'آواکس', binance: 'AVAXUSDT', kucoin: 'AVAX-USDT', mono: 'AVAX', color: '#E84142' },
+        { id: 'bnb', symbol: 'bnb', label: 'بی‌ان‌بی', binance: 'BNBUSDT', kucoin: 'BNB-USDT', mono: 'BNB', color: '#F3BA2F' },
+        { id: 'link', symbol: 'link', label: 'لینک', binance: 'LINKUSDT', kucoin: 'LINK-USDT', mono: 'LINK', color: '#375BD2' },
+        { id: 'bch', symbol: 'bch', label: 'بیت‌کوین کش', binance: 'BCHUSDT', kucoin: 'BCH-USDT', mono: 'BCH', color: '#0AC18E' },
+        { id: 'ltc', symbol: 'ltc', label: 'لایت‌کوین', binance: 'LTCUSDT', kucoin: 'LTC-USDT', mono: 'LTC', color: '#345D9D' },
+        // تتر — قیمت از صرافی ایرانی رمزینکس، به تومان
+        { id: 'usdt', symbol: 'usdt', label: 'تتر', mono: 'USDT', color: '#26A17B', ramzinex: true },
     ];
     function formatCryptoPrice(price) {
         if (price >= 100) return price.toLocaleString('en-US', { maximumFractionDigits: 2, minimumFractionDigits: 2 });
@@ -5228,11 +5829,82 @@ function playFromPanel(mode, index) {
         if (vol >= 1e3) return (vol / 1e3).toFixed(2) + 'K';
         return vol.toFixed(2);
     }
-    function logoUrl(coin) {
-        return `https://s3-symbol-logo.tradingview.com/crypto/XTVC${coin.id.toUpperCase()}.svg`;
+    /* آیکون‌های واقعی (نه طراحی خودمان) — از یک مجموعه‌ی آیکون معتبر و به‌روز، بر اساس نماد هر ارز */
+    function iconUrlFor(symbol) {
+        return `https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/svg/color/${symbol.toLowerCase()}.svg`;
+    }
+    function coinLogoHtml(coin) {
+        const initials = (coin.symbol || coin.mono || '?').replace(/[^A-Za-z]/g, '').slice(0, 3).toUpperCase() || '?';
+        return `<div class="crypto-logo" style="--coin-color:${coin.color || '#890913'}">
+            <span class="crypto-logo-fallback">${initials}</span>
+            <img class="crypto-logo-img" alt="${coin.mono}" src="${iconUrlFor(coin.symbol || coin.mono)}"
+                 onerror="this.onerror=null;this.remove();">
+        </div>`;
+    }
+    function formatToman(v) {
+        return Math.round(v).toLocaleString('en-US');
+    }
+    /* تتر: فقط از صرافی‌های ایرانی، به این ترتیب امتحان می‌شوند: رمزینکس، بیت‌پین، نوبیتکس، والکس.
+       نکته‌ی مهم: نوبیتکس و والکس به‌صورت پیش‌فرض درخواست مرورگر از دامنه‌ی دیگر (این فایل) را
+       مسدود می‌کنند (CORS) — این محدودیتی است که خودِ صرافی اعمال کرده و از سمت کد قابل دور زدن
+       نیست؛ تنها راه واقعی، عبور دادن درخواست از یک سرور واسط (بک‌اند) است. */
+    async function tryJson(url) {
+        const res = await fetch(url, { cache: 'no-store' });
+        if (!res.ok) throw new Error('http ' + res.status);
+        return res.json();
+    }
+    const TETHER_SOURCES = [
+        { name: 'رمزینکس', fn: async () => {
+            // فهرست کامل جفت‌ارزها را می‌گیریم و جفت USDT/تومان را در آن پیدا می‌کنیم
+            const j = await tryJson('https://publicapi.ramzinex.com/exchange/api/v1.0/exchange/pairs');
+            const list = (j && (j.data || j)) || [];
+            const p = Array.isArray(list) ? list.find(x => {
+                const base = (x.base_currency_symbol && (x.base_currency_symbol.en || x.base_currency_symbol) || '').toString().toLowerCase();
+                const quote = (x.quote_currency_symbol && (x.quote_currency_symbol.en || x.quote_currency_symbol) || '').toString().toLowerCase();
+                return base === 'usdt' && (quote === 'irr' || quote === 'rial' || quote === 'tmn');
+            }) : null;
+            if (!p) throw new Error('bad');
+            const fin = p.financial && (p.financial.last24h || p.financial);
+            const rial = parseFloat(p.last_price || p.buy || (fin && fin.close_price));
+            if (!rial || isNaN(rial)) throw new Error('bad');
+            const isRial = String(p.quote_currency_symbol && (p.quote_currency_symbol.en || p.quote_currency_symbol)).toLowerCase() !== 'tmn';
+            return { toman: isRial ? rial / 10 : rial, changePct: fin && fin.change_percent != null ? parseFloat(fin.change_percent) : null };
+        }},
+        { name: 'بیت‌پین', fn: async () => {
+            const j = await tryJson('https://api.bitpin.ir/v1/mkt/markets/');
+            const arr = (j && (j.results || j)) || [];
+            const m = arr.find(x => (x.code === 'USDT_IRT' || x.code === 'USDT_TMN'));
+            if (!m || !m.price) throw new Error('bad');
+            return { toman: parseFloat(m.price), changePct: m.daily_routine_change ? parseFloat(m.daily_routine_change) : null, volume: m.volume_irt ? parseFloat(m.volume_irt) : (m.volume ? parseFloat(m.volume) : null) };
+        }},
+        { name: 'نوبیتکس', fn: async () => {
+            const j = await tryJson('https://api.nobitex.ir/market/stats?srcCurrency=usdt&dstCurrency=rls');
+            const s = j && j.stats && j.stats['usdt-rls'];
+            if (!s || !s.latest) throw new Error('bad');
+            return { toman: parseFloat(s.latest) / 10, changePct: s.dayChange ? parseFloat(s.dayChange) : null };
+        }},
+        { name: 'والکس', fn: async () => {
+            const j = await tryJson('https://api.wallex.ir/v1/markets');
+            const m = j && j.result && j.result.symbols && (j.result.symbols['USDTTMN'] || j.result.symbols['USDTIRT']);
+            const p = m && m.stats && (m.stats.lastPrice || m.stats.bidPrice);
+            if (!p) throw new Error('bad');
+            return { toman: parseFloat(p), changePct: m.stats['24h_ch'] ? parseFloat(m.stats['24h_ch']) : null };
+        }},
+    ];
+    async function fetchRamzinexUsdt() {
+        for (const s of TETHER_SOURCES) {
+            try {
+                const r = await s.fn();
+                if (r && r.toman > 0) {
+                    return { toman: r.toman, changePct: r.changePct != null ? r.changePct : null, volume: r.volume != null ? r.volume : null, source: s.name, isToman: true };
+                }
+            } catch (e) { /* صرافی بعدی */ }
+        }
+        return null;
     }
     // ابتدا صرافی Binance را برای هر ارز امتحان می‌کنیم؛ اگر آن ارز آنجا موجود نبود، از صرافی KuCoin استفاده می‌شود
     async function fetchOneCoin(coin) {
+        if (coin.ramzinex) return await fetchRamzinexUsdt();
         try {
             const res = await fetch(`https://api.binance.com/api/v3/ticker/24hr?symbol=${coin.binance}`);
             if (res.ok) {
@@ -5267,57 +5939,677 @@ function playFromPanel(mode, index) {
         return null;
     }
     function renderCryptoRow(coin, d) {
-        const logo = `<div class="crypto-logo">
-            <span class="crypto-logo-fallback">${coin.mono}</span>
-            <span class="crypto-logo-img" style="background-image:url('${logoUrl(coin)}');"></span>
-        </div>`;
+        const logo = coinLogoHtml(coin);
         if (!d) {
             return `<div class="crypto-row">${logo}<div class="crypto-row-error">دریافت اطلاعات ناموفق بود</div></div>`;
         }
-        const isUp = d.changePct >= 0;
+        const isUp = (d.changePct == null) ? true : d.changePct >= 0;
+        const cls = d.changePct == null ? '' : (isUp ? 'up' : 'down');
         const sign = isUp ? '+' : '';
+        const priceHtml = d.isToman
+            ? `<bdi class="ltr-num">${formatToman(d.toman)}</bdi> تومان`
+            : `<bdi class="ltr-num">$${formatCryptoPrice(d.price)}</bdi>`;
+        const changeHtml = d.isToman
+            ? (d.changePct != null ? `<bdi class="ltr-num">${sign}${d.changePct.toFixed(2)}%</bdi>` : '')
+            : `<bdi class="ltr-num">${sign}${d.change.toFixed(4)}</bdi><bdi class="ltr-num">${sign}${d.changePct.toFixed(2)}%</bdi>`;
+        const volHtml = d.volume
+            ? 'حجم کل بازار: <bdi class="ltr-num">' + formatCryptoVolume(d.volume) + (d.isToman ? ' تومان' : '') + '</bdi>'
+            : (d.isToman ? 'جفت‌ارز: USDT / تومان' : '—');
         return `<div class="crypto-row">
             ${logo}
-            <div class="crypto-row-price ${isUp ? 'up' : 'down'}"><bdi class="ltr-num">$${formatCryptoPrice(d.price)}</bdi></div>
-            <div class="crypto-row-change ${isUp ? 'up' : 'down'}">
-                <bdi class="ltr-num">${sign}${d.change.toFixed(4)}</bdi>
-                <bdi class="ltr-num">${sign}${d.changePct.toFixed(2)}%</bdi>
-            </div>
-            <div class="crypto-row-vol">حجم کل بازار: <bdi class="ltr-num">${formatCryptoVolume(d.volume)}</bdi></div>
+            <div class="crypto-row-price ${cls}">${priceHtml}</div>
+            <div class="crypto-row-change ${cls}">${changeHtml}</div>
+            <div class="crypto-row-vol">${volHtml}</div>
+            <div class="crypto-row-spark" id="spark-${coin.id}"></div>
             <div class="crypto-row-source">${d.source}</div>
         </div>`;
     }
+    /* ================================================================
+       نمودار کوچک زنده (اسپارک‌لاین) قیمت هر ارز طی ۷ روز اخیر — کش می‌شود
+       تا هر ۲ ثانیه دوباره از سرور نخواهیم (فقط قیمت‌ها آن بازه‌ی کوتاه را دارند)
+       ================================================================ */
+    const sparkCache = {};
+    async function fetchSparkline(coin) {
+        if (!coin.binance) return null;
+        try {
+            const res = await fetch(`https://api.binance.com/api/v3/klines?symbol=${coin.binance}&interval=4h&limit=42`, { cache: 'no-store' });
+            if (!res.ok) throw new Error('http ' + res.status);
+            const rows = await res.json();
+            const closes = rows.map(r => parseFloat(r[4])).filter(v => !isNaN(v));
+            if (closes.length < 2) return null;
+            return closes;
+        } catch (e) { return null; }
+    }
+    function renderSparkline(el, closes) {
+        if (!el) return;
+        if (!closes || closes.length < 2) { el.innerHTML = ''; return; }
+        const W = 84, H = 34, PAD = 3;
+        const min = Math.min(...closes), max = Math.max(...closes);
+        const range = (max - min) || 1;
+        const up = closes[closes.length - 1] >= closes[0];
+        const color = up ? '#000eff' : '#890913';
+        const pts = closes.map((v, i) => {
+            const x = PAD + (i / (closes.length - 1)) * (W - PAD * 2);
+            const y = H - PAD - ((v - min) / range) * (H - PAD * 2);
+            return [x, y];
+        });
+        const line = pts.map(p => p.join(',')).join(' ');
+        const fillPath = `M${pts[0][0]},${H} L` + pts.map(p => p.join(',')).join(' L') + ` L${pts[pts.length - 1][0]},${H} Z`;
+        el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
+            <path class="spark-fill" d="${fillPath}" fill="${color}" stroke="none"></path>
+            <polyline points="${line}" fill="none" stroke="${color}" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"></polyline>
+        </svg>`;
+    }
+    async function loadAllSparklines() {
+        await Promise.all(CRYPTO_COINS.map(async coin => {
+            if (!coin.binance) return;
+            const closes = await fetchSparkline(coin);
+            if (closes) sparkCache[coin.id] = closes;
+        }));
+        renderAllSparklines();
+    }
+    function renderAllSparklines() {
+        CRYPTO_COINS.forEach(coin => {
+            renderSparkline(document.getElementById('spark-' + coin.id), sparkCache[coin.id]);
+        });
+    }
+    let sparkInterval = null;
+
     async function fetchCryptoData() {
         const grid = document.getElementById('cryptoGrid');
         if (!grid) return;
         try {
             const results = await Promise.all(CRYPTO_COINS.map(fetchOneCoin));
             grid.innerHTML = CRYPTO_COINS.map((coin, i) => renderCryptoRow(coin, results[i])).join('');
+            renderAllSparklines();
         } catch (e) {
             grid.innerHTML = '<div class="crypto-loading">خطا در دریافت اطلاعات از صرافی‌ها</div>';
         }
     }
+    /* ================================================================
+       «نمایش بیشتر» — فهرست رتبه‌بندی‌شده‌ی ارزهای برتر (طبق رتبه‌ی کوین‌مارکت‌کپ)
+       نکته‌ی مهم: رتبه‌ها یک عکس لحظه‌ای (snapshot) ثابت هستند، نه رتبه‌ی زنده‌ی
+       بازار — چون محاسبه‌ی رتبه‌ی زنده به داده‌ی اختصاصی کوین‌مارکت‌کپ نیاز دارد که
+       از مرورگر و بدون کلید API در دسترس نیست. قیمت و درصد تغییر هرکجا که ممکن
+       بود، زنده و از صرافی بایننس گرفته می‌شود.
+       ================================================================ */
+    const TOP_COINS_SNAPSHOT = [
+        [1,'Bitcoin','BTC'],[2,'Ethereum','ETH'],[3,'Tether','USDT'],[4,'BNB','BNB'],[5,'USDC','USDC'],
+        [6,'XRP','XRP'],[7,'Solana','SOL'],[8,'TRON','TRX'],[9,'Hyperliquid','HYPE'],[10,'Dogecoin','DOGE'],
+        [11,'UNUS SED LEO','LEO'],[12,'Zcash','ZEC'],[13,'Stellar','XLM'],[14,'Cardano','ADA'],[15,'Monero','XMR'],
+        [16,'Chainlink','LINK'],[17,'Canton','CC'],[18,'Bitcoin Cash','BCH'],[19,'Dai','DAI'],[20,'Gram (prev. Toncoin)','TON'],
+        [21,'World Liberty Financial USD','USD1'],[22,'Ethena USDe','USDE'],[23,'Litecoin','LTC'],[24,'DeXe','DEXE'],[25,'Global Dollar','USDG'],
+        [26,'Hedera','HBAR'],[27,'Sui','SUI'],[28,'Avalanche','AVAX'],[29,'PayPal USD','PYUSD'],[30,'Cronos','CRO'],
+        [31,'Shiba Inu','SHIB'],[32,'Tether Gold','XAUT'],[33,'NEAR Protocol','NEAR'],[34,'Bittensor','TAO'],[35,'Uniswap','UNI'],
+        [36,'World Liberty Financial','WLFI'],[37,'PAX Gold','PAXG'],[38,'Aster','ASTER'],[39,'OKB','OKB'],[40,'MemeCore','M'],
+        [41,'Ondo','ONDO'],[42,'USDD','USDD'],[43,'Aave','AAVE'],[44,'Ripple USD','RLUSD'],[45,'Polkadot','DOT'],
+        [46,'Worldcoin','WLD'],[47,'Sky','SKY'],[48,'Mantle','MNT'],[49,'Internet Computer','ICP'],[50,'Pepe','PEPE'],
+        [51,'Bitget Token','BGB'],[52,'Ethereum Classic','ETC'],[53,'Morpho','MORPHO'],[54,'Pi','PI'],[55,'United Stables','U'],
+        [56,'KuCoin Token','KCS'],[57,'Stable','STABLE'],[58,'JUST','JST'],[59,'Polygon (prev. MATIC)','POL'],[60,'Cosmos','ATOM'],
+        [61,'Render','RENDER'],[62,'Kaspa','KAS'],[63,'Quant','QNT'],
+    ];
+    let bulkTickerCache = null, bulkTickerAt = 0;
+    async function getBulkTickers() {
+        if (bulkTickerCache && (Date.now() - bulkTickerAt) < 15000) return bulkTickerCache;
+        try {
+            const res = await fetch('https://api.binance.com/api/v3/ticker/24hr', { cache: 'no-store' });
+            if (!res.ok) throw new Error('http ' + res.status);
+            const arr = await res.json();
+            const map = {};
+            arr.forEach(t => { map[t.symbol] = t; });
+            bulkTickerCache = map; bulkTickerAt = Date.now();
+        } catch (e) { /* در دسترس نبود؛ همان کش قبلی (اگر بود) استفاده می‌شود */ }
+        return bulkTickerCache;
+    }
+    let cryptoMoreOpen = false, cryptoMoreLoaded = false;
+    window.toggleCryptoMore = async function() {
+        const drawer = document.getElementById('cryptoMoreDrawer');
+        const btn = document.getElementById('cryptoMoreBtn');
+        if (!drawer) return;
+        cryptoMoreOpen = !cryptoMoreOpen;
+        if (cryptoMoreOpen) {
+            btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg> نمایش کمتر';
+            if (!cryptoMoreLoaded) { await renderCryptoMoreList(); cryptoMoreLoaded = true; }
+            drawer.classList.add('open');
+        } else {
+            btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg> نمایش بیشتر';
+            drawer.classList.remove('open');
+        }
+    };
+    async function renderCryptoMoreList() {
+        const list = document.getElementById('cryptoMoreList');
+        if (!list) return;
+        const tickers = await getBulkTickers();
+        // موقعیت فعلی ۹ ارزی که از قبل در صفحه بودند را ذخیره می‌کنیم تا با FLIP به رتبه‌ی خودشان «پرواز» کنند
+        const existingRects = {};
+        CRYPTO_COINS.forEach(c => {
+            const el = document.getElementById('spark-' + c.id) && document.getElementById('spark-' + c.id).closest('.crypto-row');
+            if (el) existingRects[c.symbol.toUpperCase()] = el.getBoundingClientRect();
+        });
+        const rowsHtml = TOP_COINS_SNAPSHOT.map(([rank, name, symbol]) => {
+            const t = tickers ? tickers[symbol + 'USDT'] : null;
+            const priceHtml = t ? '$' + formatCryptoPrice(parseFloat(t.lastPrice)) : '—';
+            const chgVal = t ? parseFloat(t.priceChangePercent) : null;
+            const chgCls = chgVal == null ? 'na' : (chgVal >= 0 ? 'up' : 'down');
+            const chgHtml = chgVal == null ? 'بدون داده' : (chgVal >= 0 ? '+' : '') + chgVal.toFixed(2) + '%';
+            const initials = symbol.replace(/[^A-Za-z]/g, '').slice(0, 3).toUpperCase();
+            return `<div class="crypto-more-row" data-symbol="${symbol}">
+                <span class="crypto-more-rank">${rank}</span>
+                <span class="crypto-more-logo"><span class="crypto-logo-fallback">${initials}</span><img src="${iconUrlFor(symbol)}" alt="${symbol}" onerror="this.onerror=null;this.remove();"></span>
+                <span class="crypto-more-name"><span class="nm">${name}</span><span class="sym">${symbol}</span></span>
+                <span class="crypto-more-price"><bdi>${priceHtml}</bdi></span>
+                <span class="crypto-more-change ${chgCls}"><bdi>${chgHtml}</bdi></span>
+            </div>`;
+        }).join('');
+        list.innerHTML = rowsHtml + '<div class="crypto-more-note">رتبه‌بندی طبق آخرین فهرست کوین‌مارکت‌کپ (عکس لحظه‌ای، نه زنده) — قیمت و درصد تغییر، در صورت وجود بازار دلاری، زنده از صرافی بایننس است.</div>';
+
+        // FLIP: ۹ ارز موجود از موقعیت قبلی‌شان به رتبه‌ی جدیدشان در فهرست بزرگ «پرواز» می‌کنند
+        requestAnimationFrame(() => {
+            Object.entries(existingRects).forEach(([symbol, firstRect]) => {
+                const row = list.querySelector(`.crypto-more-row[data-symbol="${symbol}"]`);
+                if (!row) return;
+                const lastRect = row.getBoundingClientRect();
+                const dx = firstRect.left - lastRect.left, dy = firstRect.top - lastRect.top;
+                row.style.transition = 'none';
+                row.style.transform = `translate(${dx}px, ${dy}px)`;
+                row.style.opacity = '0.4';
+                requestAnimationFrame(() => {
+                    row.style.transition = 'transform 0.7s cubic-bezier(0.22,1,0.36,1), opacity 0.5s ease';
+                    row.style.transform = '';
+                    row.style.opacity = '1';
+                });
+            });
+        });
+    }
+
     let cryptoInterval = null;
     window.initCrypto = function() {
         fetchCryptoData();
+        loadAllSparklines();
+        if (typeof initIpInfo === 'function') initIpInfo();
         if (cryptoInterval) clearInterval(cryptoInterval);
         cryptoInterval = setInterval(() => {
             if (typeof activeView !== 'undefined' && activeView === 'crypto') fetchCryptoData();
         }, 2000);
+        if (sparkInterval) clearInterval(sparkInterval);
+        sparkInterval = setInterval(() => {
+            if (typeof activeView !== 'undefined' && activeView === 'crypto') loadAllSparklines();
+        }, 5 * 60 * 1000);
     };
+})();
+
+/* ================================================================
+   اطلاعات آی‌پی (جایگزین کامل سایت iplocation) — اضافه‌شده
+   سه سرویس مختلف به‌ترتیب امتحان می‌شوند تا نتیجه قطعی و قابل‌اتکا باشد
+   ================================================================ */
+(function ipInfoEngine() {
+    let ipLoaded = false;
+
+    /* پرچم را به‌صورت تصویر واقعی نشان می‌دهیم، چون ایموجیِ پرچم روی ویندوز رندر نمی‌شود */
+    function setFlag(cc) {
+        const el = document.getElementById('ipFlag');
+        if (!el) return;
+        if (!cc || cc.length !== 2) { el.innerHTML = '<span class="ip-flag-fallback">?</span>'; return; }
+        const code = cc.toLowerCase();
+        el.innerHTML = '<img alt="' + cc + '" src="https://flagcdn.com/w160/' + code + '.png" ' +
+            'onerror="this.onerror=null;this.outerHTML=\'<span class=&quot;ip-flag-fallback&quot;>' + cc.toUpperCase() + '</span>\';">';
+    }
+    function esc(s) {
+        return String(s == null ? '' : s).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+    }
+    const N = (v) => (v === null || v === undefined || v === '' || v === 'undefined') ? null : v;
+
+    function withTimeout(promise, ms) {
+        return Promise.race([
+            promise,
+            new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), ms)),
+        ]);
+    }
+    async function getJson(url) {
+        const r = await withTimeout(fetch(url, { cache: 'no-store' }), 7000);
+        if (!r.ok) throw new Error('http ' + r.status);
+        return r.json();
+    }
+    async function getText(url) {
+        const r = await withTimeout(fetch(url, { cache: 'no-store' }), 7000);
+        if (!r.ok) throw new Error('http ' + r.status);
+        return (await r.text()).trim();
+    }
+
+    /* ---------- منابع داده (چندین سرویس مستقل؛ نتایج با هم مقایسه و رأی‌گیری می‌شوند) ---------- */
+    const PROVIDERS = [
+        { name: 'ipwho.is', fn: async () => { const d = await getJson('https://ipwho.is/'); if (!d || d.success === false || !d.ip) throw 0;
+            return { ip: d.ip, type: d.type, city: d.city, region: d.region, country: d.country, cc: d.country_code, postal: d.postal,
+                     lat: d.latitude, lon: d.longitude, isp: d.connection && d.connection.isp, org: d.connection && d.connection.org,
+                     asn: d.connection && d.connection.asn ? 'AS' + d.connection.asn : null, domain: d.connection && d.connection.domain,
+                     tz: d.timezone && d.timezone.id, utc: d.timezone && d.timezone.utc,
+                     currency: d.currency && d.currency.code, calling: d.calling_code ? '+' + d.calling_code : null }; } },
+        { name: 'ipapi.co', fn: async () => { const d = await getJson('https://ipapi.co/json/'); if (!d || !d.ip || d.error) throw 0;
+            return { ip: d.ip, type: d.version, city: d.city, region: d.region, country: d.country_name, cc: d.country_code, postal: d.postal,
+                     lat: d.latitude, lon: d.longitude, isp: d.org, org: d.org, asn: d.asn, tz: d.timezone, utc: d.utc_offset,
+                     currency: d.currency, calling: d.country_calling_code }; } },
+        { name: 'freeipapi.com', fn: async () => { const d = await getJson('https://freeipapi.com/api/json'); if (!d || !d.ipAddress) throw 0;
+            return { ip: d.ipAddress, type: d.ipVersion ? 'IPv' + d.ipVersion : null, city: d.cityName, region: d.regionName,
+                     country: d.countryName, cc: d.countryCode, postal: d.zipCode, lat: d.latitude, lon: d.longitude, tz: d.timeZone }; } },
+        { name: 'ipapi.is', fn: async () => { const d = await getJson('https://api.ipapi.is/'); if (!d || !d.ip) throw 0;
+            return { ip: d.ip, city: d.location && d.location.city, region: d.location && d.location.state,
+                     country: d.location && d.location.country, cc: d.location && d.location.country_code,
+                     postal: d.location && d.location.zip, lat: d.location && d.location.latitude, lon: d.location && d.location.longitude,
+                     isp: d.company && d.company.name, org: d.asn && d.asn.org, asn: d.asn && d.asn.asn ? 'AS' + d.asn.asn : null,
+                     domain: d.asn && d.asn.domain, tz: d.location && d.location.timezone,
+                     isVpn: d.is_vpn, isProxy: d.is_proxy, isTor: d.is_tor, isDatacenter: d.is_datacenter }; } },
+        { name: 'geojs.io', fn: async () => { const d = await getJson('https://get.geojs.io/v1/ip/geo.json'); if (!d || !d.ip) throw 0;
+            return { ip: d.ip, city: d.city, region: d.region, country: d.country, cc: d.country_code, lat: parseFloat(d.latitude),
+                     lon: parseFloat(d.longitude), org: d.organization_name, asn: d.asn ? 'AS' + d.asn : null, tz: d.timezone }; } },
+        { name: 'ipinfo.io', fn: async () => { const d = await getJson('https://ipinfo.io/json'); if (!d || !d.ip) throw 0;
+            const loc = (d.loc || '').split(',');
+            return { ip: d.ip, city: d.city, region: d.region, cc: d.country, postal: d.postal,
+                     lat: loc[0] ? parseFloat(loc[0]) : null, lon: loc[1] ? parseFloat(loc[1]) : null,
+                     org: d.org, isp: d.org, tz: d.timezone, hostname: d.hostname }; } },
+        { name: 'ipify.org', fn: async () => { const d = await getJson('https://api.ipify.org?format=json'); if (!d || !d.ip) throw 0; return { ip: d.ip }; } },
+        { name: 'ipify(v64)', fn: async () => { const d = await getJson('https://api64.ipify.org?format=json'); if (!d || !d.ip) throw 0; return { ip: d.ip }; } },
+        { name: 'my-ip.io', fn: async () => { const d = await getJson('https://api4.my-ip.io/v2/ip.json'); if (!d || !d.ip) throw 0;
+            return { ip: d.ip, type: d.type, cc: d.country && d.country.code, country: d.country && d.country.name,
+                     region: d.region, city: d.city, tz: d.timeZone, asn: d.asn && d.asn.number ? 'AS' + d.asn.number : null,
+                     org: d.asn && d.asn.name }; } },
+        { name: 'seeip.org', fn: async () => { const d = await getJson('https://api.seeip.org/geoip'); if (!d || !d.ip) throw 0;
+            return { ip: d.ip, city: d.city, region: d.region, country: d.country, cc: d.country_code, postal: d.postal_code,
+                     lat: d.latitude, lon: d.longitude, org: d.organization, asn: d.asn ? 'AS' + d.asn : null, tz: d.timezone,
+                     calling: d.country_calling_code, currency: d.currency }; } },
+        { name: 'cloudflare', fn: async () => { const t = await getText('https://www.cloudflare.com/cdn-cgi/trace');
+            const o = {}; t.split('\n').forEach(l => { const k = l.split('='); if (k.length === 2) o[k[0]] = k[1]; });
+            if (!o.ip) throw 0; return { ip: o.ip, cc: o.loc, edge: o.colo, tls: o.tls, http: o.http, warp: o.warp }; } },
+        { name: 'ident.me', fn: async () => { const ip = await getText('https://ident.me'); if (!ip) throw 0; return { ip }; } },
+        { name: 'icanhazip', fn: async () => { const ip = await getText('https://icanhazip.com'); if (!ip) throw 0; return { ip }; } },
+        { name: 'ipapi(json)', fn: async () => { const d = await getJson('https://ipwhois.app/json/'); if (!d || !d.ip || d.success === false) throw 0;
+            return { ip: d.ip, city: d.city, region: d.region, country: d.country, cc: d.country_code, lat: d.latitude, lon: d.longitude,
+                     isp: d.isp, org: d.org, asn: d.asn, tz: d.timezone, currency: d.currency_code, calling: d.country_phone }; } },
+        { name: 'db-ip.com', fn: async () => { const d = await getJson('https://api.db-ip.com/v2/free/self'); if (!d || !d.ipAddress) throw 0;
+            return { ip: d.ipAddress, city: d.city, region: d.stateProv, country: d.countryName, cc: d.countryCode }; } },
+    ];
+
+    /* رأی‌گیری: مقداری که بیشترین منابع روی آن توافق دارند برنده است → خطا به‌شدت کاهش می‌یابد */
+    function vote(results, field) {
+        const tally = {};
+        results.forEach(r => {
+            const v = N(r[field]);
+            if (v === null) return;
+            const k = String(v).trim();
+            if (!k) return;
+            tally[k] = (tally[k] || 0) + 1;
+        });
+        let bestK = null, bestC = 0;
+        Object.entries(tally).forEach(([k, cnt]) => { if (cnt > bestC) { bestC = cnt; bestK = k; } });
+        return { value: bestK, votes: bestC, distinct: Object.keys(tally).length };
+    }
+    function voteNum(results, field) {
+        const vals = results.map(r => r[field]).filter(v => v !== null && v !== undefined && !isNaN(parseFloat(v))).map(parseFloat);
+        if (!vals.length) return null;
+        vals.sort((a, b) => a - b);
+        return vals[Math.floor(vals.length / 2)];   // میانه، در برابر داده‌ی پرت مقاوم است
+    }
+
+    /* ---------- دی‌ان‌اس: با پرس‌وجوی DNS-over-HTTPS و بررسی resolver ---------- */
+    async function dnsQuery(url) {
+        // این دو سرویس بدون هدر Accept صحیح، خطای 400 می‌دهند
+        const r = await withTimeout(fetch(url, { headers: { accept: 'application/dns-json' } }), 6000);
+        if (!r.ok) throw new Error('http ' + r.status);
+        return r.json();
+    }
+    async function dnsInfo() {
+        const out = {};
+        try {
+            const d = await dnsQuery('https://cloudflare-dns.com/dns-query?name=example.com&type=A');
+            out['DNS-over-HTTPS (کلادفلر)'] = (d && d.Status === 0) ? 'در دسترس ✓' : 'در دسترس نیست ✗';
+        } catch (e) { out['DNS-over-HTTPS (کلادفلر)'] = 'در دسترس نیست ✗'; }
+        try {
+            const d = await dnsQuery('https://dns.google/resolve?name=example.com&type=A');
+            out['DNS-over-HTTPS (گوگل)'] = (d && d.Status === 0) ? 'در دسترس ✓' : 'در دسترس نیست ✗';
+        } catch (e) { out['DNS-over-HTTPS (گوگل)'] = 'در دسترس نیست ✗'; }
+        return out;
+    }
+
+    /* ---------- تشخیص دقیق دستگاه، سیستم‌عامل و مرورگر ---------- */
+    function detectBrowser() {
+        const ua = navigator.userAgent;
+        const uad = navigator.userAgentData;
+        let name = 'نامشخص', ver = '';
+        const tests = [
+            [/Edg\/([\d.]+)/, 'Microsoft Edge'],
+            [/OPR\/([\d.]+)|Opera\/([\d.]+)/, 'Opera'],
+            [/SamsungBrowser\/([\d.]+)/, 'Samsung Internet'],
+            [/Firefox\/([\d.]+)/, 'Firefox'],
+            [/CriOS\/([\d.]+)/, 'Chrome (iOS)'],
+            [/Chrome\/([\d.]+)/, 'Google Chrome'],
+            [/Version\/([\d.]+).*Safari/, 'Safari'],
+        ];
+        for (const [re, nm] of tests) {
+            const m = ua.match(re);
+            if (m) { name = nm; ver = m[1] || m[2] || ''; break; }
+        }
+        if (uad && uad.brands && uad.brands.length) {
+            const real = uad.brands.filter(b => !/Not.*Brand/i.test(b.brand));
+            if (real.length) { name = real[real.length - 1].brand; ver = real[real.length - 1].version; }
+        }
+        return ver ? name + ' ' + ver : name;
+    }
+    function detectOS() {
+        const ua = navigator.userAgent;
+        const p = navigator.platform || '';
+        if (/Windows NT 10/.test(ua)) return 'Windows 10 / 11';
+        if (/Windows NT 6.3/.test(ua)) return 'Windows 8.1';
+        if (/Windows NT 6.1/.test(ua)) return 'Windows 7';
+        if (/Windows/.test(ua)) return 'Windows';
+        if (/Android ([\d.]+)/.test(ua)) return 'Android ' + ua.match(/Android ([\d.]+)/)[1];
+        if (/iPhone OS ([\d_]+)/.test(ua)) return 'iOS ' + ua.match(/iPhone OS ([\d_]+)/)[1].replace(/_/g, '.');
+        if (/iPad|iPod/.test(ua)) return 'iPadOS';
+        if (/Mac OS X ([\d_]+)/.test(ua)) return 'macOS ' + ua.match(/Mac OS X ([\d_]+)/)[1].replace(/_/g, '.');
+        if (/CrOS/.test(ua)) return 'ChromeOS';
+        if (/Linux/.test(ua)) return 'Linux';
+        return p || 'نامشخص';
+    }
+    function detectDeviceType() {
+        const ua = navigator.userAgent;
+        if (/iPad|Tablet|PlayBook|Silk/i.test(ua)) return 'تبلت';
+        if (/Mobi|Android|iPhone|iPod|Windows Phone/i.test(ua)) return 'موبایل';
+        return 'دسکتاپ / لپ‌تاپ';
+    }
+    function detectGPU() {
+        try {
+            const cv = document.createElement('canvas');
+            const gl = cv.getContext('webgl') || cv.getContext('experimental-webgl');
+            if (!gl) return null;
+            const ext = gl.getExtension('WEBGL_debug_renderer_info');
+            if (!ext) return null;
+            return gl.getParameter(ext.UNMASKED_RENDERER_WEBGL);
+        } catch (e) { return null; }
+    }
+
+    /* ---------- نقشه با تم آمیتیس ----------
+       دو لایه روی هم: لایه‌ی «بدون نوشته» فیلتر می‌شود تا خیابان‌ها قرمز کندلی شوند،
+       و لایه‌ی «فقط نوشته‌ها» بدون تغییرِ رنگ می‌ماند تا اسامی سفید بمانند. */
+    let ipMapObj = null;
+    function buildMap(lat, lon) {
+        const el = document.getElementById('ipLeafletMap');
+        if (!el || !window.L) return;
+        if (ipMapObj) { ipMapObj.remove(); ipMapObj = null; }
+        ipMapObj = L.map(el, { zoomControl: true, attributionControl: true, scrollWheelZoom: false }).setView([lat, lon], 11);
+
+        const roads = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
+            subdomains: 'abcd', maxZoom: 19,
+            attribution: '&copy; OpenStreetMap &copy; CARTO',
+        }).addTo(ipMapObj);
+        const labels = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}{r}.png', {
+            subdomains: 'abcd', maxZoom: 19, attribution: '',
+        }).addTo(ipMapObj);
+
+        if (roads.getContainer()) roads.getContainer().classList.add('ip-roads-layer');
+        if (labels.getContainer()) labels.getContainer().classList.add('ip-labels-layer');
+
+        L.marker([lat, lon], {
+            icon: L.divIcon({ className: '', html: '<div class="ip-marker-pin"></div>', iconSize: [16, 16], iconAnchor: [8, 8] }),
+        }).addTo(ipMapObj);
+        L.circle([lat, lon], { radius: 4000, color: '#ff0044', weight: 1, opacity: 0.5, fillColor: '#890913', fillOpacity: 0.10 }).addTo(ipMapObj);
+        setTimeout(() => ipMapObj.invalidateSize(), 120);
+    }
+
+    /* ---------- رندر ---------- */
+    function renderRows(el, rows) {
+        el.innerHTML = Object.entries(rows).map(([k, v]) => {
+            const empty = (v === null || v === undefined || v === '');
+            return '<div class="ip-row"><span class="ip-k">' + esc(k) + '</span>' +
+                   '<span class="ip-v' + (empty ? ' muted' : '') + '">' + esc(empty ? 'در دسترس نیست' : v) + '</span></div>';
+        }).join('');
+    }
+
+    async function render(results, ok, failed) {
+        const ipV = vote(results, 'ip');
+        const ccV = vote(results, 'cc');
+        const cityV = vote(results, 'city');
+        const regionV = vote(results, 'region');
+        const countryV = vote(results, 'country');
+        const lat = voteNum(results, 'lat');
+        const lon = voteNum(results, 'lon');
+        const pick = (f) => vote(results, f).value;
+
+        document.getElementById('ipLoading').style.display = 'none';
+        document.getElementById('ipError').style.display = 'none';
+        document.getElementById('ipContent').style.display = 'block';
+
+        document.getElementById('ipValue').textContent = ipV.value || '—';
+        setFlag(ccV.value);
+        const place = [cityV.value, regionV.value, countryV.value].filter(Boolean).join('، ');
+        document.getElementById('ipPlace').textContent = place || '—';
+
+        // درجه‌ی اطمینان بر اساس میزان توافق منابع
+        const agree = ipV.votes, total = ok;
+        const ratio = total ? agree / total : 0;
+        const dot = document.getElementById('ipConfDot');
+        const txt = document.getElementById('ipConfText');
+        dot.className = 'ip-conf-dot' + (ratio >= 0.8 ? '' : ratio >= 0.5 ? ' mid' : ' low');
+        txt.textContent = agree + ' منبع از ' + total + ' منبع موفق، روی این آی‌پی توافق دارند' +
+                          (ipV.distinct > 1 ? ' (اختلاف بین منابع دیده شد)' : ' — نتیجه قطعی');
+
+        renderRows(document.getElementById('ipRowsGeo'), {
+            'کشور': countryV.value ? countryV.value + (ccV.value ? ' (' + ccV.value + ')' : '') : null,
+            'استان — منطقه': regionV.value,
+            'شهر': cityV.value,
+            'کد پستی': pick('postal'),
+            'عرض جغرافیایی': lat != null ? lat.toFixed(4) : null,
+            'طول جغرافیایی': lon != null ? lon.toFixed(4) : null,
+            'منطقه‌ی زمانی': pick('tz'),
+            'اختلاف با UTC': pick('utc'),
+            'پیش‌شماره تلفن': pick('calling'),
+            'واحد پول': pick('currency'),
+        });
+
+        const dns = await dnsInfo();
+        const netRows = {
+            'نوع آی‌پی': pick('type') || (ipV.value && ipV.value.includes(':') ? 'IPv6' : 'IPv4'),
+            'اپراتور — سرویس‌دهنده': pick('isp'),
+            'سازمان': pick('org'),
+            'شماره AS': pick('asn'),
+            'دامنه‌ی اپراتور': pick('domain'),
+            'نام میزبان (Reverse DNS)': pick('hostname'),
+            'نزدیک‌ترین سرور لبه (Cloudflare)': pick('edge'),
+            'نسخه‌ی TLS': pick('tls'),
+            'پروتکل HTTP': pick('http'),
+            'استفاده از VPN': pick('isVpn') === true ? 'بله ⚠' : (pick('isVpn') === false ? 'خیر' : null),
+            'استفاده از پروکسی': pick('isProxy') === true ? 'بله ⚠' : (pick('isProxy') === false ? 'خیر' : null),
+            'شبکه‌ی Tor': pick('isTor') === true ? 'بله ⚠' : (pick('isTor') === false ? 'خیر' : null),
+            'آی‌پی مربوط به دیتاسنتر': pick('isDatacenter') === true ? 'بله' : (pick('isDatacenter') === false ? 'خیر (خانگی)' : null),
+        };
+        Object.assign(netRows, dns);
+        renderRows(document.getElementById('ipRowsNet'), netRows);
+
+        const scr = window.screen || {};
+        const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+        let localTz = '';
+        try { localTz = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch (e) {}
+        renderRows(document.getElementById('ipRowsDev'), {
+            'نوع دستگاه': detectDeviceType(),
+            'سیستم‌عامل': detectOS(),
+            'مرورگر': detectBrowser(),
+            'موتور رندر': /Gecko\/|Firefox/.test(navigator.userAgent) ? 'Gecko' : (/AppleWebKit/.test(navigator.userAgent) ? 'WebKit / Blink' : 'نامشخص'),
+            'کارت گرافیک': detectGPU(),
+            'هسته‌های پردازنده': navigator.hardwareConcurrency,
+            'حافظه‌ی تقریبی دستگاه': navigator.deviceMemory ? navigator.deviceMemory + ' گیگابایت' : null,
+            'رزولوشن صفحه': (scr.width && scr.height) ? scr.width + ' × ' + scr.height : null,
+            'عمق رنگ': scr.colorDepth ? scr.colorDepth + ' بیت' : null,
+            'نسبت پیکسل': window.devicePixelRatio,
+            'صفحه‌ی لمسی': ('ontouchstart' in window || navigator.maxTouchPoints > 0) ? 'بله' : 'خیر',
+            'زبان مرورگر': (navigator.languages && navigator.languages.join(', ')) || navigator.language,
+            'منطقه‌ی زمانی دستگاه': localTz,
+            'زمان محلی شما': new Date().toLocaleString('fa-IR'),
+            'نوع اتصال شبکه': conn && conn.effectiveType ? conn.effectiveType : null,
+            'سرعت تخمینی': conn && conn.downlink ? conn.downlink + ' مگابیت بر ثانیه' : null,
+            'کوکی فعال': navigator.cookieEnabled ? 'بله' : 'خیر',
+            'درخواست عدم ردیابی (DNT)': (navigator.doNotTrack === '1' || window.doNotTrack === '1') ? 'فعال' : 'غیرفعال',
+        });
+
+        const mapCard = document.getElementById('ipMapCard');
+        if (lat != null && lon != null && window.L) {
+            document.getElementById('ipMapCoords').textContent = lat.toFixed(5) + ', ' + lon.toFixed(5);
+            mapCard.style.display = 'block';
+            setTimeout(() => buildMap(lat, lon), 60);
+        } else mapCard.style.display = 'none';
+
+        document.getElementById('ipSourceNote').textContent =
+            'استعلام‌شده از ' + PROVIDERS.length + ' منبع مستقل — ' + ok + ' منبع پاسخ داد، ' + failed + ' منبع پاسخ نداد. ' +
+            'مقادیر نهایی بر اساس رأی اکثریت منابع انتخاب شده‌اند.';
+    }
+
+    /* آدرس وب‌سایت هرکدام از منابع (برای پاپ‌آپ نمایش منابع) */
+    const PROVIDER_HOMEPAGES = {
+        'ipwho.is': 'https://ipwho.is', 'ipapi.co': 'https://ipapi.co', 'freeipapi.com': 'https://freeipapi.com',
+        'ipapi.is': 'https://ipapi.is', 'geojs.io': 'https://www.geojs.io', 'ipinfo.io': 'https://ipinfo.io',
+        'ipify.org': 'https://www.ipify.org', 'ipify(v64)': 'https://www.ipify.org', 'my-ip.io': 'https://my-ip.io',
+        'seeip.org': 'https://seeip.org', 'cloudflare': 'https://www.cloudflare.com', 'ident.me': 'https://ident.me',
+        'icanhazip': 'https://icanhazip.com', 'ipapi(json)': 'https://ipwhois.io', 'db-ip.com': 'https://db-ip.com',
+        'رمزینکس': 'https://ramzinex.com', 'بیت‌پین': 'https://bitpin.ir', 'نوبیتکس': 'https://nobitex.ir', 'والکس': 'https://wallex.ir',
+    };
+    window.__ipProviderStatus = [];
+
+    async function loadIp(force) {
+        if (ipLoaded && !force) return;
+        const loading = document.getElementById('ipLoading');
+        const content = document.getElementById('ipContent');
+        const errEl = document.getElementById('ipError');
+        if (!loading) return;
+        content.style.display = 'none';
+        errEl.style.display = 'none';
+        loading.style.display = 'block';
+        loading.textContent = 'در حال استعلام از ' + PROVIDERS.length + ' منبع مستقل...';
+
+        const settled = await Promise.allSettled(PROVIDERS.map(p => p.fn().then(r => { r.__src = p.name; return r; })));
+        const results = settled.filter(s => s.status === 'fulfilled' && s.value && s.value.ip).map(s => s.value);
+        const failed = PROVIDERS.length - results.length;
+
+        // وضعیت هر منبع را برای پاپ‌آپ ذخیره می‌کنیم
+        window.__ipProviderStatus = PROVIDERS.map((p, i) => ({
+            name: p.name,
+            ok: settled[i].status === 'fulfilled' && settled[i].value && !!settled[i].value.ip,
+            homepage: PROVIDER_HOMEPAGES[p.name] || '#',
+        }));
+        // مقادیر کامل هر منبع (آی‌پی/شهر/استان/کشور) برای پاپ‌آپ جزئیات
+        window.__ipProviderDetails = PROVIDERS.map((p, i) => {
+            const ok = settled[i].status === 'fulfilled' && settled[i].value && settled[i].value.ip;
+            const v = ok ? settled[i].value : null;
+            return {
+                name: p.name, ok: !!ok,
+                ip: v ? v.ip : null, city: v ? v.city : null, region: v ? v.region : null, country: v ? v.country : null,
+            };
+        });
+
+        if (!results.length) {
+            loading.style.display = 'none';
+            errEl.style.display = 'block';
+            errEl.textContent = 'هیچ‌کدام از منابع پاسخ ندادند. احتمالاً افزونه‌ی مسدودکننده، فایروال یا فیلترشکن جلوی درخواست‌ها را گرفته است.';
+            return;
+        }
+        await render(results, results.length, failed);
+        ipLoaded = true;
+    }
+
+    window.openIpSourcesPanel = function() {
+        const list = document.getElementById('ipSourcesList');
+        const overlay = document.getElementById('ipSourcesOverlay');
+        if (!list || !overlay) return;
+        const rows = window.__ipProviderStatus || [];
+        list.innerHTML = rows.length ? rows.map(r => `
+            <div class="ip-source-row">
+                <span class="src-name">${r.name}</span>
+                <span class="src-status ${r.ok ? 'ok' : 'fail'}">${r.ok ? '✓ پاسخ داد' : '✗ پاسخ نداد'}</span>
+                <a href="${r.homepage}" target="_blank" rel="noopener noreferrer">مشاهده سایت ↗</a>
+            </div>`).join('') : '<div style="text-align:center;color:#666;font-size:12px;padding:20px 0;">هنوز اطلاعاتی بارگذاری نشده است.</div>';
+        overlay.classList.add('show');
+        document.body.style.overflow = 'hidden';
+    };
+    window.closeIpSourcesPanel = function() {
+        const overlay = document.getElementById('ipSourcesOverlay');
+        if (!overlay) return;
+        overlay.classList.remove('show');
+        document.body.style.overflow = '';
+    };
+
+    window.openIpDetailPanel = function() {
+        const list = document.getElementById('ipDetailList');
+        const overlay = document.getElementById('ipDetailOverlay');
+        if (!list || !overlay) return;
+        const rows = window.__ipProviderDetails || [];
+        list.innerHTML = rows.length ? rows.map(r => `
+            <div class="ip-source-row ip-detail-row">
+                <span class="src-name">${r.name}</span>
+                ${r.ok
+                    ? `<span class="ip-detail-vals"><bdi class="ltr-num">${r.ip || '—'}</bdi> · ${[r.city, r.region, r.country].filter(Boolean).join('، ') || '—'}</span>`
+                    : `<span class="src-status fail">✗ پاسخ نداد</span>`}
+            </div>`).join('') : '<div style="text-align:center;color:#666;font-size:12px;padding:20px 0;">هنوز اطلاعاتی بارگذاری نشده است.</div>';
+        overlay.classList.add('show');
+        document.body.style.overflow = 'hidden';
+    };
+    window.closeIpDetailPanel = function() {
+        const overlay = document.getElementById('ipDetailOverlay');
+        if (!overlay) return;
+        overlay.classList.remove('show');
+        document.body.style.overflow = '';
+    };
+
+    window.initIpInfo = function() {
+        const refresh = document.getElementById('ipRefreshBtn');
+        const copy = document.getElementById('ipCopyBtn');
+        if (refresh && !refresh.dataset.bound) {
+            refresh.dataset.bound = '1';
+            refresh.addEventListener('click', () => loadIp(true));
+        }
+        if (copy && !copy.dataset.bound) {
+            copy.dataset.bound = '1';
+            copy.addEventListener('click', function() {
+                const ip = document.getElementById('ipValue').textContent;
+                const done = () => { this.textContent = '✓ کپی شد'; setTimeout(() => { this.textContent = '📋 کپی'; }, 1600); };
+                if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(ip).then(done).catch(() => {});
+                else {
+                    const ta = document.createElement('textarea');
+                    ta.value = ip; document.body.appendChild(ta); ta.select();
+                    try { document.execCommand('copy'); done(); } catch (e) {}
+                    document.body.removeChild(ta);
+                }
+            });
+        }
+        loadIp(false);
+    };
+})();
+
+/* ===== جابه‌جایی زمان آهنگ با کلیک/کشیدن روی اکولایزر (اضافه‌شده) ===== */
+(function wireEqSeek() {
+    const eq = document.getElementById('eqContainer');
+    if (!eq) return;
+    let seeking = false;
+    function seekAt(clientX) {
+        if (!audio.duration || !isFinite(audio.duration)) return;
+        const r = eq.getBoundingClientRect();
+        const ratio = Math.max(0, Math.min(1, (clientX - r.left) / r.width));
+        audio.currentTime = ratio * audio.duration;
+        updateTimeDisplay();
+        updateEqPathSmooth(ratio * 100);
+        saveMusicPosition();
+    }
+    eq.addEventListener('mousedown', e => { seeking = true; seekAt(e.clientX); e.preventDefault(); });
+    document.addEventListener('mousemove', e => { if (seeking) seekAt(e.clientX); });
+    document.addEventListener('mouseup', () => { seeking = false; });
+    eq.addEventListener('touchstart', e => { if (e.touches[0]) seekAt(e.touches[0].clientX); }, { passive: true });
+    eq.addEventListener('touchmove', e => { if (e.touches[0]) seekAt(e.touches[0].clientX); }, { passive: true });
 })();
 
 /* ===== اتصال رویدادهای ولوم اسلایدر و آپلود پلی‌لیست شخصی (اضافه‌شده) ===== */
 (function wireVolumeAndUpload() {
     const volumeSlider = document.getElementById('volumeSlider');
-    const volumeValue = document.getElementById('volumeValue');
     if (volumeSlider) {
         audio.volume = (parseInt(volumeSlider.value, 10) || 80) / 100;
         volumeSlider.style.setProperty('--vol-percent', volumeSlider.value + '%');
         volumeSlider.addEventListener('input', function() {
             const v = parseInt(this.value, 10);
+            cancelFade();
             audio.volume = v / 100;
-            if (volumeValue) volumeValue.textContent = v + '%';
             this.style.setProperty('--vol-percent', v + '%');
             if (v > 0 && isMuted) {
                 isMuted = false; audio.muted = false;

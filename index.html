@@ -23,6 +23,16 @@ body.entry-mode { overflow: hidden; }
 .hidden { display: none !important; }
 
 /* ============================================================
+   نوار اسکرول هماهنگ با تم سایت (اضافه‌شده) — همه‌جای پروژه
+   ============================================================ */
+* { scrollbar-width: thin; scrollbar-color: #890913 #0a0a0a; }
+*::-webkit-scrollbar { width: 9px; height: 9px; }
+*::-webkit-scrollbar-track { background: #0a0a0a; border-radius: 10px; }
+*::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #ff0044, #890913 60%, #5c0710); border-radius: 10px; border: 2px solid #0a0a0a; box-shadow: 0 0 8px rgba(255,0,68,0.2); }
+*::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #ff2a5c, #ab0b17 60%, #700910); box-shadow: 0 0 12px rgba(255,0,68,0.4); }
+*::-webkit-scrollbar-corner { background: #0a0a0a; }
+
+/* ============================================================
    صفحه ورود (Loading + دکمه‌ها)
    ============================================================ */
 #entryScreen {
@@ -324,6 +334,16 @@ body.entry-mode { overflow: hidden; }
     transition: all 0.3s ease;
 }
 .timer-container:hover .timer-time { text-shadow: 0 0 20px rgba(255, 255, 255, 0.2), 0 0 50px rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.05); }
+
+/* ===== استایل شیک‌تر مخصوص تایمر «کل زمان سپری‌شده» در لیدربرد — همون ابعاد/فونت، فقط رنگ‌بندی جدید (اضافه‌شده) ===== */
+.js-total-time-timer { background: linear-gradient(135deg, #0a0a0a 0%, #1a0507 50%, #0a0a0a 100%); border: 1px solid rgba(255, 0, 68, 0.25); box-shadow: 0 0 20px rgba(137, 9, 19, 0.12), inset 0 0 20px rgba(137, 9, 19, 0.04); }
+.js-total-time-timer::before { background: linear-gradient(90deg, transparent, rgba(255, 0, 68, 0.06), transparent); }
+.js-total-time-timer:hover { border-color: rgba(255, 0, 68, 0.5) !important; background: linear-gradient(135deg, #120406 0%, #220810 50%, #120406 100%) !important; box-shadow: 0 0 36px rgba(255, 0, 68, 0.18), inset 0 0 30px rgba(137, 9, 19, 0.06) !important; }
+.js-total-time-timer .timer-icon { color: rgba(255, 0, 68, 0.55); }
+.js-total-time-timer:hover .timer-icon { color: rgba(255, 0, 68, 0.9); }
+.js-total-time-timer .timer-label { color: rgba(255, 120, 140, 0.5); }
+.js-total-time-timer .timer-time { color: #ffdfe4; background: rgba(255, 0, 68, 0.07); border: 1px solid rgba(255, 0, 68, 0.15); text-shadow: 0 0 10px rgba(255, 0, 68, 0.35), 0 0 26px rgba(255, 0, 68, 0.15); }
+.js-total-time-timer:hover .timer-time { text-shadow: 0 0 18px rgba(255, 0, 68, 0.5), 0 0 44px rgba(255, 0, 68, 0.25); border-color: rgba(255, 0, 68, 0.3); background: rgba(255, 0, 68, 0.1); }
 .timer-container.warning { border-color: rgba(255, 0, 68, 0.3) !important; box-shadow: 0 0 25px rgba(255, 0, 68, 0.05) !important; }
 .timer-container.warning .timer-time { color: #ff0044; text-shadow: 0 0 15px rgba(255, 0, 68, 0.3), 0 0 40px rgba(255, 0, 68, 0.1); border-color: rgba(255, 0, 68, 0.1); background: rgba(255, 0, 68, 0.03); }
 .timer-container.warning .timer-icon { color: rgba(255, 0, 68, 0.5); }
@@ -486,6 +506,54 @@ body.entry-mode { overflow: hidden; }
 .drag-handle { cursor: grab; display: flex; align-items: center; justify-content: center; padding: 0 6px; color: #444; font-size: 14px; user-select: none; transition: color 0.3s ease; }
 .drag-handle:hover { color: #888; }
 .drag-handle:active { cursor: grabbing; }
+
+/* ===== ولوم اسلایدر و پنل پلی‌لیست (اضافه‌شده) ===== */
+.music-controls-bottom { flex-wrap: wrap; }
+.music-volume-row { display: flex; align-items: center; gap: 12px; width: 100%; padding: 10px 12px; margin-top: 8px; border-radius: 14px; background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(137,9,19,0.05)); border: 1px solid rgba(255,255,255,0.05); direction: ltr; transition: border-color 0.3s ease; }
+.music-volume-row:hover { border-color: rgba(255,0,68,0.2); }
+.volume-icon-mini { color: #999; flex-shrink: 0; display: flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; background: rgba(255,255,255,0.04); transition: all 0.25s ease; }
+.volume-icon-mini svg { width: 13px; height: 13px; }
+.music-volume-row:hover .volume-icon-mini { color: #ff0044; background: rgba(255,0,68,0.1); }
+.volume-slider { --vol-percent: 80%; flex: 1; -webkit-appearance: none; appearance: none; height: 5px; border-radius: 6px; outline: none; cursor: pointer; background: linear-gradient(90deg, #890913 0%, #ff0044 var(--vol-percent), rgba(255,255,255,0.06) var(--vol-percent), rgba(255,255,255,0.06) 100%); box-shadow: inset 0 1px 2px rgba(0,0,0,0.4); transition: box-shadow 0.2s ease; }
+.volume-slider:hover { box-shadow: inset 0 1px 2px rgba(0,0,0,0.4), 0 0 12px rgba(255,0,68,0.15); }
+.volume-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 15px; height: 15px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #ffffff, #f0f0f0 60%, #ddd); box-shadow: 0 0 0 3px rgba(255,0,68,0.15), 0 2px 10px rgba(255,0,68,0.5); cursor: pointer; border: 2px solid #890913; transition: transform 0.2s cubic-bezier(0.25,0.46,0.45,0.94), box-shadow 0.2s ease; }
+.volume-slider::-webkit-slider-thumb:hover { transform: scale(1.25); box-shadow: 0 0 0 5px rgba(255,0,68,0.2), 0 2px 14px rgba(255,0,68,0.7); }
+.volume-slider::-moz-range-thumb { width: 15px; height: 15px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #ffffff, #f0f0f0 60%, #ddd); box-shadow: 0 0 0 3px rgba(255,0,68,0.15), 0 2px 10px rgba(255,0,68,0.5); cursor: pointer; border: 2px solid #890913; }
+.volume-slider::-moz-range-track { height: 5px; border-radius: 6px; background: rgba(255,255,255,0.06); }
+.volume-slider::-moz-range-progress { height: 5px; border-radius: 6px; background: linear-gradient(90deg, #890913, #ff0044); }
+.volume-value { color: #aaa; font-size: 10.5px; font-weight: 700; font-family: 'Courier New', monospace; min-width: 32px; text-align: right; flex-shrink: 0; background: rgba(255,255,255,0.04); padding: 2px 6px; border-radius: 6px; }
+
+.playlist-toggle-btn { position: relative; overflow: hidden; background: linear-gradient(135deg, rgba(137,9,19,0.12), rgba(255,0,68,0.04)); border: 1px solid rgba(255,0,68,0.25); color: #ddd; cursor: pointer; padding: 9px 14px; border-radius: 14px; font-size: 12px; font-family: 'Vazirmatn', sans-serif; font-weight: 700; letter-spacing: 0.3px; display: flex; align-items: center; gap: 8px; width: 100%; justify-content: center; margin-top: 10px; transition: all 0.35s cubic-bezier(0.25,0.46,0.45,0.94); box-shadow: 0 4px 16px rgba(137,9,19,0.08); }
+.playlist-toggle-btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 300%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.07), transparent); animation: shimmerBtn 5s ease-in-out infinite; pointer-events: none; }
+.playlist-toggle-btn:hover { color: #fff; background: linear-gradient(135deg, rgba(137,9,19,0.22), rgba(255,0,68,0.1)); border-color: #ff0044; box-shadow: 0 6px 24px rgba(255,0,68,0.2); transform: translateY(-2px); }
+.playlist-toggle-btn:active { transform: translateY(0) scale(0.98); }
+.playlist-toggle-btn svg { width: 15px; height: 15px; position: relative; z-index: 1; }
+
+.playlist-panel { position: fixed; top: 80px; left: 20px; z-index: 998; background: rgba(16, 16, 16, 0.92); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 16px 16px 14px; width: 320px; max-width: 90vw; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8); display: none; animation: slideDown 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+.playlist-panel.show { display: block; }
+.playlist-panel-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
+.playlist-panel-header span { color: #fff; font-size: 13px; font-weight: 700; font-family: 'Vazirmatn', sans-serif; }
+.playlist-panel-close { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.06); color: #666; cursor: pointer; font-size: 15px; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; }
+.playlist-panel-close:hover { color: #fff; background: rgba(255, 255, 255, 0.06); }
+.playlist-tabs { display: flex; gap: 6px; margin-bottom: 12px; }
+.playlist-tab { flex: 1; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.06); color: #777; padding: 7px 10px; border-radius: 8px; font-size: 11px; font-family: 'Vazirmatn', sans-serif; font-weight: 600; cursor: pointer; transition: all 0.3s ease; }
+.playlist-tab.active { background: rgba(137, 9, 19, 0.15); border-color: #890913; color: #fff; }
+.playlist-tab-content { display: none; }
+.playlist-tab-content.active { display: block; }
+.playlist-track-list { max-height: 260px; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; }
+.playlist-track-row { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 10px; cursor: pointer; transition: background 0.2s ease; border: 1px solid transparent; }
+.playlist-track-row:hover { background: rgba(255, 255, 255, 0.04); }
+.playlist-track-row.active { background: rgba(137, 9, 19, 0.12); border-color: rgba(137, 9, 19, 0.4); }
+.playlist-track-index { color: #555; font-size: 11px; font-family: 'Courier New', monospace; min-width: 16px; text-align: center; flex-shrink: 0; }
+.playlist-track-row.active .playlist-track-index { color: #ff0044; }
+.playlist-track-title { flex: 1; min-width: 0; color: #ddd; font-size: 12.5px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.playlist-track-row.active .playlist-track-title { color: #fff; }
+.playlist-track-artist { color: #555; font-size: 10.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 90px; flex-shrink: 0; }
+.playlist-track-delete { background: none; border: none; color: #555; cursor: pointer; font-size: 13px; flex-shrink: 0; padding: 2px 4px; transition: color 0.2s ease; }
+.playlist-track-delete:hover { color: #890913; }
+.playlist-upload-btn { width: 100%; background: rgba(137, 9, 19, 0.1); border: 1px dashed rgba(137, 9, 19, 0.5); color: #ddd; padding: 10px; border-radius: 10px; font-size: 12px; font-family: 'Vazirmatn', sans-serif; font-weight: 600; cursor: pointer; margin-bottom: 10px; transition: all 0.3s ease; }
+.playlist-upload-btn:hover { background: rgba(137, 9, 19, 0.18); border-color: #890913; color: #fff; }
+.playlist-empty-note { color: #555; font-size: 11.5px; text-align: center; padding: 18px 4px; }
 
 /* ===== نظرسنجی مشترک ===== */
 .survey-btn-header { position: relative; }
@@ -719,6 +787,13 @@ body.entry-mode { overflow: hidden; }
 /* ============================================================
    ریسپانسیو
    ============================================================ */
+/* ============================================================
+   نشانگر سفارشی ماوس در کل پروژه (اضافه‌شده)
+   ============================================================ */
+*, *::before, *::after {
+    cursor: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAqCAYAAAA9IzKsAAAFl0lEQVR4nMVYXWicRRQ9585sNsmmqbTUqmhtdtd217+iVQSppGmhapFW0UTBJ1EsFhT0QRAqMeiTgqDSgiKiIlUT/MGWNE2FdCH1QeyDqK2hSW21L/rQJmabpNmZuT58uzU1m02bbuKFhf1mvpl79s65595ZdKfTjShaJ2DwP5j8Phm78+tk5qvudLqxDfB9aLYLDmIYYdzTPlinsf5vrl+VaUHOLTQQaVAjpwrOF8BbFhnT353Mbm5BzilajQJcEBAxACTNKR+8EkvjxN79TZnniS4PAO2AzDuIAiIvZ5UmHzR4VU0Y82ZvKvPuK4DpAMJ8E1aAKOYOwIhCAHDUO9dA8/Q9yeyBL1Zkrm4DfF/z/PFECkZFQQiAESUKAIW0w965uHD9FTEe2rsye1dLbv4Ie/68CaAAYFijQSFt3nsnQFOdQV9P0+rHI8JCqk1Y+e/DcCAKRVAk7YRq8Kp19cZ80pPKvEogEFCtImEv2IgAJhEdiwDQaEw8oGMh+EYxOw4kM13vr169iECo1vFM+zVRNCKilmLO6KsZcc7Vi3mkqcDcl02ZVdUStrIgJgD8rVFe6pQ5knbEO2dFbltM9nevzGxqQc61o9leDk+mgdDi4BklPKbvLKQdC94rsazWcF9PavWzHcg5YO7CVnaRAJhQYLRMNACAoCmohklVNtC+3ZvM7uwCZK7CVhZEyekZJQLKx5lRqmI0ONdgZPuSpsz+3U1Ny+dSiWcMnwAYUyBfzMX/RqMIhATtsHMubszGK1l7aG8qs7YFOXcpCjvrGZ5RlhzOvAlp8955Q6bqFbmeVPbRllzOdQIXVYkrgogKW/QhECq9S9JMaAiOSNSRn/UmM+1tgL8YYas4SUSeh5WopYjOBgQQr9DxEHyDmFcOpLKffrz81gSBoGidkbAVQSigMRKjqqfzIfQtEhEAQctTpAQkEjbvXD3lsWsaCge/vC6dIrpmJOxsIEAFoJDv87JlTMNrCTEi0fBsx2NHvHM15B2La+yh7uSqjVMU9gKezErMqH4Q11hXu2no15fzwT0RA8/FSVFVX2mtkPZs8B7g8lqY/T3J7DORwoJThW1WECSg0ImJRJhUQO4/PvDhGMOGoPpHwhgTVF3F9aCZVA2TUGkQ2fVtKvNWB4CpwnaxMsuEMUog/LB2beyBoYHvRsTdPamh/wprrULdjCTBv8KWD87Vi3nu22SmuzOdXtYGeAXkkrV+7eHDrhMwDw8Onjodl4157z9oFGsJhDArYWlHnHNxkXuXhlhuz8ob1hAIcyo4bYBvB6TtyJHCpuO/PpkP4cU4KTGSipl5Uswq5r33i63N1orp35fK3D7n7qgjSlUoWs29x4++MeHDVoEO18l0niigquoE4CJjjSX1jCt0quABydcMXFZDQkCBLt/X3Gxbcrlv9qWy6+IhfN5o7E2j3jlGGRSsiK03xo55n5/UsNsHv+u+E8d+LO1TlT6x1InfP3T0lxE/vu5cCHsajbWWlEZjLaF/jQX/Opxfs2Ho6Lb7Thz7sVhXBACq1sK3ICpYD508OQxgS28y+2ac2DIewntn1X609bef/wSATrSaVnQpgfPcsUrozJy+NCumHAnopuNHX+hOp1/aPDR4DgD60GwPIhfaitfLqWZtQIMQ8AplFe4TLGZAO8DNg4Pn+tBs1yPnWWwBy5k1QHwert7aEZVwVnJeMlFW6zCmGyuI1wUgLuKdUGy8580qgQiAeksKFUsWFIQCQaE+RkpCrPWqJ4S6IzVw1XiJ+dUGMUUn1AOUuIgYAIWgPxUQdtbE/e6nBgZGgYFq+/4XhEa9E+rEWAXgVb8LGt4xJxNfbMPhAhAJTLn8rhoIEjVUaiGEPZayc/uJI72lyaLzsgJTVdt1bebm91bcuKH0rAA7o854Qf65A4B/APNQiXFOIX0ZAAAAAElFTkSuQmCC") 1 1, auto !important;
+}
+
 @media (max-width: 480px) {
     .glass-main { padding: 12px 6px 20px; }
     .header { padding: 12px 14px; margin-bottom: 24px; border-radius: 14px; gap: 8px; flex-wrap: wrap; justify-content: center; }
@@ -752,6 +827,7 @@ body.entry-mode { overflow: hidden; }
     .entry-actions { gap: 14px; bottom: 7%; }
     #pivotContent .answer-buttons { flex-direction: column; }
     #pivotContent .conditions-grid { grid-template-columns: 1fr; }
+    .playlist-panel { width: 92vw; left: 4vw; }
 }
 </style>
 </head>
@@ -1149,6 +1225,40 @@ body.entry-mode { overflow: hidden; }
         <button onclick="toggleVolume()" class="ctrl-btn" title="صدا" id="volumeBtn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11,5 6,9 2,9 2,15 6,15 11,19 11,5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
         </button>
+    </div>
+    <div class="music-volume-row">
+        <span class="volume-icon-mini">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11,5 6,9 2,9 2,15 6,15 11,19 11,5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+        </span>
+        <input type="range" id="volumeSlider" class="volume-slider" min="0" max="100" value="80" step="1">
+        <span class="volume-value" id="volumeValue">80%</span>
+    </div>
+    <button class="playlist-toggle-btn" id="playlistToggleBtn" onclick="togglePlaylistPanel()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        پلی‌لیست
+    </button>
+</div>
+
+<!-- ============================================================
+     پنل پلی‌لیست (اضافه‌شده) — لیست پیش‌فرض + پلی‌لیست شخصی آپلودی
+     ============================================================ -->
+<div class="playlist-panel" id="playlistPanel">
+    <div class="playlist-panel-header">
+        <span>پلی‌لیست</span>
+        <button class="playlist-panel-close" onclick="togglePlaylistPanel()">✕</button>
+    </div>
+    <div class="playlist-tabs">
+        <button class="playlist-tab active" id="playlistTabDefaultBtn" onclick="setPlaylistTab('default')">پیش‌فرض</button>
+        <button class="playlist-tab" id="playlistTabCustomBtn" onclick="setPlaylistTab('custom')">پلی‌لیست من</button>
+    </div>
+    <div class="playlist-tab-content active" id="playlistTabDefault">
+        <div class="playlist-track-list" id="playlistListDefault"></div>
+    </div>
+    <div class="playlist-tab-content" id="playlistTabCustom">
+        <button class="playlist-upload-btn" id="playlistUploadBtn">📁 آپلود آهنگ (چند فایل مجاز است)</button>
+        <input type="file" id="playlistUploadInput" accept="audio/*" multiple style="display:none;">
+        <div class="playlist-track-list" id="playlistListCustom"></div>
+        <div class="playlist-empty-note" id="playlistCustomEmptyNote">هنوز آهنگی آپلود نکرده‌اید.</div>
     </div>
 </div>
 
@@ -3322,6 +3432,11 @@ const playlist = [
     { url: 'https://github.com/Amirkazeem/Music/raw/main/Toygar%20Isikli%20Ask%20i%20Memnu%20Jenerik%20Muzigi.mp3', title: 'Aşk-ı Memnu Jenerik Müziği', artist: 'Toygar Işıklı' }
 ];
 
+/* ===== پلی‌لیست شخصی و پلی‌لیست فعال (اضافه‌شده) ===== */
+let customPlaylist = [];
+let activePlaylist = playlist;
+let playlistMode = localStorage.getItem('amitis_music_playlist_mode') || 'default';
+
 let audio = new Audio();
 let isPlaying = false;
 let currentTrackIndex = 0;
@@ -3333,6 +3448,7 @@ let isTrackLoaded = false;
 let isChangingTrack = false;
 let autoPlayStarted = false;
 let isFirstInteraction = true;
+let userManuallyPaused = false;
 let eqAnimationId = null;
 const EQ_POINTS = 1200;
 let eqAmplitude = 7;
@@ -3350,12 +3466,17 @@ function toggleMusicPanel() {
         panel.style.left = (iconRect.left - 10) + 'px';
         panel.style.right = 'auto';
         panel.style.bottom = 'auto';
-        if (playlist.length > 0 && !isTrackLoaded) loadTrack(currentTrackIndex);
+        if (activePlaylist.length > 0 && !isTrackLoaded) loadTrack(currentTrackIndex);
         if (isPlaying) startEqAnimation();
     } else {
         btn.style.borderColor = 'rgba(255,0,68,0.5)';
         btn.style.background = '';
         stopEqAnimation();
+        if (typeof playlistPanelOpen !== 'undefined' && playlistPanelOpen) {
+            playlistPanelOpen = false;
+            const plPanel = document.getElementById('playlistPanel');
+            if (plPanel) plPanel.classList.remove('show');
+        }
     }
 }
 function removeAudioEvents() {
@@ -3363,10 +3484,10 @@ function removeAudioEvents() {
     audio.ontimeupdate = null; audio.onloadedmetadata = null;
     audio.oncanplay = null; audio.onerror = null;
 }
-function loadTrack(index, forcePlay = false) {
+function loadTrack(index, forcePlay = false, startAt = 0) {
     if (isChangingTrack && !forcePlay) return;
     isChangingTrack = true;
-    const track = playlist[index];
+    const track = activePlaylist[index];
     if (!track) { isChangingTrack = false; return; }
     const wasPlaying = isPlaying || forcePlay || autoPlayStarted;
     stopEqAnimation();
@@ -3375,16 +3496,22 @@ function loadTrack(index, forcePlay = false) {
     audio.src = track.url;
     audio.load();
     isTrackLoaded = true;
+    currentTrackIndex = index;
     document.getElementById('currentTitle').textContent = track.title || '✦ Amitis ✦';
     document.getElementById('currentArtist').textContent = track.artist || '—';
     document.getElementById('musicArtwork').textContent = '♫';
     resetEqualizer();
-    audio.oncanplay = function() { if (wasPlaying) audio.play().catch(() => {}); isChangingTrack = false; };
-    audio.onloadedmetadata = function() { updateTimeDisplay(); if (wasPlaying) audio.play().catch(() => {}); };
+    audio.oncanplay = function() { if (wasPlaying && !userManuallyPaused) audio.play().catch(() => {}); isChangingTrack = false; };
+    audio.onloadedmetadata = function() {
+        if (startAt > 0 && isFinite(startAt) && startAt < audio.duration) audio.currentTime = startAt;
+        updateTimeDisplay();
+        if (wasPlaying && !userManuallyPaused) audio.play().catch(() => {});
+    };
     audio.ontimeupdate = function() {
         updateTimeDisplay();
         const progress = audio.duration > 0 ? (audio.currentTime / audio.duration) * 100 : 0;
         updateEqPathSmooth(progress);
+        throttledSaveMusicPosition();
     };
     audio.onended = function() {
         if (isRepeat) { audio.currentTime = 0; audio.play().catch(() => {}); }
@@ -3393,14 +3520,17 @@ function loadTrack(index, forcePlay = false) {
     audio.onplay = function() { isPlaying = true; document.getElementById('playBtn').classList.add('playing'); updatePlayButton(); startEqAnimation(); };
     audio.onpause = function() { isPlaying = false; document.getElementById('playBtn').classList.remove('playing'); updatePlayButton(); stopEqAnimation(); };
     audio.onerror = function() { isChangingTrack = false; setTimeout(() => { if (!isPlaying) nextTrack(); }, 2000); };
-    if (wasPlaying) setTimeout(() => { if (audio.readyState >= 2) audio.play().catch(() => {}); }, 300);
+    if (wasPlaying && !userManuallyPaused) setTimeout(() => { if (audio.readyState >= 2) audio.play().catch(() => {}); }, 300);
     setTimeout(() => { isChangingTrack = false; }, 8000);
+    if (typeof renderPlaylistPanel === 'function') renderPlaylistPanel();
+    persistMusicState();
 }
 function resetEqualizer() { const p = document.getElementById('eqPathProgress'); if (p) p.setAttribute('d', 'M0,16'); }
 function togglePlay() {
-    if (!isTrackLoaded) { loadTrack(currentTrackIndex, true); return; }
-    if (isPlaying) { audio.pause(); }
+    if (!isTrackLoaded) { userManuallyPaused = false; loadTrack(currentTrackIndex, true); return; }
+    if (isPlaying) { userManuallyPaused = true; audio.pause(); }
     else {
+        userManuallyPaused = false;
         if (!audio.src) { loadTrack(currentTrackIndex, true); return; }
         audio.play().catch(function() { setTimeout(() => audio.play().catch(() => {}), 500); });
     }
@@ -3411,24 +3541,26 @@ function updatePlayButton() {
     else svg.innerHTML = '<polygon points="5,3 19,12 5,21 5,3"/>';
 }
 function nextTrack() {
-    if (playlist.length === 0 || isChangingTrack) return;
+    if (activePlaylist.length === 0 || isChangingTrack) return;
+    userManuallyPaused = false;
     stopEqAnimation();
     if (isShuffle) {
         let n, a = 0;
-        do { n = Math.floor(Math.random() * playlist.length); a++; } while (n === currentTrackIndex && playlist.length > 1 && a < 10);
+        do { n = Math.floor(Math.random() * activePlaylist.length); a++; } while (n === currentTrackIndex && activePlaylist.length > 1 && a < 10);
         currentTrackIndex = n;
-    } else currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+    } else currentTrackIndex = (currentTrackIndex + 1) % activePlaylist.length;
     loadTrack(currentTrackIndex, true);
 }
 function prevTrack() {
-    if (playlist.length === 0 || isChangingTrack) return;
+    if (activePlaylist.length === 0 || isChangingTrack) return;
     if (audio.currentTime > 3) { audio.currentTime = 0; return; }
+    userManuallyPaused = false;
     stopEqAnimation();
     if (isShuffle) {
         let n, a = 0;
-        do { n = Math.floor(Math.random() * playlist.length); a++; } while (n === currentTrackIndex && playlist.length > 1 && a < 10);
+        do { n = Math.floor(Math.random() * activePlaylist.length); a++; } while (n === currentTrackIndex && activePlaylist.length > 1 && a < 10);
         currentTrackIndex = n;
-    } else currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
+    } else currentTrackIndex = (currentTrackIndex - 1 + activePlaylist.length) % activePlaylist.length;
     loadTrack(currentTrackIndex, true);
 }
 function updateTimeDisplay() {
@@ -3505,7 +3637,13 @@ function startEqAnimation() {
 function stopEqAnimation() { if (eqAnimationId) { cancelAnimationFrame(eqAnimationId); eqAnimationId = null; } }
 
 function tryStartMusic() {
-    if (!isTrackLoaded) { loadTrack(currentTrackIndex, true); return; }
+    if (userManuallyPaused) return;
+    if (!isTrackLoaded) {
+        const resumeAt = window.__musicResumeAt || 0;
+        window.__musicResumeAt = 0;
+        loadTrack(currentTrackIndex, true, resumeAt);
+        return;
+    }
     if (!isPlaying && audio.src) {
         audio.play().then(() => { isPlaying = true; updatePlayButton(); startEqAnimation(); }).catch(() => {});
     }
@@ -3513,8 +3651,203 @@ function tryStartMusic() {
 function startAutoPlayOnInteraction() {
     if (!isFirstInteraction) return;
     isFirstInteraction = false;
+    if (userManuallyPaused) return;
     if (!isPlaying && isTrackLoaded) {
         audio.play().then(() => { isPlaying = true; updatePlayButton(); startEqAnimation(); }).catch(() => {});
+    }
+}
+
+/* ================================================================
+   IndexedDB برای پلی‌لیست شخصی (آپلودی) — اضافه‌شده
+   ================================================================ */
+const musicDB = {
+    _dbPromise: null,
+    open() {
+        if (this._dbPromise) return this._dbPromise;
+        this._dbPromise = new Promise((resolve, reject) => {
+            const req = indexedDB.open('amitisMusicDB', 1);
+            req.onupgradeneeded = function(e) {
+                const db = e.target.result;
+                if (!db.objectStoreNames.contains('customTracks')) {
+                    db.createObjectStore('customTracks', { keyPath: 'id', autoIncrement: true });
+                }
+            };
+            req.onsuccess = function(e) { resolve(e.target.result); };
+            req.onerror = function(e) { reject(e); };
+        });
+        return this._dbPromise;
+    },
+    async addTrack(name, blob) {
+        const db = await this.open();
+        return new Promise((resolve, reject) => {
+            const tx = db.transaction('customTracks', 'readwrite');
+            const store = tx.objectStore('customTracks');
+            const req = store.add({ name, blob, addedAt: Date.now() });
+            req.onsuccess = function(e) { resolve(e.target.result); };
+            req.onerror = function(e) { reject(e); };
+        });
+    },
+    async getAllTracks() {
+        const db = await this.open();
+        return new Promise((resolve, reject) => {
+            const tx = db.transaction('customTracks', 'readonly');
+            const store = tx.objectStore('customTracks');
+            const req = store.getAll();
+            req.onsuccess = function(e) { resolve(e.target.result || []); };
+            req.onerror = function(e) { reject(e); };
+        });
+    },
+    async deleteTrack(id) {
+        const db = await this.open();
+        return new Promise((resolve, reject) => {
+            const tx = db.transaction('customTracks', 'readwrite');
+            const store = tx.objectStore('customTracks');
+            const req = store.delete(id);
+            req.onsuccess = function() { resolve(true); };
+            req.onerror = function(e) { reject(e); };
+        });
+    }
+};
+
+/* ---------- ذخیره‌سازی وضعیت پلی‌لیست/موقعیت پخش (اضافه‌شده) ---------- */
+function persistMusicState() {
+    try {
+        localStorage.setItem('amitis_music_playlist_mode', playlistMode);
+        localStorage.setItem('amitis_music_current_index', String(currentTrackIndex));
+    } catch (e) {}
+}
+function saveMusicPosition() {
+    try { localStorage.setItem('amitis_music_current_time', String(audio.currentTime || 0)); } catch (e) {}
+}
+let __lastMusicPosSave = 0;
+function throttledSaveMusicPosition() {
+    const now = Date.now();
+    if (now - __lastMusicPosSave < 4000) return;
+    __lastMusicPosSave = now;
+    saveMusicPosition();
+}
+window.addEventListener('beforeunload', saveMusicPosition);
+
+async function loadCustomPlaylistFromDB() {
+    try {
+        const tracks = await musicDB.getAllTracks();
+        customPlaylist = tracks.map(t => ({ url: URL.createObjectURL(t.blob), title: t.name.replace(/\.[^/.]+$/, ''), artist: 'پلی‌لیست من', dbId: t.id }));
+    } catch (e) { customPlaylist = []; }
+    if (typeof renderPlaylistPanel === 'function') renderPlaylistPanel();
+}
+
+function switchPlaylistMode(mode, autoPlayIndex) {
+    playlistMode = mode;
+    activePlaylist = mode === 'custom' ? customPlaylist : playlist;
+    persistMusicState();
+    if (activePlaylist.length === 0) return;
+    const idx = (typeof autoPlayIndex === 'number' && activePlaylist[autoPlayIndex]) ? autoPlayIndex : 0;
+    userManuallyPaused = false;
+    loadTrack(idx, true);
+}
+
+async function restoreMusicState() {
+    await loadCustomPlaylistFromDB();
+    const savedMode = localStorage.getItem('amitis_music_playlist_mode') || 'default';
+    const savedIndex = parseInt(localStorage.getItem('amitis_music_current_index'), 10) || 0;
+    const savedTime = parseFloat(localStorage.getItem('amitis_music_current_time')) || 0;
+    playlistMode = savedMode === 'custom' && customPlaylist.length > 0 ? 'custom' : 'default';
+    activePlaylist = playlistMode === 'custom' ? customPlaylist : playlist;
+    if (activePlaylist[savedIndex]) currentTrackIndex = savedIndex;
+    window.__musicResumeAt = savedTime;
+    if (typeof renderPlaylistPanel === 'function') renderPlaylistPanel();
+}
+
+async function handleCustomUpload(fileList) {
+    const files = Array.from(fileList || []);
+    for (const file of files) {
+        try { await musicDB.addTrack(file.name, file); } catch (e) {}
+    }
+    await loadCustomPlaylistFromDB();
+    if (playlistMode === 'custom') activePlaylist = customPlaylist;
+}
+
+async function deleteCustomTrack(id) {
+    try { await musicDB.deleteTrack(id); } catch (e) {}
+    const wasActive = playlistMode === 'custom';
+    await loadCustomPlaylistFromDB();
+    if (wasActive) {
+        activePlaylist = customPlaylist;
+        if (activePlaylist.length === 0) {
+            audio.pause();
+            isTrackLoaded = false;
+        } else if (currentTrackIndex >= activePlaylist.length) {
+            currentTrackIndex = 0;
+        }
+    }
+}
+
+/* ================================================================
+   پنل پلی‌لیست (UI) — اضافه‌شده
+   ================================================================ */
+let playlistPanelOpen = false;
+let playlistActiveTab = 'default';
+
+function togglePlaylistPanel() {
+    const panel = document.getElementById('playlistPanel');
+    if (!panel) return;
+    playlistPanelOpen = !playlistPanelOpen;
+    panel.classList.toggle('show', playlistPanelOpen);
+    if (playlistPanelOpen) {
+        const musicPanel = document.getElementById('musicPanel');
+        const rect = musicPanel.getBoundingClientRect();
+        panel.style.top = rect.top + 'px';
+        panel.style.left = (rect.right + 12) + 'px';
+        if (parseFloat(panel.style.left) + 320 > window.innerWidth) {
+            panel.style.left = Math.max(10, rect.left - 332) + 'px';
+        }
+        renderPlaylistPanel();
+    }
+}
+function setPlaylistTab(tab) {
+    playlistActiveTab = tab;
+    document.getElementById('playlistTabDefaultBtn').classList.toggle('active', tab === 'default');
+    document.getElementById('playlistTabCustomBtn').classList.toggle('active', tab === 'custom');
+    document.getElementById('playlistTabDefault').classList.toggle('active', tab === 'default');
+    document.getElementById('playlistTabCustom').classList.toggle('active', tab === 'custom');
+}
+function escapePlHtml(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+function renderPlaylistPanel() {
+    const defaultList = document.getElementById('playlistListDefault');
+    const customList = document.getElementById('playlistListCustom');
+    const emptyNote = document.getElementById('playlistCustomEmptyNote');
+    if (!defaultList || !customList) return;
+    defaultList.innerHTML = playlist.map((t, i) => {
+        const active = playlistMode === 'default' && i === currentTrackIndex;
+        return `<div class="playlist-track-row${active ? ' active' : ''}" onclick="playFromPanel('default', ${i})">
+            <span class="playlist-track-index">${i + 1}</span>
+            <span class="playlist-track-title">${escapePlHtml(t.title)}</span>
+            <span class="playlist-track-artist">${escapePlHtml(t.artist || '')}</span>
+        </div>`;
+    }).join('');
+    if (customPlaylist.length === 0) {
+        customList.innerHTML = '';
+        emptyNote.style.display = 'block';
+    } else {
+        emptyNote.style.display = 'none';
+        customList.innerHTML = customPlaylist.map((t, i) => {
+            const active = playlistMode === 'custom' && i === currentTrackIndex;
+            return `<div class="playlist-track-row${active ? ' active' : ''}" onclick="playFromPanel('custom', ${i})">
+                <span class="playlist-track-index">${i + 1}</span>
+                <span class="playlist-track-title">${escapePlHtml(t.title)}</span>
+                <button class="playlist-track-delete" onclick="event.stopPropagation(); deleteCustomTrack(${t.dbId})" title="حذف">🗑</button>
+            </div>`;
+        }).join('');
+    }
+}
+function playFromPanel(mode, index) {
+    if (mode !== playlistMode) {
+        switchPlaylistMode(mode, index);
+    } else {
+        userManuallyPaused = false;
+        loadTrack(index, true);
     }
 }
 
@@ -3889,6 +4222,203 @@ function startAutoPlayOnInteraction() {
         isCyan: true,
     }));
     particles.forEach(p => { p.x = p.ox; p.y = p.oy; });
+
+    /* ============================================================
+       نگه‌داشتن کلیک برای فرم گرفتن ذرات به شکل بی‌نهایت سپس «Amirkazem» +
+       کلیک تکی برای جرقه ذرات (اضافه‌شده)
+       ============================================================ */
+    // نقاط نمونه‌برداری‌شده از تصویر بی‌نهایت ارسالی کاربر (مختصات نسبی به مرکز شکل)
+    const INFINITY_POINTS = [[-71.6,-63.2],[-71.6,-62.0],[83.5,-62.0],[-57.2,-60.8],[89.4,-60.8],[-59.6,-59.6],[79.9,-59.6],[-75.1,-58.4],[57.2,-58.4],[95.4,-58.4],[-64.4,-57.2],[63.2,-57.2],[101.4,-57.2],[-63.2,-56.1],[59.6,-56.1],[97.8,-56.1],[-71.6,-54.9],[48.9,-54.9],[87.1,-54.9],[-87.1,-53.7],[-48.9,-53.7],[66.8,-53.7],[13.6,-52.5],[-27.2,-51.3],[-107.5,-51.3],[27.2,-51.3],[107.5,-51.3],[-119.4,-50.1],[119.4,-50.1],[-19.5,-48.9],[35.6,-48.9],[-131.3,-48.9],[131.3,-48.9],[9.9,-47.7],[-9.9,-47.7],[-141.2,-47.7],[141.2,-47.7],[43.6,-46.5],[-43.6,-46.5],[-149.8,-46.5],[149.8,-46.5],[-2.4,-45.3],[2.4,-45.3],[-157.2,-45.3],[157.2,-45.3],[-163.2,-44.1],[163.2,-44.1],[-168.0,-42.9],[168.0,-42.9],[-171.6,-41.7],[171.6,-41.7],[-174.0,-40.5],[174.0,-40.5],[-175.2,-39.3],[175.2,-39.3],[-175.2,-38.1],[175.2,-38.1],[-174.0,-36.9],[174.0,-36.9],[-171.6,-35.7],[171.6,-35.7],[-168.0,-34.5],[168.0,-34.5],[-163.2,-33.3],[163.2,-33.3],[-157.2,-32.1],[157.2,-32.1],[-150.0,-30.9],[150.0,-30.9],[-141.6,-29.7],[141.6,-29.7],[-132.0,-28.5],[132.0,-28.5],[-121.2,-27.3],[121.2,-27.3],[-109.2,-26.1],[109.2,-26.1],[-96.0,-24.9],[96.0,-24.9],[-81.6,-23.7],[81.6,-23.7],[-66.0,-22.5],[66.0,-22.5],[-49.2,-21.3],[49.2,-21.3],[-31.2,-20.1],[31.2,-20.1],[-12.0,-18.9],[12.0,-18.9],[-108.0,-18.9],[108.0,-18.9],[8.4,-17.7],[-8.4,-17.7],[-118.8,-17.7],[118.8,-17.7],[27.6,-16.5],[-27.6,-16.5],[-128.4,-16.5],[128.4,-16.5],[45.6,-15.3],[-45.6,-15.3],[-136.8,-15.3],[136.8,-15.3],[62.4,-14.1],[-62.4,-14.1],[-144.0,-14.1],[144.0,-14.1],[78.0,-12.9],[-78.0,-12.9],[-150.0,-12.9],[150.0,-12.9],[-96.0,-9.3],[96.0,-9.3],[-154.8,-11.7],[154.8,-11.7],[91.2,-10.5],[-91.2,-10.5],[-158.4,-10.5],[158.4,-10.5],[103.2,-8.1],[-103.2,-8.1],[-160.8,-9.3],[160.8,-9.3],[114.0,-6.9],[-114.0,-6.9],[-162.0,-8.1],[162.0,-8.1],[123.6,-5.7],[-123.6,-5.7],[132.0,-4.5],[-132.0,-4.5],[139.2,-3.3],[-139.2,-3.3],[-162.0,-4.5],[162.0,-4.5],[145.2,-2.1],[-145.2,-2.1],[-160.8,-3.3],[160.8,-3.3],[150.0,-0.9],[-150.0,-0.9],[-158.4,-2.1],[158.4,-2.1],[153.6,0.3],[-153.6,0.3],[-154.8,-0.9],[154.8,-0.9],[156.0,1.5],[-156.0,1.5],[-150.0,0.3],[150.0,0.3],[157.2,2.7],[-157.2,2.7],[-144.0,1.5],[144.0,1.5],[156.0,3.9],[-156.0,3.9],[-136.8,2.7],[136.8,2.7],[153.6,5.1],[-153.6,5.1],[-128.4,3.9],[128.4,3.9],[150.0,6.3],[-150.0,6.3],[-118.8,5.1],[118.8,5.1],[145.2,7.5],[-145.2,7.5],[-108.0,6.3],[108.0,6.3],[139.2,8.7],[-139.2,8.7],[-96.0,7.5],[96.0,7.5],[132.0,9.9],[-132.0,9.9],[-81.6,8.7],[81.6,8.7],[123.6,11.1],[-123.6,11.1],[-66.0,9.9],[66.0,9.9],[114.0,12.3],[-114.0,12.3],[-49.2,11.1],[49.2,11.1],[103.2,13.5],[-103.2,13.5],[-31.2,12.3],[31.2,12.3],[91.2,14.7],[-91.2,14.7],[-12.0,13.5],[12.0,13.5],[78.0,15.9],[-78.0,15.9],[8.4,14.7],[-8.4,14.7],[62.4,17.1],[-62.4,17.1],[27.6,15.9],[-27.6,15.9],[45.6,18.3],[-45.6,18.3],[27.6,19.5],[-27.6,19.5],[8.4,20.7],[-8.4,20.7],[-12.0,21.9],[12.0,21.9],[-31.2,23.1],[31.2,23.1],[-49.2,24.3],[49.2,24.3],[-66.0,25.5],[66.0,25.5],[-81.6,26.7],[81.6,26.7],[-96.0,27.9],[96.0,27.9],[-109.2,29.1],[109.2,29.1],[-121.2,30.3],[121.2,30.3],[-132.0,31.5],[132.0,31.5],[-141.6,32.7],[141.6,32.7],[-150.0,33.9],[150.0,33.9],[-157.2,35.1],[157.2,35.1],[-163.2,36.3],[163.2,36.3],[-168.0,37.5],[168.0,37.5],[-171.6,38.7],[171.6,38.7],[-174.0,39.9],[174.0,39.9],[-175.2,41.1],[175.2,41.1],[-175.2,42.3],[175.2,42.3],[-174.0,43.5],[174.0,43.5],[-171.6,44.7],[171.6,44.7],[-168.0,45.9],[168.0,45.9],[-163.2,47.1],[163.2,47.1],[-157.2,48.3],[157.2,48.3],[-149.8,49.5],[149.8,49.5],[-141.2,50.7],[141.2,50.7],[-131.3,51.9],[131.3,51.9],[-119.4,53.1],[119.4,53.1],[-107.5,54.3],[107.5,54.3],[-2.4,55.5],[2.4,55.5],[-95.4,54.3],[95.4,54.3],[9.9,56.7],[-9.9,56.7],[-27.2,55.5],[27.2,55.5],[43.6,57.9],[-43.6,57.9],[-48.9,56.7],[48.9,56.7],[13.6,59.1],[-13.6,59.1],[-19.5,57.9],[19.5,57.9],[-64.4,59.6],[64.4,59.6],[-71.6,58.4],[71.6,58.4],[-78.7,60.8],[78.7,60.8],[-65.6,60.8],[85.9,60.8],[73.9,62.0]];
+    let holdState = { active: false, startTime: 0, anchorX: 0, anchorY: 0, releasing: false, releaseStart: 0, lastMoveTime: 0 };
+    let __textPointsCache = null;
+    function getTextPoints() {
+        if (__textPointsCache) return __textPointsCache;
+        const off = document.createElement('canvas');
+        off.width = 640; off.height = 140;
+        const octx = off.getContext('2d');
+        octx.clearRect(0, 0, off.width, off.height);
+        octx.fillStyle = '#fff';
+        octx.font = 'bold 64px -apple-system, "Segoe UI", Roboto, sans-serif';
+        octx.textAlign = 'center';
+        octx.textBaseline = 'middle';
+        octx.fillText('Amirkazem', off.width / 2, off.height / 2);
+        const imgData = octx.getImageData(0, 0, off.width, off.height).data;
+        const allPoints = [];
+        for (let yy = 0; yy < off.height; yy += 2) {
+            for (let xx = 0; xx < off.width; xx += 2) {
+                const idx = (yy * off.width + xx) * 4;
+                if (imgData[idx + 3] > 128) allPoints.push({ x: xx - off.width / 2, y: yy - off.height / 2 });
+            }
+        }
+        // به‌جای زیرنمونه‌ی تصادفی، با گام یکنواخت انتخاب می‌کنیم تا با همون تعداد محدود ذرات،
+        // کل عرض کلمه پوشش داده بشه و شکل حروف خواناتر بمونه
+        const desiredCount = Math.min(allPoints.length, 190);
+        const stride = Math.max(1, Math.floor(allPoints.length / desiredCount));
+        const points = [];
+        for (let i = 0; i < allPoints.length; i += stride) points.push(allPoints[i]);
+        // فقط ترتیب نمایش رو به‌هم می‌ریزیم (برای طبیعی‌تر شدن انیمیشن)، نه انتخاب نقاط
+        for (let i = points.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [points[i], points[j]] = [points[j], points[i]];
+        }
+        __textPointsCache = points;
+        return points;
+    }
+    function assignLetterTargets() {
+        const points = getTextPoints();
+        if (points.length === 0) return;
+        particles.forEach((p, i) => {
+            if (p.isClickSpawned) return;
+            const pt = points[i % points.length];
+            p.letterOffsetX = pt.x;
+            p.letterOffsetY = pt.y;
+        });
+    }
+    function assignInfinityTargets() {
+        if (INFINITY_POINTS.length === 0) return;
+        particles.forEach((p, i) => {
+            if (p.isClickSpawned) return;
+            const pt = INFINITY_POINTS[i % INFINITY_POINTS.length];
+            p.infOffsetX = pt[0];
+            p.infOffsetY = pt[1];
+        });
+    }
+    function startHold(x, y) {
+        holdState.active = true;
+        holdState.releasing = false;
+        holdState.startTime = performance.now();
+        holdState.lastMoveTime = 0;
+        holdState.anchorX = x;
+        holdState.anchorY = y;
+        assignInfinityTargets();
+        assignLetterTargets();
+    }
+    function endHold() {
+        if (!holdState.active) return;
+        holdState.active = false;
+        holdState.releasing = true;
+        holdState.releaseStart = performance.now();
+    }
+    function updateHeldParticle(p, i, now) {
+        // اگر همین الان (طی ~۲۲۰ میلی‌ثانیه‌ی اخیر) ماوس حرکت کرده، ذرات به‌جای شکل منظم،
+        // پراکنده و دنبال ماوس راه می‌افتند؛ با ایست ماوس، دوباره شکل خودشون رو می‌گیرند
+        const isChasing = (now - holdState.lastMoveTime) < 220;
+        if (isChasing) {
+            if (p.chaseOffsetX === undefined) {
+                p.chaseOffsetX = (Math.random() - 0.5) * 170;
+                p.chaseOffsetY = (Math.random() - 0.5) * 170;
+            }
+            const tx = holdState.anchorX + p.chaseOffsetX;
+            const ty = holdState.anchorY + p.chaseOffsetY;
+            p.x += (tx - p.x) * 0.10;
+            p.y += (ty - p.y) * 0.10;
+            return;
+        }
+        p.chaseOffsetX = undefined;
+        p.chaseOffsetY = undefined;
+        const elapsed = now - holdState.startTime;
+        if (elapsed < 7000) {
+            const tx = holdState.anchorX + (p.infOffsetX || 0);
+            const ty = holdState.anchorY + (p.infOffsetY || 0);
+            p.x += (tx - p.x) * 0.06;
+            p.y += (ty - p.y) * 0.06;
+        } else if (elapsed < 14000) {
+            const tx = holdState.anchorX + (p.letterOffsetX || 0);
+            const ty = holdState.anchorY + (p.letterOffsetY || 0);
+            p.x += (tx - p.x) * 0.08;
+            p.y += (ty - p.y) * 0.08;
+        } else {
+            const jitterX = Math.sin(now / 300 + i) * 0.4;
+            const jitterY = Math.cos(now / 340 + i) * 0.4;
+            const tx = holdState.anchorX + (p.letterOffsetX || 0) + jitterX;
+            const ty = holdState.anchorY + (p.letterOffsetY || 0) + jitterY;
+            p.x += (tx - p.x) * 0.08;
+            p.y += (ty - p.y) * 0.08;
+        }
+    }
+    function updateReleasingParticle(p, now) {
+        const elapsed = now - holdState.releaseStart;
+        const tx = p.ox + p.vx;
+        const ty = p.oy + p.vy;
+        const factor = 0.06;
+        p.x += (tx - p.x) * factor;
+        p.y += (ty - p.y) * factor;
+        if (elapsed > 1200) holdState.releasing = false;
+    }
+    function spawnClickSparks(x, y) {
+        const count = 14 + Math.floor(Math.random() * 12);
+        for (let k = 0; k < count; k++) {
+            const angle = Math.random() * Math.PI * 2;
+            const speed = 1.5 + Math.random() * 3.5;
+            const roamAngle = Math.random() * Math.PI * 2;
+            particles.push({
+                ox: x, oy: y,
+                x: x, y: y,
+                vx: Math.cos(angle) * speed,
+                vy: Math.sin(angle) * speed,
+                size: Math.random() * 3 + 0.8,
+                opacity: Math.random() * 0.55 + 0.35,
+                phase: Math.random() * Math.PI * 2,
+                speed: Math.random() * 0.08 + 0.02,
+                isCyan: true,
+                isClickSpawned: true,
+                spawnTime: performance.now(),
+                roamVX: Math.cos(roamAngle) * (0.05 + Math.random() * 0.10),
+                roamVY: Math.sin(roamAngle) * (0.05 + Math.random() * 0.10),
+            });
+        }
+        enforceClickParticleLimit();
+    }
+    function enforceClickParticleLimit() {
+        const clickIndices = [];
+        for (let i = 0; i < particles.length; i++) { if (particles[i].isClickSpawned && !particles[i].fading) clickIndices.push(i); }
+        const excess = clickIndices.length - 800;
+        if (excess > 0) {
+            for (let k = 0; k < excess; k++) {
+                const p = particles[clickIndices[k]];
+                p.fading = true;
+                p.fadeStart = performance.now();
+            }
+        }
+    }
+    let clickHoldTimer = null;
+    let pressStartPos = null;
+    function handlePressStart(x, y) {
+        pressStartPos = { x, y };
+        clickHoldTimer = setTimeout(() => { startHold(x, y); clickHoldTimer = null; }, 220);
+    }
+    function handlePressEnd(x, y) {
+        const rx = x != null ? x : (pressStartPos ? pressStartPos.x : mouse.x);
+        const ry = y != null ? y : (pressStartPos ? pressStartPos.y : mouse.y);
+        if (clickHoldTimer) {
+            clearTimeout(clickHoldTimer);
+            clickHoldTimer = null;
+            spawnClickSparks(rx, ry);
+        } else if (holdState.active) {
+            endHold();
+        }
+        pressStartPos = null;
+    }
+    canvas.addEventListener('mousedown', e => {
+        const rect = canvas.getBoundingClientRect();
+        handlePressStart(e.clientX - rect.left, e.clientY - rect.top);
+    });
+    canvas.addEventListener('mouseup', e => {
+        const rect = canvas.getBoundingClientRect();
+        handlePressEnd(e.clientX - rect.left, e.clientY - rect.top);
+    });
+    canvas.addEventListener('mouseleave', () => {
+        if (clickHoldTimer) { clearTimeout(clickHoldTimer); clickHoldTimer = null; pressStartPos = null; }
+        if (holdState.active) endHold();
+    });
+    canvas.addEventListener('touchstart', e => {
+        if (!e.touches || !e.touches[0]) return;
+        const rect = canvas.getBoundingClientRect();
+        handlePressStart(e.touches[0].clientX - rect.left, e.touches[0].clientY - rect.top);
+    }, { passive: true });
+    canvas.addEventListener('touchend', () => { handlePressEnd(null, null); }, { passive: true });
+
+
     let startTime = performance.now();
     const revealDuration = 4000;
     const liveBase = AVAX[AVAX.length - 1];
@@ -3963,32 +4493,64 @@ function startAutoPlayOnInteraction() {
                 ctx.stroke();
             }
         }
+        // حین نگه‌داشتن، لنگر شکل هر فریم با موقعیت فعلی ماوس به‌روزرسانی می‌شود؛
+        // اگر واقعاً جابه‌جایی محسوسی رخ داده باشد، حالت «تعقیب/پراکندگی» فعال می‌شود
+        if (holdState.active) {
+            const adx = mouse.x - holdState.anchorX;
+            const ady = mouse.y - holdState.anchorY;
+            if (Math.sqrt(adx * adx + ady * ady) > 1.6) holdState.lastMoveTime = now;
+            holdState.anchorX = mouse.x;
+            holdState.anchorY = mouse.y;
+        }
+        // حذف ذرات کلیک‌شده‌ای که کاملا محو شده‌اند (ذرات محیطی هرگز حذف نمی‌شوند)
+        for (let pi = particles.length - 1; pi >= 0; pi--) {
+            const pp = particles[pi];
+            if (pp.isClickSpawned && pp.fading && (now - pp.fadeStart) >= 1500) particles.splice(pi, 1);
+        }
         // particles (fireflies)
-        particles.forEach(p => {
-            p.ox += Math.sin(t * p.speed + p.phase) * 0.15;
-            p.oy += Math.cos(t * p.speed * 0.7 + p.phase) * 0.10;
-            if (p.ox > W + 20) p.ox -= W + 40;
-            if (p.ox < -20) p.ox += W + 40;
-            if (p.oy > H + 20) p.oy -= H + 40;
-            if (p.oy < -20) p.oy += H + 40;
-            const dx = mouse.x - p.x;
-            const dy = mouse.y - p.y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            const radius = 100;
-            if (dist < radius && dist > 0) {
-                const force = (1 - dist / radius) * 0.8;
-                p.vx += dx / dist * force;
-                p.vy += dy / dist * force;
+        particles.forEach((p, pIndex) => {
+            if (holdState.active && !p.isClickSpawned) {
+                updateHeldParticle(p, pIndex, now);
+            } else if (holdState.releasing && !p.isClickSpawned) {
+                updateReleasingParticle(p, now);
+            } else {
+                p.ox += Math.sin(t * p.speed + p.phase) * 0.15;
+                p.oy += Math.cos(t * p.speed * 0.7 + p.phase) * 0.10;
+                // ذرات ساخته‌شده با کلیک تکی، یک رانش آرام و پیوسته هم دارند تا به‌جای
+                // متمرکز ماندن دور نقطه‌ی کلیک، با یک ریتم نرم توی کل صفحه پخش بشن
+                if (p.isClickSpawned && p.roamVX !== undefined) {
+                    p.ox += p.roamVX;
+                    p.oy += p.roamVY;
+                }
+                if (p.ox > W + 20) p.ox -= W + 40;
+                if (p.ox < -20) p.ox += W + 40;
+                if (p.oy > H + 20) p.oy -= H + 40;
+                if (p.oy < -20) p.oy += H + 40;
+                if (!holdState.active) {
+                    const dx = mouse.x - p.x;
+                    const dy = mouse.y - p.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    const radius = 100;
+                    if (dist < radius && dist > 0) {
+                        const force = (1 - dist / radius) * 0.8;
+                        p.vx += dx / dist * force;
+                        p.vy += dy / dist * force;
+                    }
+                }
+                p.vx *= 0.87;
+                p.vy *= 0.87;
+                p.x = p.ox + p.vx;
+                p.y = p.oy + p.vy;
             }
-            p.vx *= 0.87;
-            p.vy *= 0.87;
-            p.x = p.ox + p.vx;
-            p.y = p.oy + p.vy;
             const flicker = 0.5 + 0.5 * Math.sin(now / 1000 + p.phase);
             let alpha = p.opacity * (0.7 + 0.3 * flicker);
+            if (p.fading) {
+                const fadeProgress = Math.min(1, (now - p.fadeStart) / 1500);
+                alpha *= (1 - fadeProgress);
+            }
             const mdx = mouse.x - p.x, mdy = mouse.y - p.y;
             const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
-            const boost = mdist < 80 ? (1 - mdist / 80) * 0.6 : 0;
+            const boost = (!holdState.active && mdist < 80) ? (1 - mdist / 80) * 0.6 : 0;
             ctx.beginPath();
             ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
             ctx.fillStyle = p.isCyan
@@ -4745,6 +5307,36 @@ function startAutoPlayOnInteraction() {
     };
 })();
 
+/* ===== اتصال رویدادهای ولوم اسلایدر و آپلود پلی‌لیست شخصی (اضافه‌شده) ===== */
+(function wireVolumeAndUpload() {
+    const volumeSlider = document.getElementById('volumeSlider');
+    const volumeValue = document.getElementById('volumeValue');
+    if (volumeSlider) {
+        audio.volume = (parseInt(volumeSlider.value, 10) || 80) / 100;
+        volumeSlider.style.setProperty('--vol-percent', volumeSlider.value + '%');
+        volumeSlider.addEventListener('input', function() {
+            const v = parseInt(this.value, 10);
+            audio.volume = v / 100;
+            if (volumeValue) volumeValue.textContent = v + '%';
+            this.style.setProperty('--vol-percent', v + '%');
+            if (v > 0 && isMuted) {
+                isMuted = false; audio.muted = false;
+                const svg = document.getElementById('volumeBtn').querySelector('svg');
+                svg.innerHTML = '<polygon points="11,5 6,9 2,9 2,15 6,15 11,19 11,5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>';
+            }
+        });
+    }
+    const uploadBtn = document.getElementById('playlistUploadBtn');
+    const uploadInput = document.getElementById('playlistUploadInput');
+    if (uploadBtn && uploadInput) {
+        uploadBtn.addEventListener('click', () => uploadInput.click());
+        uploadInput.addEventListener('change', async function() {
+            if (this.files && this.files.length > 0) await handleCustomUpload(this.files);
+            this.value = '';
+        });
+    }
+})();
+
 window.addEventListener('beforeunload', function() { stopEqAnimation(); });
 
 /* ================================================================
@@ -4764,8 +5356,8 @@ window.addEventListener('load', function() {
     // ساخت تمرین‌های اولیه (مخفی)
     if (typeof generateNewExercise === 'function') generateNewExercise(false);
     if (typeof initPivot === 'function') initPivot();
-    // پخش خودکار موزیک از همان صفحه‌ی ورود، بدون نیاز به تعامل کاربر
-    tryStartMusic();
+    // بازیابی پلی‌لیست/موقعیت ذخیره‌شده (اضافه‌شده) و سپس پخش خودکار موزیک از همان صفحه‌ی ورود، بدون نیاز به تعامل کاربر
+    restoreMusicState().finally(() => { tryStartMusic(); });
     // در صورتی که مرورگر پخش خودکار را مسدود کرده باشد، با اولین تعامل کاربر دوباره تلاش می‌شود
     document.addEventListener('click', startAutoPlayOnInteraction);
     document.addEventListener('touchstart', startAutoPlayOnInteraction);

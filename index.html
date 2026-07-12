@@ -479,6 +479,9 @@ body.entry-mode { overflow: hidden; }
 .music-panel:active { cursor: grabbing; }
 .music-panel.show { display: block; }
 @keyframes slideDown { from { opacity: 0; transform: translateY(-10px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+/* ورود تدریجی و پلکانی اجزای صفحه هنگام جابه‌جایی بین صفحات (اضافه‌شده) */
+@keyframes staggerIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+.stagger-child { animation: staggerIn 0.5s cubic-bezier(0.25,0.46,0.45,0.94) both; }
 .music-panel-header { display: flex; justify-content: flex-end; align-items: center; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); direction: ltr; cursor: grab; }
 .music-panel-header:active { cursor: grabbing; }
 .music-panel-close { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.06); color: #666; cursor: pointer; font-size: 16px; transition: all 0.3s ease; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 10; }
@@ -525,10 +528,17 @@ body.entry-mode { overflow: hidden; }
 .volume-slider::-moz-range-track { height: 3px; border-radius: 3px; background: rgba(255,255,255,0.08); }
 .volume-slider::-moz-range-progress { height: 3px; border-radius: 3px; background: linear-gradient(90deg, #890913, #ff0044); }
 
+/* ===== یک قانون مشترک برای رنگ/پس‌زمینه/حاشیه/سایه‌ی هر سه دکمه (پخش، پلی‌لیست، نمایش بیشتر) —
+   عمداً از یک کلاس واحد استفاده می‌شود تا این سه دکمه هرگز از نظر رنگ با هم فرق نکنند ===== */
+.glass-red-btn { position: relative; overflow: hidden; background: #170608; border: 1px solid rgba(255, 0, 68, 0.35); box-shadow: 0 4px 20px rgba(255, 0, 68, 0.15), inset 0 1px 0 rgba(255,255,255,0.08); color: #fff; transition: background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94); }
+.glass-red-btn::before { content: ''; position: absolute; top: -14px; left: -14px; width: 56px; height: 56px; border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,0.16), rgba(137,9,19,0.10) 60%, transparent 75%); pointer-events: none; }
+.glass-red-btn:hover { background: #250a0d; border-color: #ff0044; box-shadow: 0 6px 30px rgba(255, 0, 68, 0.35), inset 0 1px 0 rgba(255,255,255,0.12); color: #fff; }
+.glass-red-btn:active { transform: scale(0.96); }
+
 /* ===== دکمه‌ی پخش/مکث بازطراحی‌شده ===== */
-.play-btn { position: relative; background: radial-gradient(circle at 32% 28%, rgba(255,255,255,0.10), rgba(137,9,19,0.22) 55%, rgba(10,10,10,0.9)); border: 1px solid rgba(255, 0, 68, 0.35); box-shadow: 0 4px 20px rgba(255, 0, 68, 0.15), inset 0 1px 0 rgba(255,255,255,0.08); color: #fff; transition: all 0.35s cubic-bezier(0.25,0.46,0.45,0.94); }
+.play-btn { position: relative; }
 .play-btn::after { content: ''; position: absolute; inset: -4px; border-radius: 50%; border: 1px solid rgba(255,0,68,0.18); opacity: 0; transition: opacity 0.35s ease, transform 0.35s ease; transform: scale(0.85); pointer-events: none; }
-.play-btn:hover { background: radial-gradient(circle at 32% 28%, rgba(255,255,255,0.16), rgba(255,0,68,0.28) 55%, rgba(16,16,16,0.9)); border-color: #ff0044; transform: scale(1.08); box-shadow: 0 6px 30px rgba(255, 0, 68, 0.35), inset 0 1px 0 rgba(255,255,255,0.12); }
+.play-btn:hover { transform: scale(1.08); }
 .play-btn:hover::after { opacity: 1; transform: scale(1); }
 .play-btn:active { transform: scale(0.94); }
 .play-btn svg { position: relative; z-index: 1; filter: drop-shadow(0 0 6px rgba(255,0,68,0.5)); }
@@ -541,9 +551,8 @@ body.entry-mode { overflow: hidden; }
 
 @keyframes playPulse { 0%, 100% { box-shadow: 0 4px 26px rgba(255,0,68,0.22), inset 0 1px 0 rgba(255,255,255,0.1); } 50% { box-shadow: 0 4px 38px rgba(255,0,68,0.45), inset 0 1px 0 rgba(255,255,255,0.14); } }
 
-.playlist-toggle-btn, .crypto-more-btn { position: relative; overflow: hidden; background: radial-gradient(circle at 32% 28%, rgba(255,255,255,0.10), rgba(137,9,19,0.22) 55%, rgba(10,10,10,0.9)); border: 1px solid rgba(255, 0, 68, 0.35); color: #fff; cursor: pointer; padding: 9px 14px; border-radius: 12px; font-size: 12px; font-family: 'Vazirmatn', sans-serif; font-weight: 700; letter-spacing: 0.3px; display: flex; align-items: center; gap: 8px; width: 100%; justify-content: center; margin-top: 10px; box-shadow: 0 4px 20px rgba(255, 0, 68, 0.15); transition: all 0.35s cubic-bezier(0.25,0.46,0.45,0.94); }
-.playlist-toggle-btn::before, .crypto-more-btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 300%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent); animation: shimmerBtn 5s ease-in-out infinite; pointer-events: none; }
-.playlist-toggle-btn:hover, .crypto-more-btn:hover { background: radial-gradient(circle at 32% 28%, rgba(255,255,255,0.16), rgba(255,0,68,0.28) 55%, rgba(16,16,16,0.9)); border-color: #ff0044; box-shadow: 0 6px 30px rgba(255, 0, 68, 0.35); transform: translateY(-2px); color: #fff; }
+.playlist-toggle-btn, .crypto-more-btn { position: relative; cursor: pointer; padding: 9px 14px; border-radius: 12px; font-size: 12px; font-family: 'Vazirmatn', sans-serif; font-weight: 700; letter-spacing: 0.3px; display: flex; align-items: center; gap: 8px; width: 100%; justify-content: center; margin-top: 10px; }
+.playlist-toggle-btn:hover, .crypto-more-btn:hover { transform: translateY(-2px); }
 .playlist-toggle-btn:active, .crypto-more-btn:active { transform: translateY(0) scale(0.98); }
 .playlist-toggle-btn svg, .crypto-more-btn svg { width: 15px; height: 15px; position: relative; z-index: 1; filter: drop-shadow(0 0 6px rgba(255,0,68,0.5)); }
 
@@ -824,26 +833,39 @@ body.entry-mode { overflow: hidden; }
 .crypto-row-spark { width: 84px; height: 34px; flex-shrink: 0; }
 .crypto-row-spark svg { display: block; width: 100%; height: 100%; }
 .crypto-row-spark .spark-fill { opacity: 0.12; }
+.crypto-row-gold-wrap { display: flex; gap: 22px; flex: 1; }
+.crypto-row-gold-item { display: flex; flex-direction: column; gap: 3px; }
+.crypto-row-gold-item .gk { font-size: 10.5px; color: #888; }
+.crypto-row-gold-item .gv { font-family: 'Trebuchet MS', monospace; font-size: 13px; font-weight: 600; color: #ffd76a; direction: ltr; }
 
 /* ===== درایور «نمایش بیشتر» — ۱۰۰ ارز برتر، با انیمیشن باز شدن و جابه‌جایی رتبه ===== */
 .crypto-more-drawer { max-height: 0; overflow: hidden; transition: max-height 0.6s cubic-bezier(0.25,0.46,0.45,0.94); }
 .crypto-more-drawer.open { max-height: 4200px; }
 .crypto-more-list { display: flex; flex-direction: column; gap: 8px; padding-top: 14px; }
-.crypto-more-row { position: relative; display: flex; align-items: center; gap: 14px; background: #0a0a0a; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 10px 16px; transition: border-color 0.2s ease, background 0.2s ease; }
+.crypto-more-row { position: relative; display: flex; align-items: center; gap: 12px; background: #0a0a0a; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 10px 14px; transition: border-color 0.2s ease, background 0.2s ease; overflow-x: auto; cursor: pointer; }
 .crypto-more-row:hover { border-color: rgba(255,0,68,0.3); background: #0d0d0d; }
+.crypto-more-row.crypto-more-head { background: transparent; border: none; padding: 0 14px 8px; font-size: 10.5px; color: #666; cursor: default; }
+.crypto-more-row.no-hover { cursor: default; }
+.crypto-more-row.no-hover:hover { border-color: rgba(255,255,255,0.06); background: #0a0a0a; }
+.crypto-more-row.crypto-more-head:hover { background: transparent; }
 .crypto-more-rank { width: 26px; flex-shrink: 0; font-family: 'Trebuchet MS', monospace; font-weight: 800; font-size: 13px; color: #666; text-align: center; }
-.crypto-more-row:nth-child(-n+3) .crypto-more-rank { color: #ff0044; }
+.crypto-more-row:not(.crypto-more-head):nth-child(2) .crypto-more-rank,
+.crypto-more-row:not(.crypto-more-head):nth-child(3) .crypto-more-rank,
+.crypto-more-row:not(.crypto-more-head):nth-child(4) .crypto-more-rank { color: #ff0044; }
 .crypto-more-logo { width: 30px; height: 30px; flex-shrink: 0; border-radius: 50%; background: #14151a; border: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; overflow: hidden; }
-.crypto-more-logo img { width: 62%; height: 62%; object-fit: contain; }
-.crypto-more-logo .crypto-logo-fallback { position: absolute; font-size: 8px; }
-.crypto-more-name { flex: 1; min-width: 0; display: flex; align-items: baseline; gap: 7px; }
+.crypto-more-logo img { width: 76%; height: 76%; object-fit: contain; }
+.crypto-more-name { flex: 1; min-width: 140px; display: flex; align-items: baseline; gap: 7px; }
 .crypto-more-name .nm { font-size: 13.5px; font-weight: 700; color: #eee; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .crypto-more-name .sym { font-size: 11px; color: #777; flex-shrink: 0; }
-.crypto-more-price { font-family: 'Trebuchet MS', monospace; font-size: 13px; color: #ddd; min-width: 90px; text-align: left; direction: ltr; }
-.crypto-more-change { font-family: 'Trebuchet MS', monospace; font-size: 12px; min-width: 64px; text-align: left; direction: ltr; }
-.crypto-more-change.up { color: #000eff; }
+.crypto-more-spark { width: 70px; height: 28px; flex-shrink: 0; display: inline-block; }
+.crypto-more-spark svg { display: block; width: 100%; height: 100%; }
+.crypto-more-price { font-family: 'Trebuchet MS', monospace; font-size: 13px; color: #ddd; min-width: 80px; text-align: left; direction: ltr; flex-shrink: 0; }
+.crypto-more-change { font-family: 'Trebuchet MS', monospace; font-size: 12px; min-width: 72px; text-align: left; direction: ltr; flex-shrink: 0; }
+.crypto-more-change.up { color: #ffffff; }
 .crypto-more-change.down { color: #890913; }
 .crypto-more-change.na { color: #555; }
+.crypto-more-mcap, .crypto-more-vol { font-family: 'Trebuchet MS', monospace; font-size: 12px; color: #aaa; min-width: 80px; text-align: left; direction: ltr; flex-shrink: 0; }
+.crypto-more-supply { font-family: 'Trebuchet MS', monospace; font-size: 11.5px; color: #888; min-width: 110px; text-align: left; direction: ltr; flex-shrink: 0; }
 .crypto-more-note { text-align: center; font-size: 11px; color: #555; padding: 14px 0 4px; line-height: 1.9; }
 .crypto-row-error { color: #890913; font-size: 12px; }
 .ltr-num { direction: ltr; unicode-bidi: isolate; display: inline-block; }
@@ -854,6 +876,8 @@ body.entry-mode { overflow: hidden; }
 .economic-calendar-block .ec-title-row h2 { font-size: 22px; font-weight: 800; color: #fff; letter-spacing: 1px; }
 .economic-calendar-block .ec-title-row .ec-sub { font-size: 12px; color: #888; }
 .economic-calendar-card { background: #0a0a0a; border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 10px; box-shadow: 0 12px 30px rgba(0,0,0,0.5); overflow: hidden; }
+
+
 
 /* ===== بخش اطلاعات آی‌پی (جایگزین سایت iplocation) — بازطراحی‌شده ===== */
 .ip-block { margin-top: 34px; }
@@ -935,6 +959,30 @@ body.entry-mode { overflow: hidden; }
 .ip-source-row a:hover { color: #ff2a44; }
 .ip-detail-row { justify-content: space-between; }
 .ip-detail-vals { font-size: 11.5px; color: #ccc; direction: ltr; text-align: left; }
+
+/* ===== پاپ‌آپ جزئیات کامل هر ارز ===== */
+.coin-detail-modal { max-width: 620px; }
+.coin-detail-head { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; padding-bottom: 16px; margin-bottom: 16px; border-bottom: 1px solid rgba(255,0,68,0.15); }
+.coin-detail-logo { width: 52px; height: 52px; border-radius: 50%; background: #14151a; border: 1px solid rgba(255,255,255,0.1); padding: 6px; object-fit: contain; }
+.coin-detail-title { flex: 1; min-width: 140px; }
+.coin-detail-name { font-size: 17px; font-weight: 800; color: #fff; }
+.coin-detail-sym { font-size: 12px; color: #888; font-weight: 400; }
+.coin-detail-rank { font-size: 11.5px; color: #888; margin-top: 3px; }
+.coin-detail-price { text-align: left; direction: ltr; }
+.cdp-value { font-family: 'Trebuchet MS', monospace; font-size: 20px; font-weight: 800; color: #fff; }
+.cdp-change { font-family: 'Trebuchet MS', monospace; font-size: 12px; margin-top: 2px; }
+.cdp-change.up { color: #ffffff; }
+.cdp-change.down { color: #890913; }
+.coin-detail-chart { width: 100%; height: 150px; margin-bottom: 16px; background: #050505; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 6px; }
+.coin-detail-chart svg { display: block; width: 100%; height: 120px; }
+.coin-detail-chart-label { text-align: center; font-size: 10.5px; color: #666; margin-top: 4px; }
+.coin-detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 16px; }
+.cd-item { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 10px 12px; display: flex; flex-direction: column; gap: 4px; }
+.cd-item .cdk { font-size: 10.5px; color: #888; }
+.cd-item .cdv { font-family: 'Trebuchet MS', monospace; font-size: 13px; font-weight: 700; color: #eee; direction: ltr; text-align: left; }
+.coin-detail-desc { font-size: 12.5px; color: #aaa; line-height: 1.9; margin-bottom: 14px; }
+.coin-detail-link { display: inline-block; color: #ff5c7a; font-size: 12px; text-decoration: none; font-weight: 700; }
+.coin-detail-link:hover { text-decoration: underline; }
 .ip-source-row a:hover { text-decoration: underline; }
 
 /* ============================================================
@@ -1273,18 +1321,34 @@ body.entry-mode { overflow: hidden; }
         <div id="cryptoContent" class="hidden">
             <div class="crypto-laser crypto-laser-top"></div>
             <div class="crypto-title-row">
-                <h1>Crypto</h1>
+                <h1 style="cursor:pointer;" onclick="openCryptoSourcesPanel()" title="کلیک کنید تا منابع اطلاعات را ببینید">Crypto</h1>
             </div>
             <div class="crypto-list" id="cryptoGrid">
                 <div class="crypto-loading">در حال دریافت اطلاعات...</div>
             </div>
 
-            <button class="crypto-more-btn" id="cryptoMoreBtn" onclick="toggleCryptoMore()">
+            <button class="crypto-more-btn glass-red-btn" id="cryptoMoreBtn" onclick="toggleCryptoMore()">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                نمایش بیشتر
+                Show More
             </button>
             <div class="crypto-more-drawer" id="cryptoMoreDrawer">
                 <div class="crypto-more-list" id="cryptoMoreList"></div>
+            </div>
+
+            <div class="ip-sources-overlay" id="cryptoSourcesOverlay" onclick="if(event.target===this) closeCryptoSourcesPanel()">
+                <div class="ip-sources-modal">
+                    <button class="close-btn" onclick="closeCryptoSourcesPanel()">✕</button>
+                    <h3>🌐 منابع اطلاعات کریپتو</h3>
+                    <p class="sub-title">داده‌ی رتبه‌بندی و بازار از این منابع گرفته و بررسی متقابل می‌شود</p>
+                    <div class="ip-sources-list" id="cryptoSourcesList"></div>
+                </div>
+            </div>
+
+            <div class="ip-sources-overlay" id="coinDetailOverlay" onclick="if(event.target===this) closeCoinDetail()">
+                <div class="ip-sources-modal coin-detail-modal">
+                    <button class="close-btn" onclick="closeCoinDetail()">✕</button>
+                    <div id="coinDetailBody"></div>
+                </div>
             </div>
 
             <div class="economic-calendar-block">
@@ -1443,7 +1507,7 @@ body.entry-mode { overflow: hidden; }
         <button onclick="prevTrack()" class="ctrl-btn" title="آهنگ قبلی">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><polygon points="19,20 9,12 19,4 19,20"/><line x1="5" y1="4" x2="5" y2="20"/></svg>
         </button>
-        <button onclick="togglePlay()" id="playBtn" class="ctrl-btn play-btn" title="پخش/مکث">
+        <button onclick="togglePlay()" id="playBtn" class="ctrl-btn play-btn glass-red-btn" title="پخش/مکث">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5,3 19,12 5,21 5,3"/></svg>
         </button>
         <button onclick="nextTrack()" class="ctrl-btn" title="آهنگ بعدی">
@@ -1467,7 +1531,7 @@ body.entry-mode { overflow: hidden; }
         </span>
         <input type="range" id="volumeSlider" class="volume-slider" min="0" max="100" value="80" step="1">
     </div>
-    <button class="playlist-toggle-btn" id="playlistToggleBtn" onclick="togglePlaylistPanel()">
+    <button class="playlist-toggle-btn glass-red-btn" id="playlistToggleBtn" onclick="togglePlaylistPanel()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
         پلی‌لیست
     </button>
@@ -1717,41 +1781,75 @@ function setActiveView(which) {
     if (cryptoEl) cryptoEl.classList.toggle('hidden', which !== 'crypto');
     if (which !== 'leaderboard' && typeof closeLeaderboardModal === 'function') closeLeaderboardModal();
     refreshActiveChrome();
-    if (which === 'leaderboard' && typeof initLeaderboard === 'function') initLeaderboard();
-    if (which === 'crypto' && typeof initCrypto === 'function') initCrypto();
+    // این دو تا کمی سنگین‌اند (فراخوانی شبکه + رندر)؛ به تیک بعدی موکول می‌شوند تا
+    // دقیقاً لحظه‌ی جابه‌جایی صفحه هیچ تأخیری در نقاشی انیمیشن ایجاد نکنند
+    if (which === 'leaderboard' && typeof initLeaderboard === 'function') setTimeout(initLeaderboard, 0);
+    if (which === 'crypto' && typeof initCrypto === 'function') setTimeout(initCrypto, 0);
+}
+
+/* نمایش تدریجی و پلکانی اجزای صفحه هنگام ورود (اضافه‌شده) —
+   به‌جای اینکه کل صفحه یک‌جا محو/ظاهر شود، هر بخش با کمی تأخیر نسبت به قبلی می‌آید */
+function staggerReveal(elements, baseDelay) {
+    (elements || []).filter(Boolean).forEach((el, i) => {
+        el.classList.remove('stagger-child');
+        void el.offsetWidth; // ریست انیمیشن
+        el.style.animationDelay = (i * (baseDelay || 65)) + 'ms';
+        el.classList.add('stagger-child');
+    });
+}
+function getAppShellStaggerTargets(which) {
+    const header = document.querySelector('.header');
+    const levelDisplay = document.getElementById('levelDisplay');
+    const viewMap = { trend: 'trendContent', pivot: 'pivotContent', leaderboard: 'leaderboardContent', crypto: 'cryptoContent' };
+    const activeEl = document.getElementById(viewMap[which]);
+    const footer = document.querySelector('.global-footer');
+    const viewChildren = activeEl ? Array.from(activeEl.children) : [];
+    return [header, levelDisplay, ...viewChildren, footer];
 }
 
 function goToEntry() {
     const appShell = document.getElementById('appShell');
     const entryScreen = document.getElementById('entryScreen');
     if (typeof closeLeaderboardModal === 'function') closeLeaderboardModal();
+    window.__freezeAppBg = true;   // بلافاصله محاسبات سنگین صفحه‌ی خروجی متوقف می‌شود تا لگ نداشته باشیم
     appShell.style.opacity = '0';
     setTimeout(() => {
         appShell.classList.add('hidden');
         appShell.style.opacity = '';
         entryScreen.classList.remove('hidden');
-        entryScreen.style.opacity = '0';
         document.body.classList.add('entry-mode');
         window.scrollTo(0, 0);
         if (typeof window.resetEntryReveal === 'function') window.resetEntryReveal();
-        requestAnimationFrame(() => { entryScreen.style.opacity = '1'; });
+        window.__freezeAppBg = false;
+        requestAnimationFrame(() => {
+            entryScreen.style.transition = 'none';
+            entryScreen.style.opacity = '1';
+            staggerReveal(Array.from(document.querySelectorAll('#entryActions .entry-btn')));
+            setTimeout(() => { entryScreen.style.transition = ''; }, 50);
+        });
     }, 400);
 }
 
 function openExercise(which) {
     const appShell = document.getElementById('appShell');
     const entryScreen = document.getElementById('entryScreen');
+    window.__freezeEntry = true;   // بلافاصله محاسبات سنگین صفحه‌ی ورود متوقف می‌شود تا لگ نداشته باشیم
     entryScreen.style.opacity = '0';
     setTimeout(() => {
         entryScreen.classList.add('hidden');
         entryScreen.style.opacity = '';
         appShell.classList.remove('hidden');
-        appShell.style.opacity = '0';
         document.body.classList.remove('entry-mode');
         setActiveView(which);
         window.scrollTo(0, 0);
         tryStartMusic();
-        requestAnimationFrame(() => { appShell.style.opacity = '1'; });
+        window.__freezeEntry = false;
+        requestAnimationFrame(() => {
+            appShell.style.transition = 'none';
+            appShell.style.opacity = '1';
+            staggerReveal(getAppShellStaggerTargets(which));
+            setTimeout(() => { appShell.style.transition = ''; }, 50);
+        });
     }, 400);
 }
 function enterTrend() { openExercise('trend'); }
@@ -4662,13 +4760,31 @@ function createDustInteraction(opts) {
     const INF_DURATION = 5000;         // ۵ ثانیه بی‌نهایت، سپس کلمه — از لحظه‌ی ثابت شدن ماوس
     const CLICK_LIFETIME = 2600;       // ذرات کلیکی همیشه بعد از این مدت محو می‌شوند
     const FORM_STAGGER = 900;          // حداکثر تأخیر لایه‌به‌لایه‌ی شکل‌گیری (ms) برای دورترین ذره
+    // حافظه‌ی مسیر ماوس با بافر دایره‌ای با اندازه‌ی ثابت — هرگز جابه‌جا (shift) نمی‌شود،
+    // پس هیچ‌وقت باعث پرش ذرات دور نمی‌شود و با گذر زمان هم کش نمی‌آید (تأخیر هر ذره ثابت است)
+    const HISTORY_SIZE = 300;
+    const MAX_DELAY_FRAMES = 34;       // بیشترین تأخیر برای دورترین ذره (تقریباً نیم ثانیه در ۶۰ فریم بر ثانیه)
+    const historyX = new Float32Array(HISTORY_SIZE);
+    const historyY = new Float32Array(HISTORY_SIZE);
 
     const st = {
         active: false, releasing: false, startTime: 0, releaseStart: 0,
         anchorX: 0, anchorY: 0, lastMoveTime: 0, stillSince: 0,
-        trail: [], phaseNow: 'idle', lastAssigned: null, formStartTime: 0,
+        historyCount: 0, phaseNow: 'idle', lastAssigned: null, formStartTime: 0,
     };
     let holdTimer = null, pressPos = null;
+
+    function pushHistory(x, y) {
+        const idx = st.historyCount % HISTORY_SIZE;
+        historyX[idx] = x; historyY[idx] = y;
+        st.historyCount++;
+    }
+    function historyAt(framesAgo) {
+        const avail = Math.min(st.historyCount, HISTORY_SIZE) - 1;
+        const back = Math.max(0, Math.min(framesAgo, avail));
+        const idx = ((st.historyCount - 1 - back) % HISTORY_SIZE + HISTORY_SIZE) % HISTORY_SIZE;
+        return { x: historyX[idx], y: historyY[idx] };
+    }
 
     function shapeables() { return particles.filter(p => !p.isClickSpawned); }
 
@@ -4714,7 +4830,8 @@ function createDustInteraction(opts) {
         st.lastMoveTime = 0;
         st.stillSince = performance.now();
         st.anchorX = x; st.anchorY = y;
-        st.trail = [{ x: x, y: y }];
+        st.historyCount = 0;
+        pushHistory(x, y);
         st.lastAssigned = null;
         assignFor('inf');
     }
@@ -4764,20 +4881,42 @@ function createDustInteraction(opts) {
         if (!el || !el.closest) return false;
         return !!el.closest('button, a, input, textarea, select, svg, .music-panel, .playlist-panel, .survey-overlay, .lb-modal-backdrop, .toolbar, .record-item-inline, .lb-row, .crypto-row, .ip-block, .economic-calendar-block');
     }
+    let touchStartPos = null;
+    let scrolledSincePress = false;
+    let pressScrollX = 0, pressScrollY = 0;
     function pressStart(x, y, ev) {
         if (excludeUI && ev && isUIElement(ev.target)) return;
         pressPos = { x, y };
-        holdTimer = setTimeout(() => { startHold(x, y); holdTimer = null; }, 220);
+        scrolledSincePress = false;
+        pressScrollX = window.scrollX; pressScrollY = window.scrollY;
+        if (ev && ev.touches) touchStartPos = { x, y };
+        holdTimer = setTimeout(() => {
+            if (!scrolledSincePress && !didPageScroll()) startHold(x, y);
+            holdTimer = null;
+        }, 220);
+    }
+    function didPageScroll() {
+        // مقایسه‌ی مستقیم موقعیت اسکرول — مستقل از ترتیب رویدادها، پس هیچ‌وقت دیر نمی‌رسد
+        return Math.abs(window.scrollX - pressScrollX) > 1 || Math.abs(window.scrollY - pressScrollY) > 1;
     }
     function pressEnd(x, y) {
         const rx = x != null ? x : (pressPos ? pressPos.x : -999);
         const ry = y != null ? y : (pressPos ? pressPos.y : -999);
+        const wasScroll = scrolledSincePress || didPageScroll();
         if (holdTimer) {
             clearTimeout(holdTimer); holdTimer = null;
-            if (rx > -900) spawnSparks(rx, ry);
+            if (rx > -900 && !wasScroll) spawnSparks(rx, ry);
         } else if (st.active) endHold();
         pressPos = null;
+        touchStartPos = null;
     }
+    // اگر همین حین یک press معلق، صفحه واقعاً اسکرول شود، یعنی کاربر داشت اسکرول می‌کرد نه هولد/کلیک روی غبار
+    window.addEventListener('scroll', () => {
+        if (pressPos) {
+            scrolledSincePress = true;
+            if (holdTimer) { clearTimeout(holdTimer); holdTimer = null; }
+        }
+    }, { capture: true, passive: true });
 
     target.addEventListener('mousedown', e => { const m = getMouse(e); pressStart(m.x, m.y, e); });
     target.addEventListener('mouseup', e => { const m = getMouse(e); pressEnd(m.x, m.y); });
@@ -4789,6 +4928,16 @@ function createDustInteraction(opts) {
         if (!e.touches || !e.touches[0]) return;
         const m = getMouse(e.touches[0]);
         pressStart(m.x, m.y, e);
+    }, { passive: true });
+    target.addEventListener('touchmove', e => {
+        if (!touchStartPos || !e.touches || !e.touches[0]) return;
+        const m = getMouse(e.touches[0]);
+        const dx = m.x - touchStartPos.x, dy = m.y - touchStartPos.y;
+        // اگر انگشت بیش از چند پیکسل جابه‌جا شد، این یک اسکرول/کشیدن صفحه است، نه هولد
+        if (Math.sqrt(dx * dx + dy * dy) > 12) {
+            scrolledSincePress = true;
+            if (holdTimer) { clearTimeout(holdTimer); holdTimer = null; }
+        }
     }, { passive: true });
     target.addEventListener('touchend', () => pressEnd(null, null), { passive: true });
 
@@ -4802,17 +4951,9 @@ function createDustInteraction(opts) {
             const moved = Math.sqrt(dx * dx + dy * dy) > 1.4;
             if (moved) { st.lastMoveTime = now; st.stillSince = 0; }
             st.anchorX = mx; st.anchorY = my;
+            pushHistory(mx, my);
 
-            const last = st.trail[st.trail.length - 1];
-            if (!last || Math.abs(last.x - mx) > 1 || Math.abs(last.y - my) > 1) {
-                st.trail.push({ x: mx, y: my });
-                if (st.trail.length > 500) st.trail.shift();
-            }
-            const moveAmt = Math.sqrt(dx * dx + dy * dy);
-            st.trailLen = (st.trailLen || 2) + (moved ? Math.min(4, moveAmt * 0.35) : -1.2);
-            st.trailLen = Math.max(2, Math.min(st.trail.length, st.trailLen));
-
-            const isMoving = (now - st.lastMoveTime) < STILL_MS && st.trail.length > 1;
+            const isMoving = (now - st.lastMoveTime) < STILL_MS && st.historyCount > 1;
             if (isMoving) {
                 if (st.phaseNow !== 'tail') {
                     // تازه وارد حالت کشیدن می‌شویم: رتبه‌ی هر ذره را بر اساس فاصله‌ی واقعی‌اش
@@ -4857,21 +4998,22 @@ function createDustInteraction(opts) {
                 // ذره پیش از هولد — تا وقتی رها شد، دقیقاً به همان‌جا برگردد، نه یک نقطه‌ی متمرکز جدید
 
                 if (st.phaseNow === 'tail') {
-                    const T = st.trail;
                     const rank = p.rank !== undefined ? p.rank : 0.5;
-                    const usable = Math.max(2, Math.min(T.length, st.trailLen | 0));
-                    const fi = (1 - rank) * (usable - 1);
-                    const base = T.length - usable;
-                    const i0 = Math.max(0, Math.min(T.length - 2, base + Math.floor(fi)));
-                    const fr = fi - Math.floor(fi);
-                    const bx = T[i0].x + (T[i0 + 1].x - T[i0].x) * fr;
-                    const by = T[i0].y + (T[i0 + 1].y - T[i0].y) * fr;
-                    const tx = T[i0 + 1].x - T[i0].x, ty = T[i0 + 1].y - T[i0].y;
+                    // هر ذره دقیقاً موقعیت ماوس را از N فریم قبل تعقیب می‌کند — N با رتبه تعیین می‌شود
+                    // و همیشه محدود می‌ماند، پس نه کش می‌آید نه با گذر زمان خراب می‌شود
+                    const delayFrames = rank * MAX_DELAY_FRAMES;
+                    const d0 = Math.floor(delayFrames), d1 = Math.min(d0 + 1, MAX_DELAY_FRAMES);
+                    const fr = delayFrames - d0;
+                    const a = historyAt(d0), b = historyAt(d1);
+                    const bx = a.x + (b.x - a.x) * fr;
+                    const by = a.y + (b.y - a.y) * fr;
+                    // بردار عمود بر جهت حرکت لحظه‌ای، برای پخش‌شدگی عرضی طبیعی دنباله
+                    const ref = historyAt(Math.max(0, d0 - 1));
+                    let tx = bx - ref.x, ty = by - ref.y;
                     const tl = Math.sqrt(tx * tx + ty * ty) || 1;
                     const nx = -ty / tl, ny = tx / tl;
                     const width = 3 + rank * 4;
                     const sp = (p.tailSpread === undefined ? (p.tailSpread = (Math.random() - 0.5) * 2) : p.tailSpread) * width;
-                    // نزدیک‌ترها سریع‌تر واکنش می‌دهند، دورترها با تأخیر بیشتر (مثل کشیدن طناب)
                     const ease = 0.16 - rank * 0.11;
                     p.x += (bx + nx * sp - p.x) * ease;
                     p.y += (by + ny * sp - p.y) * ease;
@@ -5009,7 +5151,7 @@ function createDustInteraction(opts) {
         liveLow = liveBase.l;
     };
     function draw(now) {
-        if (document.getElementById('entryScreen').classList.contains('hidden')) { requestAnimationFrame(draw); return; }
+        if (window.__freezeEntry || document.getElementById('entryScreen').classList.contains('hidden')) { requestAnimationFrame(draw); return; }
         const elapsed = now - startTime;
         const t = elapsed / 1000;
         const revealT = Math.min(elapsed / revealDuration, 1);
@@ -5441,7 +5583,7 @@ function createDustInteraction(opts) {
 
     function draw(now) {
         const entryScreenEl = document.getElementById('entryScreen');
-        if (!entryScreenEl || !entryScreenEl.classList.contains('hidden')) { requestAnimationFrame(draw); return; }
+        if (window.__freezeAppBg || !entryScreenEl || !entryScreenEl.classList.contains('hidden')) { requestAnimationFrame(draw); return; }
         const t = now / 1000;
         ctx.clearRect(0, 0, W, H);
         ctx.fillStyle = "#0a0a0a";
@@ -5805,45 +5947,25 @@ function createDustInteraction(opts) {
    Crypto — قیمت لحظه‌ای ۸ ارز مشخص (جفت USDT) — اصلی: صرافی Binance، در صورت نبود ارز: صرافی KuCoin
    ================================================================ */
 (function cryptoEngine() {
-    // ۸ ارز درخواستی به همراه نماد در هر دو صرافی، اسلاگ آیکون و رنگ اصلی برند خودشان
-    const CRYPTO_COINS = [
-        { id: 'btc', symbol: 'btc', label: 'بیت‌کوین', binance: 'BTCUSDT', kucoin: 'BTC-USDT', mono: '₿', color: '#F7931A' },
-        { id: 'eth', symbol: 'eth', label: 'اتریوم', binance: 'ETHUSDT', kucoin: 'ETH-USDT', mono: 'Ξ', color: '#627EEA' },
-        { id: 'ton', symbol: 'ton', label: 'گرم (TON)', binance: 'TONUSDT', kucoin: 'TON-USDT', mono: 'TON', color: '#0098EA' },
-        { id: 'avax', symbol: 'avax', label: 'آواکس', binance: 'AVAXUSDT', kucoin: 'AVAX-USDT', mono: 'AVAX', color: '#E84142' },
-        { id: 'bnb', symbol: 'bnb', label: 'بی‌ان‌بی', binance: 'BNBUSDT', kucoin: 'BNB-USDT', mono: 'BNB', color: '#F3BA2F' },
-        { id: 'link', symbol: 'link', label: 'لینک', binance: 'LINKUSDT', kucoin: 'LINK-USDT', mono: 'LINK', color: '#375BD2' },
-        { id: 'bch', symbol: 'bch', label: 'بیت‌کوین کش', binance: 'BCHUSDT', kucoin: 'BCH-USDT', mono: 'BCH', color: '#0AC18E' },
-        { id: 'ltc', symbol: 'ltc', label: 'لایت‌کوین', binance: 'LTCUSDT', kucoin: 'LTC-USDT', mono: 'LTC', color: '#345D9D' },
-        // تتر — قیمت از صرافی ایرانی رمزینکس، به تومان
-        { id: 'usdt', symbol: 'usdt', label: 'تتر', mono: 'USDT', color: '#26A17B', ramzinex: true },
-    ];
     function formatCryptoPrice(price) {
         if (price >= 100) return price.toLocaleString('en-US', { maximumFractionDigits: 2, minimumFractionDigits: 2 });
         if (price >= 1) return price.toLocaleString('en-US', { maximumFractionDigits: 4 });
         return price.toPrecision(4);
     }
-    function formatCryptoVolume(vol) {
-        if (vol >= 1e9) return (vol / 1e9).toFixed(2) + 'B';
-        if (vol >= 1e6) return (vol / 1e6).toFixed(2) + 'M';
-        if (vol >= 1e3) return (vol / 1e3).toFixed(2) + 'K';
-        return vol.toFixed(2);
-    }
-    /* آیکون‌های واقعی (نه طراحی خودمان) — از یک مجموعه‌ی آیکون معتبر و به‌روز، بر اساس نماد هر ارز */
-    function iconUrlFor(symbol) {
-        return `https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/svg/color/${symbol.toLowerCase()}.svg`;
-    }
-    function coinLogoHtml(coin) {
-        const initials = (coin.symbol || coin.mono || '?').replace(/[^A-Za-z]/g, '').slice(0, 3).toUpperCase() || '?';
-        return `<div class="crypto-logo" style="--coin-color:${coin.color || '#890913'}">
-            <span class="crypto-logo-fallback">${initials}</span>
-            <img class="crypto-logo-img" alt="${coin.mono}" src="${iconUrlFor(coin.symbol || coin.mono)}"
-                 onerror="this.onerror=null;this.remove();">
-        </div>`;
-    }
+    window.formatCryptoPrice = formatCryptoPrice;
     function formatToman(v) {
         return Math.round(v).toLocaleString('en-US');
     }
+    function fmtBig(n) {
+        if (n == null) return '—';
+        if (n >= 1e12) return '$' + (n / 1e12).toFixed(2) + 'T';
+        if (n >= 1e9) return '$' + (n / 1e9).toFixed(2) + 'B';
+        if (n >= 1e6) return '$' + (n / 1e6).toFixed(2) + 'M';
+        if (n >= 1e3) return '$' + (n / 1e3).toFixed(2) + 'K';
+        return '$' + n.toFixed(2);
+    }
+    window.fmtBig = fmtBig;
+
     /* تتر: فقط از صرافی‌های ایرانی، به این ترتیب امتحان می‌شوند: رمزینکس، بیت‌پین، نوبیتکس، والکس.
        نکته‌ی مهم: نوبیتکس و والکس به‌صورت پیش‌فرض درخواست مرورگر از دامنه‌ی دیگر (این فایل) را
        مسدود می‌کنند (CORS) — این محدودیتی است که خودِ صرافی اعمال کرده و از سمت کد قابل دور زدن
@@ -5855,7 +5977,6 @@ function createDustInteraction(opts) {
     }
     const TETHER_SOURCES = [
         { name: 'رمزینکس', fn: async () => {
-            // فهرست کامل جفت‌ارزها را می‌گیریم و جفت USDT/تومان را در آن پیدا می‌کنیم
             const j = await tryJson('https://publicapi.ramzinex.com/exchange/api/v1.0/exchange/pairs');
             const list = (j && (j.data || j)) || [];
             const p = Array.isArray(list) ? list.find(x => {
@@ -5875,7 +5996,7 @@ function createDustInteraction(opts) {
             const arr = (j && (j.results || j)) || [];
             const m = arr.find(x => (x.code === 'USDT_IRT' || x.code === 'USDT_TMN'));
             if (!m || !m.price) throw new Error('bad');
-            return { toman: parseFloat(m.price), changePct: m.daily_routine_change ? parseFloat(m.daily_routine_change) : null, volume: m.volume_irt ? parseFloat(m.volume_irt) : (m.volume ? parseFloat(m.volume) : null) };
+            return { toman: parseFloat(m.price), changePct: m.daily_routine_change ? parseFloat(m.daily_routine_change) : null };
         }},
         { name: 'نوبیتکس', fn: async () => {
             const j = await tryJson('https://api.nobitex.ir/market/stats?srcCurrency=usdt&dstCurrency=rls');
@@ -5891,176 +6012,157 @@ function createDustInteraction(opts) {
             return { toman: parseFloat(p), changePct: m.stats['24h_ch'] ? parseFloat(m.stats['24h_ch']) : null };
         }},
     ];
-    async function fetchRamzinexUsdt() {
+    async function fetchTetherToman() {
         for (const s of TETHER_SOURCES) {
             try {
                 const r = await s.fn();
-                if (r && r.toman > 0) {
-                    return { toman: r.toman, changePct: r.changePct != null ? r.changePct : null, volume: r.volume != null ? r.volume : null, source: s.name, isToman: true };
-                }
+                if (r && r.toman > 0) return { toman: r.toman, changePct: r.changePct != null ? r.changePct : null, source: s.name };
             } catch (e) { /* صرافی بعدی */ }
         }
         return null;
     }
-    // ابتدا صرافی Binance را برای هر ارز امتحان می‌کنیم؛ اگر آن ارز آنجا موجود نبود، از صرافی KuCoin استفاده می‌شود
-    async function fetchOneCoin(coin) {
-        if (coin.ramzinex) return await fetchRamzinexUsdt();
+
+    /* قیمت طلای ۱۸ عیار و سکه از tgju.org — تلاش با یک آدرس شناخته‌شده؛ چون tgju مستندات
+       رسمی API عمومی ندارد نمی‌توانم بدون اجرای واقعی مطمئن شوم این آدرس در دسترس می‌ماند */
+    let tgjuCache = null, tgjuAt = 0;
+    async function fetchTgjuPrices() {
+        if (tgjuCache && (Date.now() - tgjuAt) < 30000) return tgjuCache;
         try {
-            const res = await fetch(`https://api.binance.com/api/v3/ticker/24hr?symbol=${coin.binance}`);
-            if (res.ok) {
-                const d = await res.json();
-                if (d && d.lastPrice && !d.code) {
-                    return {
-                        price: parseFloat(d.lastPrice),
-                        change: parseFloat(d.priceChange),
-                        changePct: parseFloat(d.priceChangePercent),
-                        volume: parseFloat(d.quoteVolume),
-                        source: 'Binance',
-                    };
-                }
-            }
-        } catch (e) { /* در صورت خطا، به صرافی KuCoin می‌رویم */ }
-        try {
-            const res2 = await fetch(`https://api.kucoin.com/api/v1/market/stats?symbol=${coin.kucoin}`);
-            if (res2.ok) {
-                const j = await res2.json();
-                const d = j && j.data;
-                if (d && d.last) {
-                    return {
-                        price: parseFloat(d.last),
-                        change: parseFloat(d.changePrice),
-                        changePct: parseFloat(d.changeRate) * 100,
-                        volume: parseFloat(d.volValue),
-                        source: 'KuCoin',
-                    };
-                }
-            }
-        } catch (e) { /* هر دو صرافی ناموفق بودند */ }
-        return null;
-    }
-    function renderCryptoRow(coin, d) {
-        const logo = coinLogoHtml(coin);
-        if (!d) {
-            return `<div class="crypto-row">${logo}<div class="crypto-row-error">دریافت اطلاعات ناموفق بود</div></div>`;
-        }
-        const isUp = (d.changePct == null) ? true : d.changePct >= 0;
-        const cls = d.changePct == null ? '' : (isUp ? 'up' : 'down');
-        const sign = isUp ? '+' : '';
-        const priceHtml = d.isToman
-            ? `<bdi class="ltr-num">${formatToman(d.toman)}</bdi> تومان`
-            : `<bdi class="ltr-num">$${formatCryptoPrice(d.price)}</bdi>`;
-        const changeHtml = d.isToman
-            ? (d.changePct != null ? `<bdi class="ltr-num">${sign}${d.changePct.toFixed(2)}%</bdi>` : '')
-            : `<bdi class="ltr-num">${sign}${d.change.toFixed(4)}</bdi><bdi class="ltr-num">${sign}${d.changePct.toFixed(2)}%</bdi>`;
-        const volHtml = d.volume
-            ? 'حجم کل بازار: <bdi class="ltr-num">' + formatCryptoVolume(d.volume) + (d.isToman ? ' تومان' : '') + '</bdi>'
-            : (d.isToman ? 'جفت‌ارز: USDT / تومان' : '—');
-        return `<div class="crypto-row">
-            ${logo}
-            <div class="crypto-row-price ${cls}">${priceHtml}</div>
-            <div class="crypto-row-change ${cls}">${changeHtml}</div>
-            <div class="crypto-row-vol">${volHtml}</div>
-            <div class="crypto-row-spark" id="spark-${coin.id}"></div>
-            <div class="crypto-row-source">${d.source}</div>
-        </div>`;
-    }
-    /* ================================================================
-       نمودار کوچک زنده (اسپارک‌لاین) قیمت هر ارز طی ۷ روز اخیر — کش می‌شود
-       تا هر ۲ ثانیه دوباره از سرور نخواهیم (فقط قیمت‌ها آن بازه‌ی کوتاه را دارند)
-       ================================================================ */
-    const sparkCache = {};
-    async function fetchSparkline(coin) {
-        if (!coin.binance) return null;
-        try {
-            const res = await fetch(`https://api.binance.com/api/v3/klines?symbol=${coin.binance}&interval=4h&limit=42`, { cache: 'no-store' });
-            if (!res.ok) throw new Error('http ' + res.status);
-            const rows = await res.json();
-            const closes = rows.map(r => parseFloat(r[4])).filter(v => !isNaN(v));
-            if (closes.length < 2) return null;
-            return closes;
+            const r = await fetch('https://call4.tgju.org/ajax.json', { cache: 'no-store' });
+            if (!r.ok) throw 0;
+            const j = await r.json();
+            const goldRial = j.current && j.current.geram18 && parseFloat(String(j.current.geram18.p).replace(/,/g, ''));
+            const coinRial = j.current && j.current.sekee && parseFloat(String(j.current.sekee.p).replace(/,/g, ''));
+            // tgju معمولاً به ریال گزارش می‌دهد؛ برای تومان بر ۱۰ تقسیم می‌شود
+            const gold = goldRial ? goldRial / 10 : null;
+            const coin = coinRial ? coinRial / 10 : null;
+            if (!gold && !coin) throw 0;
+            tgjuCache = { gold, coin }; tgjuAt = Date.now();
+            return tgjuCache;
         } catch (e) { return null; }
     }
-    function renderSparkline(el, closes) {
+
+    /* ================================================================
+       فهرست ۵۰ ارز برتر بر اساس رتبه‌ی واقعی و زنده‌ی مارکت‌کپ
+       صادقانه: کوین‌مارکت‌کپ کلید API پولی و اجازه‌ی فراخوانی مستقیم از مرورگر را
+       نمی‌دهد، پس منبع اصلیِ رتبه‌بندی/مارکت‌کپ/عرضه‌ی در گردش، کوین‌گکو است
+       (تنها سرویس رایگان و بدون کلید که این داده‌ی خاص را می‌دهد).
+       ================================================================ */
+    let top50Cache = null, top50At = 0;
+    async function fetchTop50() {
+        if (top50Cache && (Date.now() - top50At) < 60000) return top50Cache;
+        try {
+            const res = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=24h', { cache: 'no-store' });
+            if (!res.ok) throw new Error('http ' + res.status);
+            const arr = await res.json();
+            top50Cache = arr; top50At = Date.now();
+        } catch (e) { /* اگر در دسترس نبود، کش قبلی (اگر بود) نگه داشته می‌شود */ }
+        return top50Cache;
+    }
+    const PRICE_CROSSCHECK = [
+        { name: 'Binance', homepage: 'https://www.binance.com' },
+        { name: 'KuCoin', homepage: 'https://www.kucoin.com' },
+        { name: 'Coinbase', homepage: 'https://www.coinbase.com' },
+        { name: 'MEXC', homepage: 'https://www.mexc.com' },
+        { name: 'Kraken', homepage: 'https://www.kraken.com' },
+        { name: 'OKX', homepage: 'https://www.okx.com' },
+        { name: 'Bybit', homepage: 'https://www.bybit.com' },
+        { name: 'Gate.io', homepage: 'https://www.gate.io' },
+        { name: 'HTX (Huobi)', homepage: 'https://www.htx.com' },
+        { name: 'Bitget', homepage: 'https://www.bitget.com' },
+        { name: 'Bitfinex', homepage: 'https://www.bitfinex.com' },
+        { name: 'Bitstamp', homepage: 'https://www.bitstamp.net' },
+    ];
+    const MARKET_DATA_SOURCES = [
+        { name: 'CoinGecko', homepage: 'https://www.coingecko.com', primary: true },
+        { name: 'CoinCap', homepage: 'https://coincap.io' },
+        { name: 'CoinPaprika', homepage: 'https://coinpaprika.com' },
+    ];
+
+    function renderSparklineMini(el, prices) {
         if (!el) return;
-        if (!closes || closes.length < 2) { el.innerHTML = ''; return; }
+        if (!prices || prices.length < 2) { el.innerHTML = ''; return; }
         const W = 84, H = 34, PAD = 3;
-        const min = Math.min(...closes), max = Math.max(...closes);
+        const min = Math.min(...prices), max = Math.max(...prices);
         const range = (max - min) || 1;
-        const up = closes[closes.length - 1] >= closes[0];
-        const color = up ? '#000eff' : '#890913';
-        const pts = closes.map((v, i) => {
-            const x = PAD + (i / (closes.length - 1)) * (W - PAD * 2);
+        const up = prices[prices.length - 1] >= prices[0];
+        const color = up ? '#ffffff' : '#890913';
+        const pts = prices.map((v, i) => {
+            const x = PAD + (i / (prices.length - 1)) * (W - PAD * 2);
             const y = H - PAD - ((v - min) / range) * (H - PAD * 2);
             return [x, y];
         });
         const line = pts.map(p => p.join(',')).join(' ');
-        const fillPath = `M${pts[0][0]},${H} L` + pts.map(p => p.join(',')).join(' L') + ` L${pts[pts.length - 1][0]},${H} Z`;
         el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
-            <path class="spark-fill" d="${fillPath}" fill="${color}" stroke="none"></path>
             <polyline points="${line}" fill="none" stroke="${color}" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"></polyline>
         </svg>`;
     }
-    async function loadAllSparklines() {
-        await Promise.all(CRYPTO_COINS.map(async coin => {
-            if (!coin.binance) return;
-            const closes = await fetchSparkline(coin);
-            if (closes) sparkCache[coin.id] = closes;
-        }));
-        renderAllSparklines();
+
+    /* یک قالب واحد برای همه‌ی ردیف‌های ارز (چه رتبه ۱ تا ۹ در بالا، چه ۱۰ تا ۵۰ در «Show More») */
+    function renderCoinRow(coin) {
+        const rank = coin.market_cap_rank || '—';
+        const chg = coin.price_change_percentage_24h;
+        const chgCls = chg == null ? 'na' : (chg >= 0 ? 'up' : 'down');
+        const sign = chg != null && chg >= 0 ? '+' : '';
+        const chgHtml = chg == null ? 'بدون داده' : sign + chg.toFixed(2) + '%';
+        const symbol = (coin.symbol || '').toUpperCase();
+        return `<div class="crypto-more-row" data-symbol="${symbol}" onclick="openCoinDetail('${coin.id}')">
+            <span class="crypto-more-rank">${rank}</span>
+            <span class="crypto-more-logo"><img src="${coin.image}" alt="${symbol}" onerror="this.onerror=null;this.style.opacity=0;"></span>
+            <span class="crypto-more-name"><span class="nm">${coin.name}</span><span class="sym">${symbol}</span></span>
+            <span class="crypto-more-spark" id="spark-${coin.id}"></span>
+            <span class="crypto-more-price"><bdi>$${formatCryptoPrice(coin.current_price)}</bdi></span>
+            <span class="crypto-more-change ${chgCls}"><bdi>${chgHtml}</bdi></span>
+            <span class="crypto-more-mcap"><bdi>${fmtBig(coin.market_cap)}</bdi></span>
+            <span class="crypto-more-vol"><bdi>${fmtBig(coin.total_volume)}</bdi></span>
+        </div>`;
     }
-    function renderAllSparklines() {
-        CRYPTO_COINS.forEach(coin => {
-            renderSparkline(document.getElementById('spark-' + coin.id), sparkCache[coin.id]);
-        });
+    /* ردیف ویژه‌ی «رتبه‌ی صفر»، قبل از بیت‌کوین: قیمت تتر به تومان + طلای ۱۸ عیار + سکه (زنده از tgju) */
+    function renderGoldRow(tetherData) {
+        const priceHtml = tetherData ? `<bdi class="ltr-num">${formatToman(tetherData.toman)}</bdi> تومان` : '—';
+        return `<div class="crypto-more-row no-hover gold-row">
+            <span class="crypto-more-rank">۰</span>
+            <span class="crypto-more-logo"><div class="crypto-logo" style="--coin-color:#26A17B;width:30px;height:30px;"><span style="font-size:15px;">💰</span></div></span>
+            <span class="crypto-more-name"><span class="nm">تتر / طلا / سکه</span></span>
+            <span class="crypto-more-price"><bdi>${priceHtml}</bdi></span>
+            <div class="crypto-row-gold-wrap">
+                <div class="crypto-row-gold-item"><span class="gk">طلای ۱۸ عیار</span><span class="gv" id="tgjuGold18k">در حال دریافت...</span></div>
+                <div class="crypto-row-gold-item"><span class="gk">سکه‌ی امامی</span><span class="gv" id="tgjuCoin">در حال دریافت...</span></div>
+            </div>
+            <span class="crypto-more-vol crypto-row-source">${tetherData ? tetherData.source : '—'}</span>
+        </div>`;
     }
-    let sparkInterval = null;
+    async function updateTgjuDisplay() {
+        const goldEl = document.getElementById('tgjuGold18k');
+        const coinEl = document.getElementById('tgjuCoin');
+        if (!goldEl && !coinEl) return;
+        const r = await fetchTgjuPrices();
+        if (goldEl) goldEl.textContent = (r && r.gold) ? formatToman(r.gold) + ' تومان' : 'در دسترس نیست';
+        if (coinEl) coinEl.textContent = (r && r.coin) ? formatToman(r.coin) + ' تومان' : 'در دسترس نیست';
+    }
 
     async function fetchCryptoData() {
         const grid = document.getElementById('cryptoGrid');
         if (!grid) return;
         try {
-            const results = await Promise.all(CRYPTO_COINS.map(fetchOneCoin));
-            grid.innerHTML = CRYPTO_COINS.map((coin, i) => renderCryptoRow(coin, results[i])).join('');
-            renderAllSparklines();
+            const [top50, tetherData] = await Promise.all([fetchTop50(), fetchTetherToman()]);
+            if (!top50 || !top50.length) {
+                grid.innerHTML = '<div class="crypto-loading">دریافت فهرست ارزها ناموفق بود.</div>';
+                return;
+            }
+            const top9 = top50.slice(0, 9);
+            grid.innerHTML = renderGoldRow(tetherData) + top9.map(renderCoinRow).join('');
+            top9.forEach(coin => {
+                const prices = coin.sparkline_in_7d && coin.sparkline_in_7d.price;
+                renderSparklineMini(document.getElementById('spark-' + coin.id), prices);
+            });
+            updateTgjuDisplay();
+            if (cryptoMoreLoaded) renderCryptoMoreList(top50);
         } catch (e) {
             grid.innerHTML = '<div class="crypto-loading">خطا در دریافت اطلاعات از صرافی‌ها</div>';
         }
     }
-    /* ================================================================
-       «نمایش بیشتر» — فهرست رتبه‌بندی‌شده‌ی ارزهای برتر (طبق رتبه‌ی کوین‌مارکت‌کپ)
-       نکته‌ی مهم: رتبه‌ها یک عکس لحظه‌ای (snapshot) ثابت هستند، نه رتبه‌ی زنده‌ی
-       بازار — چون محاسبه‌ی رتبه‌ی زنده به داده‌ی اختصاصی کوین‌مارکت‌کپ نیاز دارد که
-       از مرورگر و بدون کلید API در دسترس نیست. قیمت و درصد تغییر هرکجا که ممکن
-       بود، زنده و از صرافی بایننس گرفته می‌شود.
-       ================================================================ */
-    const TOP_COINS_SNAPSHOT = [
-        [1,'Bitcoin','BTC'],[2,'Ethereum','ETH'],[3,'Tether','USDT'],[4,'BNB','BNB'],[5,'USDC','USDC'],
-        [6,'XRP','XRP'],[7,'Solana','SOL'],[8,'TRON','TRX'],[9,'Hyperliquid','HYPE'],[10,'Dogecoin','DOGE'],
-        [11,'UNUS SED LEO','LEO'],[12,'Zcash','ZEC'],[13,'Stellar','XLM'],[14,'Cardano','ADA'],[15,'Monero','XMR'],
-        [16,'Chainlink','LINK'],[17,'Canton','CC'],[18,'Bitcoin Cash','BCH'],[19,'Dai','DAI'],[20,'Gram (prev. Toncoin)','TON'],
-        [21,'World Liberty Financial USD','USD1'],[22,'Ethena USDe','USDE'],[23,'Litecoin','LTC'],[24,'DeXe','DEXE'],[25,'Global Dollar','USDG'],
-        [26,'Hedera','HBAR'],[27,'Sui','SUI'],[28,'Avalanche','AVAX'],[29,'PayPal USD','PYUSD'],[30,'Cronos','CRO'],
-        [31,'Shiba Inu','SHIB'],[32,'Tether Gold','XAUT'],[33,'NEAR Protocol','NEAR'],[34,'Bittensor','TAO'],[35,'Uniswap','UNI'],
-        [36,'World Liberty Financial','WLFI'],[37,'PAX Gold','PAXG'],[38,'Aster','ASTER'],[39,'OKB','OKB'],[40,'MemeCore','M'],
-        [41,'Ondo','ONDO'],[42,'USDD','USDD'],[43,'Aave','AAVE'],[44,'Ripple USD','RLUSD'],[45,'Polkadot','DOT'],
-        [46,'Worldcoin','WLD'],[47,'Sky','SKY'],[48,'Mantle','MNT'],[49,'Internet Computer','ICP'],[50,'Pepe','PEPE'],
-        [51,'Bitget Token','BGB'],[52,'Ethereum Classic','ETC'],[53,'Morpho','MORPHO'],[54,'Pi','PI'],[55,'United Stables','U'],
-        [56,'KuCoin Token','KCS'],[57,'Stable','STABLE'],[58,'JUST','JST'],[59,'Polygon (prev. MATIC)','POL'],[60,'Cosmos','ATOM'],
-        [61,'Render','RENDER'],[62,'Kaspa','KAS'],[63,'Quant','QNT'],
-    ];
-    let bulkTickerCache = null, bulkTickerAt = 0;
-    async function getBulkTickers() {
-        if (bulkTickerCache && (Date.now() - bulkTickerAt) < 15000) return bulkTickerCache;
-        try {
-            const res = await fetch('https://api.binance.com/api/v3/ticker/24hr', { cache: 'no-store' });
-            if (!res.ok) throw new Error('http ' + res.status);
-            const arr = await res.json();
-            const map = {};
-            arr.forEach(t => { map[t.symbol] = t; });
-            bulkTickerCache = map; bulkTickerAt = Date.now();
-        } catch (e) { /* در دسترس نبود؛ همان کش قبلی (اگر بود) استفاده می‌شود */ }
-        return bulkTickerCache;
-    }
+
     let cryptoMoreOpen = false, cryptoMoreLoaded = false;
     window.toggleCryptoMore = async function() {
         const drawer = document.getElementById('cryptoMoreDrawer');
@@ -6068,75 +6170,172 @@ function createDustInteraction(opts) {
         if (!drawer) return;
         cryptoMoreOpen = !cryptoMoreOpen;
         if (cryptoMoreOpen) {
-            btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg> نمایش کمتر';
-            if (!cryptoMoreLoaded) { await renderCryptoMoreList(); cryptoMoreLoaded = true; }
+            btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg> Hide';
+            if (!cryptoMoreLoaded) { const top50 = await fetchTop50(); if (top50) renderCryptoMoreList(top50); cryptoMoreLoaded = true; }
+            drawer.style.maxHeight = drawer.scrollHeight + 'px';
             drawer.classList.add('open');
         } else {
-            btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg> نمایش بیشتر';
+            btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg> Show More';
+            drawer.style.maxHeight = drawer.scrollHeight + 'px';
+            requestAnimationFrame(() => { drawer.style.maxHeight = '0px'; });
             drawer.classList.remove('open');
         }
     };
-    async function renderCryptoMoreList() {
+    /* فقط رتبه‌های ۱۰ تا ۵۰ اینجا نشان داده می‌شوند — ۱ تا ۹ از قبل بالای صفحه دیده می‌شوند */
+    function renderCryptoMoreList(top50) {
         const list = document.getElementById('cryptoMoreList');
         if (!list) return;
-        const tickers = await getBulkTickers();
-        // موقعیت فعلی ۹ ارزی که از قبل در صفحه بودند را ذخیره می‌کنیم تا با FLIP به رتبه‌ی خودشان «پرواز» کنند
-        const existingRects = {};
-        CRYPTO_COINS.forEach(c => {
-            const el = document.getElementById('spark-' + c.id) && document.getElementById('spark-' + c.id).closest('.crypto-row');
-            if (el) existingRects[c.symbol.toUpperCase()] = el.getBoundingClientRect();
-        });
-        const rowsHtml = TOP_COINS_SNAPSHOT.map(([rank, name, symbol]) => {
-            const t = tickers ? tickers[symbol + 'USDT'] : null;
-            const priceHtml = t ? '$' + formatCryptoPrice(parseFloat(t.lastPrice)) : '—';
-            const chgVal = t ? parseFloat(t.priceChangePercent) : null;
-            const chgCls = chgVal == null ? 'na' : (chgVal >= 0 ? 'up' : 'down');
-            const chgHtml = chgVal == null ? 'بدون داده' : (chgVal >= 0 ? '+' : '') + chgVal.toFixed(2) + '%';
-            const initials = symbol.replace(/[^A-Za-z]/g, '').slice(0, 3).toUpperCase();
-            return `<div class="crypto-more-row" data-symbol="${symbol}">
-                <span class="crypto-more-rank">${rank}</span>
-                <span class="crypto-more-logo"><span class="crypto-logo-fallback">${initials}</span><img src="${iconUrlFor(symbol)}" alt="${symbol}" onerror="this.onerror=null;this.remove();"></span>
-                <span class="crypto-more-name"><span class="nm">${name}</span><span class="sym">${symbol}</span></span>
-                <span class="crypto-more-price"><bdi>${priceHtml}</bdi></span>
-                <span class="crypto-more-change ${chgCls}"><bdi>${chgHtml}</bdi></span>
-            </div>`;
-        }).join('');
-        list.innerHTML = rowsHtml + '<div class="crypto-more-note">رتبه‌بندی طبق آخرین فهرست کوین‌مارکت‌کپ (عکس لحظه‌ای، نه زنده) — قیمت و درصد تغییر، در صورت وجود بازار دلاری، زنده از صرافی بایننس است.</div>';
-
-        // FLIP: ۹ ارز موجود از موقعیت قبلی‌شان به رتبه‌ی جدیدشان در فهرست بزرگ «پرواز» می‌کنند
-        requestAnimationFrame(() => {
-            Object.entries(existingRects).forEach(([symbol, firstRect]) => {
-                const row = list.querySelector(`.crypto-more-row[data-symbol="${symbol}"]`);
-                if (!row) return;
-                const lastRect = row.getBoundingClientRect();
-                const dx = firstRect.left - lastRect.left, dy = firstRect.top - lastRect.top;
-                row.style.transition = 'none';
-                row.style.transform = `translate(${dx}px, ${dy}px)`;
-                row.style.opacity = '0.4';
-                requestAnimationFrame(() => {
-                    row.style.transition = 'transform 0.7s cubic-bezier(0.22,1,0.36,1), opacity 0.5s ease';
-                    row.style.transform = '';
-                    row.style.opacity = '1';
-                });
-            });
+        const rest = top50.slice(9, 50);
+        list.innerHTML =
+            '<div class="crypto-more-row crypto-more-head">' +
+            '<span class="crypto-more-rank">#</span>' +
+            '<span class="crypto-more-name">نام ارز</span><span class="crypto-more-spark">۷ روز</span>' +
+            '<span class="crypto-more-price">قیمت</span><span class="crypto-more-change">تغییر ۲۴ساعته</span>' +
+            '<span class="crypto-more-mcap">مارکت‌کپ</span><span class="crypto-more-vol">حجم ۲۴ساعته</span></div>' +
+            rest.map(renderCoinRow).join('');
+        rest.forEach(coin => {
+            const prices = coin.sparkline_in_7d && coin.sparkline_in_7d.price;
+            renderSparklineMini(document.getElementById('spark-' + coin.id), prices);
         });
     }
+
+    window.openCryptoSourcesPanel = function() {
+        const list = document.getElementById('cryptoSourcesList');
+        const overlay = document.getElementById('cryptoSourcesOverlay');
+        if (!list || !overlay) return;
+        const rows = [
+            ...MARKET_DATA_SOURCES.map(s => ({ name: s.name + (s.primary ? ' (منبع اصلی رتبه‌بندی و مارکت‌کپ)' : ' (رتبه‌بندی/مارکت‌کپ، پشتیبان)'), homepage: s.homepage, ok: s.primary ? !!top50Cache : true })),
+            ...PRICE_CROSSCHECK.map(p => ({ name: p.name + ' (تأیید قیمت لحظه‌ای)', homepage: p.homepage, ok: true })),
+            { name: 'رمزینکس (تتر به تومان)', homepage: 'https://ramzinex.com', ok: true },
+            { name: 'بیت‌پین (تتر به تومان)', homepage: 'https://bitpin.ir', ok: true },
+            { name: 'tgju.org (طلا و سکه)', homepage: 'https://www.tgju.org', ok: !!tgjuCache },
+        ];
+        list.innerHTML = rows.map(r => `
+            <div class="ip-source-row">
+                <span class="src-name">${r.name}</span>
+                <span class="src-status ${r.ok ? 'ok' : 'fail'}">${r.ok ? '✓ در دسترس' : '✗ پاسخ نداد'}</span>
+                <a href="${r.homepage}" target="_blank" rel="noopener noreferrer">مشاهده سایت ↗</a>
+            </div>`).join('');
+        overlay.classList.add('show');
+        document.body.style.overflow = 'hidden';
+    };
+    window.closeCryptoSourcesPanel = function() {
+        const overlay = document.getElementById('cryptoSourcesOverlay');
+        if (!overlay) return;
+        overlay.classList.remove('show');
+        document.body.style.overflow = '';
+    };
+
+    /* ================================================================
+       پاپ‌آپ جزئیات کامل هر ارز (با کلیک روی هرکدام از فهرست ۵۰ ارز برتر)
+       ================================================================ */
+    window.openCoinDetail = async function(coinId) {
+        const overlay = document.getElementById('coinDetailOverlay');
+        const body = document.getElementById('coinDetailBody');
+        if (!overlay || !body) return;
+        const cached = (top50Cache || []).find(c => c.id === coinId);
+        overlay.classList.add('show');
+        document.body.style.overflow = 'hidden';
+        body.innerHTML = '<div class="ip-loading">در حال دریافت جزئیات...</div>';
+
+        let full = null;
+        try {
+            const res = await fetch(`https://api.coingecko.com/api/v3/coins/${coinId}?localization=false&tickers=false&community_data=false&developer_data=false`, { cache: 'no-store' });
+            if (res.ok) full = await res.json();
+        } catch (e) { /* فقط با داده‌ی کش‌شده ادامه می‌دهیم */ }
+
+        const c = cached || (full ? {
+            id: full.id, name: full.name, symbol: full.symbol,
+            image: full.image && full.image.large,
+            current_price: full.market_data && full.market_data.current_price && full.market_data.current_price.usd,
+            market_cap: full.market_data && full.market_data.market_cap && full.market_data.market_cap.usd,
+            market_cap_rank: full.market_cap_rank,
+            total_volume: full.market_data && full.market_data.total_volume && full.market_data.total_volume.usd,
+            price_change_percentage_24h: full.market_data && full.market_data.price_change_percentage_24h,
+            circulating_supply: full.market_data && full.market_data.circulating_supply,
+            sparkline_in_7d: full.market_data && full.market_data.sparkline_in_7d,
+        } : null);
+
+        if (!c) {
+            body.innerHTML = '<div class="ip-error">دریافت جزئیات این ارز ناموفق بود.</div>';
+            return;
+        }
+        const chg = c.price_change_percentage_24h;
+        const chgCls = chg == null ? '' : (chg >= 0 ? 'up' : 'down');
+        const chgSign = chg != null && chg >= 0 ? '+' : '';
+        const md = full && full.market_data;
+        const ath = md && md.ath && md.ath.usd;
+        const athDate = md && md.ath_date && md.ath_date.usd;
+        const atl = md && md.atl && md.atl.usd;
+        const supplyPct = (md && md.max_supply && md.circulating_supply) ? (md.circulating_supply / md.max_supply * 100) : null;
+        const desc = full && full.description && full.description.en ? full.description.en.split('. ').slice(0, 2).join('. ') : '';
+        const homepage = full && full.links && full.links.homepage && full.links.homepage[0];
+
+        body.innerHTML = `
+            <div class="coin-detail-head">
+                <img src="${c.image}" alt="${c.symbol}" class="coin-detail-logo">
+                <div class="coin-detail-title">
+                    <div class="coin-detail-name">${c.name} <span class="coin-detail-sym">${(c.symbol || '').toUpperCase()}</span></div>
+                    <div class="coin-detail-rank">رتبه‌ی مارکت‌کپ: #${c.market_cap_rank || '—'}</div>
+                </div>
+                <div class="coin-detail-price">
+                    <div class="cdp-value">$${formatCryptoPrice(c.current_price || 0)}</div>
+                    <div class="cdp-change ${chgCls}">${chg != null ? chgSign + chg.toFixed(2) + '%' : '—'} (۲۴ساعته)</div>
+                </div>
+            </div>
+            <div class="coin-detail-chart" id="coinDetailChart"></div>
+            <div class="coin-detail-grid">
+                <div class="cd-item"><span class="cdk">مارکت‌کپ</span><span class="cdv">${fmtBig(c.market_cap)}</span></div>
+                <div class="cd-item"><span class="cdk">حجم ۲۴ساعته</span><span class="cdv">${fmtBig(c.total_volume)}</span></div>
+                <div class="cd-item"><span class="cdk">عرضه‌ی در گردش</span><span class="cdv">${c.circulating_supply ? Math.round(c.circulating_supply).toLocaleString('en-US') : '—'}</span></div>
+                <div class="cd-item"><span class="cdk">درصد عرضه از کل</span><span class="cdv">${supplyPct != null ? supplyPct.toFixed(1) + '%' : '—'}</span></div>
+                <div class="cd-item"><span class="cdk">بالاترین قیمت تاریخ (ATH)</span><span class="cdv">${ath ? '$' + formatCryptoPrice(ath) : '—'}</span></div>
+                <div class="cd-item"><span class="cdk">تاریخ ATH</span><span class="cdv">${athDate ? new Date(athDate).toLocaleDateString('fa-IR') : '—'}</span></div>
+                <div class="cd-item"><span class="cdk">پایین‌ترین قیمت تاریخ (ATL)</span><span class="cdv">${atl ? '$' + formatCryptoPrice(atl) : '—'}</span></div>
+            </div>
+            ${desc ? `<div class="coin-detail-desc">${desc}</div>` : ''}
+            ${homepage ? `<a class="coin-detail-link" href="${homepage}" target="_blank" rel="noopener noreferrer">وب‌سایت رسمی ↗</a>` : ''}
+        `;
+        const prices = c.sparkline_in_7d && c.sparkline_in_7d.price;
+        renderSparklineBig(document.getElementById('coinDetailChart'), prices);
+    };
+    function renderSparklineBig(el, prices) {
+        if (!el) return;
+        if (!prices || prices.length < 2) { el.innerHTML = '<div class="ip-loading" style="padding:30px 0;">نموداری در دسترس نیست</div>'; return; }
+        const W = 600, H = 140, PAD = 8;
+        const min = Math.min(...prices), max = Math.max(...prices);
+        const range = (max - min) || 1;
+        const up = prices[prices.length - 1] >= prices[0];
+        const color = up ? '#ffffff' : '#890913';
+        const pts = prices.map((v, i) => {
+            const x = PAD + (i / (prices.length - 1)) * (W - PAD * 2);
+            const y = H - PAD - ((v - min) / range) * (H - PAD * 2);
+            return [x, y];
+        });
+        const line = pts.map(p => p.join(',')).join(' ');
+        el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
+            <polyline points="${line}" fill="none" stroke="${color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></polyline>
+        </svg><div class="coin-detail-chart-label">نمودار قیمت ۷ روز اخیر</div>`;
+    }
+    window.closeCoinDetail = function() {
+        const overlay = document.getElementById('coinDetailOverlay');
+        if (!overlay) return;
+        overlay.classList.remove('show');
+        document.body.style.overflow = '';
+    };
 
     let cryptoInterval = null;
     window.initCrypto = function() {
         fetchCryptoData();
-        loadAllSparklines();
         if (typeof initIpInfo === 'function') initIpInfo();
         if (cryptoInterval) clearInterval(cryptoInterval);
         cryptoInterval = setInterval(() => {
             if (typeof activeView !== 'undefined' && activeView === 'crypto') fetchCryptoData();
-        }, 2000);
-        if (sparkInterval) clearInterval(sparkInterval);
-        sparkInterval = setInterval(() => {
-            if (typeof activeView !== 'undefined' && activeView === 'crypto') loadAllSparklines();
-        }, 5 * 60 * 1000);
+        }, 15000);
     };
 })();
+
+
 
 /* ================================================================
    اطلاعات آی‌پی (جایگزین کامل سایت iplocation) — اضافه‌شده
@@ -6226,6 +6425,15 @@ function createDustInteraction(opts) {
                      isp: d.isp, org: d.org, asn: d.asn, tz: d.timezone, currency: d.currency_code, calling: d.country_phone }; } },
         { name: 'db-ip.com', fn: async () => { const d = await getJson('https://api.db-ip.com/v2/free/self'); if (!d || !d.ipAddress) throw 0;
             return { ip: d.ipAddress, city: d.city, region: d.stateProv, country: d.countryName, cc: d.countryCode }; } },
+        { name: 'trackip.net', fn: async () => { const d = await getJson('https://trackip.net/ip?json=true').catch(async () => { const ip = await getText('https://trackip.net/ip'); return { IP: ip }; }); const ip = d && (d.IP || d.ip); if (!ip) throw 0; return { ip }; } },
+        { name: 'extreme-ip-lookup', fn: async () => { const d = await getJson('https://extreme-ip-lookup.com/json/'); if (!d || !d.query) throw 0;
+            return { ip: d.query, city: d.city, region: d.region, country: d.country, cc: d.countryCode, isp: d.isp, org: d.org, lat: d.lat, lon: d.lon }; } },
+        { name: 'country.is', fn: async () => { const d = await getJson('https://api.country.is/'); if (!d || !d.ip) throw 0; return { ip: d.ip, cc: d.country }; } },
+        { name: 'bigdatacloud', fn: async () => { const d = await getJson('https://api.bigdatacloud.net/data/client-ip'); if (!d || !d.ipString) throw 0; return { ip: d.ipString }; } },
+        { name: 'wtfismyip.com', fn: async () => { const d = await getJson('https://wtfismyip.com/json'); if (!d || !d.YourFuckingIPAddress) throw 0;
+            return { ip: d.YourFuckingIPAddress, isp: d.YourFuckingISP, country: d.YourFuckingCountry, city: d.YourFuckingCity }; } },
+        { name: 'reallyfreegeoip', fn: async () => { const d = await getJson('https://reallyfreegeoip.org/json/'); if (!d || !d.ip) throw 0;
+            return { ip: d.ip, city: d.city, region: d.region_name, country: d.country_name, cc: d.country_code, lat: d.latitude, lon: d.longitude, tz: d.time_zone }; } },
     ];
 
     /* رأی‌گیری: مقداری که بیشترین منابع روی آن توافق دارند برنده است → خطا به‌شدت کاهش می‌یابد */
@@ -6453,10 +6661,6 @@ function createDustInteraction(opts) {
             mapCard.style.display = 'block';
             setTimeout(() => buildMap(lat, lon), 60);
         } else mapCard.style.display = 'none';
-
-        document.getElementById('ipSourceNote').textContent =
-            'استعلام‌شده از ' + PROVIDERS.length + ' منبع مستقل — ' + ok + ' منبع پاسخ داد، ' + failed + ' منبع پاسخ نداد. ' +
-            'مقادیر نهایی بر اساس رأی اکثریت منابع انتخاب شده‌اند.';
     }
 
     /* آدرس وب‌سایت هرکدام از منابع (برای پاپ‌آپ نمایش منابع) */
@@ -6466,6 +6670,9 @@ function createDustInteraction(opts) {
         'ipify.org': 'https://www.ipify.org', 'ipify(v64)': 'https://www.ipify.org', 'my-ip.io': 'https://my-ip.io',
         'seeip.org': 'https://seeip.org', 'cloudflare': 'https://www.cloudflare.com', 'ident.me': 'https://ident.me',
         'icanhazip': 'https://icanhazip.com', 'ipapi(json)': 'https://ipwhois.io', 'db-ip.com': 'https://db-ip.com',
+        'trackip.net': 'https://trackip.net', 'extreme-ip-lookup': 'https://extreme-ip-lookup.com',
+        'country.is': 'https://country.is', 'bigdatacloud': 'https://www.bigdatacloud.com',
+        'wtfismyip.com': 'https://wtfismyip.com', 'reallyfreegeoip': 'https://reallyfreegeoip.org',
         'رمزینکس': 'https://ramzinex.com', 'بیت‌پین': 'https://bitpin.ir', 'نوبیتکس': 'https://nobitex.ir', 'والکس': 'https://wallex.ir',
     };
     window.__ipProviderStatus = [];

@@ -937,6 +937,34 @@ body.entry-mode { overflow: hidden; }
 .conv-select:focus { border-color: #890913; }
 .conv-select option { background: #120309; color: #eee; }
 .conv-select optgroup { background: #0a0206; color: #ff5c7a; font-weight: 700; }
+/* ===== تبدیل‌کننده‌ی سریع: منوی سفارشی با جستجو و اسکرول کندلی ===== */
+.conv-dd { position: relative; min-width: 150px; }
+.conv-dd-btn { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 8px; background: linear-gradient(150deg,#1a0509,#0e0206); border: 1px solid rgba(255,0,68,0.28); border-radius: 12px; padding: 12px 12px; color: #fff; font-family: 'Vazirmatn', sans-serif; font-size: 13px; cursor: pointer; transition: border-color 0.2s, box-shadow 0.2s; }
+.conv-dd-btn:hover { border-color: rgba(255,0,68,0.55); box-shadow: 0 0 14px rgba(255,0,68,0.18); }
+.conv-dd.open .conv-dd-btn { border-color: #ff0044; box-shadow: 0 0 16px rgba(255,0,68,0.3); }
+.conv-dd-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: right; flex: 1; }
+.conv-dd-arrow { color: #ff5c7a; font-size: 11px; transition: transform 0.25s; }
+.conv-dd.open .conv-dd-arrow { transform: rotate(180deg); }
+.conv-dd-panel { position: absolute; top: calc(100% + 6px); left: 0; right: 0; z-index: 60; background: linear-gradient(160deg,#180509,#0a0206); border: 1px solid rgba(255,0,68,0.35); border-radius: 14px; box-shadow: 0 18px 44px rgba(0,0,0,0.6), 0 0 20px rgba(255,0,68,0.14); padding: 8px; display: none; }
+.conv-dd.open .conv-dd-panel { display: block; animation: convDDin 0.18s ease; }
+@keyframes convDDin { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+.conv-dd-search { width: 100%; box-sizing: border-box; background: #0a0206; border: 1px solid rgba(255,0,68,0.3); border-radius: 10px; padding: 9px 11px; color: #fff; font-family: 'Vazirmatn', sans-serif; font-size: 12.5px; outline: none; margin-bottom: 6px; }
+.conv-dd-search:focus { border-color: #ff0044; }
+.conv-dd-search::placeholder { color: #7a5560; }
+.conv-dd-list { max-height: 230px; overflow-y: auto; overflow-x: hidden; }
+.conv-dd-list::-webkit-scrollbar { width: 9px; }
+.conv-dd-list::-webkit-scrollbar-track { background: #12030a; border-radius: 8px; }
+.conv-dd-list::-webkit-scrollbar-thumb { background: linear-gradient(180deg,#ff0044,#890913); border-radius: 8px; border: 2px solid #12030a; }
+.conv-dd-list::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg,#ff3366,#a50a16); }
+.conv-dd-list { scrollbar-width: thin; scrollbar-color: #ff0044 #12030a; }
+.conv-dd-group { font-size: 11px; font-weight: 800; color: #ff5c7a; padding: 8px 10px 4px; letter-spacing: 0.3px; }
+.conv-dd-opt { display: flex; align-items: center; gap: 8px; padding: 9px 10px; border-radius: 9px; color: #eee; font-size: 12.5px; cursor: pointer; transition: background 0.15s; }
+.conv-dd-opt:hover { background: rgba(255,0,68,0.14); }
+.conv-dd-opt.sel { background: rgba(255,0,68,0.22); color: #fff; }
+.conv-dd-opt img { width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0; }
+.conv-dd-opt .cdo-sym { font-weight: 700; color: #fff; }
+.conv-dd-opt .cdo-name { color: #b58; opacity: 0.85; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.conv-dd-empty { padding: 14px 10px; text-align: center; color: #7a5560; font-size: 12px; }
 .conv-swap { background: rgba(137,9,19,0.2); border: 1px solid rgba(255,0,68,0.4); color: #fff; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 16px; flex-shrink: 0; margin: 0 auto; display: block; }
 .conv-swap:hover { background: rgba(137,9,19,0.4); }
 .conv-result { background: rgba(137,9,19,0.12); border: 1px solid rgba(255,0,68,0.25); border-radius: 14px; padding: 16px; text-align: center; margin-top: 6px; }
@@ -990,11 +1018,71 @@ body.entry-mode { overflow: hidden; }
 .fng-svg { width: 240px; max-width: 100%; height: auto; }
 .fng-val { font-family: 'Trebuchet MS', monospace; font-size: 34px; font-weight: 800; margin-top: -18px; }
 .fng-label { color: #bbb; font-size: 13px; margin-top: 4px; font-weight: 600; }
+.fng-hist-card { background: linear-gradient(160deg,#0c0304,#080202); border: 1px solid rgba(255,0,68,0.16); border-radius: 16px; padding: 14px; margin-bottom: 18px; }
+.fng-hist-title { text-align: center; font-size: 13px; font-weight: 800; color: #fff; margin-bottom: 12px; }
+.fng-hist-chart svg { display: block; width: 100%; height: 130px; }
+.fng-hist-bar { transition: opacity 0.2s; }
+.fng-hist-bar:hover { opacity: 0.75; }
+/* ===== تقویم رویدادهای کریپتو ===== */
+.crypto-events-card { background: #0a0a0a; border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 8px; box-shadow: 0 12px 30px rgba(0,0,0,0.5); }
+.cev-row { display: flex; align-items: center; gap: 12px; padding: 12px 12px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.cev-row:last-child { border-bottom: none; }
+.cev-date { display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(160deg,#1a0509,#0e0206); border: 1px solid rgba(255,0,68,0.22); border-radius: 10px; min-width: 52px; padding: 7px 6px; flex-shrink: 0; }
+.cev-day { font-family: 'Trebuchet MS', monospace; font-size: 18px; font-weight: 800; color: #ff2d5e; line-height: 1; }
+.cev-mon { font-size: 9.5px; color: #a88; margin-top: 3px; }
+.cev-body { flex: 1; text-align: right; }
+.cev-title { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 3px; }
+.cev-desc { font-size: 11px; color: #9a9a9a; line-height: 1.7; }
+.cev-tag { display: inline-block; font-size: 10px; font-weight: 700; color: #ff5c7a; background: rgba(255,0,68,0.1); border: 1px solid rgba(255,0,68,0.2); border-radius: 6px; padding: 2px 7px; margin-top: 4px; }
+.cev-soon { font-size: 10.5px; color: #6a6; font-weight: 700; white-space: nowrap; flex-shrink: 0; }
+/* ===== ویجت شناور قیمت ===== */
+.mini-price-widget { position: fixed; bottom: 22px; left: 22px; z-index: 90; width: 210px; background: linear-gradient(165deg,#160409,#090203); border: 1px solid rgba(255,0,68,0.3); border-radius: 15px; box-shadow: 0 16px 40px rgba(0,0,0,0.55), 0 0 20px rgba(255,0,68,0.12); overflow: hidden; opacity: 0; transform: translateY(14px) scale(0.96); pointer-events: none; transition: opacity 0.28s, transform 0.28s; }
+.mini-price-widget.show { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+.mpw-head { display: flex; align-items: center; justify-content: space-between; padding: 9px 12px; background: rgba(255,0,68,0.08); border-bottom: 1px solid rgba(255,0,68,0.16); }
+.mpw-title { font-size: 12px; font-weight: 800; color: #fff; }
+.mpw-close { background: none; border: none; color: #ff5c7a; font-size: 13px; cursor: pointer; padding: 0 2px; line-height: 1; }
+.mpw-body { padding: 6px 10px 10px; }
+.mpw-loading { color: #888; font-size: 12px; text-align: center; padding: 12px 0; }
+.mpw-row { display: flex; align-items: center; gap: 8px; padding: 7px 2px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.mpw-row:last-child { border-bottom: none; }
+.mpw-row img { width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0; }
+.mpw-sym { font-size: 11.5px; font-weight: 700; color: #ddd; flex: 1; }
+.mpw-price { font-family: 'Trebuchet MS', monospace; font-size: 12px; font-weight: 700; color: #fff; direction: ltr; }
+.mpw-chg { font-size: 10px; font-weight: 700; min-width: 46px; text-align: left; direction: ltr; }
+.mpw-chg.up { color: #ffffff; }
+.mpw-chg.down { color: #ff2d5e; }
+.mini-price-fab { position: fixed; bottom: 22px; left: 22px; z-index: 89; width: 46px; height: 46px; border-radius: 50%; background: linear-gradient(160deg,#890913,#3a0308); border: 1px solid rgba(255,0,68,0.4); color: #fff; cursor: pointer; box-shadow: 0 10px 26px rgba(0,0,0,0.5), 0 0 16px rgba(255,0,68,0.2); display: flex; align-items: center; justify-content: center; }
+.mini-price-fab svg { width: 20px; height: 20px; }
+.mini-price-fab:hover { box-shadow: 0 10px 30px rgba(255,0,68,0.35); }
 .crypto-more-supply { font-family: 'Trebuchet MS', monospace; font-size: 11.5px; color: #888; min-width: 110px; text-align: left; direction: ltr; flex-shrink: 0; }
 .crypto-more-note { text-align: center; font-size: 11px; color: #555; padding: 14px 0 4px; line-height: 1.9; }
 .crypto-row-error { color: #890913; font-size: 12px; }
 .ltr-num { direction: ltr; unicode-bidi: isolate; display: inline-block; }
 .crypto-loading { color: #888; text-align: center; padding: 60px 0; font-size: 13px; }
+/* ===== نمودار دایره‌ای دامیننس ===== */
+.dom-pie-card { margin-top: 12px; background: linear-gradient(160deg,#0c0304,#080202); border: 1px solid rgba(255,0,68,0.16); border-radius: 16px; padding: 16px 14px; }
+.dom-pie-title { text-align: center; font-size: 14px; font-weight: 800; color: #fff; margin-bottom: 14px; letter-spacing: 0.4px; }
+.dom-pie-wrap { display: flex; align-items: center; justify-content: center; gap: 22px; flex-wrap: wrap; }
+.dom-pie-chart { width: 168px; height: 168px; flex-shrink: 0; }
+.dom-pie-chart svg { width: 168px; height: 168px; display: block; }
+.dom-pie-legend { display: flex; flex-direction: column; gap: 9px; min-width: 150px; }
+.dom-leg-item { display: flex; align-items: center; gap: 9px; font-size: 12.5px; color: #ddd; }
+.dom-leg-dot { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+.dom-leg-name { flex: 1; }
+.dom-leg-val { font-family: 'Trebuchet MS', monospace; font-weight: 700; color: #fff; direction: ltr; }
+/* ===== شمارش معکوس رویدادها ===== */
+.evt-count-card { margin-top: 12px; background: linear-gradient(160deg,#0c0304,#080202); border: 1px solid rgba(255,0,68,0.16); border-radius: 16px; padding: 16px 14px; }
+.evt-count-title { text-align: center; font-size: 14px; font-weight: 800; color: #fff; margin-bottom: 14px; letter-spacing: 0.4px; }
+.evt-count-list { display: flex; flex-direction: column; gap: 10px; }
+.evt-count-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; background: rgba(255,0,68,0.05); border: 1px solid rgba(255,0,68,0.14); border-radius: 12px; padding: 11px 13px; }
+.evt-count-info { display: flex; flex-direction: column; gap: 3px; text-align: right; }
+.evt-count-name { font-size: 12.5px; font-weight: 700; color: #fff; }
+.evt-count-date { font-size: 10.5px; color: #9a7; opacity: 0.7; }
+.evt-count-timer { display: flex; gap: 6px; flex-shrink: 0; }
+.evt-count-seg { display: flex; flex-direction: column; align-items: center; background: linear-gradient(160deg,#1a0509,#0e0206); border: 1px solid rgba(255,0,68,0.22); border-radius: 9px; padding: 5px 7px; min-width: 38px; }
+.evt-count-num { font-family: 'Trebuchet MS', monospace; font-size: 16px; font-weight: 800; color: #ff2d5e; line-height: 1; }
+.evt-count-unit { font-size: 8.5px; color: #a88; margin-top: 3px; }
+.evt-count-past { color: #6a6; font-size: 12px; }
 /* ===== تقویم اقتصادی (زیر لیست ارزها) ===== */
 .economic-calendar-block { margin-top: 34px; }
 .economic-calendar-block .ec-title-row { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 4px; margin-bottom: 16px; }
@@ -1535,6 +1623,19 @@ body.entry-mode { overflow: hidden; }
                             <div class="news-loading">در حال دریافت شاخص‌های بازار...</div>
                         </div>
                     </div>
+                    <!-- نمودار دایره‌ای دامیننس بازار -->
+                    <div class="dom-pie-card" id="domPieCard">
+                        <div class="dom-pie-title">سهم بازار (دامیننس)</div>
+                        <div class="dom-pie-wrap">
+                            <div class="dom-pie-chart" id="domPieChart"></div>
+                            <div class="dom-pie-legend" id="domPieLegend"></div>
+                        </div>
+                    </div>
+                    <!-- شمارنده‌ی معکوس رویدادهای مهم -->
+                    <div class="evt-count-card" id="evtCountCard">
+                        <div class="evt-count-title">شمارش معکوس تا رویدادهای مهم</div>
+                        <div class="evt-count-list" id="evtCountList"></div>
+                    </div>
                 </div>
 
                 <!-- پنل تقویم اقتصادی -->
@@ -1559,6 +1660,14 @@ body.entry-mode { overflow: hidden; }
                             </script>
                         </div>
                     </div>
+                    <!-- تقویم رویدادهای کریپتو -->
+                    <div class="economic-calendar-block" style="margin-top:26px;">
+                        <div class="ec-title-row">
+                            <h2>🗓️ تقویم رویدادهای کریپتو</h2>
+                            <div class="ec-sub">رویدادهای مهم شبکه‌ها و بازار ارز دیجیتال</div>
+                        </div>
+                        <div class="crypto-events-card" id="cryptoEventsCard"></div>
+                    </div>
                 </div>
 
                 <!-- پنل اخبار -->
@@ -1569,6 +1678,10 @@ body.entry-mode { overflow: hidden; }
                         </div>
                         <div class="fng-card" id="fngCard">
                             <div class="news-loading">در حال دریافت شاخص ترس و طمع بازار...</div>
+                        </div>
+                        <div class="fng-hist-card" id="fngHistCard" style="display:none;">
+                            <div class="fng-hist-title">تاریخچه‌ی ترس و طمع (۳۰ روز اخیر)</div>
+                            <div class="fng-hist-chart" id="fngHistChart"></div>
                         </div>
                         <div class="news-filter">
                             <input id="newsFilterInput" class="news-filter-input" type="text" placeholder="🔎 جست‌وجو در اخبار بر اساس ارز یا موضوع..." oninput="filterNews(this.value)">
@@ -1755,11 +1868,23 @@ body.entry-mode { overflow: hidden; }
         <p class="sub-title">ارز دیجیتال، پول کشورها، طلا و سکه — همه به هم</p>
         <div class="conv-row">
             <input id="convAmount" class="conv-amount" type="number" value="1" oninput="doConvert()">
-            <select id="convFrom" class="conv-select" onchange="doConvert()"></select>
+            <div class="conv-dd" id="convFromDD">
+                <button type="button" class="conv-dd-btn" onclick="toggleConvDD('from')"><span class="conv-dd-label" id="convFromLabel">—</span><span class="conv-dd-arrow">▾</span></button>
+                <div class="conv-dd-panel" id="convFromPanel">
+                    <input type="text" class="conv-dd-search" id="convFromSearch" placeholder="جستجو…" oninput="filterConvDD('from')">
+                    <div class="conv-dd-list" id="convFromList"></div>
+                </div>
+            </div>
         </div>
         <button class="conv-swap" onclick="convSwap()" title="جابه‌جایی">⇅</button>
         <div class="conv-row">
-            <select id="convTo" class="conv-select" style="flex:1;" onchange="doConvert()"></select>
+            <div class="conv-dd" id="convToDD" style="flex:1;">
+                <button type="button" class="conv-dd-btn" onclick="toggleConvDD('to')"><span class="conv-dd-label" id="convToLabel">—</span><span class="conv-dd-arrow">▾</span></button>
+                <div class="conv-dd-panel" id="convToPanel">
+                    <input type="text" class="conv-dd-search" id="convToSearch" placeholder="جستجو…" oninput="filterConvDD('to')">
+                    <div class="conv-dd-list" id="convToList"></div>
+                </div>
+            </div>
         </div>
         <div class="conv-result" id="convResult"><div class="cr-val">—</div></div>
     </div>
@@ -1767,6 +1892,18 @@ body.entry-mode { overflow: hidden; }
 
 <button id="scrollTopBtn" class="scroll-top-btn" onclick="scrollToTopSmooth()" aria-label="بازگشت به بالای صفحه" title="بازگشت به بالا">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="6 11 12 5 18 11"/></svg>
+</button>
+
+<!-- ویجت شناور قیمت -->
+<div id="miniPriceWidget" class="mini-price-widget">
+    <div class="mpw-head">
+        <span class="mpw-title">قیمت لحظه‌ای</span>
+        <button class="mpw-close" onclick="toggleMiniWidget(false)" title="بستن">✕</button>
+    </div>
+    <div class="mpw-body" id="mpwBody"><div class="mpw-loading">…</div></div>
+</div>
+<button id="miniPriceFab" class="mini-price-fab" onclick="toggleMiniWidget(true)" title="ویجت قیمت" style="display:none;">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>
 </button>
 
 <!-- ============================================================
@@ -1827,6 +1964,44 @@ body.entry-mode { overflow: hidden; }
         } catch (e) {
             card.innerHTML = '<div class="news-error">شاخص ترس و طمع در دسترس نیست.</div>';
         }
+        loadFearGreedHistory();
+    }
+    async function loadFearGreedHistory() {
+        const wrap = document.getElementById('fngHistCard'), chart = document.getElementById('fngHistChart');
+        if (!wrap || !chart) return;
+        try {
+            const j = await window.corsFetchJson('https://api.alternative.me/fng/?limit=30');
+            const arr = (j && j.data) || [];
+            if (arr.length < 3) throw 0;
+            const data = arr.slice().reverse().map(x => ({ v: parseInt(x.value, 10), t: parseInt(x.timestamp, 10) * 1000 }));
+            renderFngHistory(chart, data);
+            wrap.style.display = '';
+        } catch (e) { wrap.style.display = 'none'; }
+    }
+    function fngColor(v) {
+        if (v <= 25) return '#ff0044';
+        if (v <= 45) return '#e0556a';
+        if (v <= 55) return '#c8b3bb';
+        if (v <= 75) return '#e8e8e8';
+        return '#ffffff';
+    }
+    function renderFngHistory(el, data) {
+        const W = 600, H = 130, PADX = 6, PADT = 10, PADB = 18;
+        const n = data.length;
+        const slot = (W - PADX * 2) / n;
+        const bw = Math.max(2, slot * 0.66);
+        let bars = '';
+        for (let i = 0; i < n; i++) {
+            const v = Math.max(0, Math.min(100, data[i].v));
+            const bh = (v / 100) * (H - PADT - PADB);
+            const x = PADX + slot * i + (slot - bw) / 2;
+            const y = H - PADB - bh;
+            bars += `<rect class="fng-hist-bar" x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${bw.toFixed(1)}" height="${bh.toFixed(1)}" rx="1.5" fill="${fngColor(v)}"><title>${v}</title></rect>`;
+        }
+        const first = new Date(data[0].t).toLocaleDateString('fa-IR', { month: 'short', day: 'numeric' });
+        const last = new Date(data[n - 1].t).toLocaleDateString('fa-IR', { month: 'short', day: 'numeric' });
+        bars += `<text x="${PADX}" y="${H - 4}" fill="#777" font-size="9">${first}</text><text x="${W - PADX}" y="${H - 4}" text-anchor="end" fill="#777" font-size="9">${last}</text>`;
+        el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">${bars}</svg>`;
     }
     function fngFa(c) {
         const m = { 'Extreme Fear': 'ترس شدید', 'Fear': 'ترس', 'Neutral': 'خنثی', 'Greed': 'طمع', 'Extreme Greed': 'طمع شدید' };
@@ -6522,7 +6697,7 @@ function createDustInteraction(opts) {
         try {
             const d = new Date(); d.setDate(d.getDate() - 7);
             const start = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
-            const ts = await corsFetchJson('https://api.frankfurter.app/' + start + '..?from=USD&to=' + cur);
+            const ts = await corsFetchJson('https://api.frankfurter.dev/v1/' + start + '..?from=USD&to=' + cur);
             const rates = ts && ts.rates;
             if (rates) {
                 const dates = Object.keys(rates).sort();
@@ -6555,6 +6730,24 @@ function createDustInteraction(opts) {
         if (a >= 1e6) return (n / 1e6).toFixed(2) + 'M';
         if (a >= 1e3) return (n / 1e3).toFixed(2) + 'K';
         return n.toFixed(2);
+    }
+    function moRoundIcon(k, color) {
+        const grad = 'g' + k;
+        const defs = `<defs><radialGradient id="${grad}" cx="35%" cy="28%" r="85%"><stop offset="0%" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="34%" stop-color="${color}" stop-opacity="1"/><stop offset="100%" stop-color="#000000" stop-opacity="0.35"/></radialGradient></defs>`;
+        const base = `<circle cx="20" cy="20" r="19" fill="url(#${grad})" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>`;
+        let glyph = '';
+        if (k === 'dxy') {
+            glyph = `<text x="20" y="27.5" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="21" font-weight="900" fill="#ffffff">$</text>`;
+        } else if (k === 'total') {
+            glyph = `<ellipse cx="20" cy="26.5" rx="11" ry="4.3" fill="none" stroke="#ffffff" stroke-width="2.1"/><ellipse cx="20" cy="20" rx="11" ry="4.3" fill="none" stroke="#ffffff" stroke-width="2.1"/><ellipse cx="20" cy="13.5" rx="11" ry="4.3" fill="#ffffff"/>`;
+        } else if (k === 'total2') {
+            glyph = `<text x="20" y="27" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="16" font-weight="900" fill="#ffffff">T2</text>`;
+        } else if (k === 'total3') {
+            glyph = `<text x="20" y="27" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="16" font-weight="900" fill="#ffffff">T3</text>`;
+        } else if (k === 'others') {
+            glyph = `<circle cx="12.5" cy="20" r="3.1" fill="#ffffff"/><circle cx="20" cy="20" r="3.1" fill="#ffffff"/><circle cx="27.5" cy="20" r="3.1" fill="#ffffff"/>`;
+        }
+        return `<span class="crypto-more-logo"><span class="crypto-logo mo-svg-logo" style="--coin-color:${color};width:30px;height:30px;"><svg viewBox="0 0 40 40" width="30" height="30">${defs}${base}${glyph}</svg></span></span>`;
     }
     const moSeries = {};
     function moPush(key, val) {
@@ -6606,7 +6799,7 @@ function createDustInteraction(opts) {
             if (r.a != null && !isNaN(r.a)) { const up = r.a >= 0; if (!cls) cls = up ? 'up' : 'down'; ah = (up ? '+' : '−') + (r.af === 'big' ? fmtBigNoDollar(Math.abs(r.a)) : r.af === 'pts' ? Math.abs(r.a).toFixed(2) : Math.abs(r.a).toFixed(2) + '%'); }
             const logo = r.img
                 ? `<span class="crypto-more-logo"><img src="${r.img}" alt="${r.name}" onerror="this.onerror=null;this.style.display='none'"></span>`
-                : `<span class="crypto-more-logo"><div class="crypto-logo" style="--coin-color:${r.color};width:30px;height:30px;"><span style="font-size:14px;font-weight:800;">${r.icon}</span></div></span>`;
+                : moRoundIcon(r.k, r.color);
             return `<div class="crypto-more-row no-hover mo-row2" onclick="openIndexDetail('${r.k}')" style="cursor:pointer;">
                 <span class="crypto-more-fav"></span>
                 <span class="crypto-more-rank"></span>
@@ -6620,8 +6813,85 @@ function createDustInteraction(opts) {
             </div>`;
         }).join('');
         rows.forEach(r => { renderSparklineMini(document.getElementById('spark-mo-' + r.k), (moSeries[r.k] && moSeries[r.k].length >= 2) ? moSeries[r.k] : null); });
+        renderDominancePie({ btc: btcDn, eth: total ? mnow(eth) / total * 100 : (mp.eth || 0), usdt: usdtDn, others: on && total ? on / total * 100 : null });
     }
     window.updateMarketOverview = updateMarketOverview;
+    /* نمودار دایره‌ای دامیننس با تم آمیتیس */
+    function renderDominancePie(d) {
+        const chart = document.getElementById('domPieChart'), legend = document.getElementById('domPieLegend');
+        if (!chart || !legend) return;
+        const segs = [
+            { name: 'بیت‌کوین (BTC)', val: d.btc, color: '#f7931a' },
+            { name: 'اتریوم (ETH)', val: d.eth, color: '#ffffff' },
+            { name: 'تتر (USDT)', val: d.usdt, color: '#26A17B' },
+            { name: 'سایر ارزها', val: d.others, color: '#ff0044' },
+        ].filter(s => s.val != null && !isNaN(s.val) && s.val > 0);
+        if (!segs.length) { chart.innerHTML = ''; legend.innerHTML = ''; return; }
+        const totalPct = segs.reduce((s, x) => s + x.val, 0) || 1;
+        const R = 74, CX = 84, CY = 84, SW = 26, C = 2 * Math.PI * R;
+        let off = 0;
+        let arcs = `<circle cx="${CX}" cy="${CY}" r="${R}" fill="none" stroke="#1a0508" stroke-width="${SW}"/>`;
+        segs.forEach(s => {
+            const frac = s.val / totalPct;
+            const len = frac * C;
+            arcs += `<circle cx="${CX}" cy="${CY}" r="${R}" fill="none" stroke="${s.color}" stroke-width="${SW}" stroke-dasharray="${len.toFixed(2)} ${(C - len).toFixed(2)}" stroke-dashoffset="${(-off).toFixed(2)}" transform="rotate(-90 ${CX} ${CY})" stroke-linecap="butt"/>`;
+            off += len;
+        });
+        chart.innerHTML = `<svg viewBox="0 0 168 168">${arcs}<text x="${CX}" y="${CY - 4}" text-anchor="middle" fill="#fff" font-size="15" font-weight="800" font-family="Trebuchet MS,monospace">${segs[0].val.toFixed(1)}%</text><text x="${CX}" y="${CY + 13}" text-anchor="middle" fill="#f7931a" font-size="9.5" font-weight="700">BTC.D</text></svg>`;
+        legend.innerHTML = segs.map(s => `<div class="dom-leg-item"><span class="dom-leg-dot" style="background:${s.color}"></span><span class="dom-leg-name">${s.name}</span><span class="dom-leg-val">${s.val.toFixed(2)}%</span></div>`).join('');
+    }
+    /* شمارش معکوس تا رویدادهای مهم */
+    const MAJOR_EVENTS = [
+        { name: 'جلسه‌ی فدرال رزرو (FOMC)', iso: '2026-07-29T18:00:00Z' },
+        { name: 'شاخص قیمت مصرف‌کننده آمریکا (CPI)', iso: '2026-08-12T12:30:00Z' },
+        { name: 'همایش جکسون هول (Jackson Hole)', iso: '2026-08-21T14:00:00Z' },
+        { name: 'جلسه‌ی فدرال رزرو (FOMC)', iso: '2026-09-16T18:00:00Z' },
+        { name: 'جلسه‌ی فدرال رزرو (FOMC)', iso: '2026-10-28T18:00:00Z' },
+        { name: 'جلسه‌ی فدرال رزرو (FOMC)', iso: '2026-12-16T19:00:00Z' },
+    ];
+    function renderEventCountdown() {
+        const list = document.getElementById('evtCountList');
+        if (!list) return;
+        const now = Date.now();
+        const up = MAJOR_EVENTS.map(e => ({ name: e.name, t: new Date(e.iso).getTime() })).filter(e => e.t > now).sort((a, b) => a.t - b.t).slice(0, 3);
+        if (!up.length) { list.innerHTML = '<div class="evt-count-past" style="text-align:center;">رویداد پیش‌رویی ثبت نشده است.</div>'; return; }
+        list.innerHTML = up.map(e => {
+            let diff = Math.max(0, Math.floor((e.t - now) / 1000));
+            const dd = Math.floor(diff / 86400); diff -= dd * 86400;
+            const hh = Math.floor(diff / 3600); diff -= hh * 3600;
+            const mm = Math.floor(diff / 60); const ss = diff - mm * 60;
+            const dstr = new Date(e.t).toLocaleDateString('fa-IR', { year: 'numeric', month: 'long', day: 'numeric' });
+            const seg = (n, u) => `<span class="evt-count-seg"><span class="evt-count-num">${String(n).padStart(2, '0')}</span><span class="evt-count-unit">${u}</span></span>`;
+            return `<div class="evt-count-row"><div class="evt-count-info"><span class="evt-count-name">${e.name}</span><span class="evt-count-date">${dstr}</span></div><div class="evt-count-timer">${seg(dd, 'روز')}${seg(hh, 'ساعت')}${seg(mm, 'دقیقه')}${seg(ss, 'ثانیه')}</div></div>`;
+        }).join('');
+    }
+    setInterval(renderEventCountdown, 1000);
+    setTimeout(renderEventCountdown, 300);
+    /* تقویم رویدادهای کریپتو (فهرست منتخب رویدادهای قابل‌پیش‌بینی بازار و شبکه‌ها) */
+    const CRYPTO_EVENTS = [
+        { iso: '2026-07-31', title: 'انقضای ماهانه‌ی قراردادهای آتی بیت‌کوین و اتریوم', desc: 'سررسید قراردادهای آتی ماهانه در صرافی CME؛ معمولاً با نوسان همراه است.', tag: 'بازار مشتقات' },
+        { iso: '2026-08-28', title: 'انقضای ماهانه‌ی قراردادهای آتی (CME)', desc: 'سررسید قراردادهای آتی ماه اوت.', tag: 'بازار مشتقات' },
+        { iso: '2026-09-25', title: 'انقضای فصلی آپشن‌ها و آتی‌ها', desc: 'یکی از بزرگ‌ترین سررسیدهای سه‌ماهه‌ی سال؛ حجم بالای قراردادها.', tag: 'سررسید فصلی' },
+        { iso: '2026-10-02', title: 'کنفرانس Token2049 سنگاپور (تخمینی)', desc: 'یکی از بزرگ‌ترین رویدادهای صنعت کریپتو؛ زمان دقیق را از منبع رسمی بررسی کنید.', tag: 'همایش' },
+        { iso: '2026-10-30', title: 'انقضای ماهانه‌ی قراردادهای آتی (CME)', desc: 'سررسید قراردادهای آتی ماه اکتبر.', tag: 'بازار مشتقات' },
+        { iso: '2026-12-25', title: 'انقضای فصلی پایان سال', desc: 'سررسید بزرگ آپشن‌ها و آتی‌های پایان سال میلادی.', tag: 'سررسید فصلی' },
+    ];
+    function renderCryptoEvents() {
+        const card = document.getElementById('cryptoEventsCard');
+        if (!card) return;
+        const now = Date.now();
+        const up = CRYPTO_EVENTS.map(e => ({ ...e, t: new Date(e.iso + 'T12:00:00Z').getTime() })).filter(e => e.t > now - 86400000).sort((a, b) => a.t - b.t);
+        if (!up.length) { card.innerHTML = '<div class="crypto-more-note">رویداد پیش‌رویی ثبت نشده است.</div>'; return; }
+        const mons = ['ژانویه', 'فوریه', 'مارس', 'آوریل', 'مه', 'ژوئن', 'ژوئیه', 'اوت', 'سپتامبر', 'اکتبر', 'نوامبر', 'دسامبر'];
+        const faN = n => String(n).replace(/[0-9]/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
+        card.innerHTML = up.map(e => {
+            const dt = new Date(e.t);
+            const days = Math.ceil((e.t - now) / 86400000);
+            const soon = days <= 0 ? 'امروز' : ('تا ' + faN(days) + ' روز دیگر');
+            return `<div class="cev-row"><div class="cev-date"><span class="cev-day">${faN(dt.getUTCDate())}</span><span class="cev-mon">${mons[dt.getUTCMonth()]}</span></div><div class="cev-body"><div class="cev-title">${e.title}</div><div class="cev-desc">${e.desc}</div><span class="cev-tag">${e.tag}</span></div><div class="cev-soon">${soon}</div></div>`;
+        }).join('');
+    }
+    setTimeout(renderCryptoEvents, 400);
     let lastMoRows = {};
     window.openIndexDetail = function(k) {
         const r = lastMoRows[k];
@@ -6633,8 +6903,11 @@ function createDustInteraction(opts) {
         let cls = '', ph = '—', ah = '—';
         if (r.p != null && !isNaN(r.p)) { cls = r.p >= 0 ? 'up' : 'down'; ph = (r.p >= 0 ? '+' : '') + r.p.toFixed(2) + '%'; }
         if (r.a != null && !isNaN(r.a)) { ah = (r.a >= 0 ? '+' : '−') + (r.af === 'big' ? fmtBigNoDollar(Math.abs(r.a)) : r.af === 'pts' ? Math.abs(r.a).toFixed(2) : Math.abs(r.a).toFixed(2) + '%'); }
+        const headLogo = r.img
+            ? `<img src="${r.img}" class="coin-detail-logo" onerror="this.style.display='none'">`
+            : `<span class="crypto-logo mo-svg-logo" style="--coin-color:${r.color};width:52px;height:52px;flex:0 0 52px;">${moRoundIcon(r.k, r.color).replace(/^<span class="crypto-more-logo"><span class="crypto-logo mo-svg-logo"[^>]*>/,'').replace(/<\/span><\/span>$/,'').replace('width="30" height="30"','width="52" height="52"')}</span>`;
         body.innerHTML = `<div class="coin-detail-head">
-            <img src="${r.img || ''}" class="coin-detail-logo" onerror="this.style.display='none'">
+            ${headLogo}
             <div class="coin-detail-title"><div class="coin-detail-name">${r.name}</div><div class="coin-detail-rank">شاخص کلان بازار</div></div>
             <div class="coin-detail-price"><div class="cdp-value">${r.disp}</div><div class="cdp-change ${cls}">${ph}</div></div>
         </div>
@@ -6705,16 +6978,99 @@ function createDustInteraction(opts) {
         try { localStorage.setItem('amitisUnit', priceUnit); } catch (e) {}
         updateUnitLabel();
         if (typeof fetchCryptoData === 'function') fetchCryptoData();
+        renderMiniWidget();
+        /* تبدیل خودکار قیمت‌ها داخل پاپ‌آپ باز */
+        if (window.__openCoinId) { const ov = document.getElementById('coinDetailOverlay'); if (ov && ov.classList.contains('show')) openCoinDetail(window.__openCoinId); }
     };
+    /* قیمت با توجه به واحد فعال (دلار یا تومان) — بدون پسوند ت/تومان */
+    function priceByUnit(usd) {
+        if (usd == null || isNaN(usd)) return '—';
+        if (priceUnit === 'toman' && lastTetherToman) return formatToman(usd * lastTetherToman);
+        return '$' + formatCryptoPrice(usd);
+    }
+    window.priceByUnit = priceByUnit;
+    /* ===== ویجت شناور قیمت ===== */
+    let miniWidgetOpen = true;
+    try { miniWidgetOpen = localStorage.getItem('amitisMiniWidget') !== 'off'; } catch (e) {}
+    window.toggleMiniWidget = function(show) {
+        miniWidgetOpen = !!show;
+        try { localStorage.setItem('amitisMiniWidget', show ? 'on' : 'off'); } catch (e) {}
+        const w = document.getElementById('miniPriceWidget'), fab = document.getElementById('miniPriceFab');
+        if (w) w.classList.toggle('show', miniWidgetOpen);
+        if (fab) fab.style.display = miniWidgetOpen ? 'none' : 'flex';
+        if (miniWidgetOpen) renderMiniWidget();
+    };
+    function renderMiniWidget() {
+        const body = document.getElementById('mpwBody');
+        if (!body) return;
+        const top = top50Cache || [];
+        const ids = ['bitcoin', 'ethereum', 'binancecoin', 'tether'];
+        const coins = ids.map(id => top.find(c => c.id === id)).filter(Boolean);
+        if (!coins.length) { body.innerHTML = '<div class="mpw-loading">…</div>'; return; }
+        body.innerHTML = coins.map(c => {
+            const chg = c.price_change_percentage_24h;
+            const cls = chg == null ? '' : (chg >= 0 ? 'up' : 'down');
+            const chgTxt = chg == null ? '' : (chg >= 0 ? '+' : '') + chg.toFixed(1) + '%';
+            return `<div class="mpw-row"><img src="${c.image}" onerror="this.style.display='none'"><span class="mpw-sym">${(c.symbol || '').toUpperCase()}</span><span class="mpw-price">${priceByUnit(c.current_price)}</span><span class="mpw-chg ${cls}">${chgTxt}</span></div>`;
+        }).join('');
+    }
+    window.renderMiniWidget = renderMiniWidget;
+    setTimeout(() => { window.toggleMiniWidget(miniWidgetOpen); }, 600);
+    setInterval(renderMiniWidget, 5000);
 
     /* ارزهای موردعلاقه — همیشه بالای لیست می‌مانند */
     let favSet = [];
     try { favSet = JSON.parse(localStorage.getItem('amitisFav') || '[]') || []; } catch (e) { favSet = []; }
+    /* FLIP: جابه‌جایی نرم و انیمیشنی ردیف‌ها بدون درخواست شبکه‌ای */
+    function flipReorder(container, doReorder) {
+        if (!container) return;
+        const rows = Array.from(container.children);
+        const first = new Map();
+        rows.forEach(r => first.set(r, r.getBoundingClientRect().top));
+        doReorder();
+        const after = Array.from(container.children);
+        after.forEach(r => {
+            const f = first.get(r);
+            if (f == null) return;
+            const last = r.getBoundingClientRect().top;
+            const dy = f - last;
+            if (Math.abs(dy) < 1) return;
+            r.style.transition = 'none';
+            r.style.transform = 'translateY(' + dy + 'px)';
+            requestAnimationFrame(() => {
+                r.style.transition = 'transform 0.5s cubic-bezier(0.22,0.9,0.28,1)';
+                r.style.transform = 'translateY(0)';
+                setTimeout(() => { r.style.transition = ''; r.style.transform = ''; }, 560);
+            });
+        });
+    }
+    function reorderFavContainer(container, poolIds) {
+        if (!container) return;
+        const rows = Array.from(container.children).filter(el => el.getAttribute && el.getAttribute('data-coin-id'));
+        rows.sort((a, b) => {
+            const ia = a.getAttribute('data-coin-id'), ib = b.getAttribute('data-coin-id');
+            const fa = favSet.indexOf(ia) >= 0 ? 0 : 1, fb = favSet.indexOf(ib) >= 0 ? 0 : 1;
+            if (fa !== fb) return fa - fb;
+            return poolIds.indexOf(ia) - poolIds.indexOf(ib);
+        });
+        rows.forEach(r => container.appendChild(r));
+    }
     window.toggleFav = function(id) {
         const i = favSet.indexOf(id);
+        const nowFav = i < 0;
         if (i >= 0) favSet.splice(i, 1); else favSet.push(id);
         try { localStorage.setItem('amitisFav', JSON.stringify(favSet)); } catch (e) {}
-        if (typeof fetchCryptoData === 'function') fetchCryptoData();
+        /* ۱) فوری: ظاهر ستاره را همه‌جا به‌روزرسانی کن */
+        document.querySelectorAll('.crypto-more-row[data-coin-id="' + id + '"] .crypto-more-fav').forEach(st => {
+            st.classList.toggle('on', nowFav);
+            st.textContent = nowFav ? '★' : '☆';
+        });
+        /* ۲) با انیمیشن، ردیف را به جای درست منتقل کن (بدون رفرش شبکه‌ای) */
+        const pool = (top50Cache || []).slice().sort((a, b) => (a.market_cap_rank || 999) - (b.market_cap_rank || 999)).map(c => c.id);
+        const grid = document.getElementById('cryptoGrid');
+        const more = document.getElementById('cryptoMoreList');
+        if (grid) flipReorder(grid, () => reorderFavContainer(grid, pool));
+        if (more) flipReorder(more, () => reorderFavContainer(more, pool));
     };
     function sortByFav(list) {
         return list.slice().sort((a, b) => {
@@ -6733,7 +7089,7 @@ function createDustInteraction(opts) {
         const chgHtml = chg == null ? 'بدون داده' : sign + chg.toFixed(2) + '%';
         const symbol = (coin.symbol || '').toUpperCase();
         const isFav = favSet.indexOf(coin.id) >= 0;
-        return `<div class="crypto-more-row" data-symbol="${symbol}" onclick="openCoinDetail('${coin.id}')">
+        return `<div class="crypto-more-row" data-symbol="${symbol}" data-coin-id="${coin.id}" onclick="openCoinDetail('${coin.id}')">
             <span class="crypto-more-fav ${isFav ? 'on' : ''}" onclick="event.stopPropagation();toggleFav('${coin.id}')" title="مورد علاقه">${isFav ? '★' : '☆'}</span>
             <span class="crypto-more-rank">${rank}</span>
             <span class="crypto-more-logo"><img src="${coin.image}" alt="${symbol}" onerror="this.onerror=null;this.style.opacity=0;"></span>
@@ -6894,6 +7250,7 @@ function createDustInteraction(opts) {
         const overlay = document.getElementById('coinDetailOverlay');
         const body = document.getElementById('coinDetailBody');
         if (!overlay || !body) return;
+        window.__openCoinId = coinId;
         const cached = (top50Cache || []).find(c => c.id === coinId);
         overlay.classList.add('show');
         document.body.style.overflow = 'hidden';
@@ -6940,7 +7297,7 @@ function createDustInteraction(opts) {
                     <div class="coin-detail-rank">رتبه‌ی مارکت‌کپ: #${c.market_cap_rank || '—'}</div>
                 </div>
                 <div class="coin-detail-price">
-                    <div class="cdp-value">$${formatCryptoPrice(c.current_price || 0)}</div>
+                    <div class="cdp-value">${priceByUnit(c.current_price || 0)}</div>
                     <div class="cdp-change ${chgCls}">${chg != null ? chgSign + chg.toFixed(2) + '%' : '—'} (۲۴ساعته)</div>
                 </div>
             </div>
@@ -6950,16 +7307,51 @@ function createDustInteraction(opts) {
                 <div class="cd-item"><span class="cdk">حجم ۲۴ساعته</span><span class="cdv">${fmtBig(c.total_volume)}</span></div>
                 <div class="cd-item"><span class="cdk">عرضه‌ی در گردش</span><span class="cdv">${c.circulating_supply ? Math.round(c.circulating_supply).toLocaleString('en-US') : '—'}</span></div>
                 <div class="cd-item"><span class="cdk">درصد عرضه از کل</span><span class="cdv">${supplyPct != null ? supplyPct.toFixed(1) + '%' : '—'}</span></div>
-                <div class="cd-item"><span class="cdk">بالاترین قیمت تاریخ (ATH)</span><span class="cdv">${ath ? '$' + formatCryptoPrice(ath) : '—'}</span></div>
+                <div class="cd-item"><span class="cdk">بالاترین قیمت تاریخ (ATH)</span><span class="cdv">${ath ? priceByUnit(ath) : '—'}</span></div>
                 <div class="cd-item"><span class="cdk">تاریخ ATH</span><span class="cdv">${athDate ? new Date(athDate).toLocaleDateString('fa-IR') : '—'}</span></div>
-                <div class="cd-item"><span class="cdk">پایین‌ترین قیمت تاریخ (ATL)</span><span class="cdv">${atl ? '$' + formatCryptoPrice(atl) : '—'}</span></div>
+                <div class="cd-item"><span class="cdk">پایین‌ترین قیمت تاریخ (ATL)</span><span class="cdv">${atl ? priceByUnit(atl) : '—'}</span></div>
             </div>
             ${desc ? `<div class="coin-detail-desc">${desc}</div>` : ''}
             ${homepage ? `<a class="coin-detail-link" href="${homepage}" target="_blank" rel="noopener noreferrer">وب‌سایت رسمی ↗</a>` : ''}
         `;
         const prices = c.sparkline_in_7d && c.sparkline_in_7d.price;
         renderSparklineBig(document.getElementById('coinDetailChart'), prices);
+        /* نمودار کندلی حرفه‌ای با داده‌ی واقعی OHLC (در صورت دسترسی) */
+        (async () => {
+            const chartEl = document.getElementById('coinDetailChart');
+            if (!chartEl) return;
+            let ohlc = null;
+            try { ohlc = await corsFetchJson('https://api.coingecko.com/api/v3/coins/' + coinId + '/ohlc?vs_currency=usd&days=7'); } catch (e) {}
+            if (document.getElementById('coinDetailChart') === chartEl && Array.isArray(ohlc) && ohlc.length >= 2) {
+                renderCandles(chartEl, ohlc);
+            }
+        })();
     };
+    /* نمودار شمعی (کندل استیک) با تم آمیتیس — صعودی سفید، نزولی قرمز کندلی */
+    function renderCandles(el, ohlc) {
+        if (!el || !Array.isArray(ohlc) || ohlc.length < 2) return;
+        const data = ohlc.slice(-60);
+        const W = 600, H = 150, PADX = 8, PADT = 8, PADB = 8;
+        let lo = Infinity, hi = -Infinity;
+        data.forEach(d => { if (d[3] < lo) lo = d[3]; if (d[2] > hi) hi = d[2]; });
+        const range = (hi - lo) || 1;
+        const n = data.length;
+        const slot = (W - PADX * 2) / n;
+        const bw = Math.max(1.5, Math.min(slot * 0.62, 12));
+        const yOf = v => PADT + (hi - v) / range * (H - PADT - PADB);
+        let bars = '';
+        for (let i = 0; i < n; i++) {
+            const d = data[i], o = d[1], h = d[2], l = d[3], cl = d[4];
+            const cx = PADX + slot * (i + 0.5);
+            const up = cl >= o;
+            const col = up ? '#ffffff' : '#ff0044';
+            const yH = yOf(h), yL = yOf(l), yO = yOf(o), yC = yOf(cl);
+            const top = Math.min(yO, yC), bh = Math.max(1, Math.abs(yC - yO));
+            bars += `<line x1="${cx.toFixed(1)}" y1="${yH.toFixed(1)}" x2="${cx.toFixed(1)}" y2="${yL.toFixed(1)}" stroke="${col}" stroke-width="1"/>`;
+            bars += `<rect x="${(cx - bw / 2).toFixed(1)}" y="${top.toFixed(1)}" width="${bw.toFixed(1)}" height="${bh.toFixed(1)}" fill="${up ? 'none' : col}" stroke="${col}" stroke-width="1.1"/>`;
+        }
+        el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">${bars}</svg><div class="coin-detail-chart-label">نمودار شمعی ۷ روز اخیر (OHLC)</div>`;
+    }
     function renderSparklineBig(el, prices) {
         if (!el) return;
         if (!prices || prices.length < 2) { el.innerHTML = '<div class="ip-loading" style="padding:30px 0;">نموداری در دسترس نیست</div>'; return; }
@@ -6985,11 +7377,15 @@ function createDustInteraction(opts) {
         document.body.style.overflow = '';
     };
 
-    /* ===== جست‌وجو بین همه‌ی ارزها (از موتور جست‌وجوی کوین‌گکو، نه فقط ۵۰ تای اول) ===== */
+    /* ===== جست‌وجوی همه‌ی ارزها — محلی، سریع، با نام فارسی و آوانگاری ===== */
+    const FA_ALIASES = {
+        'بیتکوین': 'bitcoin', 'بیتکوئن': 'bitcoin', 'بتکوین': 'bitcoin', 'اتریوم': 'ethereum', 'اتر': 'ethereum', 'اتریم': 'ethereum', 'تتر': 'tether', 'ترون': 'tron', 'ریپل': 'ripple', 'ایکسآرپی': 'ripple', 'سولانا': 'solana', 'سولانه': 'solana', 'کاردانو': 'cardano', 'کاردانا': 'cardano', 'دوجکوین': 'dogecoin', 'دوج': 'dogecoin', 'شیبا': 'shiba-inu', 'شیباینو': 'shiba-inu', 'لایتکوین': 'litecoin', 'لایتکوئن': 'litecoin', 'بایننسکوین': 'binancecoin', 'بایننس': 'binancecoin', 'بیانبی': 'binancecoin', 'پولکادات': 'polkadot', 'پولکادوت': 'polkadot', 'چینلینک': 'chainlink', 'لینک': 'chainlink', 'مونرو': 'monero', 'مونرا': 'monero', 'استلار': 'stellar', 'آواکس': 'avalanche-2', 'اوالانچ': 'avalanche-2', 'آوالانچ': 'avalanche-2', 'نیر': 'near', 'کازماس': 'cosmos', 'کاسماس': 'cosmos', 'فایلکوین': 'filecoin', 'پپه': 'pepe', 'یواسدیکوین': 'usd-coin', 'یوسدیسی': 'usd-coin', 'یواسدیسی': 'usd-coin', 'آپتوس': 'aptos', 'الگورند': 'algorand', 'ویچین': 'vechain', 'اینترنتکامپیوتر': 'internet-computer', 'میکر': 'maker', 'مکر': 'maker', 'یونیسواپ': 'uniswap', 'آربیتروم': 'arbitrum', 'اپتیمیزم': 'optimism', 'رندر': 'render-token', 'سویی': 'sui', 'تونکوین': 'the-open-network', 'تون': 'the-open-network', 'فانتوم': 'fantom', 'سندباکس': 'the-sandbox', 'دسنترالند': 'decentraland', 'اکسیاینفینیتی': 'axie-infinity', 'چیلیز': 'chiliz', 'گالا': 'gala', 'فلوکی': 'floki', 'بونک': 'bonk', 'جاسمی': 'jasmycoin', 'کازموس': 'cosmos', 'هدرا': 'hedera-hashgraph', 'استکس': 'blockstack', 'اینج': 'injective-protocol', 'اینجکتیو': 'injective-protocol'
+    };
+    function normFa(s) { return (s || '').replace(/[‌\s\-_.]/g, '').toLowerCase(); }
     let __searchTimer = null;
     window.searchCoins = function(raw) {
         if (__searchTimer) clearTimeout(__searchTimer);
-        __searchTimer = setTimeout(() => doSearchCoins(raw), 320);
+        __searchTimer = setTimeout(() => doSearchCoins(raw), 200);
     };
     async function doSearchCoins(raw) {
         const q = (raw || '').trim();
@@ -6999,7 +7395,6 @@ function createDustInteraction(opts) {
         const drawer = document.getElementById('cryptoMoreDrawer');
         const moCard = document.querySelector('.market-overview-card');
         const inp = document.getElementById('coinSearchInput');
-        const cur = () => (inp ? inp.value.trim().toLowerCase() : q.toLowerCase());
         if (!q) {
             window.__searchActive = false;
             if (fiatBox) fiatBox.style.display = '';
@@ -7009,78 +7404,171 @@ function createDustInteraction(opts) {
             return;
         }
         window.__searchActive = true;
-        if (fiatBox) fiatBox.style.display = 'none';
+        /* آیا جست‌وجو به طلا/گرم/سکه/تتر مربوط است؟ اگر بله، جعبه‌ی تتر/طلا/سکه را فیلترشده نشان بده */
+        const nqf = normFa(q);
+        const FIAT_SEARCH = [
+            { key: 'tether', terms: normFa('تتر تتر usdt tether') },
+            { key: 'gold', terms: normFa('طلا گرم گرام طلای عیار gold') },
+            { key: 'coin', terms: normFa('سکه امامی coin sekke') },
+        ];
+        const fiatHit = FIAT_SEARCH.filter(f => f.terms.split(' ').some(t => t && (t.indexOf(nqf) >= 0 || nqf.indexOf(t) >= 0)));
+        if (fiatBox) {
+            if (fiatHit.length) {
+                fiatBox.style.display = '';
+                const keys = fiatHit.map(f => f.key);
+                fiatBox.querySelectorAll('.fiat-row').forEach(row => { row.style.display = keys.indexOf(row.getAttribute('data-fiat')) >= 0 ? '' : 'none'; });
+            } else {
+                fiatBox.style.display = 'none';
+            }
+        }
         if (moreBtn) moreBtn.style.display = 'none';
         if (drawer) { drawer.style.maxHeight = '0px'; drawer.classList.remove('open'); }
         if (moCard) moCard.style.display = 'none';
         if (!grid) return;
-        grid.innerHTML = '<div class="crypto-loading">در حال جست‌وجو در همه‌ی ارزها...</div>';
-        // پشتیبانی از نام فارسی ارزها
-        const faMap = {
-            'بیتکوین': 'bitcoin', 'بیتکوئن': 'bitcoin', 'اتریوم': 'ethereum', 'اتر': 'ethereum', 'تتر': 'tether', 'ریپل': 'ripple', 'سولانا': 'solana', 'کاردانو': 'cardano', 'دوجکوین': 'dogecoin', 'دوج': 'dogecoin', 'شیبا': 'shiba-inu', 'ترون': 'tron', 'لایتکوین': 'litecoin', 'بایننسکوین': 'binancecoin', 'بایننس': 'binancecoin', 'پولکادات': 'polkadot', 'چینلینک': 'chainlink', 'لینک': 'chainlink', 'مونرو': 'monero', 'استلار': 'stellar', 'آواکس': 'avalanche', 'اولانچ': 'avalanche', 'نیر': 'near', 'کازماس': 'cosmos', 'فایلکوین': 'filecoin', 'پپه': 'pepe', 'یواسدیکوین': 'usd-coin', 'یوسدیسی': 'usd-coin', 'آپتوس': 'aptos', 'الگورند': 'algorand', 'وی‌چین': 'vechain', 'اینترنتکامپیوتر': 'internet-computer', 'مِیکر': 'maker', 'میکر': 'maker', 'یونیسواپ': 'uniswap', 'آربیتروم': 'arbitrum', 'اپتیمیزم': 'optimism', 'رندر': 'render-token', 'سویی': 'sui', 'تن': 'the-open-network', 'تونکوین': 'the-open-network'
-        };
-        const norm = q.replace(/‌/g, '').replace(/\s+/g, '').toLowerCase();
-        const searchQ = faMap[norm] || q;
-        let ids = [];
-        try {
-            const sr = await corsFetchJson('https://api.coingecko.com/api/v3/search?query=' + encodeURIComponent(searchQ), { timeout: 6000 });
-            ids = ((sr && sr.coins) || []).slice(0, 40).map(c => c.id);
-        } catch (e) {}
-        if (cur() !== q.toLowerCase()) return;
-        if (!ids.length) {
-            const all = await fetchAllCoins();
-            const ql = searchQ.toLowerCase();
-            ids = (all || []).filter(c => (c.name + ' ' + c.symbol).toLowerCase().includes(ql)).slice(0, 40).map(c => c.id);
+        grid.innerHTML = '<div class="crypto-loading">در حال جست‌وجو...</div>';
+        const all = await fetchAllCoins() || [];
+        if (inp && inp.value.trim() !== q) return;
+        const ql = q.toLowerCase();
+        const nq = normFa(q);
+        const aliasId = FA_ALIASES[nq] || null;
+        const scored = [];
+        all.forEach(c => {
+            const name = (c.name || '').toLowerCase();
+            const sym = (c.symbol || '').toLowerCase();
+            let score = -1;
+            if (aliasId && c.id === aliasId) score = 100;
+            else if (sym === ql) score = 92;
+            else if (name === ql) score = 90;
+            else if (sym.startsWith(ql)) score = 80;
+            else if (name.startsWith(ql)) score = 72;
+            else if (name.includes(ql) || sym.includes(ql)) score = 50;
+            if (score >= 0) scored.push({ c, score });
+        });
+        scored.sort((a, b) => b.score - a.score || (a.c.market_cap_rank || 9999) - (b.c.market_cap_rank || 9999));
+        let matches = scored.slice(0, 60).map(x => x.c);
+        // اگر محلی چیزی پیدا نشد، از موتور جست‌وجوی کوین‌گکو کمک می‌گیریم (برای ارزهای کم‌رتبه‌تر)
+        if (!matches.length) {
+            try {
+                const sr = await corsFetchJson('https://api.coingecko.com/api/v3/search?query=' + encodeURIComponent(aliasId || q), { timeout: 6000 });
+                const ids = ((sr && sr.coins) || []).slice(0, 30).map(x => x.id);
+                if (inp && inp.value.trim() !== q) return;
+                if (ids.length) {
+                    matches = await corsFetchJson('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&sparkline=true&price_change_percentage=24h&ids=' + encodeURIComponent(ids.join(',')), { timeout: 7000 }) || [];
+                }
+            } catch (e) {}
         }
-        if (!ids.length) { grid.innerHTML = '<div class="crypto-loading">ارزی با این نام پیدا نشد.</div>'; return; }
-        let coins = [];
-        try {
-            coins = await corsFetchJson('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&sparkline=true&price_change_percentage=24h&ids=' + encodeURIComponent(ids.join(',')), { timeout: 7000 }) || [];
-        } catch (e) {}
-        if (cur() !== q.toLowerCase()) return;
-        if (!coins.length) { grid.innerHTML = '<div class="crypto-loading">اطلاعات ارز پیدا نشد.</div>'; return; }
-        grid.innerHTML = coins.map(renderCoinRow).join('');
-        coins.forEach(coin => { const p = coin.sparkline_in_7d && coin.sparkline_in_7d.price; renderSparklineMini(document.getElementById('spark-' + coin.id), p); });
+        if (inp && inp.value.trim() !== q) return;
+        if (!matches.length) { grid.innerHTML = fiatHit.length ? '' : '<div class="crypto-loading">ارزی با این نام پیدا نشد.</div>'; return; }
+        grid.innerHTML = matches.map(renderCoinRow).join('');
+        matches.forEach(coin => { const p = coin.sparkline_in_7d && coin.sparkline_in_7d.price; renderSparklineMini(document.getElementById('spark-' + coin.id), p); });
     }
 
     /* ===== تبدیل‌کننده‌ی سریع (ارز دیجیتال ↔ پول کشورها ↔ طلا و سکه) ===== */
     let convItems = {};
+    let convOptions = [];            /* [{value, group, sym, name, img, search}] */
+    let convSel = { from: null, to: null };
+    /* نگاشت معکوس نام فارسی برای جستجوی منوی تبدیل */
+    const CONV_FA_REV = (function () {
+        const m = {};
+        for (const k in FA_ALIASES) { const id = FA_ALIASES[k]; (m[id] = m[id] || []).push(k); }
+        return m;
+    })();
     function buildConvOptions(all, fx) {
-        const fromSel = document.getElementById('convFrom'), toSel = document.getElementById('convTo');
         convItems = {};
-        (all || []).forEach(c => { if (c.current_price) convItems['crypto:' + c.id] = c.current_price; });
-        const cryptoOpts = (all || []).filter(c => c.current_price).map(c => `<option value="crypto:${c.id}">${(c.symbol || '').toUpperCase()} — ${c.name}</option>`).join('');
+        convOptions = [];
+        (all || []).forEach(c => {
+            if (!c.current_price) return;
+            const v = 'crypto:' + c.id;
+            convItems[v] = c.current_price;
+            const sym = (c.symbol || '').toUpperCase();
+            const fa = (CONV_FA_REV[c.id] || []).join(' ');
+            convOptions.push({ value: v, group: 'ارز دیجیتال', sym: sym, name: c.name, img: c.image, search: normFa(sym + ' ' + c.name + ' ' + fa + ' ' + c.id) });
+        });
         const rate = fx || {};
         const fiatList = [['USD', 'دلار آمریکا'], ['EUR', 'یورو'], ['GBP', 'پوند'], ['AED', 'درهم امارات'], ['TRY', 'لیر ترکیه'], ['JPY', 'ین ژاپن'], ['CNY', 'یوان چین'], ['CAD', 'دلار کانادا'], ['RUB', 'روبل'], ['INR', 'روپیه هند']];
-        let fiatOpts = '';
         fiatList.forEach(([code, label]) => {
-            if (code === 'USD') { convItems['fiat:USD'] = 1; fiatOpts += `<option value="fiat:USD">USD — ${label}</option>`; }
-            else if (rate[code]) { convItems['fiat:' + code] = 1 / rate[code]; fiatOpts += `<option value="fiat:${code}">${code} — ${label}</option>`; }
+            let ok = false;
+            if (code === 'USD') { convItems['fiat:USD'] = 1; ok = true; }
+            else if (rate[code]) { convItems['fiat:' + code] = 1 / rate[code]; ok = true; }
+            if (ok) convOptions.push({ value: 'fiat:' + code, group: 'پول کشورها', sym: code, name: label, img: '', search: normFa(code + ' ' + label) });
         });
         const tpu = lastTetherToman || 0;
-        if (tpu) { convItems['fiat:TMN'] = 1 / tpu; fiatOpts += `<option value="fiat:TMN">TMN — تومان</option>`; }
-        let goldOpts = '';
+        if (tpu) { convItems['fiat:TMN'] = 1 / tpu; convOptions.push({ value: 'fiat:TMN', group: 'پول کشورها', sym: 'TMN', name: 'تومان', img: '', search: normFa('TMN تومان تومن ریال toman') }); }
         if (tpu && tgjuCache) {
-            if (tgjuCache.gold) { convItems['gold:g18'] = tgjuCache.gold / tpu; goldOpts += `<option value="gold:g18">طلای ۱۸ عیار (هر گرم)</option>`; }
-            if (tgjuCache.coin) { convItems['gold:coin'] = tgjuCache.coin / tpu; goldOpts += `<option value="gold:coin">سکه‌ی امامی</option>`; }
+            if (tgjuCache.gold) { convItems['gold:g18'] = tgjuCache.gold / tpu; convOptions.push({ value: 'gold:g18', group: 'طلا و سکه', sym: 'طلا', name: 'طلای ۱۸ عیار (هر گرم)', img: '', search: normFa('طلا گرم طلای ۱۸ عیار gold') }); }
+            if (tgjuCache.coin) { convItems['gold:coin'] = tgjuCache.coin / tpu; convOptions.push({ value: 'gold:coin', group: 'طلا و سکه', sym: 'سکه', name: 'سکه‌ی امامی', img: '', search: normFa('سکه امامی سکه coin') }); }
         }
-        const html = `<optgroup label="ارز دیجیتال">${cryptoOpts}</optgroup><optgroup label="پول کشورها">${fiatOpts}</optgroup>` + (goldOpts ? `<optgroup label="طلا و سکه">${goldOpts}</optgroup>` : '');
-        fromSel.innerHTML = html; toSel.innerHTML = html;
     }
-    window.openConverter = async function() {
+    function convLabelOf(value) {
+        const o = convOptions.find(x => x.value === value);
+        return o ? (o.sym + ' — ' + o.name) : '—';
+    }
+    function convSymOf(value) {
+        const o = convOptions.find(x => x.value === value);
+        return o ? o.sym : '';
+    }
+    function renderConvList(which) {
+        const listEl = document.getElementById(which === 'from' ? 'convFromList' : 'convToList');
+        const searchEl = document.getElementById(which === 'from' ? 'convFromSearch' : 'convToSearch');
+        if (!listEl) return;
+        const q = normFa(searchEl ? searchEl.value : '');
+        const sel = convSel[which];
+        const groups = ['ارز دیجیتال', 'پول کشورها', 'طلا و سکه'];
+        let html = '';
+        groups.forEach(g => {
+            const items = convOptions.filter(o => o.group === g && (!q || o.search.indexOf(q) >= 0));
+            if (!items.length) return;
+            html += `<div class="conv-dd-group">${g}</div>`;
+            items.forEach(o => {
+                const img = o.img ? `<img src="${o.img}" onerror="this.style.display='none'">` : '';
+                html += `<div class="conv-dd-opt ${o.value === sel ? 'sel' : ''}" onclick="selectConvOpt('${which}','${o.value}')">${img}<span class="cdo-sym">${o.sym}</span><span class="cdo-name">${o.name}</span></div>`;
+            });
+        });
+        listEl.innerHTML = html || '<div class="conv-dd-empty">موردی پیدا نشد</div>';
+    }
+    window.toggleConvDD = function (which) {
+        const dd = document.getElementById(which === 'from' ? 'convFromDD' : 'convToDD');
+        const other = document.getElementById(which === 'from' ? 'convToDD' : 'convFromDD');
+        if (other) other.classList.remove('open');
+        if (!dd) return;
+        const willOpen = !dd.classList.contains('open');
+        dd.classList.toggle('open', willOpen);
+        if (willOpen) {
+            const searchEl = document.getElementById(which === 'from' ? 'convFromSearch' : 'convToSearch');
+            if (searchEl) searchEl.value = '';
+            renderConvList(which);
+            if (searchEl) setTimeout(() => searchEl.focus(), 40);
+        }
+    };
+    window.filterConvDD = function (which) { renderConvList(which); };
+    window.selectConvOpt = function (which, value) {
+        convSel[which] = value;
+        const lbl = document.getElementById(which === 'from' ? 'convFromLabel' : 'convToLabel');
+        if (lbl) lbl.textContent = convLabelOf(value);
+        const dd = document.getElementById(which === 'from' ? 'convFromDD' : 'convToDD');
+        if (dd) dd.classList.remove('open');
+        doConvert();
+    };
+    document.addEventListener('click', function (e) {
+        if (!e.target.closest('.conv-dd')) {
+            const a = document.getElementById('convFromDD'), b = document.getElementById('convToDD');
+            if (a) a.classList.remove('open'); if (b) b.classList.remove('open');
+        }
+    });
+    window.openConverter = async function () {
         const ov = document.getElementById('convOverlay');
         if (!ov) return;
         ov.classList.add('show'); document.body.style.overflow = 'hidden';
-        const fromSel = document.getElementById('convFrom');
         const [all, fx] = await Promise.all([fetchAllCoins(), fetchFxRates()]);
         buildConvOptions(all, fx);
-        if (fromSel.querySelector('option[value="crypto:bitcoin"]')) fromSel.value = 'crypto:bitcoin';
-        const toSel = document.getElementById('convTo');
-        if (toSel.querySelector('option[value="fiat:TMN"]')) toSel.value = 'fiat:TMN';
-        else if (toSel.querySelector('option[value="fiat:USD"]')) toSel.value = 'fiat:USD';
+        convSel.from = convItems['crypto:bitcoin'] != null ? 'crypto:bitcoin' : (convOptions[0] && convOptions[0].value);
+        convSel.to = convItems['fiat:TMN'] != null ? 'fiat:TMN' : (convItems['fiat:USD'] != null ? 'fiat:USD' : (convOptions[0] && convOptions[0].value));
+        const fl = document.getElementById('convFromLabel'), tl = document.getElementById('convToLabel');
+        if (fl) fl.textContent = convLabelOf(convSel.from);
+        if (tl) tl.textContent = convLabelOf(convSel.to);
         doConvert();
     };
-    window.closeConverter = function() { const ov = document.getElementById('convOverlay'); if (ov) ov.classList.remove('show'); document.body.style.overflow = ''; };
+    window.closeConverter = function () { const ov = document.getElementById('convOverlay'); if (ov) ov.classList.remove('show'); document.body.style.overflow = ''; };
     function fmtConv(n) {
         if (!isFinite(n)) return '—';
         if (n === 0) return '0';
@@ -7088,20 +7576,22 @@ function createDustInteraction(opts) {
         if (Math.abs(n) >= 1) return n.toLocaleString('en-US', { maximumFractionDigits: 4 });
         return parseFloat(n.toPrecision(6)).toString();
     }
-    window.doConvert = function() {
+    window.doConvert = function () {
         const amt = parseFloat(document.getElementById('convAmount').value) || 0;
-        const fromEl = document.getElementById('convFrom'), toEl = document.getElementById('convTo');
         const resEl = document.getElementById('convResult');
-        const uf = convItems[fromEl.value], ut = convItems[toEl.value];
+        if (!resEl) return;
+        const uf = convItems[convSel.from], ut = convItems[convSel.to];
         if (!uf || !ut) { resEl.innerHTML = '<div class="cr-val">—</div>'; return; }
         const out = amt * uf / ut;
-        const fl = fromEl.selectedOptions[0] ? fromEl.selectedOptions[0].textContent.split(' — ')[0] : '';
-        const tl = toEl.selectedOptions[0] ? toEl.selectedOptions[0].textContent.split(' — ')[0] : '';
+        const fl = convSymOf(convSel.from), tl = convSymOf(convSel.to);
         resEl.innerHTML = `<div class="cr-val">${fmtConv(out)} ${tl}</div><div class="cr-sub">${fmtConv(amt)} ${fl} = ${fmtConv(out)} ${tl}</div>`;
     };
-    window.convSwap = function() {
-        const f = document.getElementById('convFrom'), t = document.getElementById('convTo');
-        const tmp = f.value; f.value = t.value; t.value = tmp; doConvert();
+    window.convSwap = function () {
+        const tmp = convSel.from; convSel.from = convSel.to; convSel.to = tmp;
+        const fl = document.getElementById('convFromLabel'), tl = document.getElementById('convToLabel');
+        if (fl) fl.textContent = convLabelOf(convSel.from);
+        if (tl) tl.textContent = convLabelOf(convSel.to);
+        doConvert();
     };
 
     /* ===== مقایسه‌ی تا ۳۰۰ ارز کنار هم ===== */

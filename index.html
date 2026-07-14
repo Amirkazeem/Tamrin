@@ -931,7 +931,8 @@ body.entry-mode { overflow: hidden; }
 .tool-modal .close-btn { position: absolute; top: 14px; left: 16px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #aaa; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-size: 15px; }
 .tool-modal .close-btn:hover { color: #fff; border-color: #890913; }
 .conv-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-.conv-amount { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 12px 14px; color: #fff; font-family: 'Trebuchet MS', monospace; font-size: 16px; outline: none; direction: ltr; text-align: left; }
+.conv-row .conv-dd { flex: 1 1 auto; min-width: 0; }
+.conv-amount { flex: 0 0 118px; width: 118px; box-sizing: border-box; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 12px 12px; color: #fff; font-family: 'Trebuchet MS', monospace; font-size: 15px; outline: none; direction: ltr; text-align: left; }
 .conv-amount:focus { border-color: #890913; }
 .conv-select { background: #14060a; border: 1px solid rgba(255,0,68,0.25); border-radius: 12px; padding: 12px 10px; color: #fff; font-family: 'Vazirmatn', sans-serif; font-size: 13px; outline: none; min-width: 150px; cursor: pointer; }
 .conv-select:focus { border-color: #890913; }
@@ -965,6 +966,16 @@ body.entry-mode { overflow: hidden; }
 .conv-dd-opt .cdo-sym { font-weight: 700; color: #fff; }
 .conv-dd-opt .cdo-name { color: #b58; opacity: 0.85; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .conv-dd-empty { padding: 14px 10px; text-align: center; color: #7a5560; font-size: 12px; }
+/* ===== مقایسه‌ی دو ارز ===== */
+.cmp-picks { display: flex; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+.cmp-dd { flex: 1 1 180px; min-width: 0; }
+.cmp-dot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
+.cmp-range { display: flex; gap: 5px; justify-content: center; margin-bottom: 12px; }
+.cmp-chart { background: #050505; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 8px; min-height: 180px; }
+.cmp-chart svg { display: block; width: 100%; height: 190px; }
+.cmp-legend { display: flex; gap: 18px; justify-content: center; margin-top: 12px; flex-wrap: wrap; }
+.cmp-leg-item { display: flex; align-items: center; gap: 7px; font-size: 12.5px; color: #ddd; }
+.cmp-leg-val { font-family: 'Trebuchet MS', monospace; font-weight: 700; direction: ltr; }
 .conv-swap { background: rgba(137,9,19,0.2); border: 1px solid rgba(255,0,68,0.4); color: #fff; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 16px; flex-shrink: 0; margin: 0 auto; display: block; }
 .conv-swap:hover { background: rgba(137,9,19,0.4); }
 .conv-result { background: rgba(137,9,19,0.12); border: 1px solid rgba(255,0,68,0.25); border-radius: 14px; padding: 16px; text-align: center; margin-top: 6px; }
@@ -1014,6 +1025,9 @@ body.entry-mode { overflow: hidden; }
 
 /* ===== نمودار ترس و طمع ===== */
 .fng-card { background: transparent; border: 1px solid transparent; border-radius: 14px; padding: 16px 14px 18px; margin-bottom: 18px; }
+.fng-dual { display: flex; gap: 12px; flex-wrap: wrap; }
+.fng-dual .fng-card { flex: 1 1 240px; margin-bottom: 12px; background: linear-gradient(160deg,#0c0304,#080202); border: 1px solid rgba(255,0,68,0.14); }
+.fng-sub-title { text-align: center; font-size: 11px; color: #9a7a80; margin-top: 2px; }
 .fng-inner { display: flex; flex-direction: column; align-items: center; }
 .fng-svg { width: 240px; max-width: 100%; height: auto; }
 .fng-val { font-family: 'Trebuchet MS', monospace; font-size: 34px; font-weight: 800; margin-top: -18px; }
@@ -1034,23 +1048,29 @@ body.entry-mode { overflow: hidden; }
 .cev-title { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 3px; }
 .cev-desc { font-size: 11px; color: #9a9a9a; line-height: 1.7; }
 .cev-tag { display: inline-block; font-size: 10px; font-weight: 700; color: #ff5c7a; background: rgba(255,0,68,0.1); border: 1px solid rgba(255,0,68,0.2); border-radius: 6px; padding: 2px 7px; margin-top: 4px; }
-.cev-soon { font-size: 10.5px; color: #6a6; font-weight: 700; white-space: nowrap; flex-shrink: 0; }
+.cev-timer { direction: ltr; font-family: 'Russo One','Orbitron','Courier New',monospace; font-size: 14px; font-weight: 900; letter-spacing: 1px; color: #ffdfe4; background: rgba(255,0,68,0.07); border: 1px solid rgba(255,0,68,0.18); border-radius: 6px; padding: 5px 10px; white-space: nowrap; flex-shrink: 0; text-shadow: 0 0 10px rgba(255,0,68,0.35), 0 0 26px rgba(255,0,68,0.12); }
+.cev-timer .cev-t-lab { font-size: 7.5px; color: #a88; letter-spacing: 1px; display: block; text-align: center; margin-top: 2px; text-shadow: none; }
 /* ===== ویجت شناور قیمت ===== */
 .mini-price-widget { position: fixed; bottom: 22px; left: 22px; z-index: 90; width: 210px; background: linear-gradient(165deg,#160409,#090203); border: 1px solid rgba(255,0,68,0.3); border-radius: 15px; box-shadow: 0 16px 40px rgba(0,0,0,0.55), 0 0 20px rgba(255,0,68,0.12); overflow: hidden; opacity: 0; transform: translateY(14px) scale(0.96); pointer-events: none; transition: opacity 0.28s, transform 0.28s; }
 .mini-price-widget.show { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
-.mpw-head { display: flex; align-items: center; justify-content: space-between; padding: 9px 12px; background: rgba(255,0,68,0.08); border-bottom: 1px solid rgba(255,0,68,0.16); }
+.mpw-head { display: flex; align-items: center; justify-content: space-between; padding: 9px 12px; background: rgba(255,0,68,0.08); border-bottom: 1px solid rgba(255,0,68,0.16); cursor: grab; touch-action: none; }
+.mini-price-widget.dragging .mpw-head { cursor: grabbing; }
+.mpw-head-left { display: flex; align-items: center; gap: 7px; }
+.mpw-grip { color: #ff5c7a; opacity: 0.55; font-size: 12px; letter-spacing: 1px; line-height: 1; }
 .mpw-title { font-size: 12px; font-weight: 800; color: #fff; }
 .mpw-close { background: none; border: none; color: #ff5c7a; font-size: 13px; cursor: pointer; padding: 0 2px; line-height: 1; }
-.mpw-body { padding: 6px 10px 10px; }
+.mpw-body { padding: 6px 10px 6px; }
 .mpw-loading { color: #888; font-size: 12px; text-align: center; padding: 12px 0; }
-.mpw-row { display: flex; align-items: center; gap: 8px; padding: 7px 2px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.mpw-row { display: grid; grid-template-columns: 20px 40px 1fr 52px; align-items: center; gap: 8px; padding: 7px 2px; border-bottom: 1px solid rgba(255,255,255,0.05); }
 .mpw-row:last-child { border-bottom: none; }
-.mpw-row img { width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0; }
-.mpw-sym { font-size: 11.5px; font-weight: 700; color: #ddd; flex: 1; }
-.mpw-price { font-family: 'Trebuchet MS', monospace; font-size: 12px; font-weight: 700; color: #fff; direction: ltr; }
-.mpw-chg { font-size: 10px; font-weight: 700; min-width: 46px; text-align: left; direction: ltr; }
+.mpw-row img { width: 20px; height: 20px; border-radius: 50%; }
+.mpw-sym { font-size: 11.5px; font-weight: 700; color: #ddd; }
+.mpw-price { font-family: 'Trebuchet MS', monospace; font-size: 12px; font-weight: 700; color: #fff; direction: ltr; text-align: right; font-variant-numeric: tabular-nums; }
+.mpw-chg { font-size: 10px; font-weight: 700; text-align: right; direction: ltr; font-variant-numeric: tabular-nums; }
 .mpw-chg.up { color: #ffffff; }
 .mpw-chg.down { color: #ff2d5e; }
+.mpw-add { text-align: center; padding: 7px 0 3px; }
+.mpw-add-note { font-size: 9.5px; color: #7a5560; line-height: 1.7; }
 .mini-price-fab { position: fixed; bottom: 22px; left: 22px; z-index: 89; width: 46px; height: 46px; border-radius: 50%; background: linear-gradient(160deg,#890913,#3a0308); border: 1px solid rgba(255,0,68,0.4); color: #fff; cursor: pointer; box-shadow: 0 10px 26px rgba(0,0,0,0.5), 0 0 16px rgba(255,0,68,0.2); display: flex; align-items: center; justify-content: center; }
 .mini-price-fab svg { width: 20px; height: 20px; }
 .mini-price-fab:hover { box-shadow: 0 10px 30px rgba(255,0,68,0.35); }
@@ -1078,7 +1098,7 @@ body.entry-mode { overflow: hidden; }
 .evt-count-info { display: flex; flex-direction: column; gap: 3px; text-align: right; }
 .evt-count-name { font-size: 12.5px; font-weight: 700; color: #fff; }
 .evt-count-date { font-size: 10.5px; color: #9a7; opacity: 0.7; }
-.evt-count-timer { display: flex; gap: 6px; flex-shrink: 0; }
+.evt-count-timer { display: flex; gap: 6px; flex-shrink: 0; direction: ltr; }
 .evt-count-seg { display: flex; flex-direction: column; align-items: center; background: linear-gradient(160deg,#1a0509,#0e0206); border: 1px solid rgba(255,0,68,0.22); border-radius: 9px; padding: 5px 7px; min-width: 38px; }
 .evt-count-num { font-family: 'Trebuchet MS', monospace; font-size: 16px; font-weight: 800; color: #ff2d5e; line-height: 1; }
 .evt-count-unit { font-size: 8.5px; color: #a88; margin-top: 3px; }
@@ -1189,6 +1209,15 @@ body.entry-mode { overflow: hidden; }
 .coin-detail-chart { width: 100%; height: 150px; margin-bottom: 16px; background: #050505; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 6px; }
 .coin-detail-chart svg { display: block; width: 100%; height: 120px; }
 .coin-detail-chart-label { text-align: center; font-size: 10.5px; color: #666; margin-top: 4px; }
+.cd-chart-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+.cd-chart-group { display: flex; gap: 4px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,0,68,0.14); border-radius: 10px; padding: 3px; }
+.cd-chart-btn { background: none; border: none; color: #9a9a9a; font-family: 'Vazirmatn', sans-serif; font-size: 11.5px; font-weight: 700; padding: 5px 11px; border-radius: 7px; cursor: pointer; transition: all 0.15s; }
+.cd-chart-btn:hover { color: #fff; }
+.cd-chart-btn.on { background: linear-gradient(160deg,#890913,#5a0610); color: #fff; box-shadow: 0 2px 10px rgba(255,0,68,0.25); }
+.cd-related-news { margin-top: 14px; border-top: 1px solid rgba(255,0,68,0.14); padding-top: 12px; }
+.cd-news-title { font-size: 12.5px; font-weight: 800; color: #fff; margin-bottom: 9px; }
+.cd-news-item { display: block; font-size: 12px; color: #cfc9cb; text-decoration: none; padding: 8px 10px; border-radius: 9px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); margin-bottom: 6px; line-height: 1.7; transition: background 0.15s; }
+.cd-news-item:hover { background: rgba(255,0,68,0.1); color: #fff; }
 .coin-detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 16px; }
 .cd-item { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 10px 12px; display: flex; flex-direction: column; gap: 4px; }
 .cd-item .cdk { font-size: 10.5px; color: #888; }
@@ -1604,6 +1633,7 @@ body.entry-mode { overflow: hidden; }
                     <div class="prices-controls">
                         <input id="coinSearchInput" class="coin-search-input" type="text" placeholder="🔎 جست‌وجوی همه‌ی ارزها..." oninput="searchCoins(this.value)">
                         <button class="tool-btn" onclick="openConverter()">🔄 تبدیل سریع</button>
+                        <button class="tool-btn" onclick="openCoinCompare()">📊 مقایسه‌ی دو ارز</button>
                         <button class="unit-toggle-btn" onclick="toggleUnit()"><span id="unitLabel">نمایش قیمت‌ها به تومان</span></button>
                     </div>
                     <div class="fiat-box" id="fiatBox"></div>
@@ -1676,11 +1706,16 @@ body.entry-mode { overflow: hidden; }
                         <div class="ec-title-row">
                             <h2>📰 News</h2>
                         </div>
-                        <div class="fng-card" id="fngCard">
-                            <div class="news-loading">در حال دریافت شاخص ترس و طمع بازار...</div>
+                        <div class="fng-dual">
+                            <div class="fng-card" id="fngCard">
+                                <div class="news-loading">در حال دریافت شاخص ترس و طمع بازار...</div>
+                            </div>
+                            <div class="fng-card" id="fngBtcCard">
+                                <div class="news-loading">در حال محاسبه‌ی احساسات بیت‌کوین...</div>
+                            </div>
                         </div>
                         <div class="fng-hist-card" id="fngHistCard" style="display:none;">
-                            <div class="fng-hist-title">تاریخچه‌ی ترس و طمع (۳۰ روز اخیر)</div>
+                            <div class="fng-hist-title">تاریخچه‌ی ترس و طمع (30 روز اخیر)</div>
                             <div class="fng-hist-chart" id="fngHistChart"></div>
                         </div>
                         <div class="news-filter">
@@ -1890,17 +1925,52 @@ body.entry-mode { overflow: hidden; }
     </div>
 </div>
 
+<!-- ============================================================
+     پاپ‌آپ مقایسه‌ی دو ارز (نمودار هم‌پوشان درصدی)
+     ============================================================ -->
+<div class="tool-overlay" id="cmpOverlay" onclick="if(event.target===this) closeCoinCompare()">
+    <div class="tool-modal">
+        <button class="close-btn" onclick="closeCoinCompare()">✕</button>
+        <h3>📊 مقایسه‌ی دو ارز</h3>
+        <p class="sub-title">نمودار هم‌پوشان بر پایه‌ی درصد تغییر (٪) تا مقایسه‌ی منصفانه</p>
+        <div class="cmp-picks">
+            <div class="conv-dd cmp-dd" id="cmpADD">
+                <button type="button" class="conv-dd-btn" onclick="toggleCmpDD('a')"><span class="cmp-dot" style="background:#ffffff"></span><span class="conv-dd-label" id="cmpALabel">—</span><span class="conv-dd-arrow">▾</span></button>
+                <div class="conv-dd-panel" id="cmpAPanel">
+                    <input type="text" class="conv-dd-search" id="cmpASearch" placeholder="جستجو…" oninput="filterCmpDD('a')">
+                    <div class="conv-dd-list" id="cmpAList"></div>
+                </div>
+            </div>
+            <div class="conv-dd cmp-dd" id="cmpBDD">
+                <button type="button" class="conv-dd-btn" onclick="toggleCmpDD('b')"><span class="cmp-dot" style="background:#ff0044"></span><span class="conv-dd-label" id="cmpBLabel">—</span><span class="conv-dd-arrow">▾</span></button>
+                <div class="conv-dd-panel" id="cmpBPanel">
+                    <input type="text" class="conv-dd-search" id="cmpBSearch" placeholder="جستجو…" oninput="filterCmpDD('b')">
+                    <div class="conv-dd-list" id="cmpBList"></div>
+                </div>
+            </div>
+        </div>
+        <div class="cmp-range" id="cmpRange">
+            <button class="cd-chart-btn" data-cmpdays="7" onclick="setCmpDays(7)">7D</button>
+            <button class="cd-chart-btn" data-cmpdays="30" onclick="setCmpDays(30)">30D</button>
+            <button class="cd-chart-btn" data-cmpdays="365" onclick="setCmpDays(365)">1Y</button>
+        </div>
+        <div class="cmp-chart" id="cmpChart"><div class="ip-loading" style="padding:40px 0;">دو ارز را انتخاب کنید</div></div>
+        <div class="cmp-legend" id="cmpLegend"></div>
+    </div>
+</div>
+
 <button id="scrollTopBtn" class="scroll-top-btn" onclick="scrollToTopSmooth()" aria-label="بازگشت به بالای صفحه" title="بازگشت به بالا">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="6 11 12 5 18 11"/></svg>
 </button>
 
 <!-- ویجت شناور قیمت -->
 <div id="miniPriceWidget" class="mini-price-widget">
-    <div class="mpw-head">
-        <span class="mpw-title">قیمت لحظه‌ای</span>
+    <div class="mpw-head" id="mpwHead">
+        <span class="mpw-head-left"><span class="mpw-grip">⠿</span><span class="mpw-title">قیمت لحظه‌ای</span></span>
         <button class="mpw-close" onclick="toggleMiniWidget(false)" title="بستن">✕</button>
     </div>
     <div class="mpw-body" id="mpwBody"><div class="mpw-loading">…</div></div>
+    <div class="mpw-add"><div class="mpw-add-note">برای افزودن ارز دلخواه، آن را در فهرست ستاره‌دار (مورد علاقه) کنید</div></div>
 </div>
 <button id="miniPriceFab" class="mini-price-fab" onclick="toggleMiniWidget(true)" title="ویجت قیمت" style="display:none;">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>
@@ -1979,29 +2049,49 @@ body.entry-mode { overflow: hidden; }
         } catch (e) { wrap.style.display = 'none'; }
     }
     function fngColor(v) {
-        if (v <= 25) return '#ff0044';
-        if (v <= 45) return '#e0556a';
-        if (v <= 55) return '#c8b3bb';
+        if (v <= 25) return '#890913';
+        if (v <= 45) return '#b23a3f';
+        if (v <= 55) return '#c9c9c9';
         if (v <= 75) return '#e8e8e8';
         return '#ffffff';
     }
     function renderFngHistory(el, data) {
-        const W = 600, H = 130, PADX = 6, PADT = 10, PADB = 18;
+        const W = 600, H = 150, PADX = 34, PADT = 14, PADB = 26;
         const n = data.length;
-        const slot = (W - PADX * 2) / n;
-        const bw = Math.max(2, slot * 0.66);
-        let bars = '';
-        for (let i = 0; i < n; i++) {
-            const v = Math.max(0, Math.min(100, data[i].v));
-            const bh = (v / 100) * (H - PADT - PADB);
-            const x = PADX + slot * i + (slot - bw) / 2;
-            const y = H - PADB - bh;
-            bars += `<rect class="fng-hist-bar" x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${bw.toFixed(1)}" height="${bh.toFixed(1)}" rx="1.5" fill="${fngColor(v)}"><title>${v}</title></rect>`;
-        }
-        const first = new Date(data[0].t).toLocaleDateString('fa-IR', { month: 'short', day: 'numeric' });
-        const last = new Date(data[n - 1].t).toLocaleDateString('fa-IR', { month: 'short', day: 'numeric' });
-        bars += `<text x="${PADX}" y="${H - 4}" fill="#777" font-size="9">${first}</text><text x="${W - PADX}" y="${H - 4}" text-anchor="end" fill="#777" font-size="9">${last}</text>`;
-        el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">${bars}</svg>`;
+        const plotW = W - PADX * 2, plotH = H - PADT - PADB;
+        const xOf = i => PADX + (i / (n - 1)) * plotW;
+        const yOf = v => PADT + (1 - Math.max(0, Math.min(100, v)) / 100) * plotH;
+        // خطوط راهنمای افقی + برچسب انگلیسی
+        let grid = '';
+        [0, 25, 50, 75, 100].forEach(g => {
+            const y = yOf(g);
+            grid += `<line x1="${PADX}" y1="${y.toFixed(1)}" x2="${W - PADX}" y2="${y.toFixed(1)}" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>`;
+            grid += `<text x="${PADX - 6}" y="${(y + 3).toFixed(1)}" text-anchor="end" fill="#666" font-size="9" font-family="Trebuchet MS,monospace">${g}</text>`;
+        });
+        // مسیر خط و ناحیه‌ی زیر آن
+        const pts = data.map((d, i) => [xOf(i), yOf(d.v)]);
+        const linePath = pts.map((p, i) => (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' ');
+        const areaPath = linePath + ` L${pts[n - 1][0].toFixed(1)} ${(H - PADB).toFixed(1)} L${pts[0][0].toFixed(1)} ${(H - PADB).toFixed(1)} Z`;
+        // نقاط رنگی بر اساس ناحیه
+        let dots = '';
+        data.forEach((d, i) => { if (i % 3 === 0 || i === n - 1) dots += `<circle cx="${pts[i][0].toFixed(1)}" cy="${pts[i][1].toFixed(1)}" r="2.4" fill="${fngColor(d.v)}"><title>${d.v}</title></circle>`; });
+        // برچسب تاریخ انگلیسی (اول و آخر)
+        const opt = { month: 'short', day: 'numeric' };
+        const first = new Date(data[0].t).toLocaleDateString('en-US', opt);
+        const last = new Date(data[n - 1].t).toLocaleDateString('en-US', opt);
+        el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
+            <defs><linearGradient id="fngHistGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#ffffff" stop-opacity="0.9"/>
+                <stop offset="0.5" stop-color="#c9c9c9" stop-opacity="0.28"/>
+                <stop offset="1" stop-color="#890913" stop-opacity="0.35"/>
+            </linearGradient></defs>
+            ${grid}
+            <path d="${areaPath}" fill="url(#fngHistGrad)"/>
+            <path d="${linePath}" fill="none" stroke="#e8e8e8" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+            ${dots}
+            <text x="${PADX}" y="${H - 8}" fill="#888" font-size="9.5" font-family="Trebuchet MS,monospace">${first}</text>
+            <text x="${W - PADX}" y="${H - 8}" text-anchor="end" fill="#888" font-size="9.5" font-family="Trebuchet MS,monospace">${last}</text>
+        </svg>`;
     }
     function fngFa(c) {
         const m = { 'Extreme Fear': 'ترس شدید', 'Fear': 'ترس', 'Neutral': 'خنثی', 'Greed': 'طمع', 'Extreme Greed': 'طمع شدید' };
@@ -2017,7 +2107,7 @@ body.entry-mode { overflow: hidden; }
         return `<div class="fng-inner">
             <svg viewBox="0 0 240 150" class="fng-svg">
                 <defs><linearGradient id="fngGrad" x1="0" y1="0" x2="1" y2="0">
-                    <stop offset="0" stop-color="#ff0044"/><stop offset="0.5" stop-color="#ff0044"/>
+                    <stop offset="0" stop-color="#890913"/><stop offset="0.5" stop-color="#890913"/>
                     <stop offset="0.5" stop-color="#ffffff"/><stop offset="1" stop-color="#ffffff"/>
                 </linearGradient></defs>
                 <path d="M25 120 A95 95 0 0 1 215 120" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="14" stroke-linecap="round"/>
@@ -2059,6 +2149,20 @@ body.entry-mode { overflow: hidden; }
             }).filter(x => x.title && x.url);
         } catch (e) { return []; }
     }
+    /* ===============================================================
+       واسط اختصاصی اخبار (بک‌اند پراکسی). بعد از دیپلوی، دو آدرس زیر را
+       با آدرس‌های واقعی خودت جایگزین کن (یکی کلادفلر، یکی ورسل). سایت
+       اول از این‌ها می‌گیرد؛ اگر یکی نشد، از دیگری، و اگر هیچ‌کدام نبود،
+       به منابع عمومی برمی‌گردد.
+       =============================================================== */
+    const NEWS_PROXIES = [
+        // 'https://amitis-news.YOUR-NAME.workers.dev',   // کلادفلر (Cloudflare Worker)
+        // 'https://YOUR-PROJECT.vercel.app/api/news'      // ورسل (Vercel)
+    ];
+    function parseProxyNews(j) {
+        const arr = Array.isArray(j) ? j : (j && j.articles) || [];
+        return arr.map(a => ({ title: a.title, url: a.url || a.link, img: a.img || a.image || '', ts: a.ts || (a.pubDate ? Math.floor(Date.parse(a.pubDate) / 1000) : 0), src: a.src || a.source || 'Amitis', cats: a.cats || a.categories || '' })).filter(x => x.title && x.url);
+    }
     window.loadNews = async function(force) {
         loadFearGreed();
         const list = document.getElementById('newsList');
@@ -2068,6 +2172,7 @@ body.entry-mode { overflow: hidden; }
         list.innerHTML = '<div class="news-loading">در حال دریافت اخبار از چند منبع...</div>';
         const feeds = ['https://cointelegraph.com/rss', 'https://www.coindesk.com/arc/outboundfeeds/rss/', 'https://cryptoslate.com/feed/', 'https://bitcoinmagazine.com/feed'];
         const sources = [];
+        NEWS_PROXIES.forEach(p => sources.push({ url: p, type: 'proxy' }));
         feeds.forEach(f => sources.push({ url: 'https://api.codetabs.com/v1/proxy/?quest=' + encodeURIComponent(f), type: 'xml' }));
         sources.push({ url: 'https://min-api.cryptocompare.com/data/v2/news/?lang=EN', type: 'cc' });
         feeds.forEach(f => sources.push({ url: 'https://api.rss2json.com/v1/api.json?count=40&rss_url=' + encodeURIComponent(f), type: 'rss' }));
@@ -2079,6 +2184,10 @@ body.entry-mode { overflow: hidden; }
                 if (s.type === 'xml') {
                     const txt = await window.corsFetchJson(s.url, { timeout: 6000, text: true });
                     const a = parseRssXml(txt);
+                    if (a.length) { arts = a; break; }
+                } else if (s.type === 'proxy') {
+                    const j = await window.corsFetchJson(s.url, { timeout: 7000 });
+                    const a = parseProxyNews(j);
                     if (a.length) { arts = a; break; }
                 } else {
                     const j = await window.corsFetchJson(s.url, { timeout: 6000 });
@@ -2101,6 +2210,7 @@ body.entry-mode { overflow: hidden; }
         });
         arts.sort((x, y) => (y._verified ? 1 : 0) - (x._verified ? 1 : 0) || (y.ts || 0) - (x.ts || 0));
         allArticles = arts;
+        window.__newsArticles = arts;
         renderNewsList('');
     };
     function renderNewsList(q) {
@@ -6813,31 +6923,33 @@ function createDustInteraction(opts) {
             </div>`;
         }).join('');
         rows.forEach(r => { renderSparklineMini(document.getElementById('spark-mo-' + r.k), (moSeries[r.k] && moSeries[r.k].length >= 2) ? moSeries[r.k] : null); });
-        renderDominancePie({ btc: btcDn, eth: total ? mnow(eth) / total * 100 : (mp.eth || 0), usdt: usdtDn, others: on && total ? on / total * 100 : null });
+        renderDominancePie({ btc: btcDn, usdt: usdtDn });
     }
     window.updateMarketOverview = updateMarketOverview;
     /* نمودار دایره‌ای دامیننس با تم آمیتیس */
     function renderDominancePie(d) {
         const chart = document.getElementById('domPieChart'), legend = document.getElementById('domPieLegend');
         if (!chart || !legend) return;
+        const btc = (d.btc != null && !isNaN(d.btc)) ? Math.max(0, d.btc) : null;
+        const usdt = (d.usdt != null && !isNaN(d.usdt)) ? Math.max(0, d.usdt) : null;
+        if (btc == null || usdt == null) { chart.innerHTML = ''; legend.innerHTML = ''; return; }
+        const others = Math.max(0, 100 - btc - usdt);
         const segs = [
-            { name: 'بیت‌کوین (BTC)', val: d.btc, color: '#f7931a' },
-            { name: 'اتریوم (ETH)', val: d.eth, color: '#ffffff' },
-            { name: 'تتر (USDT)', val: d.usdt, color: '#26A17B' },
-            { name: 'سایر ارزها', val: d.others, color: '#ff0044' },
-        ].filter(s => s.val != null && !isNaN(s.val) && s.val > 0);
-        if (!segs.length) { chart.innerHTML = ''; legend.innerHTML = ''; return; }
-        const totalPct = segs.reduce((s, x) => s + x.val, 0) || 1;
-        const R = 74, CX = 84, CY = 84, SW = 26, C = 2 * Math.PI * R;
-        let off = 0;
-        let arcs = `<circle cx="${CX}" cy="${CY}" r="${R}" fill="none" stroke="#1a0508" stroke-width="${SW}"/>`;
+            { name: 'دامیننس بیت‌کوین (BTC.D)', val: btc, color: '#ff0044' },
+            { name: 'دامیننس تتر (USDT.D)', val: usdt, color: '#890913' },
+            { name: 'سایر ارزها (Others)', val: others, color: '#e6e6e6' },
+        ];
+        const sum = btc + usdt + others || 1;
+        const R = 66, CX = 84, CY = 84, SW = 28, C = 2 * Math.PI * R;
+        let acc = 0;
+        let arcs = `<circle cx="${CX}" cy="${CY}" r="${R}" fill="none" stroke="#160406" stroke-width="${SW}"/>`;
         segs.forEach(s => {
-            const frac = s.val / totalPct;
+            const frac = s.val / sum;
             const len = frac * C;
-            arcs += `<circle cx="${CX}" cy="${CY}" r="${R}" fill="none" stroke="${s.color}" stroke-width="${SW}" stroke-dasharray="${len.toFixed(2)} ${(C - len).toFixed(2)}" stroke-dashoffset="${(-off).toFixed(2)}" transform="rotate(-90 ${CX} ${CY})" stroke-linecap="butt"/>`;
-            off += len;
+            arcs += `<circle cx="${CX}" cy="${CY}" r="${R}" fill="none" stroke="${s.color}" stroke-width="${SW}" stroke-dasharray="${len.toFixed(2)} ${(C - len + 0.5).toFixed(2)}" stroke-dashoffset="${(-acc).toFixed(2)}" transform="rotate(-90 ${CX} ${CY})" stroke-linecap="butt"/>`;
+            acc += len;
         });
-        chart.innerHTML = `<svg viewBox="0 0 168 168">${arcs}<text x="${CX}" y="${CY - 4}" text-anchor="middle" fill="#fff" font-size="15" font-weight="800" font-family="Trebuchet MS,monospace">${segs[0].val.toFixed(1)}%</text><text x="${CX}" y="${CY + 13}" text-anchor="middle" fill="#f7931a" font-size="9.5" font-weight="700">BTC.D</text></svg>`;
+        chart.innerHTML = `<svg viewBox="0 0 168 168" width="168" height="168">${arcs}<text x="${CX}" y="${CY - 3}" text-anchor="middle" fill="#fff" font-size="17" font-weight="800" font-family="Trebuchet MS,monospace">${btc.toFixed(1)}%</text><text x="${CX}" y="${CY + 14}" text-anchor="middle" fill="#ff5c7a" font-size="10" font-weight="700" font-family="Trebuchet MS,monospace">BTC.D</text></svg>`;
         legend.innerHTML = segs.map(s => `<div class="dom-leg-item"><span class="dom-leg-dot" style="background:${s.color}"></span><span class="dom-leg-name">${s.name}</span><span class="dom-leg-val">${s.val.toFixed(2)}%</span></div>`).join('');
     }
     /* شمارش معکوس تا رویدادهای مهم */
@@ -6860,9 +6972,9 @@ function createDustInteraction(opts) {
             const dd = Math.floor(diff / 86400); diff -= dd * 86400;
             const hh = Math.floor(diff / 3600); diff -= hh * 3600;
             const mm = Math.floor(diff / 60); const ss = diff - mm * 60;
-            const dstr = new Date(e.t).toLocaleDateString('fa-IR', { year: 'numeric', month: 'long', day: 'numeric' });
+            const dstr = new Date(e.t).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
             const seg = (n, u) => `<span class="evt-count-seg"><span class="evt-count-num">${String(n).padStart(2, '0')}</span><span class="evt-count-unit">${u}</span></span>`;
-            return `<div class="evt-count-row"><div class="evt-count-info"><span class="evt-count-name">${e.name}</span><span class="evt-count-date">${dstr}</span></div><div class="evt-count-timer">${seg(dd, 'روز')}${seg(hh, 'ساعت')}${seg(mm, 'دقیقه')}${seg(ss, 'ثانیه')}</div></div>`;
+            return `<div class="evt-count-row"><div class="evt-count-info"><span class="evt-count-name">${e.name}</span><span class="evt-count-date">${dstr}</span></div><div class="evt-count-timer">${seg(dd, 'DAY')}${seg(hh, 'HR')}${seg(mm, 'MIN')}${seg(ss, 'SEC')}</div></div>`;
         }).join('');
     }
     setInterval(renderEventCountdown, 1000);
@@ -6876,22 +6988,38 @@ function createDustInteraction(opts) {
         { iso: '2026-10-30', title: 'انقضای ماهانه‌ی قراردادهای آتی (CME)', desc: 'سررسید قراردادهای آتی ماه اکتبر.', tag: 'بازار مشتقات' },
         { iso: '2026-12-25', title: 'انقضای فصلی پایان سال', desc: 'سررسید بزرگ آپشن‌ها و آتی‌های پایان سال میلادی.', tag: 'سررسید فصلی' },
     ];
+    const CEV_MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     function renderCryptoEvents() {
         const card = document.getElementById('cryptoEventsCard');
         if (!card) return;
         const now = Date.now();
         const up = CRYPTO_EVENTS.map(e => ({ ...e, t: new Date(e.iso + 'T12:00:00Z').getTime() })).filter(e => e.t > now - 86400000).sort((a, b) => a.t - b.t);
-        if (!up.length) { card.innerHTML = '<div class="crypto-more-note">رویداد پیش‌رویی ثبت نشده است.</div>'; return; }
-        const mons = ['ژانویه', 'فوریه', 'مارس', 'آوریل', 'مه', 'ژوئن', 'ژوئیه', 'اوت', 'سپتامبر', 'اکتبر', 'نوامبر', 'دسامبر'];
-        const faN = n => String(n).replace(/[0-9]/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
+        if (!up.length) { card.innerHTML = '<div class="crypto-more-note">No upcoming events.</div>'; return; }
+        const p2 = n => String(n).padStart(2, '0');
         card.innerHTML = up.map(e => {
             const dt = new Date(e.t);
-            const days = Math.ceil((e.t - now) / 86400000);
-            const soon = days <= 0 ? 'امروز' : ('تا ' + faN(days) + ' روز دیگر');
-            return `<div class="cev-row"><div class="cev-date"><span class="cev-day">${faN(dt.getUTCDate())}</span><span class="cev-mon">${mons[dt.getUTCMonth()]}</span></div><div class="cev-body"><div class="cev-title">${e.title}</div><div class="cev-desc">${e.desc}</div><span class="cev-tag">${e.tag}</span></div><div class="cev-soon">${soon}</div></div>`;
+            let diff = Math.max(0, Math.floor((e.t - now) / 1000));
+            const dd = Math.floor(diff / 86400); diff -= dd * 86400;
+            const hh = Math.floor(diff / 3600); diff -= hh * 3600;
+            const mm = Math.floor(diff / 60); const ss = diff - mm * 60;
+            const timer = `<div class="cev-timer" data-cev-t="${e.t}">${p2(dd)}:${p2(hh)}:${p2(mm)}:${p2(ss)}<span class="cev-t-lab">DD : HH : MM : SS</span></div>`;
+            return `<div class="cev-row"><div class="cev-date"><span class="cev-day">${dt.getUTCDate()}</span><span class="cev-mon">${CEV_MON[dt.getUTCMonth()]}</span></div><div class="cev-body"><div class="cev-title">${e.title}</div><div class="cev-desc">${e.desc}</div><span class="cev-tag">${e.tag}</span></div>${timer}</div>`;
         }).join('');
     }
+    function tickCryptoEvents() {
+        const now = Date.now();
+        const p2 = n => String(n).padStart(2, '0');
+        document.querySelectorAll('.cev-timer[data-cev-t]').forEach(el => {
+            const t = parseInt(el.getAttribute('data-cev-t'), 10);
+            let diff = Math.max(0, Math.floor((t - now) / 1000));
+            const dd = Math.floor(diff / 86400); diff -= dd * 86400;
+            const hh = Math.floor(diff / 3600); diff -= hh * 3600;
+            const mm = Math.floor(diff / 60); const ss = diff - mm * 60;
+            el.childNodes[0].nodeValue = `${p2(dd)}:${p2(hh)}:${p2(mm)}:${p2(ss)}`;
+        });
+    }
     setTimeout(renderCryptoEvents, 400);
+    setInterval(tickCryptoEvents, 1000);
     let lastMoRows = {};
     window.openIndexDetail = function(k) {
         const r = lastMoRows[k];
@@ -7004,73 +7132,140 @@ function createDustInteraction(opts) {
         const body = document.getElementById('mpwBody');
         if (!body) return;
         const top = top50Cache || [];
-        const ids = ['bitcoin', 'ethereum', 'binancecoin', 'tether'];
-        const coins = ids.map(id => top.find(c => c.id === id)).filter(Boolean);
+        /* اول ارزهای مورد علاقه (ستاره‌دار)، بعد پیش‌فرض‌ها تا سقف ۶ تا */
+        const ids = [];
+        (favSet || []).forEach(id => { if (top.find(c => c.id === id) && ids.indexOf(id) < 0) ids.push(id); });
+        ['bitcoin', 'ethereum', 'tether'].forEach(id => { if (ids.length < 6 && ids.indexOf(id) < 0 && top.find(c => c.id === id)) ids.push(id); });
+        const coins = ids.slice(0, 6).map(id => top.find(c => c.id === id)).filter(Boolean);
         if (!coins.length) { body.innerHTML = '<div class="mpw-loading">…</div>'; return; }
         body.innerHTML = coins.map(c => {
             const chg = c.price_change_percentage_24h;
             const cls = chg == null ? '' : (chg >= 0 ? 'up' : 'down');
-            const chgTxt = chg == null ? '' : (chg >= 0 ? '+' : '') + chg.toFixed(1) + '%';
+            const chgTxt = chg == null ? '—' : (chg >= 0 ? '+' : '') + chg.toFixed(1) + '%';
             return `<div class="mpw-row"><img src="${c.image}" onerror="this.style.display='none'"><span class="mpw-sym">${(c.symbol || '').toUpperCase()}</span><span class="mpw-price">${priceByUnit(c.current_price)}</span><span class="mpw-chg ${cls}">${chgTxt}</span></div>`;
         }).join('');
     }
     window.renderMiniWidget = renderMiniWidget;
-    setTimeout(() => { window.toggleMiniWidget(miniWidgetOpen); }, 600);
-    setInterval(renderMiniWidget, 5000);
+    /* ===== شاخص احساسات بیت‌کوین (بر پایه‌ی روند و مومنتوم قیمت) ===== */
+    function renderBtcSentiment() {
+        const card = document.getElementById('fngBtcCard');
+        if (!card) return;
+        const btc = (top50Cache || []).find(c => c.id === 'bitcoin');
+        if (!btc) return;
+        const chg = btc.price_change_percentage_24h || 0;
+        const spark = (btc.sparkline_in_7d && btc.sparkline_in_7d.price) || [];
+        let rangePos = 50;
+        if (spark.length >= 2) {
+            const mn = Math.min(...spark), mx = Math.max(...spark), p = btc.current_price || spark[spark.length - 1];
+            if (mx > mn) rangePos = (p - mn) / (mx - mn) * 100;
+        }
+        const momentum = Math.max(0, Math.min(100, (chg + 10) / 20 * 100));
+        const val = Math.round(0.5 * momentum + 0.5 * rangePos);
+        const label = val <= 25 ? 'Extreme Fear' : val <= 45 ? 'Fear' : val <= 55 ? 'Neutral' : val <= 75 ? 'Greed' : 'Extreme Greed';
+        card.innerHTML = btcGaugeSvg(val, label);
+    }
+    window.renderBtcSentiment = renderBtcSentiment;
+    function btcGaugeSvg(val, label) {
+        val = Math.max(0, Math.min(100, val || 0));
+        const cx = 120, cy = 120, r = 95;
+        const ang = Math.PI * (1 - val / 100);
+        const nx = cx + r * Math.cos(ang), ny = cy - r * Math.sin(ang);
+        const len = Math.PI * r;
+        return `<div class="fng-inner">
+            <svg viewBox="0 0 240 150" class="fng-svg">
+                <defs><linearGradient id="btcFngGrad" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0" stop-color="#890913"/><stop offset="0.5" stop-color="#890913"/>
+                    <stop offset="0.5" stop-color="#ffffff"/><stop offset="1" stop-color="#ffffff"/>
+                </linearGradient></defs>
+                <path d="M25 120 A95 95 0 0 1 215 120" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="14" stroke-linecap="round"/>
+                <path d="M25 120 A95 95 0 0 1 215 120" fill="none" stroke="url(#btcFngGrad)" stroke-width="14" stroke-linecap="round" stroke-dasharray="${len} ${len}" stroke-dashoffset="${len * (1 - val / 100)}"/>
+                <line x1="${cx}" y1="${cy}" x2="${nx.toFixed(1)}" y2="${ny.toFixed(1)}" stroke="#e6e6e6" stroke-width="3" stroke-linecap="round"/>
+                <circle cx="${cx}" cy="${cy}" r="6" fill="#e6e6e6"/>
+            </svg>
+            <div class="fng-val" style="color:#fff">${val}</div>
+            <div class="fng-label">Bitcoin Sentiment — ${label}</div>
+            <div class="fng-sub-title">بر پایه‌ی روند و مومنتوم قیمت بیت‌کوین</div>
+        </div>`;
+    }
+    /* قابلیت جابه‌جایی ویجت با کشیدن سربرگ */
+    function initMiniWidgetDrag() {
+        const w = document.getElementById('miniPriceWidget'), head = document.getElementById('mpwHead');
+        if (!w || !head) return;
+        let dragging = false, sx = 0, sy = 0, ox = 0, oy = 0;
+        try { const p = JSON.parse(localStorage.getItem('amitisMiniPos') || 'null'); if (p) { w.style.left = p.x + 'px'; w.style.top = p.y + 'px'; w.style.bottom = 'auto'; } } catch (e) {}
+        head.addEventListener('pointerdown', e => {
+            if (e.target.closest('.mpw-close')) return;
+            dragging = true; w.classList.add('dragging');
+            const r = w.getBoundingClientRect();
+            ox = r.left; oy = r.top; sx = e.clientX; sy = e.clientY;
+            w.style.left = ox + 'px'; w.style.top = oy + 'px'; w.style.bottom = 'auto'; w.style.right = 'auto';
+            head.setPointerCapture(e.pointerId);
+        });
+        head.addEventListener('pointermove', e => {
+            if (!dragging) return;
+            let nx = ox + (e.clientX - sx), ny = oy + (e.clientY - sy);
+            const maxX = window.innerWidth - w.offsetWidth - 4, maxY = window.innerHeight - w.offsetHeight - 4;
+            nx = Math.max(4, Math.min(maxX, nx)); ny = Math.max(4, Math.min(maxY, ny));
+            w.style.left = nx + 'px'; w.style.top = ny + 'px';
+        });
+        const end = e => { if (!dragging) return; dragging = false; w.classList.remove('dragging'); try { localStorage.setItem('amitisMiniPos', JSON.stringify({ x: parseInt(w.style.left, 10), y: parseInt(w.style.top, 10) })); } catch (e2) {} };
+        head.addEventListener('pointerup', end);
+        head.addEventListener('pointercancel', end);
+    }
+    setTimeout(() => { window.toggleMiniWidget(miniWidgetOpen); initMiniWidgetDrag(); }, 600);
+    setInterval(renderMiniWidget, 2000);
 
     /* ارزهای موردعلاقه — همیشه بالای لیست می‌مانند */
     let favSet = [];
     try { favSet = JSON.parse(localStorage.getItem('amitisFav') || '[]') || []; } catch (e) { favSet = []; }
-    /* FLIP: جابه‌جایی نرم و انیمیشنی ردیف‌ها بدون درخواست شبکه‌ای */
-    function flipReorder(container, doReorder) {
-        if (!container) return;
-        const rows = Array.from(container.children);
-        const first = new Map();
-        rows.forEach(r => first.set(r, r.getBoundingClientRect().top));
-        doReorder();
-        const after = Array.from(container.children);
-        after.forEach(r => {
-            const f = first.get(r);
-            if (f == null) return;
-            const last = r.getBoundingClientRect().top;
-            const dy = f - last;
-            if (Math.abs(dy) < 1) return;
-            r.style.transition = 'none';
-            r.style.transform = 'translateY(' + dy + 'px)';
-            requestAnimationFrame(() => {
-                r.style.transition = 'transform 0.5s cubic-bezier(0.22,0.9,0.28,1)';
-                r.style.transform = 'translateY(0)';
-                setTimeout(() => { r.style.transition = ''; r.style.transform = ''; }, 560);
-            });
-        });
+    /* بازسازی فوری هر دو فهرست (۹ تای بالا + بقیه) از روی کش، بدون شبکه */
+    function rebuildCoinListsFromCache() {
+        const top = top50Cache || [];
+        if (!top.length) return;
+        const sorted = sortByFav(top);
+        const grid = document.getElementById('cryptoGrid');
+        const more = document.getElementById('cryptoMoreList');
+        if (grid) {
+            grid.innerHTML = sorted.slice(0, 9).map(renderCoinRow).join('');
+            sorted.slice(0, 9).forEach(c => renderSparklineMini(document.getElementById('spark-' + c.id), c.sparkline_in_7d && c.sparkline_in_7d.price));
+        }
+        if (more && cryptoMoreLoaded) {
+            more.innerHTML = sorted.slice(9, 50).map(renderCoinRow).join('');
+            sorted.slice(9, 50).forEach(c => renderSparklineMini(document.getElementById('spark-' + c.id), c.sparkline_in_7d && c.sparkline_in_7d.price));
+        }
     }
-    function reorderFavContainer(container, poolIds) {
-        if (!container) return;
-        const rows = Array.from(container.children).filter(el => el.getAttribute && el.getAttribute('data-coin-id'));
-        rows.sort((a, b) => {
-            const ia = a.getAttribute('data-coin-id'), ib = b.getAttribute('data-coin-id');
-            const fa = favSet.indexOf(ia) >= 0 ? 0 : 1, fb = favSet.indexOf(ib) >= 0 ? 0 : 1;
-            if (fa !== fb) return fa - fb;
-            return poolIds.indexOf(ia) - poolIds.indexOf(ib);
-        });
-        rows.forEach(r => container.appendChild(r));
-    }
+    /* FLIP یکپارچه در هر دو ظرف — تطبیق بر اساس شناسه‌ی ارز، حرکت روان و یک‌مرحله‌ای */
     window.toggleFav = function(id) {
         const i = favSet.indexOf(id);
         const nowFav = i < 0;
         if (i >= 0) favSet.splice(i, 1); else favSet.push(id);
         try { localStorage.setItem('amitisFav', JSON.stringify(favSet)); } catch (e) {}
-        /* ۱) فوری: ظاهر ستاره را همه‌جا به‌روزرسانی کن */
-        document.querySelectorAll('.crypto-more-row[data-coin-id="' + id + '"] .crypto-more-fav').forEach(st => {
-            st.classList.toggle('on', nowFav);
-            st.textContent = nowFav ? '★' : '☆';
-        });
-        /* ۲) با انیمیشن، ردیف را به جای درست منتقل کن (بدون رفرش شبکه‌ای) */
-        const pool = (top50Cache || []).slice().sort((a, b) => (a.market_cap_rank || 999) - (b.market_cap_rank || 999)).map(c => c.id);
         const grid = document.getElementById('cryptoGrid');
         const more = document.getElementById('cryptoMoreList');
-        if (grid) flipReorder(grid, () => reorderFavContainer(grid, pool));
-        if (more) flipReorder(more, () => reorderFavContainer(more, pool));
+        /* ۱) موقعیت فعلی همه‌ی ردیف‌ها را (بر اساس شناسه) ثبت کن */
+        const firstTop = {};
+        [grid, more].forEach(cont => { if (!cont) return; cont.querySelectorAll('.crypto-more-row[data-coin-id]').forEach(r => { firstTop[r.getAttribute('data-coin-id')] = r.getBoundingClientRect().top; }); });
+        /* ۲) هر دو فهرست را فوری و درست بازبساز */
+        rebuildCoinListsFromCache();
+        renderMiniWidget();
+        /* ۳) از موقعیت قبلی به موقعیت جدید، همه را یک‌جا و روان انیمیت کن */
+        [grid, more].forEach(cont => {
+            if (!cont) return;
+            cont.querySelectorAll('.crypto-more-row[data-coin-id]').forEach(r => {
+                const cid = r.getAttribute('data-coin-id');
+                const f = firstTop[cid];
+                if (f == null) return;
+                const dy = f - r.getBoundingClientRect().top;
+                if (Math.abs(dy) < 1) return;
+                r.style.transition = 'none';
+                r.style.transform = 'translateY(' + dy + 'px)';
+                requestAnimationFrame(() => {
+                    r.style.transition = 'transform 0.55s cubic-bezier(0.22,0.9,0.28,1)';
+                    r.style.transform = 'translateY(0)';
+                    setTimeout(() => { r.style.transition = ''; r.style.transform = ''; }, 600);
+                });
+            });
+        });
     };
     function sortByFav(list) {
         return list.slice().sort((a, b) => {
@@ -7167,6 +7362,8 @@ function createDustInteraction(opts) {
             });
             updateFiatBox(tetherData);
             updateMarketOverview();
+            renderBtcSentiment();
+            renderMiniWidget();
             if (cryptoMoreLoaded) renderCryptoMoreList(top50);
         } catch (e) {
             grid.innerHTML = '<div class="crypto-loading">خطا در دریافت اطلاعات از صرافی‌ها</div>';
@@ -7301,6 +7498,18 @@ function createDustInteraction(opts) {
                     <div class="cdp-change ${chgCls}">${chg != null ? chgSign + chg.toFixed(2) + '%' : '—'} (۲۴ساعته)</div>
                 </div>
             </div>
+            <div class="cd-chart-toolbar">
+                <div class="cd-chart-group" id="cdTypeGroup">
+                    <button class="cd-chart-btn" data-ctype="candle" onclick="setCoinChartType('candle')">شمعی</button>
+                    <button class="cd-chart-btn" data-ctype="line" onclick="setCoinChartType('line')">خطی</button>
+                </div>
+                <div class="cd-chart-group" id="cdRangeGroup">
+                    <button class="cd-chart-btn" data-cdays="1" onclick="setCoinChartDays(1)">1D</button>
+                    <button class="cd-chart-btn" data-cdays="7" onclick="setCoinChartDays(7)">7D</button>
+                    <button class="cd-chart-btn" data-cdays="30" onclick="setCoinChartDays(30)">30D</button>
+                    <button class="cd-chart-btn" data-cdays="365" onclick="setCoinChartDays(365)">1Y</button>
+                </div>
+            </div>
             <div class="coin-detail-chart" id="coinDetailChart"></div>
             <div class="coin-detail-grid">
                 <div class="cd-item"><span class="cdk">مارکت‌کپ</span><span class="cdv">${fmtBig(c.market_cap)}</span></div>
@@ -7308,25 +7517,49 @@ function createDustInteraction(opts) {
                 <div class="cd-item"><span class="cdk">عرضه‌ی در گردش</span><span class="cdv">${c.circulating_supply ? Math.round(c.circulating_supply).toLocaleString('en-US') : '—'}</span></div>
                 <div class="cd-item"><span class="cdk">درصد عرضه از کل</span><span class="cdv">${supplyPct != null ? supplyPct.toFixed(1) + '%' : '—'}</span></div>
                 <div class="cd-item"><span class="cdk">بالاترین قیمت تاریخ (ATH)</span><span class="cdv">${ath ? priceByUnit(ath) : '—'}</span></div>
-                <div class="cd-item"><span class="cdk">تاریخ ATH</span><span class="cdv">${athDate ? new Date(athDate).toLocaleDateString('fa-IR') : '—'}</span></div>
+                <div class="cd-item"><span class="cdk">تاریخ ATH</span><span class="cdv">${athDate ? new Date(athDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : '—'}</span></div>
                 <div class="cd-item"><span class="cdk">پایین‌ترین قیمت تاریخ (ATL)</span><span class="cdv">${atl ? priceByUnit(atl) : '—'}</span></div>
             </div>
             ${desc ? `<div class="coin-detail-desc">${desc}</div>` : ''}
             ${homepage ? `<a class="coin-detail-link" href="${homepage}" target="_blank" rel="noopener noreferrer">وب‌سایت رسمی ↗</a>` : ''}
+            <div class="cd-related-news" id="cdRelatedNews" style="display:none;"></div>
         `;
         const prices = c.sparkline_in_7d && c.sparkline_in_7d.price;
         renderSparklineBig(document.getElementById('coinDetailChart'), prices);
-        /* نمودار کندلی حرفه‌ای با داده‌ی واقعی OHLC (در صورت دسترسی) */
-        (async () => {
-            const chartEl = document.getElementById('coinDetailChart');
-            if (!chartEl) return;
-            let ohlc = null;
-            try { ohlc = await corsFetchJson('https://api.coingecko.com/api/v3/coins/' + coinId + '/ohlc?vs_currency=usd&days=7'); } catch (e) {}
-            if (document.getElementById('coinDetailChart') === chartEl && Array.isArray(ohlc) && ohlc.length >= 2) {
-                renderCandles(chartEl, ohlc);
-            }
-        })();
+        /* دکمه‌های نوع نمودار و بازه‌ی زمانی را روشن/خاموش کن و نمودار را بکش */
+        syncCoinChartButtons();
+        renderCoinChart(coinId);
+        loadCoinRelatedNews(c);
     };
+    /* ===== وضعیت نمودار پاپ‌آپ ارز: نوع (شمعی/خطی) و بازه (روز) ===== */
+    let coinChartType = 'candle', coinChartDays = 7;
+    const coinOhlcCache = {};
+    function syncCoinChartButtons() {
+        document.querySelectorAll('#cdTypeGroup .cd-chart-btn').forEach(b => b.classList.toggle('on', b.getAttribute('data-ctype') === coinChartType));
+        document.querySelectorAll('#cdRangeGroup .cd-chart-btn').forEach(b => b.classList.toggle('on', b.getAttribute('data-cdays') === String(coinChartDays)));
+    }
+    window.setCoinChartType = function (t) { coinChartType = t; syncCoinChartButtons(); if (window.__openCoinId) renderCoinChart(window.__openCoinId); };
+    window.setCoinChartDays = function (d) { coinChartDays = d; syncCoinChartButtons(); if (window.__openCoinId) renderCoinChart(window.__openCoinId); };
+    async function renderCoinChart(coinId) {
+        const el = document.getElementById('coinDetailChart');
+        if (!el) return;
+        const key = coinId + ':' + coinChartDays;
+        let ohlc = coinOhlcCache[key];
+        if (!ohlc) {
+            el.innerHTML = '<div class="ip-loading" style="padding:44px 0;">در حال دریافت نمودار…</div>';
+            try { ohlc = await corsFetchJson('https://api.coingecko.com/api/v3/coins/' + coinId + '/ohlc?vs_currency=usd&days=' + coinChartDays); } catch (e) {}
+            if (Array.isArray(ohlc) && ohlc.length >= 2) coinOhlcCache[key] = ohlc;
+        }
+        if (window.__openCoinId !== coinId) return;
+        if (!Array.isArray(ohlc) || ohlc.length < 2) { el.innerHTML = '<div class="ip-loading" style="padding:44px 0;">نمودار در دسترس نیست</div>'; return; }
+        if (coinChartType === 'candle') renderCandles(el, ohlc);
+        else renderOhlcLine(el, ohlc);
+    }
+    /* نمودار خطی از روی داده‌ی OHLC (قیمت بسته‌شدن) */
+    function renderOhlcLine(el, ohlc) {
+        const closes = ohlc.map(d => d[4]);
+        renderSparklineBig(el, closes, 'نمودار خطی');
+    }
     /* نمودار شمعی (کندل استیک) با تم آمیتیس — صعودی سفید، نزولی قرمز کندلی */
     function renderCandles(el, ohlc) {
         if (!el || !Array.isArray(ohlc) || ohlc.length < 2) return;
@@ -7344,15 +7577,16 @@ function createDustInteraction(opts) {
             const d = data[i], o = d[1], h = d[2], l = d[3], cl = d[4];
             const cx = PADX + slot * (i + 0.5);
             const up = cl >= o;
-            const col = up ? '#ffffff' : '#ff0044';
+            const col = up ? '#ffffff' : '#890913';
             const yH = yOf(h), yL = yOf(l), yO = yOf(o), yC = yOf(cl);
-            const top = Math.min(yO, yC), bh = Math.max(1, Math.abs(yC - yO));
-            bars += `<line x1="${cx.toFixed(1)}" y1="${yH.toFixed(1)}" x2="${cx.toFixed(1)}" y2="${yL.toFixed(1)}" stroke="${col}" stroke-width="1"/>`;
-            bars += `<rect x="${(cx - bw / 2).toFixed(1)}" y="${top.toFixed(1)}" width="${bw.toFixed(1)}" height="${bh.toFixed(1)}" fill="${up ? 'none' : col}" stroke="${col}" stroke-width="1.1"/>`;
+            const top = Math.min(yO, yC), bh = Math.max(1.5, Math.abs(yC - yO));
+            bars += `<line x1="${cx.toFixed(1)}" y1="${yH.toFixed(1)}" x2="${cx.toFixed(1)}" y2="${yL.toFixed(1)}" stroke="${col}" stroke-width="${Math.max(1, bw / 6).toFixed(1)}" opacity="0.9"/>`;
+            bars += `<rect x="${(cx - bw / 2).toFixed(1)}" y="${top.toFixed(1)}" width="${bw.toFixed(1)}" height="${bh.toFixed(1)}" fill="${col}" opacity="0.95"/>`;
         }
-        el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">${bars}</svg><div class="coin-detail-chart-label">نمودار شمعی ۷ روز اخیر (OHLC)</div>`;
+        const lbl = coinChartDays === 1 ? '1D' : coinChartDays === 30 ? '30D' : coinChartDays === 365 ? '1Y' : '7D';
+        el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">${bars}</svg><div class="coin-detail-chart-label">نمودار شمعی (OHLC) — ${lbl}</div>`;
     }
-    function renderSparklineBig(el, prices) {
+    function renderSparklineBig(el, prices, customLabel) {
         if (!el) return;
         if (!prices || prices.length < 2) { el.innerHTML = '<div class="ip-loading" style="padding:30px 0;">نموداری در دسترس نیست</div>'; return; }
         const W = 600, H = 140, PAD = 8;
@@ -7366,9 +7600,25 @@ function createDustInteraction(opts) {
             return [x, y];
         });
         const line = pts.map(p => p.join(',')).join(' ');
+        const area = 'M' + pts[0][0].toFixed(1) + ',' + (H - PAD) + ' L' + line.split(' ').join(' L') + ' L' + pts[pts.length - 1][0].toFixed(1) + ',' + (H - PAD) + ' Z';
+        const lbl = customLabel || 'نمودار قیمت';
         el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
+            <defs><linearGradient id="cdLineGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${color}" stop-opacity="0.28"/><stop offset="1" stop-color="${color}" stop-opacity="0"/></linearGradient></defs>
+            <path d="${area}" fill="url(#cdLineGrad)"/>
             <polyline points="${line}" fill="none" stroke="${color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></polyline>
-        </svg><div class="coin-detail-chart-label">نمودار قیمت ۷ روز اخیر</div>`;
+        </svg><div class="coin-detail-chart-label">${lbl}</div>`;
+    }
+    /* ===== خبرهای مرتبط با هر ارز داخل پاپ‌آپ همان ارز ===== */
+    function loadCoinRelatedNews(c) {
+        const box = document.getElementById('cdRelatedNews');
+        if (!box) return;
+        const arts = (window.__newsArticles || []);
+        if (!arts.length) { box.style.display = 'none'; return; }
+        const name = (c.name || '').toLowerCase(), sym = (c.symbol || '').toLowerCase();
+        const hits = arts.filter(a => { const t = ((a.title || '') + ' ' + (a.cats || '')).toLowerCase(); return name && (t.indexOf(name) >= 0 || (sym.length >= 3 && t.indexOf(sym) >= 0)); }).slice(0, 4);
+        if (!hits.length) { box.style.display = 'none'; return; }
+        box.style.display = '';
+        box.innerHTML = '<div class="cd-news-title">خبرهای مرتبط با ' + (c.name || '') + '</div>' + hits.map(a => `<a class="cd-news-item" href="${a.url}" target="_blank" rel="noopener noreferrer">${a.title}</a>`).join('');
     }
     window.closeCoinDetail = function() {
         const overlay = document.getElementById('coinDetailOverlay');
@@ -7379,7 +7629,7 @@ function createDustInteraction(opts) {
 
     /* ===== جست‌وجوی همه‌ی ارزها — محلی، سریع، با نام فارسی و آوانگاری ===== */
     const FA_ALIASES = {
-        'بیتکوین': 'bitcoin', 'بیتکوئن': 'bitcoin', 'بتکوین': 'bitcoin', 'اتریوم': 'ethereum', 'اتر': 'ethereum', 'اتریم': 'ethereum', 'تتر': 'tether', 'ترون': 'tron', 'ریپل': 'ripple', 'ایکسآرپی': 'ripple', 'سولانا': 'solana', 'سولانه': 'solana', 'کاردانو': 'cardano', 'کاردانا': 'cardano', 'دوجکوین': 'dogecoin', 'دوج': 'dogecoin', 'شیبا': 'shiba-inu', 'شیباینو': 'shiba-inu', 'لایتکوین': 'litecoin', 'لایتکوئن': 'litecoin', 'بایننسکوین': 'binancecoin', 'بایننس': 'binancecoin', 'بیانبی': 'binancecoin', 'پولکادات': 'polkadot', 'پولکادوت': 'polkadot', 'چینلینک': 'chainlink', 'لینک': 'chainlink', 'مونرو': 'monero', 'مونرا': 'monero', 'استلار': 'stellar', 'آواکس': 'avalanche-2', 'اوالانچ': 'avalanche-2', 'آوالانچ': 'avalanche-2', 'نیر': 'near', 'کازماس': 'cosmos', 'کاسماس': 'cosmos', 'فایلکوین': 'filecoin', 'پپه': 'pepe', 'یواسدیکوین': 'usd-coin', 'یوسدیسی': 'usd-coin', 'یواسدیسی': 'usd-coin', 'آپتوس': 'aptos', 'الگورند': 'algorand', 'ویچین': 'vechain', 'اینترنتکامپیوتر': 'internet-computer', 'میکر': 'maker', 'مکر': 'maker', 'یونیسواپ': 'uniswap', 'آربیتروم': 'arbitrum', 'اپتیمیزم': 'optimism', 'رندر': 'render-token', 'سویی': 'sui', 'تونکوین': 'the-open-network', 'تون': 'the-open-network', 'فانتوم': 'fantom', 'سندباکس': 'the-sandbox', 'دسنترالند': 'decentraland', 'اکسیاینفینیتی': 'axie-infinity', 'چیلیز': 'chiliz', 'گالا': 'gala', 'فلوکی': 'floki', 'بونک': 'bonk', 'جاسمی': 'jasmycoin', 'کازموس': 'cosmos', 'هدرا': 'hedera-hashgraph', 'استکس': 'blockstack', 'اینج': 'injective-protocol', 'اینجکتیو': 'injective-protocol'
+        'بیتکوین': 'bitcoin', 'بیتکوئن': 'bitcoin', 'بتکوین': 'bitcoin', 'اتریوم': 'ethereum', 'اتر': 'ethereum', 'اتریم': 'ethereum', 'تتر': 'tether', 'ترون': 'tron', 'ریپل': 'ripple', 'ایکسآرپی': 'ripple', 'سولانا': 'solana', 'سولانه': 'solana', 'کاردانو': 'cardano', 'کاردانا': 'cardano', 'دوجکوین': 'dogecoin', 'دوج': 'dogecoin', 'شیبا': 'shiba-inu', 'شیباینو': 'shiba-inu', 'لایتکوین': 'litecoin', 'لایتکوئن': 'litecoin', 'بایننسکوین': 'binancecoin', 'بایننس': 'binancecoin', 'بیانبی': 'binancecoin', 'پولکادات': 'polkadot', 'پولکادوت': 'polkadot', 'چینلینک': 'chainlink', 'لینک': 'chainlink', 'مونرو': 'monero', 'مونرا': 'monero', 'استلار': 'stellar', 'آواکس': 'avalanche-2', 'اوالانچ': 'avalanche-2', 'آوالانچ': 'avalanche-2', 'نیر': 'near', 'کازماس': 'cosmos', 'کاسماس': 'cosmos', 'فایلکوین': 'filecoin', 'پپه': 'pepe', 'یواسدیکوین': 'usd-coin', 'یوسدیسی': 'usd-coin', 'یواسدیسی': 'usd-coin', 'آپتوس': 'aptos', 'الگورند': 'algorand', 'ویچین': 'vechain', 'اینترنتکامپیوتر': 'internet-computer', 'میکر': 'maker', 'مکر': 'maker', 'یونیسواپ': 'uniswap', 'آربیتروم': 'arbitrum', 'اپتیمیزم': 'optimism', 'رندر': 'render-token', 'سویی': 'sui', 'تونکوین': 'the-open-network', 'تون': 'the-open-network', 'فانتوم': 'fantom', 'سندباکس': 'the-sandbox', 'دسنترالند': 'decentraland', 'اکسیاینفینیتی': 'axie-infinity', 'چیلیز': 'chiliz', 'گالا': 'gala', 'فلوکی': 'floki', 'بونک': 'bonk', 'جاسمی': 'jasmycoin', 'کازموس': 'cosmos', 'هدرا': 'hedera-hashgraph', 'استکس': 'blockstack', 'اینج': 'injective-protocol', 'اینجکتیو': 'injective-protocol', 'پالیگان': 'matic-network', 'پالیگون': 'matic-network', 'پالیگن': 'matic-network', 'ماتیک': 'matic-network', 'پالی': 'matic-network', 'پول': 'polygon-ecosystem-token', 'تیتر': 'tether', 'یواسدیتی': 'tether', 'دای': 'dai', 'ترمپ': 'official-trump', 'ترامپ': 'official-trump', 'ویف': 'dogwifcoin', 'داگویف': 'dogwifcoin', 'کرو': 'curve-dao-token', 'کامپاند': 'compound-governance-token', 'انس': 'ethereum-name-service', 'جوپیتر': 'jupiter-exchange-solana', 'جوپ': 'jupiter-exchange-solana', 'ورלدکوین': 'worldcoin-wld', 'ورد': 'worldcoin-wld', 'سی': 'sei-network', 'سئی': 'sei-network', 'تیا': 'celestia', 'سلستیا': 'celestia', 'استارکنت': 'starknet', 'استارک': 'starknet', 'بلاست': 'blast', 'ایگلد': 'elrond-erd-2', 'کاسپا': 'kaspa', 'تئوس': 'tezos', 'تزوس': 'tezos', 'اگیکس': 'fetch-ai', 'فچ': 'fetch-ai', 'گراف': 'the-graph', 'دگراف': 'the-graph', 'ایموتیبل': 'immutable-x', 'فلو': 'flow', 'کوانت': 'quant-network', 'نئو': 'neo', 'داش': 'dash', 'زیکش': 'zcash', 'زیکسچنج': 'zcash', 'اوندو': 'ondo-finance', 'پایث': 'pyth-network', 'مینا': 'mina-protocol', 'ترست': 'trust-wallet-token', 'رونین': 'ronin', 'گیت': 'gatechain-token', 'کوکوین': 'kucoin-shares', 'لیدو': 'lido-dao', 'ایوx': 'aave', 'آوه': 'aave', 'آوی': 'aave'
     };
     function normFa(s) { return (s || '').replace(/[‌\s\-_.]/g, '').toLowerCase(); }
     let __searchTimer = null;
@@ -7594,55 +7844,100 @@ function createDustInteraction(opts) {
         doConvert();
     };
 
-    /* ===== مقایسه‌ی تا ۳۰۰ ارز کنار هم ===== */
-    let cmpList = [];
-    window.openCompare = async function() {
+    /* ===== مقایسه‌ی دو ارز (نمودار هم‌پوشان درصدی) ===== */
+    let cmpSel = { a: null, b: null }, cmpDays = 7;
+    const cmpOhlcCache = {};
+    function cmpCoinOptions() { return convOptions.filter(o => o.group === 'ارز دیجیتال'); }
+    function cmpLabelOf(v) { const o = convOptions.find(x => x.value === v); return o ? (o.sym + ' — ' + o.name) : '—'; }
+    function renderCmpList(which) {
+        const listEl = document.getElementById(which === 'a' ? 'cmpAList' : 'cmpBList');
+        const searchEl = document.getElementById(which === 'a' ? 'cmpASearch' : 'cmpBSearch');
+        if (!listEl) return;
+        const q = normFa(searchEl ? searchEl.value : '');
+        const sel = cmpSel[which];
+        const items = cmpCoinOptions().filter(o => !q || o.search.indexOf(q) >= 0);
+        listEl.innerHTML = items.length ? items.map(o => {
+            const img = o.img ? `<img src="${o.img}" onerror="this.style.display='none'">` : '';
+            return `<div class="conv-dd-opt ${o.value === sel ? 'sel' : ''}" onclick="selectCmpOpt('${which}','${o.value}')">${img}<span class="cdo-sym">${o.sym}</span><span class="cdo-name">${o.name}</span></div>`;
+        }).join('') : '<div class="conv-dd-empty">موردی پیدا نشد</div>';
+    }
+    window.toggleCmpDD = function (which) {
+        const dd = document.getElementById(which === 'a' ? 'cmpADD' : 'cmpBDD');
+        const other = document.getElementById(which === 'a' ? 'cmpBDD' : 'cmpADD');
+        if (other) other.classList.remove('open');
+        if (!dd) return;
+        const willOpen = !dd.classList.contains('open');
+        dd.classList.toggle('open', willOpen);
+        if (willOpen) { const s = document.getElementById(which === 'a' ? 'cmpASearch' : 'cmpBSearch'); if (s) s.value = ''; renderCmpList(which); if (s) setTimeout(() => s.focus(), 40); }
+    };
+    window.filterCmpDD = function (which) { renderCmpList(which); };
+    window.selectCmpOpt = function (which, value) {
+        cmpSel[which] = value;
+        const lbl = document.getElementById(which === 'a' ? 'cmpALabel' : 'cmpBLabel');
+        if (lbl) lbl.textContent = cmpLabelOf(value);
+        const dd = document.getElementById(which === 'a' ? 'cmpADD' : 'cmpBDD');
+        if (dd) dd.classList.remove('open');
+        drawCompare();
+    };
+    window.setCmpDays = function (d) {
+        cmpDays = d;
+        document.querySelectorAll('#cmpRange .cd-chart-btn').forEach(b => b.classList.toggle('on', b.getAttribute('data-cmpdays') === String(d)));
+        drawCompare();
+    };
+    window.openCoinCompare = async function () {
         const ov = document.getElementById('cmpOverlay');
         if (!ov) return;
         ov.classList.add('show'); document.body.style.overflow = 'hidden';
-        await fetchAllCoins();
-        renderCmpTable();
+        if (!convOptions.length) { const [all, fx] = await Promise.all([fetchAllCoins(), fetchFxRates()]); buildConvOptions(all, fx); }
+        if (!cmpSel.a) cmpSel.a = 'crypto:bitcoin';
+        if (!cmpSel.b) cmpSel.b = 'crypto:ethereum';
+        document.getElementById('cmpALabel').textContent = cmpLabelOf(cmpSel.a);
+        document.getElementById('cmpBLabel').textContent = cmpLabelOf(cmpSel.b);
+        setCmpDays(cmpDays);
     };
-    window.closeCompare = function() { const ov = document.getElementById('cmpOverlay'); if (ov) ov.classList.remove('show'); document.body.style.overflow = ''; };
-    window.cmpSearch = function(q) {
-        q = (q || '').trim().toLowerCase();
-        const box = document.getElementById('cmpResults');
-        if (!box) return;
-        if (!q) { box.classList.remove('show'); box.innerHTML = ''; return; }
-        const all = allCoinsCache || [];
-        const matches = all.filter(c => (c.name + ' ' + c.symbol).toLowerCase().includes(q) && !cmpList.find(x => x.id === c.id)).slice(0, 14);
-        box.innerHTML = matches.length ? matches.map(c => `<div class="cmp-result-item" onclick="cmpAdd('${c.id}')"><img src="${c.image}" onerror="this.style.display='none'"> ${(c.symbol || '').toUpperCase()} — ${c.name}</div>`).join('') : '<div class="cmp-result-item">پیدا نشد</div>';
-        box.classList.add('show');
-    };
-    window.cmpAdd = function(id) {
-        if (cmpList.length >= 300) return;
-        const c = (allCoinsCache || []).find(x => x.id === id);
-        if (c && !cmpList.find(x => x.id === id)) cmpList.push(c);
-        const inp = document.getElementById('cmpSearchInput'); if (inp) inp.value = '';
-        const box = document.getElementById('cmpResults'); if (box) box.classList.remove('show');
-        renderCmpTable();
-    };
-    window.cmpDel = function(id) { cmpList = cmpList.filter(x => x.id !== id); renderCmpTable(); };
-    function renderCmpTable() {
-        const wrap = document.getElementById('cmpTableWrap');
-        const cnt = document.getElementById('cmpCount');
-        if (cnt) cnt.textContent = cmpList.length ? `${cmpList.length.toLocaleString('en-US')} ارز انتخاب‌شده (تا ۳۰۰ ارز)` : 'برای مقایسه، از کادر بالا ارز اضافه کن (تا ۳۰۰ ارز)';
-        if (!wrap) return;
-        if (!cmpList.length) { wrap.innerHTML = ''; return; }
-        const rows = cmpList.map(c => {
-            const chg = c.price_change_percentage_24h;
-            const cls = chg == null ? '' : (chg >= 0 ? 'up' : 'down');
-            return `<tr>
-                <td class="cmp-coin"><img src="${c.image}" onerror="this.style.display='none'"> ${(c.symbol || '').toUpperCase()} <span class="cmp-del" onclick="cmpDel('${c.id}')">✕</span></td>
-                <td>$${formatCryptoPrice(c.current_price || 0)}</td>
-                <td class="${cls}">${chg != null ? (chg >= 0 ? '+' : '') + chg.toFixed(2) + '%' : '—'}</td>
-                <td>${fmtBig(c.market_cap)}</td>
-                <td>${fmtBig(c.total_volume)}</td>
-                <td>#${c.market_cap_rank || '—'}</td>
-            </tr>`;
-        }).join('');
-        wrap.innerHTML = `<table class="cmp-table"><thead><tr><th>ارز</th><th>قیمت</th><th>۲۴ ساعته</th><th>مارکت‌کپ</th><th>حجم</th><th>رتبه</th></tr></thead><tbody>${rows}</tbody></table>`;
+    window.closeCoinCompare = function () { const ov = document.getElementById('cmpOverlay'); if (ov) ov.classList.remove('show'); document.body.style.overflow = ''; };
+    async function cmpFetchCloses(value, days) {
+        const id = value.split(':')[1];
+        const key = id + ':' + days;
+        if (cmpOhlcCache[key]) return cmpOhlcCache[key];
+        let ohlc = null;
+        try { ohlc = await corsFetchJson('https://api.coingecko.com/api/v3/coins/' + id + '/ohlc?vs_currency=usd&days=' + days); } catch (e) {}
+        const closes = Array.isArray(ohlc) ? ohlc.map(d => d[4]) : null;
+        if (closes && closes.length >= 2) cmpOhlcCache[key] = closes;
+        return closes;
     }
+    async function drawCompare() {
+        const chart = document.getElementById('cmpChart'), legend = document.getElementById('cmpLegend');
+        if (!chart) return;
+        if (!cmpSel.a || !cmpSel.b) return;
+        chart.innerHTML = '<div class="ip-loading" style="padding:60px 0;">در حال دریافت نمودار…</div>';
+        if (legend) legend.innerHTML = '';
+        const reqA = cmpSel.a, reqB = cmpSel.b, reqD = cmpDays;
+        const [ca, cb] = await Promise.all([cmpFetchCloses(reqA, reqD), cmpFetchCloses(reqB, reqD)]);
+        if (reqA !== cmpSel.a || reqB !== cmpSel.b || reqD !== cmpDays) return;
+        if (!ca || !cb) { chart.innerHTML = '<div class="ip-loading" style="padding:60px 0;">نمودار در دسترس نیست</div>'; return; }
+        const norm = arr => { const base = arr[0] || 1; return arr.map(v => (v / base - 1) * 100); };
+        const na = norm(ca), nb = norm(cb);
+        const W = 600, H = 190, PADX = 40, PADT = 12, PADB = 22;
+        const all = na.concat(nb);
+        let mn = Math.min(...all), mx = Math.max(...all);
+        if (mn === mx) { mn -= 1; mx += 1; }
+        const pad = (mx - mn) * 0.08; mn -= pad; mx += pad;
+        const xOf = (i, n) => PADX + (i / (n - 1)) * (W - PADX * 2);
+        const yOf = v => PADT + (1 - (v - mn) / (mx - mn)) * (H - PADT - PADB);
+        const path = (arr, col) => `<polyline points="${arr.map((v, i) => xOf(i, arr.length).toFixed(1) + ',' + yOf(v).toFixed(1)).join(' ')}" fill="none" stroke="${col}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
+        let grid = '';
+        [0].forEach(() => { const y = yOf(0); grid += `<line x1="${PADX}" y1="${y.toFixed(1)}" x2="${W - PADX}" y2="${y.toFixed(1)}" stroke="rgba(255,255,255,0.12)" stroke-width="1" stroke-dasharray="4,4"/><text x="${PADX - 6}" y="${(y + 3).toFixed(1)}" text-anchor="end" fill="#888" font-size="9" font-family="Trebuchet MS,monospace">0%</text>`; });
+        grid += `<text x="${PADX - 6}" y="${(yOf(mx) + 8).toFixed(1)}" text-anchor="end" fill="#888" font-size="9" font-family="Trebuchet MS,monospace">${mx.toFixed(0)}%</text>`;
+        grid += `<text x="${PADX - 6}" y="${(yOf(mn) - 2).toFixed(1)}" text-anchor="end" fill="#888" font-size="9" font-family="Trebuchet MS,monospace">${mn.toFixed(0)}%</text>`;
+        chart.innerHTML = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">${grid}${path(na, '#ffffff')}${path(nb, '#ff0044')}</svg>`;
+        if (legend) {
+            const oa = convOptions.find(x => x.value === cmpSel.a), ob = convOptions.find(x => x.value === cmpSel.b);
+            const fa = na[na.length - 1], fb = nb[nb.length - 1];
+            legend.innerHTML = `<div class="cmp-leg-item"><span class="cmp-dot" style="background:#ffffff"></span>${oa ? oa.sym : ''}<span class="cmp-leg-val" style="color:${fa >= 0 ? '#fff' : '#ff2d5e'}">${fa >= 0 ? '+' : ''}${fa.toFixed(2)}%</span></div><div class="cmp-leg-item"><span class="cmp-dot" style="background:#ff0044"></span>${ob ? ob.sym : ''}<span class="cmp-leg-val" style="color:${fb >= 0 ? '#fff' : '#ff2d5e'}">${fb >= 0 ? '+' : ''}${fb.toFixed(2)}%</span></div>`;
+        }
+    }
+    document.addEventListener('click', function (e) { if (!e.target.closest('.cmp-dd')) { const a = document.getElementById('cmpADD'), b = document.getElementById('cmpBDD'); if (a) a.classList.remove('open'); if (b) b.classList.remove('open'); } });
 
     let cryptoInterval = null;
     window.initCrypto = function() {

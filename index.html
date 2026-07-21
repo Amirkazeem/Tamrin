@@ -12,15 +12,21 @@
 
 html, body {
     min-height: 100vh;
+    min-height: 100dvh;
     background: #000;
     font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
     direction: rtl;
     overflow-x: hidden;
+    overscroll-behavior: none;
     -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 @import url('https://fonts.googleapis.com/css2?family=Russo+One&family=Orbitron:wght@400;700;900&display=swap');
 body { overflow-y: auto; }
 body.entry-mode { overflow: hidden; }
+html:has(body.entry-mode) { overflow: hidden; }
 
 .hidden { display: none !important; }
 
@@ -141,6 +147,7 @@ body.entry-mode { overflow: hidden; }
     border-left: 1px solid #1a1a1a;
     border-right: 1px solid #1a1a1a;
     min-height: 100vh;
+    min-height: 100dvh;
     display: flex;
     flex-direction: column;
     position: relative;
@@ -573,7 +580,7 @@ body.entry-mode { overflow: hidden; }
 .playlist-toggle-btn:active, .crypto-more-btn:active { transform: translateY(0) scale(0.98); }
 .playlist-toggle-btn svg, .crypto-more-btn svg { width: 15px; height: 15px; position: relative; z-index: 1; filter: drop-shadow(0 0 6px rgba(255,0,68,0.5)); }
 
-.playlist-panel { position: fixed; top: 80px; left: 20px; z-index: 998; background: rgba(16, 16, 16, 0.92); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 16px 16px 14px; width: 320px; max-width: 90vw; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8); display: none; animation: slideDown 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+.playlist-panel { position: fixed; top: 80px; left: 20px; z-index: 1000; background: rgba(16, 16, 16, 0.92); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 16px 16px 14px; width: 320px; max-width: 90vw; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8); display: none; animation: slideDown 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
 .playlist-panel.show { display: block; }
 .playlist-panel-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
 .playlist-panel-header span { color: #fff; font-size: 13px; font-weight: 700; font-family: 'Vazirmatn', sans-serif; }
@@ -1369,7 +1376,8 @@ body.entry-mode { overflow: hidden; }
         grid-template-columns: 20px 26px 30px 1fr auto;
         grid-template-areas:
             "fav rank logo name price"
-            "meta1 meta1 meta2 meta2 meta3";
+            "meta1 meta1 meta2 meta2 meta3"
+            "spark spark spark spark spark";
         row-gap: 6px;
         column-gap: 8px;
         align-items: center;
@@ -1381,7 +1389,7 @@ body.entry-mode { overflow: hidden; }
     .crypto-more-row:not(.crypto-more-head) .crypto-more-name  { grid-area: name; min-width: 0; }
     .crypto-more-row:not(.crypto-more-head) .crypto-more-name .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .crypto-more-row:not(.crypto-more-head) .crypto-more-price { grid-area: price; min-width: 0; }
-    .crypto-more-row:not(.crypto-more-head) .crypto-more-spark { display: none; }
+    .crypto-more-row:not(.crypto-more-head) .crypto-more-spark { grid-area: spark; width: 100%; height: 22px; }
     .crypto-more-row:not(.crypto-more-head) .crypto-more-change { grid-area: meta1; min-width: 0; }
     .crypto-more-row:not(.crypto-more-head) .crypto-more-mcap   { grid-area: meta2; min-width: 0; }
     .crypto-more-row:not(.crypto-more-head) .crypto-more-vol    { grid-area: meta3; min-width: 0; }
@@ -1768,18 +1776,9 @@ body.entry-mode { overflow: hidden; }
                             <div class="ec-sub">رویدادهای مهم اقتصادی و مالی جهان</div>
                         </div>
                         <div class="economic-calendar-card">
-                            <div class="tradingview-widget-container">
+                            <div class="tradingview-widget-container" id="ecCalendarContainer">
                                 <div class="tradingview-widget-container__widget"></div>
                             </div>
-                            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-events.js" async>
-                            {
-                                "colorTheme": "dark",
-                                "isTransparent": true,
-                                "width": "100%",
-                                "height": "500",
-                                "locale": "en"
-                            }
-                            </script>
                         </div>
                     </div>
                     <!-- شمارش معکوس تا رویدادهای مهم (منتقل‌شده از تب نمای کلی) -->
@@ -2104,6 +2103,25 @@ body.entry-mode { overflow: hidden; }
     let displayed = 'ip';
     let slots = ['prices', 'calendar', 'news'];
     let inited = false;
+    let calendarLoaded = false;
+    /* ویجتِ تقویمِ اقتصادی تا وقتی تبِ والدش واقعاً دیده نشود بارگذاری نمی‌شود
+       (اگر عرضِ کانتینر هنگامِ تزریقِ اسکریپت صفر باشد، ویجت دیگر خودش را دوباره اندازه نمی‌گیرد — اضافه‌شده) */
+    function renderCalendarWidget() {
+        const c = document.getElementById('ecCalendarContainer');
+        if (!c) return;
+        if (c.getBoundingClientRect().width === 0) {
+            c.__ecRetries = (c.__ecRetries || 0) + 1;
+            if (c.__ecRetries < 40) { requestAnimationFrame(renderCalendarWidget); return; }
+        }
+        c.__ecRetries = 0;
+        if (calendarLoaded) return;
+        calendarLoaded = true;
+        const s = document.createElement('script');
+        s.type = 'text/javascript'; s.async = true;
+        s.src = 'https://s3.tradingview.com/external-embedding/embed-widget-events.js';
+        s.innerHTML = JSON.stringify({ colorTheme: 'dark', isTransparent: true, width: '100%', height: '500', locale: 'en' });
+        c.appendChild(s);
+    }
     function renderTabs() {
         const bar = document.getElementById('cryptoTabs');
         if (!bar) return;
@@ -2127,6 +2145,7 @@ body.entry-mode { overflow: hidden; }
         showPane(displayed);
         renderTabs();
         if (displayed === 'news' && typeof window.loadNews === 'function') window.loadNews();
+        if (displayed === 'calendar') renderCalendarWidget();
         try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (e) { window.scrollTo(0, 0); }
     };
     window.initCryptoTabs = function() {
@@ -3644,6 +3663,9 @@ function showMagnifierFor(svg, x, y) {
     magnifierEl.style.display = 'block';
 }
 function hideMagnifier() { if (magnifierEl) magnifierEl.style.display = 'none'; magnifierSourceSvg = null; }
+/* برداشتنِ انگشت باید همیشه ذره‌بین را ببندد، حتی اگر مرحله‌ی ترسیم کامل نشده باشد (اضافه‌شده — رفعِ گیرکردنِ ذره‌بین) */
+document.addEventListener('touchend', hideMagnifier, { passive: true });
+document.addEventListener('touchcancel', hideMagnifier, { passive: true });
 
 document.getElementById('fiboBtn').addEventListener('click', function() {
     const svg = document.getElementById(this.dataset.target);
@@ -5513,8 +5535,21 @@ function applyCustomOrder() {
 /* آپلود انبوه — هر تعداد فایل (حتی هزاران آهنگ) پشتیبانی می‌شود؛
    فایل‌ها دسته‌دسته ذخیره می‌شوند تا مرورگر هنگ نکند و پیشرفت نمایش داده شود */
 async function handleCustomUpload(fileList) {
-    const files = Array.from(fileList || []).filter(f => f && f.type.startsWith('audio'));
-    if (!files.length) return;
+    const all = Array.from(fileList || []);
+    const files = all.filter(f => f && f.type.startsWith('audio'));
+    if (!files.length) {
+        /* اگر کاربر فایلِ غیرِصوتی انتخاب کرده (مثلاً iOS که گاهی «Take Video» را هم نشان می‌دهد)،
+           به‌جای سکوت، پیام نشان بده (اضافه‌شده) */
+        if (all.length) {
+            const prog = document.getElementById('playlistUploadProgress');
+            if (prog) {
+                prog.style.display = 'block';
+                prog.textContent = 'فقط فایلِ صوتی قابلِ‌آپلود است.';
+                setTimeout(() => { prog.style.display = 'none'; }, 2500);
+            }
+        }
+        return;
+    }
     const prog = document.getElementById('playlistUploadProgress');
     if (prog) { prog.style.display = 'block'; }
     let done = 0;
@@ -5566,10 +5601,20 @@ function togglePlaylistPanel() {
     if (playlistPanelOpen) {
         const musicPanel = document.getElementById('musicPanel');
         const rect = musicPanel.getBoundingClientRect();
-        panel.style.top = rect.top + 'px';
-        panel.style.left = (rect.right + 12) + 'px';
-        if (parseFloat(panel.style.left) + 320 > window.innerWidth) {
-            panel.style.left = Math.max(10, rect.left - 332) + 'px';
+        if (window.innerWidth < 640) {
+            /* روی عرض‌های باریک جایی برای گذاشتنِ کنارِ پنلِ موزیک نیست — زیرش می‌گذاریم (اضافه‌شده) */
+            panel.style.left = '4vw';
+            panel.style.top = Math.min(rect.bottom + 10, window.innerHeight - 60) + 'px';
+            panel.style.maxHeight = (window.innerHeight - rect.bottom - 20) + 'px';
+            panel.style.overflowY = 'auto';
+        } else {
+            panel.style.maxHeight = '';
+            panel.style.overflowY = '';
+            panel.style.top = rect.top + 'px';
+            panel.style.left = (rect.right + 12) + 'px';
+            if (parseFloat(panel.style.left) + 320 > window.innerWidth) {
+                panel.style.left = Math.max(10, rect.left - 332) + 'px';
+            }
         }
         renderPlaylistPanel();
     }
@@ -9326,6 +9371,13 @@ window.addEventListener('load', function() {
 
     function renderTV() {
         const c = $('taTvContainer'); if (!c) return;
+        /* اگر تبِ والد هنوز مخفی/درحالِ‌انیمیشن است، کانتینر عرضِ صفر دارد و ویجتِ تریدینگ‌ویو
+           هیچ‌وقت خودش را دوباره اندازه‌گیری نمی‌کند — منتظرِ عرضِ واقعی می‌مانیم (اضافه‌شده) */
+        if (c.getBoundingClientRect().width === 0) {
+            c.__tvRetries = (c.__tvRetries || 0) + 1;
+            if (c.__tvRetries < 40) { requestAnimationFrame(renderTV); return; }
+        }
+        c.__tvRetries = 0;
         const t = TF.find(x => x.k === curTf) || TF[1];
         const symc = ((curCoin && curCoin.symbol) || 'BTC').toUpperCase();
         const sym = 'BINANCE:' + symc + 'USDT';

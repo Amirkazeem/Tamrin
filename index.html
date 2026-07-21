@@ -70,7 +70,8 @@ body.entry-mode { overflow: hidden; }
 .entry-btn {
     position: relative;
     overflow: hidden;
-    min-width: 210px;
+    flex: 1 1 clamp(130px, 40vw, 210px);
+    min-width: 0;
     padding: 18px 34px;
     border-radius: 16px;
     background: rgba(255, 255, 255, 0.03);
@@ -459,6 +460,13 @@ body.entry-mode { overflow: hidden; }
 .check-answer-msg.warn { color: #ffe6ea; background: rgba(137,9,19,0.12); border: 1px solid rgba(137,9,19,0.4); }
 .check-answer-msg.bad { color: #ffd9de; background: rgba(137,9,19,0.16); border: 1px solid rgba(137,9,19,0.55); }
 .svg-wrap { background: #000000; border-radius: 12px; padding: 4px; border: 1px solid #161616; overflow: hidden; position: relative; }
+/* ذره‌بینِ لمسی برایِ ابزارهای ترسیم — اضافه‌شده */
+.chart-magnifier { position: fixed; width: 110px; height: 110px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.5); box-shadow: 0 4px 16px rgba(0,0,0,0.7); overflow: hidden; pointer-events: none; z-index: 9999; display: none; background: #000; }
+.chart-magnifier-svg { width: 100%; height: 100%; display: block; }
+/* دستگیره‌ی جابه‌جاییِ دو سرِ خطِ ترسیم‌شده — اضافه‌شده */
+.line-handle-hit { cursor: grab; touch-action: none; }
+.line-handle-hit:active { cursor: grabbing; }
+.line-handle-dot { pointer-events: none; }
 .svg-wrap svg { display: block; width: 100%; height: auto; border-radius: 8px; background: #000000; }
 /* پس‌زمینه‌ی داخلی چارت هم مشکی کامل — تا با کادر مشکی یکدست باشد و خاکستری دیده نشود */
 .svg-wrap svg .bg-rect { fill: #000000; }
@@ -592,6 +600,10 @@ body.entry-mode { overflow: hidden; }
 .playlist-track-artist { color: #555; font-size: 10.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 90px; flex-shrink: 0; }
 .playlist-track-delete { background: none; border: none; color: #555; cursor: pointer; font-size: 13px; flex-shrink: 0; padding: 2px 4px; transition: color 0.2s ease; }
 .playlist-track-delete:hover { color: #890913; }
+.playlist-move-btns { display: flex; flex-direction: column; gap: 2px; flex-shrink: 0; }
+.playlist-move-btn { background: none; border: none; color: #555; cursor: pointer; font-size: 11px; line-height: 1; padding: 5px 7px; transition: color 0.2s ease; }
+.playlist-move-btn:hover:not(:disabled) { color: #fff; }
+.playlist-move-btn:disabled { opacity: 0.25; cursor: default; }
 .playlist-upload-btn { width: 100%; background: rgba(137, 9, 19, 0.1); border: 1px dashed rgba(137, 9, 19, 0.5); color: #ddd; padding: 10px; border-radius: 10px; font-size: 12px; font-family: 'Vazirmatn', sans-serif; font-weight: 600; cursor: pointer; margin-bottom: 10px; transition: all 0.3s ease; }
 .playlist-upload-btn:hover { background: rgba(137, 9, 19, 0.18); border-color: #890913; color: #fff; }
 .playlist-empty-note { color: #555; font-size: 11.5px; text-align: center; padding: 18px 4px; }
@@ -1053,7 +1065,7 @@ body.entry-mode { overflow: hidden; }
 .ta-mode-btn.on { background: linear-gradient(160deg,#890913,#5a0610); border-color:#890913; color:#fff; }
 .ta-controls { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:14px; }
 .ta-coin-picker { position:relative; }
-.ta-coin-btn { display:flex; align-items:center; gap:8px; background: rgba(0,0,0,0.4); border:1px solid rgba(137,9,19,0.5); color:#fff; padding:7px 12px; border-radius:10px; font-size:13px; font-family:'Vazirmatn',sans-serif; cursor:pointer; min-width:190px; justify-content:space-between; }
+.ta-coin-btn { display:flex; align-items:center; gap:8px; background: rgba(0,0,0,0.4); border:1px solid rgba(137,9,19,0.5); color:#fff; padding:7px 12px; border-radius:10px; font-size:13px; font-family:'Vazirmatn',sans-serif; cursor:pointer; min-width:min(190px, 42vw); justify-content:space-between; }
 .ta-coin-btn:hover { border-color:#b23a3f; }
 .ta-coin-btn-in { display:flex; align-items:center; gap:7px; min-width:0; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
 .ta-coin-btn-in img { width:20px; height:20px; border-radius:50%; flex:0 0 auto; }
@@ -1337,13 +1349,45 @@ body.entry-mode { overflow: hidden; }
     .survey-success-icon { width: 70px; height: 70px; }
     .survey-success-icon .check-mark-large { font-size: 36px; }
     .success-msg { font-size: 18px; }
-    .entry-btn { min-width: 160px; padding: 14px 22px; }
+    .entry-btn { padding: 14px 22px; }
     .entry-actions { gap: 14px; bottom: 7%; }
     #pivotContent .answer-buttons { flex-direction: column; }
     #pivotContent .conditions-grid { grid-template-columns: 1fr; }
     .playlist-panel { width: 92vw; left: 4vw; }
+    .mpw-body { max-height: 50vh; }
+    .mini-price-widget { bottom: 14px; left: 14px; }
+    .mini-price-fab { bottom: 14px; left: 14px; }
+    .cmp-table th, .cmp-table td { padding: 7px 6px; font-size: 11.5px; }
+}
+
+/* ============================================================
+   ریسپانسیو تبلت/گوشیِ بزرگ (۷۶۸px) — اضافه‌شده
+   ============================================================ */
+@media (max-width: 768px) {
+    .crypto-more-row:not(.crypto-more-head) {
+        display: grid;
+        grid-template-columns: 20px 26px 30px 1fr auto;
+        grid-template-areas:
+            "fav rank logo name price"
+            "meta1 meta1 meta2 meta2 meta3";
+        row-gap: 6px;
+        column-gap: 8px;
+        align-items: center;
+        overflow-x: visible;
+    }
+    .crypto-more-row:not(.crypto-more-head) .crypto-more-fav   { grid-area: fav; }
+    .crypto-more-row:not(.crypto-more-head) .crypto-more-rank  { grid-area: rank; }
+    .crypto-more-row:not(.crypto-more-head) .crypto-more-logo  { grid-area: logo; }
+    .crypto-more-row:not(.crypto-more-head) .crypto-more-name  { grid-area: name; min-width: 0; }
+    .crypto-more-row:not(.crypto-more-head) .crypto-more-name .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .crypto-more-row:not(.crypto-more-head) .crypto-more-price { grid-area: price; min-width: 0; }
+    .crypto-more-row:not(.crypto-more-head) .crypto-more-spark { display: none; }
+    .crypto-more-row:not(.crypto-more-head) .crypto-more-change { grid-area: meta1; min-width: 0; }
+    .crypto-more-row:not(.crypto-more-head) .crypto-more-mcap   { grid-area: meta2; min-width: 0; }
+    .crypto-more-row:not(.crypto-more-head) .crypto-more-vol    { grid-area: meta3; min-width: 0; }
 }
 </style>
+
 </head>
 <body class="entry-mode">
 
@@ -3542,6 +3586,65 @@ function getCoords(e, svg) {
     return { x, y };
 }
 
+/* نشانگرِ ضربدریِ مشترک برایِ ترندلاین/فیبو/رنج (اضافه‌شده — یکسان‌سازیِ روالِ لمسی) */
+function ensureCrosshair(svg) {
+    let crosshair = svg.querySelector('.trend-crosshair');
+    if (crosshair) return crosshair;
+    const ns = 'http://www.w3.org/2000/svg';
+    crosshair = document.createElementNS(ns, 'g');
+    crosshair.classList.add('trend-crosshair'); crosshair.style.display = 'none';
+    const vLine = document.createElementNS(ns, 'line');
+    vLine.setAttribute('x1', '0'); vLine.setAttribute('y1', '0'); vLine.setAttribute('x2', '0'); vLine.setAttribute('y2', '200');
+    vLine.setAttribute('stroke', 'rgba(255,255,255,0.15)'); vLine.setAttribute('stroke-width', '0.5'); vLine.setAttribute('stroke-dasharray', '3,3');
+    const hLine = document.createElementNS(ns, 'line');
+    hLine.setAttribute('x1', '0'); hLine.setAttribute('y1', '0'); hLine.setAttribute('x2', '400'); hLine.setAttribute('y2', '0');
+    hLine.setAttribute('stroke', 'rgba(255,255,255,0.15)'); hLine.setAttribute('stroke-width', '0.5'); hLine.setAttribute('stroke-dasharray', '3,3');
+    const circle = document.createElementNS(ns, 'circle');
+    circle.setAttribute('cx', '0'); circle.setAttribute('cy', '0'); circle.setAttribute('r', '5'); circle.setAttribute('fill', 'none'); circle.setAttribute('stroke', 'rgba(255,255,255,0.3)'); circle.setAttribute('stroke-width', '1.2');
+    const dot = document.createElementNS(ns, 'circle');
+    dot.setAttribute('cx', '0'); dot.setAttribute('cy', '0'); dot.setAttribute('r', '1.5'); dot.setAttribute('fill', 'rgba(255,255,255,0.2)');
+    crosshair.appendChild(vLine); crosshair.appendChild(hLine); crosshair.appendChild(circle); crosshair.appendChild(dot);
+    svg.appendChild(crosshair);
+    return crosshair;
+}
+function updateCrosshairFor(svg, x, y) {
+    const crosshair = svg.querySelector('.trend-crosshair');
+    if (!crosshair) return;
+    crosshair.style.display = 'block';
+    const vLine = crosshair.children[0], hLine = crosshair.children[1], circle = crosshair.children[2], dot = crosshair.children[3];
+    vLine.setAttribute('x1', x); vLine.setAttribute('x2', x);
+    hLine.setAttribute('y1', y); hLine.setAttribute('y2', y);
+    circle.setAttribute('cx', x); circle.setAttribute('cy', y);
+    dot.setAttribute('cx', x); dot.setAttribute('cy', y);
+}
+function hideCrosshairFor(svg) { const crosshair = svg.querySelector('.trend-crosshair'); if (crosshair) crosshair.style.display = 'none'; hideMagnifier(); }
+
+/* ذره‌بینِ لمسی — هنگامِ نقطه‌گذاری با انگشت، ناحیه‌ی زیرِ انگشت را بزرگ‌نمایی‌شده کمی بالاتر نشان می‌دهد (اضافه‌شده) */
+let magnifierEl = null, magnifierSvgEl = null, magnifierSourceSvg = null;
+function chartToScreen(svg, x, y) {
+    const rect = svg.getBoundingClientRect();
+    const vb = svg.viewBox.baseVal;
+    return { sx: rect.left + (x / vb.width) * rect.width, sy: rect.top + (y / vb.height) * rect.height };
+}
+function showMagnifierFor(svg, x, y) {
+    if (!magnifierEl) {
+        magnifierEl = document.createElement('div');
+        magnifierEl.className = 'chart-magnifier';
+        magnifierSvgEl = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        magnifierSvgEl.setAttribute('class', 'chart-magnifier-svg');
+        magnifierEl.appendChild(magnifierSvgEl);
+        document.body.appendChild(magnifierEl);
+    }
+    if (magnifierSourceSvg !== svg) { magnifierSvgEl.innerHTML = svg.innerHTML; magnifierSourceSvg = svg; }
+    const size = 90;
+    magnifierSvgEl.setAttribute('viewBox', (x - size / 2) + ' ' + (y - size / 2) + ' ' + size + ' ' + size);
+    const pos = chartToScreen(svg, x, y);
+    magnifierEl.style.left = (pos.sx - 55) + 'px';
+    magnifierEl.style.top = (pos.sy - 150) + 'px';
+    magnifierEl.style.display = 'block';
+}
+function hideMagnifier() { if (magnifierEl) magnifierEl.style.display = 'none'; magnifierSourceSvg = null; }
+
 document.getElementById('fiboBtn').addEventListener('click', function() {
     const svg = document.getElementById(this.dataset.target);
     if (!svg) return;
@@ -3560,7 +3663,7 @@ document.getElementById('fiboBtn').addEventListener('click', function() {
         }
     });
     const state = initFiboForSvg(svg);
-    if (this.classList.contains('active')) { this.classList.remove('active'); svg.style.cursor = 'default'; state.active = false; state.step = 0; state.startX = null; state.startY = null; removeTempFibos(svg); return; }
+    if (this.classList.contains('active')) { this.classList.remove('active'); svg.style.cursor = 'default'; state.active = false; state.step = 0; state.startX = null; state.startY = null; removeTempFibos(svg); hideCrosshairFor(svg); return; }
     this.classList.add('active'); svg.style.cursor = 'crosshair'; state.active = true; state.step = 0; state.startX = null; state.startY = null; removeTempFibos(svg);
 });
 document.getElementById('rangeBtn').addEventListener('click', function() {
@@ -3581,7 +3684,7 @@ document.getElementById('rangeBtn').addEventListener('click', function() {
         }
     });
     const state = getRangeState(svg);
-    if (this.classList.contains('active')) { this.classList.remove('active'); svg.style.cursor = 'default'; state.active = false; state.step = 0; state.startX = null; state.startY = null; removeTempRanges(svg); return; }
+    if (this.classList.contains('active')) { this.classList.remove('active'); svg.style.cursor = 'default'; state.active = false; state.step = 0; state.startX = null; state.startY = null; removeTempRanges(svg); hideCrosshairFor(svg); return; }
     this.classList.add('active'); svg.style.cursor = 'crosshair'; state.active = true; state.step = 0; state.startX = null; state.startY = null; removeTempRanges(svg);
 });
 
@@ -3604,7 +3707,7 @@ document.getElementById('pivotFiboBtn').addEventListener('click', function() {
         }
     });
     const state = initFiboForSvg(svg);
-    if (this.classList.contains('active')) { this.classList.remove('active'); svg.style.cursor = 'default'; state.active = false; state.step = 0; state.startX = null; state.startY = null; removeTempFibos(svg); return; }
+    if (this.classList.contains('active')) { this.classList.remove('active'); svg.style.cursor = 'default'; state.active = false; state.step = 0; state.startX = null; state.startY = null; removeTempFibos(svg); hideCrosshairFor(svg); return; }
     this.classList.add('active'); svg.style.cursor = 'crosshair'; state.active = true; state.step = 0; state.startX = null; state.startY = null; removeTempFibos(svg);
 });
 document.getElementById('pivotRangeBtn').addEventListener('click', function() {
@@ -3625,7 +3728,7 @@ document.getElementById('pivotRangeBtn').addEventListener('click', function() {
         }
     });
     const state = getRangeState(svg);
-    if (this.classList.contains('active')) { this.classList.remove('active'); svg.style.cursor = 'default'; state.active = false; state.step = 0; state.startX = null; state.startY = null; removeTempRanges(svg); return; }
+    if (this.classList.contains('active')) { this.classList.remove('active'); svg.style.cursor = 'default'; state.active = false; state.step = 0; state.startX = null; state.startY = null; removeTempRanges(svg); hideCrosshairFor(svg); return; }
     this.classList.add('active'); svg.style.cursor = 'crosshair'; state.active = true; state.step = 0; state.startX = null; state.startY = null; removeTempRanges(svg);
 });
 
@@ -3652,8 +3755,16 @@ document.querySelectorAll('.svg-wrap svg, #pivotChartSvg').forEach(svg => {
         if (this.dataset.drawing === 'true') return;
         e.preventDefault();
         const { x, y } = getCoords(e, this);
-        if (state.step === 0) { state.startX = x; state.startY = y; state.step = 1; removeTempFibos(this); }
-        else if (state.step === 1) { const sx = state.startX, sy = state.startY; if (sx !== null && sy !== null) { removeTempFibos(this); drawFibonacci(this, sx, sy, x, y, false); state.step = 0; state.startX = null; state.startY = null; } }
+        const mobile = isMobile();
+        if (!mobile) {
+            if (state.step === 0) { state.startX = x; state.startY = y; state.step = 1; removeTempFibos(this); }
+            else if (state.step === 1) { const sx = state.startX, sy = state.startY; if (sx !== null && sy !== null) { removeTempFibos(this); drawFibonacci(this, sx, sy, x, y, false); state.step = 0; state.startX = null; state.startY = null; } }
+            return;
+        }
+        ensureCrosshair(this);
+        if (state.step === 0) { updateCrosshairFor(this, x, y); showMagnifierFor(this, x, y); state.step = 1; }
+        else if (state.step === 1) { state.startX = x; state.startY = y; state.step = 2; updateCrosshairFor(this, x, y); showMagnifierFor(this, x, y); removeTempFibos(this); drawFibonacci(this, x, y, x, y, true); }
+        else if (state.step === 2) { const sx = state.startX, sy = state.startY; if (sx !== null && sy !== null) { removeTempFibos(this); drawFibonacci(this, sx, sy, x, y, false); hideCrosshairFor(this); state.step = 0; state.startX = null; state.startY = null; } }
     }, { passive: false });
     svg.addEventListener('touchmove', function(e) {
         const state = initFiboForSvg(this);
@@ -3661,7 +3772,13 @@ document.querySelectorAll('.svg-wrap svg, #pivotChartSvg').forEach(svg => {
         if (this.dataset.drawing === 'true') return;
         e.preventDefault();
         const { x, y } = getCoords(e, this);
-        if (state.step === 1) { const sx = state.startX, sy = state.startY; if (sx !== null && sy !== null) { removeTempFibos(this); drawFibonacci(this, sx, sy, x, y, true); } }
+        const mobile = isMobile();
+        if (!mobile) {
+            if (state.step === 1) { const sx = state.startX, sy = state.startY; if (sx !== null && sy !== null) { removeTempFibos(this); drawFibonacci(this, sx, sy, x, y, true); } }
+            return;
+        }
+        updateCrosshairFor(this, x, y); showMagnifierFor(this, x, y);
+        if (state.step === 2) { const sx = state.startX, sy = state.startY; if (sx !== null && sy !== null) { removeTempFibos(this); drawFibonacci(this, sx, sy, x, y, true); } }
     }, { passive: false });
 
     svg.addEventListener('mousedown', function(e) {
@@ -3686,8 +3803,16 @@ document.querySelectorAll('.svg-wrap svg, #pivotChartSvg').forEach(svg => {
         if (this.dataset.drawing === 'true') return;
         e.preventDefault();
         const { x, y } = getCoords(e, this);
-        if (state.step === 0) { state.startX = x; state.startY = y; state.step = 1; removeTempRanges(this); }
-        else if (state.step === 1) { const sx = state.startX, sy = state.startY; if (sx !== null && sy !== null) { removeTempRanges(this); drawRange(this, sx, sy, x, y, false); state.step = 0; state.startX = null; state.startY = null; } }
+        const mobile = isMobile();
+        if (!mobile) {
+            if (state.step === 0) { state.startX = x; state.startY = y; state.step = 1; removeTempRanges(this); }
+            else if (state.step === 1) { const sx = state.startX, sy = state.startY; if (sx !== null && sy !== null) { removeTempRanges(this); drawRange(this, sx, sy, x, y, false); state.step = 0; state.startX = null; state.startY = null; } }
+            return;
+        }
+        ensureCrosshair(this);
+        if (state.step === 0) { updateCrosshairFor(this, x, y); showMagnifierFor(this, x, y); state.step = 1; }
+        else if (state.step === 1) { state.startX = x; state.startY = y; state.step = 2; updateCrosshairFor(this, x, y); showMagnifierFor(this, x, y); removeTempRanges(this); drawRange(this, x, y, x, y, true); }
+        else if (state.step === 2) { const sx = state.startX, sy = state.startY; if (sx !== null && sy !== null) { removeTempRanges(this); drawRange(this, sx, sy, x, y, false); hideCrosshairFor(this); state.step = 0; state.startX = null; state.startY = null; } }
     }, { passive: false });
     svg.addEventListener('touchmove', function(e) {
         const state = getRangeState(this);
@@ -3695,7 +3820,13 @@ document.querySelectorAll('.svg-wrap svg, #pivotChartSvg').forEach(svg => {
         if (this.dataset.drawing === 'true') return;
         e.preventDefault();
         const { x, y } = getCoords(e, this);
-        if (state.step === 1) { const sx = state.startX, sy = state.startY; if (sx !== null && sy !== null) { removeTempRanges(this); drawRange(this, sx, sy, x, y, true); } }
+        const mobile = isMobile();
+        if (!mobile) {
+            if (state.step === 1) { const sx = state.startX, sy = state.startY; if (sx !== null && sy !== null) { removeTempRanges(this); drawRange(this, sx, sy, x, y, true); } }
+            return;
+        }
+        updateCrosshairFor(this, x, y); showMagnifierFor(this, x, y);
+        if (state.step === 2) { const sx = state.startX, sy = state.startY; if (sx !== null && sy !== null) { removeTempRanges(this); drawRange(this, sx, sy, x, y, true); } }
     }, { passive: false });
 });
 
@@ -3969,6 +4100,64 @@ window.checkTrendAnswer = function () {
 const history = {};
 function getHistory(svgId) { if (!history[svgId]) history[svgId] = { undo: [], redo: [] }; return history[svgId]; }
 function saveLine(svgId, line) { if (line && line.classList) line.classList.add('user-trend-line'); const h = getHistory(svgId); h.undo.push(line); h.redo = []; }
+
+/* دستگیره‌ی قابلِ‌جابه‌جاییِ دو سرِ خطِ ترسیم‌شده — افزونه‌ای، جایگزینِ روالِ کشیدنِ خطِ تازه نیست (اضافه‌شده) */
+let lineHandleCounter = 0;
+function watchLineHandles(svg) {
+    if (svg.__lineHandleObserver) return;
+    const observer = new MutationObserver(mutations => {
+        mutations.forEach(m => {
+            m.removedNodes.forEach(node => {
+                if (node.nodeType === 1 && node.tagName === 'line' && node.dataset && node.dataset.handleId) {
+                    const hg = svg.querySelector('.line-handles[data-for-line="' + node.dataset.handleId + '"]');
+                    if (hg) hg.remove();
+                }
+            });
+        });
+    });
+    observer.observe(svg, { childList: true });
+    svg.__lineHandleObserver = observer;
+}
+function addLineHandles(svg, line) {
+    watchLineHandles(svg);
+    const handleId = 'lh' + (++lineHandleCounter);
+    line.dataset.handleId = handleId;
+    const ns = 'http://www.w3.org/2000/svg';
+    const group = document.createElementNS(ns, 'g');
+    group.classList.add('line-handles');
+    group.dataset.forLine = handleId;
+    [['x1', 'y1'], ['x2', 'y2']].forEach(([xAttr, yAttr]) => {
+        const hit = document.createElementNS(ns, 'circle');
+        hit.setAttribute('r', '24'); hit.setAttribute('fill', 'transparent');
+        hit.setAttribute('cx', line.getAttribute(xAttr)); hit.setAttribute('cy', line.getAttribute(yAttr));
+        hit.classList.add('line-handle-hit');
+        const dot = document.createElementNS(ns, 'circle');
+        dot.setAttribute('r', '5'); dot.setAttribute('fill', '#ff9b00'); dot.setAttribute('stroke', '#000'); dot.setAttribute('stroke-width', '1');
+        dot.setAttribute('cx', line.getAttribute(xAttr)); dot.setAttribute('cy', line.getAttribute(yAttr));
+        dot.classList.add('line-handle-dot');
+        group.appendChild(hit); group.appendChild(dot);
+        hit.addEventListener('pointerdown', function(e) {
+            e.preventDefault(); e.stopPropagation();
+            try { hit.setPointerCapture(e.pointerId); } catch (err) {}
+            function onMove(ev) {
+                ev.preventDefault(); ev.stopPropagation();
+                const { x, y } = getCoords(ev, svg);
+                line.setAttribute(xAttr, x); line.setAttribute(yAttr, y);
+                hit.setAttribute('cx', x); hit.setAttribute('cy', y);
+                dot.setAttribute('cx', x); dot.setAttribute('cy', y);
+            }
+            function onUp(ev) {
+                try { hit.releasePointerCapture(e.pointerId); } catch (err) {}
+                hit.removeEventListener('pointermove', onMove);
+                hit.removeEventListener('pointerup', onUp);
+            }
+            hit.addEventListener('pointermove', onMove);
+            hit.addEventListener('pointerup', onUp);
+        });
+    });
+    svg.appendChild(group);
+    return group;
+}
 function isMobile() { return /Mobi|Android|iPhone|iPad|iPod|BlackBerry|Opera Mini|IEMobile/i.test(navigator.userAgent); }
 
 document.querySelectorAll('.trend-btn').forEach(btn => {
@@ -4000,21 +4189,7 @@ document.querySelectorAll('.trend-btn').forEach(btn => {
             const sp = s.querySelector('.start-point'); if (sp) sp.remove();
         });
         this.classList.add('active'); svg.style.cursor = 'crosshair'; svg.dataset.drawing = 'true'; svg.dataset.step = '0'; svg.dataset.startX = ''; svg.dataset.startY = '';
-        const ns = 'http://www.w3.org/2000/svg';
-        const crosshair = document.createElementNS(ns, 'g');
-        crosshair.classList.add('trend-crosshair'); crosshair.style.display = 'none';
-        const vLine = document.createElementNS(ns, 'line');
-        vLine.setAttribute('x1', '0'); vLine.setAttribute('y1', '0'); vLine.setAttribute('x2', '0'); vLine.setAttribute('y2', '200');
-        vLine.setAttribute('stroke', 'rgba(255,255,255,0.15)'); vLine.setAttribute('stroke-width', '0.5'); vLine.setAttribute('stroke-dasharray', '3,3');
-        const hLine = document.createElementNS(ns, 'line');
-        hLine.setAttribute('x1', '0'); hLine.setAttribute('y1', '0'); hLine.setAttribute('x2', '400'); hLine.setAttribute('y2', '0');
-        hLine.setAttribute('stroke', 'rgba(255,255,255,0.15)'); hLine.setAttribute('stroke-width', '0.5'); hLine.setAttribute('stroke-dasharray', '3,3');
-        const circle = document.createElementNS(ns, 'circle');
-        circle.setAttribute('cx', '0'); circle.setAttribute('cy', '0'); circle.setAttribute('r', '5'); circle.setAttribute('fill', 'none'); circle.setAttribute('stroke', 'rgba(255,255,255,0.3)'); circle.setAttribute('stroke-width', '1.2');
-        const dot = document.createElementNS(ns, 'circle');
-        dot.setAttribute('cx', '0'); dot.setAttribute('cy', '0'); dot.setAttribute('r', '1.5'); dot.setAttribute('fill', 'rgba(255,255,255,0.2)');
-        crosshair.appendChild(vLine); crosshair.appendChild(hLine); crosshair.appendChild(circle); crosshair.appendChild(dot);
-        svg.appendChild(crosshair);
+        ensureCrosshair(svg);
     });
 });
 
@@ -4055,6 +4230,7 @@ document.querySelectorAll('.svg-wrap svg, #pivotChartSvg').forEach(svg => {
                     line.setAttribute('opacity', '0.9');
                     svg.appendChild(line);
                     saveLine(svg.id, line);
+                    addLineHandles(svg, line);
                     this.dataset.step = '0';
                     this.dataset.startX = '';
                     this.dataset.startY = '';
@@ -4092,6 +4268,7 @@ document.querySelectorAll('.svg-wrap svg, #pivotChartSvg').forEach(svg => {
                     line.setAttribute('opacity', '0.9');
                     svg.appendChild(line);
                     saveLine(svg.id, line);
+                    addLineHandles(svg, line);
                     this.dataset.step = '0';
                     this.dataset.startX = '';
                     this.dataset.startY = '';
@@ -4133,6 +4310,7 @@ document.querySelectorAll('.svg-wrap svg, #pivotChartSvg').forEach(svg => {
                 createStartPoint(x, y);
                 createTempLine(x, y, x, y);
                 updateCrosshair(x, y);
+                showMagnifierFor(this, x, y);
             } else if (step === 1) {
                 const sx = parseFloat(this.dataset.startX);
                 const sy = parseFloat(this.dataset.startY);
@@ -4151,6 +4329,7 @@ document.querySelectorAll('.svg-wrap svg, #pivotChartSvg').forEach(svg => {
                     line.setAttribute('opacity', '0.9');
                     svg.appendChild(line);
                     saveLine(svg.id, line);
+                    addLineHandles(svg, line);
                     this.dataset.step = '0';
                     this.dataset.startX = '';
                     this.dataset.startY = '';
@@ -4162,6 +4341,7 @@ document.querySelectorAll('.svg-wrap svg, #pivotChartSvg').forEach(svg => {
         if (mobile) {
             if (step === 0) {
                 updateCrosshair(x, y);
+                showMagnifierFor(this, x, y);
                 this.dataset.step = '1';
             } else if (step === 1) {
                 this.dataset.startX = x;
@@ -4170,6 +4350,7 @@ document.querySelectorAll('.svg-wrap svg, #pivotChartSvg').forEach(svg => {
                 createStartPoint(x, y);
                 createTempLine(x, y, x, y);
                 updateCrosshair(x, y);
+                showMagnifierFor(this, x, y);
             } else if (step === 2) {
                 const sx = parseFloat(this.dataset.startX);
                 const sy = parseFloat(this.dataset.startY);
@@ -4188,6 +4369,7 @@ document.querySelectorAll('.svg-wrap svg, #pivotChartSvg').forEach(svg => {
                     line.setAttribute('opacity', '0.9');
                     svg.appendChild(line);
                     saveLine(svg.id, line);
+                    addLineHandles(svg, line);
                     this.dataset.step = '0';
                     this.dataset.startX = '';
                     this.dataset.startY = '';
@@ -4203,6 +4385,7 @@ document.querySelectorAll('.svg-wrap svg, #pivotChartSvg').forEach(svg => {
         const step = parseInt(this.dataset.step) || 0;
         const mobile = isMobile();
         updateCrosshair(x, y);
+        showMagnifierFor(this, x, y);
         if (!mobile && step === 1) {
             const sx = parseFloat(this.dataset.startX);
             const sy = parseFloat(this.dataset.startY);
@@ -4215,17 +4398,8 @@ document.querySelectorAll('.svg-wrap svg, #pivotChartSvg').forEach(svg => {
         }
     }, { passive: false });
 
-    function updateCrosshair(x, y) {
-        const crosshair = svg.querySelector('.trend-crosshair');
-        if (!crosshair) return;
-        crosshair.style.display = 'block';
-        const vLine = crosshair.children[0], hLine = crosshair.children[1], circle = crosshair.children[2], dot = crosshair.children[3];
-        vLine.setAttribute('x1', x); vLine.setAttribute('x2', x);
-        hLine.setAttribute('y1', y); hLine.setAttribute('y2', y);
-        circle.setAttribute('cx', x); circle.setAttribute('cy', y);
-        dot.setAttribute('cx', x); dot.setAttribute('cy', y);
-    }
-    function hideCrosshair() { const crosshair = svg.querySelector('.trend-crosshair'); if (crosshair) crosshair.style.display = 'none'; }
+    function updateCrosshair(x, y) { updateCrosshairFor(svg, x, y); }
+    function hideCrosshair() { hideCrosshairFor(svg); }
     function createTempLine(x1, y1, x2, y2) {
         const ns = 'http://www.w3.org/2000/svg';
         if (tempLine) { tempLine.setAttribute('x1', x1); tempLine.setAttribute('y1', y1); tempLine.setAttribute('x2', x2); tempLine.setAttribute('y2', y2); return; }
@@ -4277,6 +4451,7 @@ document.querySelectorAll('.redo-btn').forEach(btn => {
         const item = h.redo.pop();
         svg.appendChild(item); h.undo.push(item);
         if (item.classList && item.classList.contains('fibo-group')) { const fh = getFiboHistory(targetId); fh.push(item); }
+        if (item.classList && item.classList.contains('user-trend-line')) addLineHandles(svg, item);
     });
 });
 document.querySelectorAll('.clear-btn').forEach(btn => {
@@ -5421,6 +5596,10 @@ function renderPlaylistPanel() {
             <span class="playlist-track-index">${i + 1}</span>
             <span class="playlist-track-title">${escapePlHtml(t.title)}</span>
             <span class="playlist-track-artist">${escapePlHtml(t.artist || '')}</span>
+            <span class="playlist-move-btns">
+                <button class="playlist-move-btn" onclick="event.stopPropagation(); movePlaylistTrack('default', ${i}, -1)" ${i === 0 ? 'disabled' : ''} title="جابه‌جایی به بالا" aria-label="جابه‌جایی به بالا">▲</button>
+                <button class="playlist-move-btn" onclick="event.stopPropagation(); movePlaylistTrack('default', ${i}, 1)" ${i === playlist.length - 1 ? 'disabled' : ''} title="جابه‌جایی به پایین" aria-label="جابه‌جایی به پایین">▼</button>
+            </span>
         </div>`;
     }).join('');
     bindPlaylistDragAndDrop(defaultList);
@@ -5435,6 +5614,10 @@ function renderPlaylistPanel() {
                 <span class="playlist-drag-handle" title="برای جابه‌جایی بکشید">⠿</span>
                 <span class="playlist-track-index">${i + 1}</span>
                 <span class="playlist-track-title">${escapePlHtml(t.title)}</span>
+                <span class="playlist-move-btns">
+                    <button class="playlist-move-btn" onclick="event.stopPropagation(); movePlaylistTrack('custom', ${i}, -1)" ${i === 0 ? 'disabled' : ''} title="جابه‌جایی به بالا" aria-label="جابه‌جایی به بالا">▲</button>
+                    <button class="playlist-move-btn" onclick="event.stopPropagation(); movePlaylistTrack('custom', ${i}, 1)" ${i === customPlaylist.length - 1 ? 'disabled' : ''} title="جابه‌جایی به پایین" aria-label="جابه‌جایی به پایین">▼</button>
+                </span>
                 <button class="playlist-track-delete" onclick="event.stopPropagation(); deleteCustomTrack(${t.dbId})" title="حذف">🗑</button>
             </div>`;
         }).join('');
@@ -5484,6 +5667,25 @@ function bindPlaylistDragAndDrop(listEl) {
             renderPlaylistPanel();
         });
     });
+}
+
+/* جابه‌جاییِ آهنگ با دکمه‌ی بالا/پایین — جایگزینِ لمسیِ کشیدن‌وانداختن که روی موبایل/تبلت کار نمی‌کند (اضافه‌شده) */
+function movePlaylistTrack(which, index, delta) {
+    const arr = which === 'custom' ? customPlaylist : playlist;
+    const to = index + delta;
+    if (to < 0 || to >= arr.length) return;
+    const playingKey = (playlistMode === which && arr[currentTrackIndex])
+        ? (which === 'custom' ? arr[currentTrackIndex].dbId : arr[currentTrackIndex].url) : null;
+    const moved = arr.splice(index, 1)[0];
+    arr.splice(to, 0, moved);
+    if (which === 'custom') saveCustomPlaylistOrder(); else saveDefaultPlaylistOrder();
+    if (playingKey !== null) {
+        const ni = which === 'custom'
+            ? arr.findIndex(t => t.dbId === playingKey)
+            : arr.findIndex(t => t.url === playingKey);
+        if (ni !== -1) { currentTrackIndex = ni; persistMusicState(); }
+    }
+    renderPlaylistPanel();
 }
 
 function playFromPanel(mode, index) {

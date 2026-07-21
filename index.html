@@ -17,16 +17,15 @@ html, body {
     font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
     direction: rtl;
     overflow-x: hidden;
-    overscroll-behavior: none;
     -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     user-select: none;
 }
+html { overscroll-behavior: none; }
 @import url('https://fonts.googleapis.com/css2?family=Russo+One&family=Orbitron:wght@400;700;900&display=swap');
 body { overflow-y: auto; }
 body.entry-mode { overflow: hidden; }
-html:has(body.entry-mode) { overflow: hidden; }
 
 .hidden { display: none !important; }
 
@@ -467,9 +466,6 @@ html:has(body.entry-mode) { overflow: hidden; }
 .check-answer-msg.warn { color: #ffe6ea; background: rgba(137,9,19,0.12); border: 1px solid rgba(137,9,19,0.4); }
 .check-answer-msg.bad { color: #ffd9de; background: rgba(137,9,19,0.16); border: 1px solid rgba(137,9,19,0.55); }
 .svg-wrap { background: #000000; border-radius: 12px; padding: 4px; border: 1px solid #161616; overflow: hidden; position: relative; }
-/* ذره‌بینِ لمسی برایِ ابزارهای ترسیم — اضافه‌شده */
-.chart-magnifier { position: fixed; width: 110px; height: 110px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.5); box-shadow: 0 4px 16px rgba(0,0,0,0.7); overflow: hidden; pointer-events: none; z-index: 9999; display: none; background: #000; }
-.chart-magnifier-svg { width: 100%; height: 100%; display: block; }
 /* دستگیره‌ی جابه‌جاییِ دو سرِ خطِ ترسیم‌شده — اضافه‌شده */
 .line-handle-hit { cursor: grab; touch-action: none; }
 .line-handle-hit:active { cursor: grabbing; }
@@ -582,7 +578,7 @@ html:has(body.entry-mode) { overflow: hidden; }
 
 .playlist-panel { position: fixed; top: 80px; left: 20px; z-index: 1000; background: rgba(16, 16, 16, 0.92); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 16px 16px 14px; width: 320px; max-width: 90vw; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8); display: none; animation: slideDown 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
 .playlist-panel.show { display: block; }
-.playlist-panel-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
+.playlist-panel-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.06); cursor: grab; touch-action: none; user-select: none; }
 .playlist-panel-header span { color: #fff; font-size: 13px; font-weight: 700; font-family: 'Vazirmatn', sans-serif; }
 .playlist-panel-close { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.06); color: #666; cursor: pointer; font-size: 15px; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; }
 .playlist-panel-close:hover { color: #fff; background: rgba(255, 255, 255, 0.06); }
@@ -1373,13 +1369,12 @@ html:has(body.entry-mode) { overflow: hidden; }
 @media (max-width: 768px) {
     .crypto-more-row:not(.crypto-more-head) {
         display: grid;
-        grid-template-columns: 20px 26px 30px 1fr auto;
+        grid-template-columns: 20px 26px 30px 1fr 44px auto;
         grid-template-areas:
-            "fav rank logo name price"
-            "meta1 meta1 meta2 meta2 meta3"
-            "spark spark spark spark spark";
+            "fav rank logo name spark price"
+            "meta1 meta1 meta2 meta2 meta3 meta3";
         row-gap: 6px;
-        column-gap: 8px;
+        column-gap: 6px;
         align-items: center;
         overflow-x: visible;
     }
@@ -1389,7 +1384,7 @@ html:has(body.entry-mode) { overflow: hidden; }
     .crypto-more-row:not(.crypto-more-head) .crypto-more-name  { grid-area: name; min-width: 0; }
     .crypto-more-row:not(.crypto-more-head) .crypto-more-name .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .crypto-more-row:not(.crypto-more-head) .crypto-more-price { grid-area: price; min-width: 0; }
-    .crypto-more-row:not(.crypto-more-head) .crypto-more-spark { grid-area: spark; width: 100%; height: 22px; }
+    .crypto-more-row:not(.crypto-more-head) .crypto-more-spark { grid-area: spark; width: 44px; height: 20px; }
     .crypto-more-row:not(.crypto-more-head) .crypto-more-change { grid-area: meta1; min-width: 0; }
     .crypto-more-row:not(.crypto-more-head) .crypto-more-mcap   { grid-area: meta2; min-width: 0; }
     .crypto-more-row:not(.crypto-more-head) .crypto-more-vol    { grid-area: meta3; min-width: 0; }
@@ -1984,7 +1979,8 @@ html:has(body.entry-mode) { overflow: hidden; }
      پنل پلی‌لیست (اضافه‌شده) — لیست پیش‌فرض + پلی‌لیست شخصی آپلودی
      ============================================================ -->
 <div class="playlist-panel" id="playlistPanel">
-    <div class="playlist-panel-header">
+    <div class="playlist-panel-header" id="playlistDragHandle">
+        <span class="drag-handle" style="margin-left:auto;">⠿</span>
         <span>پلی‌لیست</span>
         <button class="playlist-panel-close" onclick="togglePlaylistPanel()">✕</button>
     </div>
@@ -3636,36 +3632,7 @@ function updateCrosshairFor(svg, x, y) {
     circle.setAttribute('cx', x); circle.setAttribute('cy', y);
     dot.setAttribute('cx', x); dot.setAttribute('cy', y);
 }
-function hideCrosshairFor(svg) { const crosshair = svg.querySelector('.trend-crosshair'); if (crosshair) crosshair.style.display = 'none'; hideMagnifier(); }
-
-/* ذره‌بینِ لمسی — هنگامِ نقطه‌گذاری با انگشت، ناحیه‌ی زیرِ انگشت را بزرگ‌نمایی‌شده کمی بالاتر نشان می‌دهد (اضافه‌شده) */
-let magnifierEl = null, magnifierSvgEl = null, magnifierSourceSvg = null;
-function chartToScreen(svg, x, y) {
-    const rect = svg.getBoundingClientRect();
-    const vb = svg.viewBox.baseVal;
-    return { sx: rect.left + (x / vb.width) * rect.width, sy: rect.top + (y / vb.height) * rect.height };
-}
-function showMagnifierFor(svg, x, y) {
-    if (!magnifierEl) {
-        magnifierEl = document.createElement('div');
-        magnifierEl.className = 'chart-magnifier';
-        magnifierSvgEl = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        magnifierSvgEl.setAttribute('class', 'chart-magnifier-svg');
-        magnifierEl.appendChild(magnifierSvgEl);
-        document.body.appendChild(magnifierEl);
-    }
-    if (magnifierSourceSvg !== svg) { magnifierSvgEl.innerHTML = svg.innerHTML; magnifierSourceSvg = svg; }
-    const size = 90;
-    magnifierSvgEl.setAttribute('viewBox', (x - size / 2) + ' ' + (y - size / 2) + ' ' + size + ' ' + size);
-    const pos = chartToScreen(svg, x, y);
-    magnifierEl.style.left = (pos.sx - 55) + 'px';
-    magnifierEl.style.top = (pos.sy - 150) + 'px';
-    magnifierEl.style.display = 'block';
-}
-function hideMagnifier() { if (magnifierEl) magnifierEl.style.display = 'none'; magnifierSourceSvg = null; }
-/* برداشتنِ انگشت باید همیشه ذره‌بین را ببندد، حتی اگر مرحله‌ی ترسیم کامل نشده باشد (اضافه‌شده — رفعِ گیرکردنِ ذره‌بین) */
-document.addEventListener('touchend', hideMagnifier, { passive: true });
-document.addEventListener('touchcancel', hideMagnifier, { passive: true });
+function hideCrosshairFor(svg) { const crosshair = svg.querySelector('.trend-crosshair'); if (crosshair) crosshair.style.display = 'none'; }
 
 document.getElementById('fiboBtn').addEventListener('click', function() {
     const svg = document.getElementById(this.dataset.target);
@@ -3777,16 +3744,9 @@ document.querySelectorAll('.svg-wrap svg, #pivotChartSvg').forEach(svg => {
         if (this.dataset.drawing === 'true') return;
         e.preventDefault();
         const { x, y } = getCoords(e, this);
-        const mobile = isMobile();
-        if (!mobile) {
-            if (state.step === 0) { state.startX = x; state.startY = y; state.step = 1; removeTempFibos(this); }
-            else if (state.step === 1) { const sx = state.startX, sy = state.startY; if (sx !== null && sy !== null) { removeTempFibos(this); drawFibonacci(this, sx, sy, x, y, false); state.step = 0; state.startX = null; state.startY = null; } }
-            return;
-        }
-        ensureCrosshair(this);
-        if (state.step === 0) { updateCrosshairFor(this, x, y); showMagnifierFor(this, x, y); state.step = 1; }
-        else if (state.step === 1) { state.startX = x; state.startY = y; state.step = 2; updateCrosshairFor(this, x, y); showMagnifierFor(this, x, y); removeTempFibos(this); drawFibonacci(this, x, y, x, y, true); }
-        else if (state.step === 2) { const sx = state.startX, sy = state.startY; if (sx !== null && sy !== null) { removeTempFibos(this); drawFibonacci(this, sx, sy, x, y, false); hideCrosshairFor(this); state.step = 0; state.startX = null; state.startY = null; } }
+        /* لمس هم دقیقاً همان روالِ ماوس را دنبال می‌کند — بدونِ ذره‌بین/مرحله‌ی اضافه (ساده‌سازی‌شده) */
+        if (state.step === 0) { state.startX = x; state.startY = y; state.step = 1; removeTempFibos(this); }
+        else if (state.step === 1) { const sx = state.startX, sy = state.startY; if (sx !== null && sy !== null) { removeTempFibos(this); drawFibonacci(this, sx, sy, x, y, false); state.step = 0; state.startX = null; state.startY = null; } }
     }, { passive: false });
     svg.addEventListener('touchmove', function(e) {
         const state = initFiboForSvg(this);
@@ -3794,13 +3754,7 @@ document.querySelectorAll('.svg-wrap svg, #pivotChartSvg').forEach(svg => {
         if (this.dataset.drawing === 'true') return;
         e.preventDefault();
         const { x, y } = getCoords(e, this);
-        const mobile = isMobile();
-        if (!mobile) {
-            if (state.step === 1) { const sx = state.startX, sy = state.startY; if (sx !== null && sy !== null) { removeTempFibos(this); drawFibonacci(this, sx, sy, x, y, true); } }
-            return;
-        }
-        updateCrosshairFor(this, x, y); showMagnifierFor(this, x, y);
-        if (state.step === 2) { const sx = state.startX, sy = state.startY; if (sx !== null && sy !== null) { removeTempFibos(this); drawFibonacci(this, sx, sy, x, y, true); } }
+        if (state.step === 1) { const sx = state.startX, sy = state.startY; if (sx !== null && sy !== null) { removeTempFibos(this); drawFibonacci(this, sx, sy, x, y, true); } }
     }, { passive: false });
 
     svg.addEventListener('mousedown', function(e) {
@@ -3825,16 +3779,9 @@ document.querySelectorAll('.svg-wrap svg, #pivotChartSvg').forEach(svg => {
         if (this.dataset.drawing === 'true') return;
         e.preventDefault();
         const { x, y } = getCoords(e, this);
-        const mobile = isMobile();
-        if (!mobile) {
-            if (state.step === 0) { state.startX = x; state.startY = y; state.step = 1; removeTempRanges(this); }
-            else if (state.step === 1) { const sx = state.startX, sy = state.startY; if (sx !== null && sy !== null) { removeTempRanges(this); drawRange(this, sx, sy, x, y, false); state.step = 0; state.startX = null; state.startY = null; } }
-            return;
-        }
-        ensureCrosshair(this);
-        if (state.step === 0) { updateCrosshairFor(this, x, y); showMagnifierFor(this, x, y); state.step = 1; }
-        else if (state.step === 1) { state.startX = x; state.startY = y; state.step = 2; updateCrosshairFor(this, x, y); showMagnifierFor(this, x, y); removeTempRanges(this); drawRange(this, x, y, x, y, true); }
-        else if (state.step === 2) { const sx = state.startX, sy = state.startY; if (sx !== null && sy !== null) { removeTempRanges(this); drawRange(this, sx, sy, x, y, false); hideCrosshairFor(this); state.step = 0; state.startX = null; state.startY = null; } }
+        /* لمس هم دقیقاً همان روالِ ماوس را دنبال می‌کند — بدونِ ذره‌بین/مرحله‌ی اضافه (ساده‌سازی‌شده) */
+        if (state.step === 0) { state.startX = x; state.startY = y; state.step = 1; removeTempRanges(this); }
+        else if (state.step === 1) { const sx = state.startX, sy = state.startY; if (sx !== null && sy !== null) { removeTempRanges(this); drawRange(this, sx, sy, x, y, false); state.step = 0; state.startX = null; state.startY = null; } }
     }, { passive: false });
     svg.addEventListener('touchmove', function(e) {
         const state = getRangeState(this);
@@ -3842,13 +3789,7 @@ document.querySelectorAll('.svg-wrap svg, #pivotChartSvg').forEach(svg => {
         if (this.dataset.drawing === 'true') return;
         e.preventDefault();
         const { x, y } = getCoords(e, this);
-        const mobile = isMobile();
-        if (!mobile) {
-            if (state.step === 1) { const sx = state.startX, sy = state.startY; if (sx !== null && sy !== null) { removeTempRanges(this); drawRange(this, sx, sy, x, y, true); } }
-            return;
-        }
-        updateCrosshairFor(this, x, y); showMagnifierFor(this, x, y);
-        if (state.step === 2) { const sx = state.startX, sy = state.startY; if (sx !== null && sy !== null) { removeTempRanges(this); drawRange(this, sx, sy, x, y, true); } }
+        if (state.step === 1) { const sx = state.startX, sy = state.startY; if (sx !== null && sy !== null) { removeTempRanges(this); drawRange(this, sx, sy, x, y, true); } }
     }, { passive: false });
 });
 
@@ -4322,80 +4263,36 @@ document.querySelectorAll('.svg-wrap svg, #pivotChartSvg').forEach(svg => {
         e.preventDefault();
         const { x, y } = getCoords(e, this);
         const step = parseInt(this.dataset.step) || 0;
-        const mobile = isMobile();
-
-        if (!mobile) {
-            if (step === 0) {
-                this.dataset.startX = x;
-                this.dataset.startY = y;
-                this.dataset.step = '1';
-                createStartPoint(x, y);
-                createTempLine(x, y, x, y);
-                updateCrosshair(x, y);
-                showMagnifierFor(this, x, y);
-            } else if (step === 1) {
-                const sx = parseFloat(this.dataset.startX);
-                const sy = parseFloat(this.dataset.startY);
-                if (sx && sy) {
-                    removeTempLine();
-                    removeStartPoint();
-                    hideCrosshair();
-                    const ns = 'http://www.w3.org/2000/svg';
-                    const line = document.createElementNS(ns, 'line');
-                    line.setAttribute('x1', sx);
-                    line.setAttribute('y1', sy);
-                    line.setAttribute('x2', x);
-                    line.setAttribute('y2', y);
-                    line.setAttribute('stroke', '#ff9b00');
-                    line.setAttribute('stroke-width', '3');
-                    line.setAttribute('opacity', '0.9');
-                    svg.appendChild(line);
-                    saveLine(svg.id, line);
-                    addLineHandles(svg, line);
-                    this.dataset.step = '0';
-                    this.dataset.startX = '';
-                    this.dataset.startY = '';
-                }
-            }
-            return;
-        }
-
-        if (mobile) {
-            if (step === 0) {
-                updateCrosshair(x, y);
-                showMagnifierFor(this, x, y);
-                this.dataset.step = '1';
-            } else if (step === 1) {
-                this.dataset.startX = x;
-                this.dataset.startY = y;
-                this.dataset.step = '2';
-                createStartPoint(x, y);
-                createTempLine(x, y, x, y);
-                updateCrosshair(x, y);
-                showMagnifierFor(this, x, y);
-            } else if (step === 2) {
-                const sx = parseFloat(this.dataset.startX);
-                const sy = parseFloat(this.dataset.startY);
-                if (sx && sy) {
-                    removeTempLine();
-                    removeStartPoint();
-                    hideCrosshair();
-                    const ns = 'http://www.w3.org/2000/svg';
-                    const line = document.createElementNS(ns, 'line');
-                    line.setAttribute('x1', sx);
-                    line.setAttribute('y1', sy);
-                    line.setAttribute('x2', x);
-                    line.setAttribute('y2', y);
-                    line.setAttribute('stroke', '#ff9b00');
-                    line.setAttribute('stroke-width', '3');
-                    line.setAttribute('opacity', '0.9');
-                    svg.appendChild(line);
-                    saveLine(svg.id, line);
-                    addLineHandles(svg, line);
-                    this.dataset.step = '0';
-                    this.dataset.startX = '';
-                    this.dataset.startY = '';
-                }
+        /* لمس هم دقیقاً همان روالِ دوتاپیِ ماوس را دنبال می‌کند — بدونِ ذره‌بین/مرحله‌ی اضافه (ساده‌سازی‌شده) */
+        if (step === 0) {
+            this.dataset.startX = x;
+            this.dataset.startY = y;
+            this.dataset.step = '1';
+            createStartPoint(x, y);
+            createTempLine(x, y, x, y);
+            updateCrosshair(x, y);
+        } else if (step === 1) {
+            const sx = parseFloat(this.dataset.startX);
+            const sy = parseFloat(this.dataset.startY);
+            if (sx && sy) {
+                removeTempLine();
+                removeStartPoint();
+                hideCrosshair();
+                const ns = 'http://www.w3.org/2000/svg';
+                const line = document.createElementNS(ns, 'line');
+                line.setAttribute('x1', sx);
+                line.setAttribute('y1', sy);
+                line.setAttribute('x2', x);
+                line.setAttribute('y2', y);
+                line.setAttribute('stroke', '#ff9b00');
+                line.setAttribute('stroke-width', '3');
+                line.setAttribute('opacity', '0.9');
+                svg.appendChild(line);
+                saveLine(svg.id, line);
+                addLineHandles(svg, line);
+                this.dataset.step = '0';
+                this.dataset.startX = '';
+                this.dataset.startY = '';
             }
         }
     }, { passive: false });
@@ -4405,15 +4302,8 @@ document.querySelectorAll('.svg-wrap svg, #pivotChartSvg').forEach(svg => {
         e.preventDefault();
         const { x, y } = getCoords(e, this);
         const step = parseInt(this.dataset.step) || 0;
-        const mobile = isMobile();
         updateCrosshair(x, y);
-        showMagnifierFor(this, x, y);
-        if (!mobile && step === 1) {
-            const sx = parseFloat(this.dataset.startX);
-            const sy = parseFloat(this.dataset.startY);
-            if (sx && sy) createTempLine(sx, sy, x, y);
-        }
-        if (mobile && step === 2) {
+        if (step === 1) {
             const sx = parseFloat(this.dataset.startX);
             const sy = parseFloat(this.dataset.startY);
             if (sx && sy) createTempLine(sx, sy, x, y);
@@ -5066,16 +4956,13 @@ document.getElementById('answerNo').addEventListener('click', () => { if (!curre
 /* ================================================================
    موزیک (مشترک و پیوسته)
    ================================================================ */
-(function initDraggablePanel() {
-    const panel = document.getElementById('musicPanel');
-    const dragHandle = document.getElementById('dragHandle');
+/* قابلِ‌جابه‌جایی‌کردنِ یک پنل با گرفتنِ دستگیره‌اش — مشترک بینِ پنلِ موزیک و پنلِ پلی‌لیست (تعمیم‌داده‌شده) */
+function makeDraggablePanel(panel, dragHandle, excludeSelectors) {
     if (!panel || !dragHandle) return;
     let isDragging = false, offsetX = 0, offsetY = 0;
     function onDragStart(e) {
         if (!panel.classList.contains('show')) return;
-        if (e.target.closest('.music-panel-close')) return;
-        if (e.target.closest('.ctrl-btn')) return;
-        if (e.target.closest('.music-eq-container')) return;
+        if (excludeSelectors.some(sel => e.target.closest(sel))) return;
         isDragging = true;
         const touch = e.touches ? e.touches[0] : e;
         const rect = panel.getBoundingClientRect();
@@ -5114,7 +5001,11 @@ document.getElementById('answerNo').addEventListener('click', () => { if (!curre
     dragHandle.addEventListener('touchstart', onDragStart, { passive: false });
     document.addEventListener('touchmove', onDragMove, { passive: false });
     document.addEventListener('touchend', onDragEnd);
-})();
+}
+makeDraggablePanel(document.getElementById('musicPanel'), document.getElementById('dragHandle'),
+    ['.music-panel-close', '.ctrl-btn', '.music-eq-container']);
+makeDraggablePanel(document.getElementById('playlistPanel'), document.getElementById('playlistDragHandle'),
+    ['.playlist-panel-close']);
 
 const playlist = [
     { url: 'https://github.com/Amirkazeem/Music/raw/refs/heads/main/Bang%20Bang.mp3', title: 'Bang Bang', artist: '—' },
@@ -5177,11 +5068,20 @@ function toggleMusicPanel() {
     if (isPanelOpen) {
         btn.style.borderColor = 'rgba(255,0,68,0.9)';
         btn.style.background = 'rgba(255,0,68,0.1)';
-        const iconRect = btn.getBoundingClientRect();
-        panel.style.top = (iconRect.bottom + 6) + 'px';
-        panel.style.left = (iconRect.left - 10) + 'px';
-        panel.style.right = 'auto';
-        panel.style.bottom = 'auto';
+        if (window.innerWidth < 640) {
+            /* روی موبایل، جای‌گذاریِ بر اساسِ محلِ دکمه پنل را از صفحه بیرون می‌برد —
+               به‌جایش می‌گذاریم استایلِ ثابتِ CSS (top/left/right در مدیاکوئری) خودش اعمال شود (اضافه‌شده) */
+            panel.style.top = '';
+            panel.style.left = '';
+            panel.style.right = '';
+            panel.style.bottom = '';
+        } else {
+            const iconRect = btn.getBoundingClientRect();
+            panel.style.top = (iconRect.bottom + 6) + 'px';
+            panel.style.left = (iconRect.left - 10) + 'px';
+            panel.style.right = 'auto';
+            panel.style.bottom = 'auto';
+        }
         if (activePlaylist.length > 0 && !isTrackLoaded) loadTrack(currentTrackIndex);
         if (isPlaying) startEqAnimation();
     } else {
